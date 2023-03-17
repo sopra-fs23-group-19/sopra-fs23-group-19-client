@@ -1,5 +1,5 @@
 import React from "react";
-import {ReactLogo} from "components/ui/ReactLogo";
+import { ReactLogo } from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 
@@ -11,15 +11,21 @@ import "styles/views/Header.scss";
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const Header = props => (
-  <div className="header container" style={{height: props.height}}>
-    <h1 className="header title">SoPra FS23 rocks with React!</h1>
-    <ReactLogo width="60px" height="60px"/>
+const Header = (props) => (
+  <div>
+    <div className="header container" style={{ height: props.height }}>
+      <h1 className="header title">SoPra FS23 rocks with React! </h1>
+      <ReactLogo width="60px" height="60px" />
+    </div>
+    <div>
+      <h1 className="header title"> Group 19 </h1>
+      <h2 className="header title"> Project name: Drawing & Guessing </h2>
+    </div>
   </div>
 );
 
 Header.propTypes = {
-  height: PropTypes.string
+  height: PropTypes.string,
 };
 
 /**

@@ -2,12 +2,28 @@
 
 .header {
   &.container {
-    @include center;
+    margin-top: 0em;
+    left: 0px;
+    top: 0px;
+    background: rgba(213, 209, 200, 0.6);
   }
 
   &.title {
     font-weight: bold;
     color: $background;
-    text-align: center;
+    left: 0px;
+    font-family: 'Irish Grover';
+  }
+
+  &.instruction-container {
+    display: flex;
+    margin-top: 1em;
+  }
+
+  &.instruction {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
   }
 }

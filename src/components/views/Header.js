@@ -17,10 +17,10 @@ const Header = (props) => (
       <h1 className="header title">SoPra FS23 rocks with React! </h1>
       <ReactLogo width="60px" height="60px" />
     </div>
-    <div>
+    {/* <div>
       <h1 className="header title"> Group 19 </h1>
       <h2 className="header title"> Project name: Drawing & Guessing </h2>
-    </div>
+    </div> */}
   </div>
 );
 

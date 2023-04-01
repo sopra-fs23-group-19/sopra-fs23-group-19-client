@@ -1,46 +1,16 @@
-# SoPra FS23 - Client Template with build pack
+# SoPra FS23 - Client
 
-## Getting started
+## Geyu Meng's work
 
-Read and go through these Tutorials. It will make your life easier:)
+Login view and jump to register page
+![image](https://user-images.githubusercontent.com/91421664/229308098-891e7824-ffa4-41ff-a74c-dd613e25edd7.png)
 
-- Read the React [Docs](https://reactjs.org/docs/getting-started.html)
-- Do this React [Getting Started](https://reactjs.org/tutorial/tutorial.html) Tutorial (it doesn’t assume any existing React knowledge)
-- Get an Understanding of [CSS](https://www.w3schools.com/Css/), [SCSS](https://sass-lang.com/documentation/syntax), and [HTML](https://www.w3schools.com/html/html_intro.asp)!
+Register view with RegisterGuard
+![image](https://user-images.githubusercontent.com/91421664/229308118-12a790ef-00fd-4cb8-b135-ea9bac248214.png)
 
-Next, there are two other technologies that you should look at:
+## Jingjing Li's work
+Header of the the home page
+![image](https://user-images.githubusercontent.com/91188113/229308430-a9dcf168-d04f-44f1-b69a-ca084f1d422d.png)
 
-* [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) offers declarative routing for React. It is a collection of navigational components that fit nicely with the application. 
-* [react-hooks](https://reactrouter.com/web/api/Hooks) let you access the router's state and perform navigation from inside your components.
-
-## Prerequisites and Installation
-For your local development environment, you will need Node.js. You can download it [here](https://nodejs.org). All other dependencies, including React, get installed with:
-
-```npm install```
-
-Run this command before you start your application for the first time. Next, you can start the app with:
-
-```npm run dev```
-
-Now you can open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-Notice that the page will reload if you make any edits. You will also see any lint errors in the console (use Google Chrome).
-
-### Testing
-Testing is optional, and you can run the tests with `npm run test`.
-This launches the test runner in an interactive watch mode. See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-> For macOS user running into a 'fsevents' error: https://github.com/jest-community/vscode-jest/issues/423
-
-### Build
-Finally, `npm run build` builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance: the build is minified, and the filenames include hashes.<br>
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-
-> Thanks to Lucas Pelloni and Kyrill Hux for working on the template.
+Rules page
+![image](https://user-images.githubusercontent.com/91188113/229308479-c574a77f-0f74-4d6b-84ab-3a7321ae8e53.png)

@@ -3,20 +3,17 @@
 .login {
   &.container {
     margin-top: 2em;
-    // min-height: 300px;
-    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
-    // @include center;
-    position: absolute;
-    width: 800px;
-    right: 000px;
+    flex-direction: column;
+    width: 600px;
     top: 200px;
-    // flex-direction: column;
+    left: 850px;
+    position: absolute;
   }
   &.form {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 60%;
+    width: 100%;
     max-width: 30em;
     height: 25em;
     font-size: 16px;
@@ -40,7 +37,6 @@
     border: none;
     border-radius: 0.75em;
     margin-bottom: 30px;
-    // background: transparentize(white, 0.85);
     background: #D9D9D9;
     color: #000000;
     font-size: 20px;
@@ -57,7 +53,7 @@
   &.button-container {
     display: flex;
     justify-content: center;
-    margin-top: 1em;
+    margin-top: 2em;
   }
   &.pic {
     position: absolute;

@@ -6,18 +6,28 @@
     left: 0px;
     top: 0px;
     background: rgba(213, 209, 200, 0.6);
+    position: absolute;
+    flex-direction: column;
+    width: 1650px;
   }
 
   &.title {
     font-weight: bold;
     color: $background;
-    left: 0px;
     font-family: 'Irish Grover';
+    left: 40px;
+    position: absolute;
+    width: 555px;
+    height: 171px;
+    left: 40px;
+    top: 40px;
+    font-size: 30px;
   }
 
   &.instruction-container {
     display: flex;
     margin-top: 1em;
+    width: flex;
   }
 
   &.instruction {

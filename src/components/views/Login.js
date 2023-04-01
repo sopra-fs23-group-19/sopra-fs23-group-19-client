@@ -53,7 +53,7 @@ const Login = props => {
       localStorage.setItem('token', user.token);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/game`);
+      history.push(`/lobby`);
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
@@ -63,7 +63,7 @@ const Login = props => {
     try {
       history.push(`/register`);
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      alert(`Something went wrong when going to register page: \n${handleError(error)}`);
     }
   }
 
@@ -100,20 +100,18 @@ const Login = props => {
               Login
             </Button>
             <Button
-              // disabled={!username || !password}
-              // width="100%"
-              onClick={() => doTest()}
+              onClick={()=> doTest()}
             >
               Test
             </Button>
           </div>
-          <div className="login button-container">
+          <div className='login button-container'>
             <div style={{"margin-right": "40px"}}>
-               Do not have an account?      
+                Do not have an account?      
             </div>
             <div style={{"color": "#60669F", "textDecorationLine": "underline"}}
-                 onClick={() => goToRegister()}>
-               Register Now!!!
+                onClick={() => goToRegister()}>
+                Register Now!!!
             </div>
           </div>
         </div>

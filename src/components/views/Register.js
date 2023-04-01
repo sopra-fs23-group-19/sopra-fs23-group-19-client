@@ -41,7 +41,7 @@ const Register = props => {
   const [password, setPassword] = useState(null);
   const [username, setUsername] = useState(null);
 
-  const doLogin = async () => {
+  const doRegister = async () => {
     try {
       const requestBody = JSON.stringify({username, password});
       const response = await api.post('/users', requestBody);
@@ -53,9 +53,9 @@ const Register = props => {
       localStorage.setItem('token', user.token);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/game`);
+      history.push(`/lobby`);
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      alert(`Something went wrong during the register: \n${handleError(error)}`);
     }
   };
 
@@ -63,7 +63,7 @@ const Register = props => {
     try {
       history.push(`/login`);
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      alert(`Something went wrong when go to login: \n${handleError(error)}`);
     }
   }
 
@@ -91,18 +91,18 @@ const Register = props => {
             <Button
               disabled={!username || !password}
               width="100%"
-              onClick={() => doLogin()}
+              onClick={() => doRegister()}
             >
               Register
             </Button>
           </div>
-          <div className="login button-container">
+          <div className='login button-container'>
             <div style={{"margin-right": "40px"}}>
-               Already have an account?      
+                Already have an account?      
             </div>
             <div style={{"color": "#60669F", "textDecorationLine": "underline"}}
-                 onClick={() => goToLogin()}>
-               Back to the login page
+                onClick={() => goToLogin()}>
+                Back to the login page
             </div>
           </div>
         </div>

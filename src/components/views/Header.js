@@ -29,7 +29,14 @@ const Header = props => {
     try {
       history.push(`/lobby`);
     } catch (error) {
-      alert(`Something went wrong when going to rules page: \n${handleError(error)}`);
+      alert(`Something went wrong when going to lobby page: \n${handleError(error)}`);
+    }
+  }
+  const goToProfile = async() => {
+    try {
+      history.push(`/profile`);
+    } catch (error) {
+      alert(`Something went wrong when going to profile page: \n${handleError(error)}`);
     }
   }
   const logout = () => {
@@ -50,7 +57,8 @@ const Header = props => {
           onClick={() => goToLobby()}>
           Lobby      
         </div>
-        <div className="header instruction" style={{"margin-left": "40px", "color": "#C18A2D"}}>
+        <div className="header instruction" style={{"margin-left": "40px", "color": "#C18A2D", "textDecorationLine": "underline"}}
+          onClick={() => goToProfile()}>
           Profile    
         </div>
         <div className="header instruction" style={{"margin-left": "40px", "color": "#B59978"}}>

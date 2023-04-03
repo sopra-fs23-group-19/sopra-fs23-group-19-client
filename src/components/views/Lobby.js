@@ -1,6 +1,6 @@
 import React from 'react';
 import {api, handleError} from 'helpers/api';
-import User from 'models/User';
+import Room from 'models/Room';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Header.scss';
@@ -12,7 +12,7 @@ import Header from "components/views/Header";
 import {Spinner} from 'components/ui/Spinner';
 import {useEffect, useState} from 'react';
 
-const Room = ({room}) => (
+const Rooms = ({room}) => (
   <div className="lobby container">
     <div className="lobby id">{room.id}</div>
     <div className="lobby name">{room.name}</div>
@@ -27,82 +27,113 @@ Room.propTypes = {
   room: PropTypes.object
 };
 
-const FormField = props => {
-  return (
-    <div className="login field">
-      <label className="login label">
-        {props.label}
-      </label>
-      <input
-        className="login input"
-        placeholder="enter here.."
-        value={props.value}
-        onChange={e => props.onChange(e.target.value)}
-      />
-    </div>
-  );
-};
-
-FormField.propTypes = {
-  label: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func
-};
-
 const Lobby = props => {
-  // const history = useHistory();
-  // const [rooms, setRooms] = useState(null);
+  const history = useHistory();
+  const [rooms, setRooms] = useState(null);
   // useEffect(() => {
-  //   // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
-  //   async function fetchData() {
+  //   async function fetchRooms() {
   //     try {
-  //       const response = await api.get('/rooms');
-
-  //       // delays continuous execution of an async operation for 1 second.
-  //       // This is just a fake async call, so that the spinner can be displayed
-  //       // feel free to remove it :)
-  //       await new Promise(resolve => setTimeout(resolve, 1000));
-
-  //       // Get the returned users and update the state.
-  //       setRooms(response.data);
-
-  //       // This is just some data for you to see what is available.
-  //       // Feel free to remove it.
-  //       console.log('request to:', response.request.responseURL);
-  //       console.log('status code:', response.status);
-  //       console.log('status text:', response.statusText);
-  //       console.log('requested data:', response.data);
-
-  //       // See here to get more data.
-  //       console.log(response);
+  //       //const repsonse = await api.get('/rooms');
+  //       //just to test
+  //       const response = {
+  //         id: 1,
+  //         name: "first room",
+  //         players: 3,
+  //       };
+  //       const testRoom = new Room(response);
+  //       setRooms(testRoom);
+  //       console.log(testRoom);
+  //       console.log(rooms);
+  //       console.log(Array.from(testRoom));
   //     } catch (error) {
   //       console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
   //       console.error("Details:", error);
   //       alert("Something went wrong while fetching the users! See the console for details.");
   //     }
   //   }
-
-  //   fetchData();
+  //   fetchRooms();
   // }, []);
-  // let content = <Spinner/>;
-  // if (rooms) {
-  //   content = (
-  //     <div>
-  //       <ul className="lobby room-list">
-  //         {rooms.map(room => (
-  //           <Room room={room} key={room.id}/>
-  //         ))}
-  //       </ul>
-  //     </div>
-  //   );
+  // const fetchRooms = async () => {
+  //   try {
+  //     // const repsonse = await api.get('/rooms');
+  //     // just to test
+  //     const response = {
+  //       id: 1,
+  //       name: "first room",
+  //       players: 3,
+  //     };
+  //     const testRoom = new Room(response);
+  //     setRooms(testRoom);
+  //     console.log(rooms);
+  //   }catch (error) {
+  //     console.error(`Something went wrong while fetching the rooms: \n${handleError(error)}`);
+  //     console.error("Details:", error);
+  //     alert("Something went wrong while fetching the rooms! See the console for details.");
+  //   }
   // }
+  // fetchRooms();
+  let content = <Spinner/>;
+  if (rooms) {
+    content = (
+      <div>
+        <div className='lobby room-list'>
+          <div className='lobby player-container'>
+            <div className="lobby id">id</div>
+            <div className="lobby name">name</div>
+            <div className="lobby player">players</div>
+          </div>
+        </div>
+        <div className='lobby line'></div>
+        <ul className="lobby room-list">
+          {rooms.map(room => (
+              <Rooms room={room} key={room.id}/>
+          ))}
+        </ul>
+      </div>
+    );
+  }else{
+    content = (
+      <div>
+        <div className='lobby room-list'>
+          <div className='lobby room-container'>
+            <div className="lobby title" style={{"margin-left": "80px"}}>id</div>
+            <div className="lobby title">name</div>
+            <div className="lobby title">players</div>
+          </div>
+          <div className='lobby line'></div>
+          <div className='lobby room-container'>
+            <div className="lobby content" style={{"margin-left": "80px"}}>1</div>
+            <div className="lobby content">long room</div>
+            <div className="lobby content">3/4</div>
+            <Button style={{"margin-right": "30px", "background-color": "#FFFFFF", "margin-bottom": "5px", "border": "2px solid #000000"}}>
+              Join
+            </Button>
+          </div>
+          <div className='lobby line' style={{"border":"2px solid #ad9a66"}}></div>
+          <div className='lobby room-container'>
+            <div className="lobby content" style={{"margin-left": "80px"}}>a very very very very very long id</div>
+            <div className="lobby content">a very very very very very long room</div>
+            <div className="lobby content">1/4</div>
+            <Button style={{"margin-right": "30px", "background-color": "#FFFFFF", "margin-bottom": "5px", "border": "2px solid #000000"}}>
+              Join
+            </Button>
+          </div>
+          <div className='lobby line' style={{"border":"2px solid #ad9a66"}}></div>
+        </div>
+      </div>
+    )
+  }
   return (
     <BaseContainer>
       <Header/>
       <div className = "lobby pic" style={{"opacity":"20%", "left":"1000px", "top":"280px"}}>
         <img src={cats}/>
       </div>
-      {/* {content} */}
+      <h2 style={{"left": "420px","top": "180px","color":"black","position":"absolute"}}>Want to create a new game? Click here:</h2>
+      <Button style={{"position":"absolute","left": "900px","top": "200px","background-color": "#FFFFFF", "border": "2px solid #000000"}}>
+        Create a new room
+      </Button>
+      {content}
     </BaseContainer>
   );
 };

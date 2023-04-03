@@ -61,17 +61,17 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // const response = await api.get(`/users/${visitId}`);
+        const response = await api.get(`/users/${visitId}`);
         //for test reason
-        const response = {
-          id: 1,
-          username: "r1",
-          status: "online",
-          bestScore: 10,
-          totalScore: 10,
-        };
-        // const userProfile1 = new User(response.data);
-        const userProfile1 = new User(response);
+        // const response = {
+        //   id: 1,
+        //   username: "r1",
+        //   status: "online",
+        //   bestScore: 10,
+        //   totalScore: 10,
+        // };
+        const userProfile1 = new User(response.data);
+        // const userProfile1 = new User(response);
         setUserProfile(userProfile1);
         console.log(userProfile);
       } catch (error) {

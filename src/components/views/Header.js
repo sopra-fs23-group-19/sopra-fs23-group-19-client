@@ -1,10 +1,9 @@
 import React from "react";
-import { ReactLogo } from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import {Button} from 'components/ui/Button';
 import cats from "styles/images/cats3.png"
-import {api, handleError} from 'helpers/api';
+import {handleError} from 'helpers/api';
 import {useHistory} from 'react-router-dom';
 
 /**
@@ -49,7 +48,7 @@ const Header = props => {
       <div className="header instruction-container">
         <div className="header title">Drawing & Guessing</div>
         <div style={{"margin-left": "1200px", "margin-top": "30px"}}>
-          <img src={cats} style={{width: 270, height: 35}}/>
+          <img src={cats} alt="" style={{width: 270, height: 35}}/>
         </div>
       </div>
       <div className="header instruction-container">

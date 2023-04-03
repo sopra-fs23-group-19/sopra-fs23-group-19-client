@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import BaseContainer from "components/ui/BaseContainer";
 import { Spinner } from "components/ui/Spinner";
 import cat_left from "styles/images/cat_left.png";
-import cat_gif from "styles/images/gif/cat_paint.gif";
+//import cat_gif from "styles/images/gif/cat_paint.gif";
 import showPwdIcon from "styles/images/svg/show-password.svg";
 import hidePwdIcon from "styles/images/svg/hide-password.svg";
 import PropTypes from "prop-types";
@@ -86,7 +86,7 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, []);
+  }, [userProfile, visitId]);
 
   const handleUpdateProfile = async () => {
     console.log("handle update");
@@ -131,6 +131,7 @@ const Profile = () => {
         />
         <img
           className="icon"
+          alt=""
           // title={isShowPwd ? "Hide password" : "Show password"}
           src={isShowPwd ? hidePwdIcon : showPwdIcon}
           onClick={() => setIsShowPwd((prevState) => !prevState)}
@@ -162,18 +163,12 @@ const Profile = () => {
           <label className="profile label">
             {"Total Score:" + userProfile.totalScore}
           </label>
-          <img className="profile img_cat_left" src={cat_left} />
-          <img className="profile img_cat_right" src={cat_left} />
-          <img
-            className="profile img_cat_middle"
-            src={cat_left}
-            alt="cat image"
-          />
-          <img
-            className="profile img_cat_middle1"
-            src={cat_left}
-            alt="cat image"
-          />
+          <div className="profile button-container">
+            <img className="profile img_cat_left" src={cat_left} alt=""/>
+            <img className="profile img_cat_right" src={cat_left} alt=""/>
+          </div>
+          <img className="profile img_cat_middle" src={cat_left} alt="cat 1"/>
+          <img className="profile img_cat_middle1" src={cat_left} alt="cat 2" />
           {/* <img
             className="profile img_cat_middle"
             src={cat_gif}
@@ -218,11 +213,11 @@ const Profile = () => {
             Edit
           </Button> */}
           <div className="profile button-container">
-            <img className="profile img_cat_left" src={cat_left} />
+            <img className="profile img_cat_left" src={cat_left} alt=""/>
             <Button style={{"width":"80%","left": "20px", "top": "-10px","background-color": "#FFFFFF", "border": "2px solid #000000"}}>
               EDIT
             </Button>
-            <img className="profile img_cat_right" src={cat_left} />
+            <img className="profile img_cat_right" src={cat_left} alt=""/>
           </div>
         </div>
       </div>
@@ -255,8 +250,8 @@ const Profile = () => {
             Update
           </button>
 
-          <img className="profile img_cat_left" src={cat_left} />
-          <img className="profile img_cat_right" src={cat_left} />
+          <img className="profile img_cat_left" src={cat_left} alt=""/>
+          <img className="profile img_cat_right" src={cat_left} alt=""/>
         </div>
       </div>
     );
@@ -266,7 +261,7 @@ const Profile = () => {
     <BaseContainer>
       <Header/>
       <div className = "lobby pic" style={{"opacity":"20%", "left":"1000px", "top":"280px"}}>
-        <img src={cats}/>
+        <img src={cats} alt=""/>
       </div>
       {!userProfile ? (
         <Spinner />

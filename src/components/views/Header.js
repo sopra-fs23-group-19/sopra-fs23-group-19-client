@@ -2,6 +2,10 @@ import React from "react";
 import { ReactLogo } from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
+import {Button} from 'components/ui/Button';
+import cats from "styles/images/cats3.png"
+import {api, handleError} from 'helpers/api';
+import {useHistory} from 'react-router-dom';
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -11,18 +15,70 @@ import "styles/views/Header.scss";
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const Header = (props) => (
-  <div>
-    <div className="header container" style={{ height: props.height }}>
-      <h1 className="header title">SoPra FS23 rocks with React! </h1>
-      <ReactLogo width="60px" height="60px" />
+
+const Header = props => {
+  const history = useHistory();
+  const goToRules = async() => {
+    try {
+      history.push(`/rules`);
+    } catch (error) {
+      alert(`Something went wrong when going to rules page: \n${handleError(error)}`);
+    }
+  }
+  const goToLobby = async() => {
+    try {
+      history.push(`/lobby`);
+    } catch (error) {
+      alert(`Something went wrong when going to lobby page: \n${handleError(error)}`);
+    }
+  }
+  const goToProfile = async() => {
+    try {
+      history.push(`/profile`);
+    } catch (error) {
+      alert(`Something went wrong when going to profile page: \n${handleError(error)}`);
+    }
+  }
+  const logout = () => {
+    //localStorage.removeItem('token');
+    history.push('/login');
+  }
+
+  return(
+    <div className="header container">
+      <div className="header instruction-container">
+        <div className="header title">Drawing & Guessing</div>
+        <div style={{"margin-left": "1200px", "margin-top": "30px"}}>
+          <img src={cats} style={{width: 270, height: 35}}/>
+        </div>
+      </div>
+      <div className="header instruction-container">
+        <div className="header instruction" style={{"margin-left": "800px", "color": "#E0B406", "textDecorationLine": "underline"}}
+          onClick={() => goToLobby()}>
+          Lobby      
+        </div>
+        <div className="header instruction" style={{"margin-left": "40px", "color": "#C18A2D", "textDecorationLine": "underline"}}
+          onClick={() => goToProfile()}>
+          Profile    
+        </div>
+        <div className="header instruction" style={{"margin-left": "40px", "color": "#B59978"}}>
+          Friends     
+        </div>
+        <div className="header instruction" style={{"margin-left": "40px", "color": "#83692C"}}>
+          Notification     
+        </div>
+        <div className="header instruction" style={{"margin-left": "40px", "color": "#000000", "textDecorationLine": "underline"}}
+          onClick={() => goToRules()}>
+          Rules
+        </div>
+        <Button style={{"margin-left": "40px", "background-color": "#FFFFFF", "margin-bottom": "5px", "border": "2px solid #000000"}}
+          onClick={() => logout()}>
+          Log out
+        </Button>
+      </div>
     </div>
-    <div>
-      <h1 className="header title"> Group 19 </h1>
-      <h2 className="header title"> Project name: Drawing & Guessing </h2>
-    </div>
-  </div>
-);
+  );
+};
 
 Header.propTypes = {
   height: PropTypes.string,

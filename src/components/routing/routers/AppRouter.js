@@ -3,6 +3,13 @@ import {GameGuard} from "components/routing/routeProtectors/GameGuard";
 import GameRouter from "components/routing/routers/GameRouter";
 import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
 import Login from "components/views/Login";
+import {RegisterGuard} from "components/routing/routeProtectors/RegisterGuard";
+import {ProfileGuard} from "components/routing/routeProtectors/ProfileGuard";
+import Register from "components/views/Register";
+import Lobby from "components/views/Lobby"
+import Rules from "components/views/Rules"
+import Profile from "components/views/Profile"
+import { Profiler } from "react/cjs/react.production.min";
 
 /**
  * Main router of your application.
@@ -26,6 +33,23 @@ const AppRouter = () => {
           <LoginGuard>
             <Login/>
           </LoginGuard>
+        </Route>
+        <Route exact path="/register">
+          <RegisterGuard>
+            <Register/>
+          </RegisterGuard>
+        </Route>
+        <Route exact path="/lobby">
+            <Lobby/>
+        </Route>
+        <Route exact path="/rules">
+            <Rules/>
+        </Route>
+        <Route exact path="/profile">
+          {/* <ProfileGuard>
+            <Profile/>
+          </ProfileGuard> */}
+          <Profile/>
         </Route>
         <Route exact path="/">
           <Redirect to="/game"/>

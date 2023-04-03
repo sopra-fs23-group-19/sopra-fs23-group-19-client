@@ -8,12 +8,16 @@
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
+    top: 200px;
+    left: 350px;
+    width: 1000px;
+    position: absolute;
   }
   &.form {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 60%;
+    width: 100%;
     max-width: 30em;
     height: 27em;
     font-size: 16px;
@@ -21,8 +25,7 @@
     padding-left: 37px;
     padding-right: 37px;
     border-radius: 0.75em;
-    background-color: #b59978;
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    background-color: rgba(181, 153, 120, 0.5);
     box-shadow: $dropShadow;
   }
   &.field {
@@ -52,22 +55,19 @@
     font-size: 24px;
     line-height: 16px;
   }
-  // &.button-container {
-  //   display: flex;
-  //   justify-content: center;
-  //   margin-top: 1em;
-  //   background: #ffffff;
-  //   border: 1px solid #000000;
-  //   font-family: "Nunito";
-  //   font-style: normal;
-  // }
-  &.img_cat_left {
+  &.button-container {
+    justify-content: center;
     position: absolute;
-    width: 56px;
-    height: 56px;
-    left: 435px;
-    // top: 460px;
-    top: 475px;
+    left:350px;
+    top: 350px;
+    width: 20em;
+  }
+  &.img_cat_left {
+    position: relative;
+    width: 10%;
+    height: 40px;
+    left: 0px;
+    top: 15px;
     // position: absolute;
     // width: 56px;
     // height: 56px;
@@ -80,12 +80,11 @@
     // height: 56px;
     // left: 760px;
     // top: 400px;
-    position: absolute;
-    width: 56px;
-    height: 56px;
-    left: 760px;
-    // top: 460px;
-    top: 475px;
+    position: relative;
+    width: 10%;
+    height: 40px;
+    left: 0px;
+    top: 15px;
   }
   &.img_cat_middle {
     // position: absolute;

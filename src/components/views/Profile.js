@@ -11,6 +11,9 @@ import cat_gif from "styles/images/gif/cat_paint.gif";
 import showPwdIcon from "styles/images/svg/show-password.svg";
 import hidePwdIcon from "styles/images/svg/hide-password.svg";
 import PropTypes from "prop-types";
+import cats from "styles/images/cats2.png"
+import Header from "components/views/Header";
+import { Button } from "components/ui/Button";
 
 const FormField = (props) => {
   return (
@@ -206,14 +209,21 @@ const Profile = () => {
           <label className="profile label">
             {"Total Score:" + userProfile.totalScore}
           </label>
-          <img className="profile img_cat_left" src={cat_left} />
+          {/* <img className="profile img_cat_left" src={cat_left} />
           <img className="profile img_cat_right" src={cat_left} />
-          <button
+          <Button
             onClick={() => handleEdit()}
             className="profile button_style1"
           >
             Edit
-          </button>
+          </Button> */}
+          <div className="profile button-container">
+            <img className="profile img_cat_left" src={cat_left} />
+            <Button style={{"width":"80%","left": "20px", "top": "-10px","background-color": "#FFFFFF", "border": "2px solid #000000"}}>
+              EDIT
+            </Button>
+            <img className="profile img_cat_right" src={cat_left} />
+          </div>
         </div>
       </div>
     );
@@ -254,7 +264,10 @@ const Profile = () => {
 
   return (
     <BaseContainer>
-      {/* <h2> Profile </h2> */}
+      <Header/>
+      <div className = "lobby pic" style={{"opacity":"20%", "left":"1000px", "top":"280px"}}>
+        <img src={cats}/>
+      </div>
       {!userProfile ? (
         <Spinner />
       ) : (

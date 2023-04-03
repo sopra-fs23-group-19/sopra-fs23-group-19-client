@@ -4,7 +4,13 @@ import GameRouter from "components/routing/routers/GameRouter";
 import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import { RegisterGuard } from "components/routing/routeProtectors/RegisterGuard";
 import Login from "components/views/Login";
-import Profile from "components/views/Profile";
+import {ProfileGuard} from "components/routing/routeProtectors/ProfileGuard";
+import Register from "components/views/Register";
+import Lobby from "components/views/Lobby"
+import Rules from "components/views/Rules"
+import Profile from "components/views/Profile"
+import { Profiler } from "react/cjs/react.production.min";
+
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -28,9 +34,22 @@ const AppRouter = () => {
             <Login />
           </LoginGuard>
         </Route>
-
-        <Route exact path="/users/:id">
-          <Profile />
+        <Route exact path="/register">
+          <RegisterGuard>
+            <Register/>
+          </RegisterGuard>
+        </Route>
+        <Route exact path="/lobby">
+            <Lobby/>
+        </Route>
+        <Route exact path="/rules">
+            <Rules/>
+        </Route>
+        <Route exact path="/profile">
+          {/* <ProfileGuard>
+            <Profile/>
+          </ProfileGuard> */}
+          <Profile/>
         </Route>
         <Route exact path="/">
           <Redirect to="/game" />

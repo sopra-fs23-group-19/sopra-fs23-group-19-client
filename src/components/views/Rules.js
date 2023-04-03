@@ -1,8 +1,4 @@
-import React, {useState} from 'react';
-import {api, handleError} from 'helpers/api';
-import User from 'models/User';
-import {useHistory} from 'react-router-dom';
-import {Button} from 'components/ui/Button';
+import React from 'react';
 import 'styles/views/Header.scss';
 import 'styles/views/Rules.scss';
 import BaseContainer from "components/ui/BaseContainer";
@@ -44,7 +40,7 @@ const Rules = props => {
     <BaseContainer>
        <Header/>
        <div className = "rules pic" style={{"opacity":"20%", "left":"1000px", "top":"280px"}}>
-        <img src={cats}/>
+        <img src={cats} alt=""/>
       </div>
       <div className='rules container'>
         <div className='rules form'>

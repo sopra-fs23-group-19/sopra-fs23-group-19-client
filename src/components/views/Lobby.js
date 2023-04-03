@@ -1,7 +1,7 @@
 import React from 'react';
-import {api, handleError} from 'helpers/api';
+//import {api, handleError} from 'helpers/api';
 import Room from 'models/Room';
-import {useHistory} from 'react-router-dom';
+//import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Header.scss';
 import 'styles/views/Lobby.scss';
@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png"
 import Header from "components/views/Header";
 import {Spinner} from 'components/ui/Spinner';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 
 const Rooms = ({room}) => (
   <div className="lobby container">
@@ -27,9 +27,14 @@ Room.propTypes = {
   room: PropTypes.object
 };
 
-const Lobby = props => {
-  const history = useHistory();
+const Lobby = () => {
+  //const history = useHistory();
   const [rooms, setRooms] = useState(null);
+  // const [rooms, setRooms] = useState({
+  //   id: 2,
+  //   name: "second room",
+  //   players: 4,
+  // });
   // useEffect(() => {
   //   async function fetchRooms() {
   //     try {
@@ -127,7 +132,7 @@ const Lobby = props => {
     <BaseContainer>
       <Header/>
       <div className = "lobby pic" style={{"opacity":"20%", "left":"1000px", "top":"280px"}}>
-        <img src={cats}/>
+        <img src={cats} alt=""/>
       </div>
       <h2 style={{"left": "420px","top": "180px","color":"black","position":"absolute"}}>Want to create a new game? Click here:</h2>
       <Button style={{"position":"absolute","left": "900px","top": "200px","background-color": "#FFFFFF", "border": "2px solid #000000"}}>

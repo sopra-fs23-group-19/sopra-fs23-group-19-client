@@ -70,7 +70,7 @@ const Register = props => {
   return (
     <BaseContainer>
       <div className = "login pic" >
-        <img src={cats}/>
+        <img src={cats} alt=""/>
       </div>
       <div className = "login title" >
         Drawing & Guessing

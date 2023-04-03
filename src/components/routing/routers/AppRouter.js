@@ -4,12 +4,12 @@ import GameRouter from "components/routing/routers/GameRouter";
 import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import { RegisterGuard } from "components/routing/routeProtectors/RegisterGuard";
 import Login from "components/views/Login";
-import {ProfileGuard} from "components/routing/routeProtectors/ProfileGuard";
+//import {ProfileGuard} from "components/routing/routeProtectors/ProfileGuard";
 import Register from "components/views/Register";
 import Lobby from "components/views/Lobby"
 import Rules from "components/views/Rules"
 import Profile from "components/views/Profile"
-import { Profiler } from "react/cjs/react.production.min";
+//import { Profiler } from "react/cjs/react.production.min";
 
 /**
  * Main router of your application.

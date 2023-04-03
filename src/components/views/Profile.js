@@ -7,7 +7,7 @@ import 'styles/views/Header.scss';
 import 'styles/views/Lobby.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import cats from "styles/picture/cats2.png"
+import cats from "styles/images/cats2.png"
 import Header from "components/views/Header";
 import {Spinner} from 'components/ui/Spinner';
 import {useEffect, useState} from 'react';

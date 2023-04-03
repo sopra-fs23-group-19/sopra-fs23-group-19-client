@@ -3,7 +3,7 @@ import { ReactLogo } from "components/ui/ReactLogo";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import {Button} from 'components/ui/Button';
-import cats from "styles/picture/cats3.png"
+import cats from "styles/images/cats3.png"
 import {api, handleError} from 'helpers/api';
 import {useHistory} from 'react-router-dom';
 

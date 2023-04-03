@@ -6,7 +6,7 @@ import {Button} from 'components/ui/Button';
 import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
-import cats from "styles/picture/cats1.png"
+import cats from "styles/images/cats1.png"
 
 /*
 It is possible to add multiple components inside a single file,

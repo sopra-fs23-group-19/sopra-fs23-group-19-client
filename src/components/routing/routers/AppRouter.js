@@ -4,7 +4,7 @@ import GameRouter from "components/routing/routers/GameRouter";
 import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import { RegisterGuard } from "components/routing/routeProtectors/RegisterGuard";
 import Login from "components/views/Login";
-// import {ProfileGuard} from "components/routing/routeProtectors/ProfileGuard";
+import { ProfileGuard } from "components/routing/routeProtectors/ProfileGuard";
 import Register from "components/views/Register";
 import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
@@ -45,10 +45,10 @@ const AppRouter = () => {
         <Route exact path="/rules">
           <Rules />
         </Route>
-        <Route exact path="/users/:id">
-          {/* <ProfileGuard> */}
-          <Profile />
-          {/* </ProfileGuard> */}
+        <Route exact path="/profile/:id">
+          <ProfileGuard>
+            <Profile />
+          </ProfileGuard>
         </Route>
         <Route exact path="/">
           <Redirect to="/game" />

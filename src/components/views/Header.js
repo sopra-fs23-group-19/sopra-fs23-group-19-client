@@ -37,7 +37,8 @@ const Header = (props) => {
   };
   const goToProfile = async () => {
     try {
-      history.push(`/profile`);
+      const curUserId = localStorage.getItem("id");
+      history.push(`/profile/${curUserId}`);
     } catch (error) {
       alert(
         `Something went wrong when going to profile page: \n${handleError(

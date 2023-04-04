@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
-import {Button} from 'components/ui/Button';
-import cats from "styles/images/cats3.png"
-import {handleError} from 'helpers/api';
-import {useHistory} from 'react-router-dom';
+import { Button } from "components/ui/Button";
+import cats from "styles/images/cats3.png";
+import { api, handleError } from "helpers/api";
+import { useHistory } from "react-router-dom";
 
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
@@ -15,63 +15,113 @@ import {useHistory} from 'react-router-dom';
  * @FunctionalComponent
  */
 
-const Header = props => {
+const Header = (props) => {
   const history = useHistory();
-  const goToRules = async() => {
+  const goToRules = async () => {
     try {
       history.push(`/rules`);
     } catch (error) {
-      alert(`Something went wrong when going to rules page: \n${handleError(error)}`);
+      alert(
+        `Something went wrong when going to rules page: \n${handleError(error)}`
+      );
     }
-  }
-  const goToLobby = async() => {
+  };
+  const goToLobby = async () => {
     try {
       history.push(`/lobby`);
     } catch (error) {
-      alert(`Something went wrong when going to lobby page: \n${handleError(error)}`);
+      alert(
+        `Something went wrong when going to lobby page: \n${handleError(error)}`
+      );
     }
-  }
-  const goToProfile = async() => {
+  };
+  const goToProfile = async () => {
     try {
       history.push(`/profile`);
     } catch (error) {
-      alert(`Something went wrong when going to profile page: \n${handleError(error)}`);
+      alert(
+        `Something went wrong when going to profile page: \n${handleError(
+          error
+        )}`
+      );
     }
-  }
-  const logout = () => {
+  };
+  const logout = async () => {
     //localStorage.removeItem('token');
-    history.push('/login');
-  }
+    var aValue = localStorage.getItem("id");
+    try {
+      await api().post(`/users/logout/${aValue}`);
+    } catch (error) {
+      alert(`Something went wrong while logout: \n${handleError(error)}`);
+    }
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    history.push("/login");
+  };
 
-  return(
+  return (
     <div className="header container">
       <div className="header instruction-container">
         <div className="header title">Drawing & Guessing</div>
-        <div style={{"margin-left": "1200px", "margin-top": "30px"}}>
-          <img src={cats} alt="" style={{width: 270, height: 35}}/>
+        <div style={{ "margin-left": "1200px", "margin-top": "30px" }}>
+          <img src={cats} alt="" style={{ width: 270, height: 35 }} />
         </div>
       </div>
       <div className="header instruction-container">
-        <div className="header instruction" style={{"margin-left": "800px", "color": "#E0B406", "textDecorationLine": "underline"}}
-          onClick={() => goToLobby()}>
-          Lobby      
+        <div
+          className="header instruction"
+          style={{
+            "margin-left": "800px",
+            color: "#E0B406",
+            textDecorationLine: "underline",
+          }}
+          onClick={() => goToLobby()}
+        >
+          Lobby
         </div>
-        <div className="header instruction" style={{"margin-left": "40px", "color": "#C18A2D", "textDecorationLine": "underline"}}
-          onClick={() => goToProfile()}>
-          Profile    
+        <div
+          className="header instruction"
+          style={{
+            "margin-left": "40px",
+            color: "#C18A2D",
+            textDecorationLine: "underline",
+          }}
+          onClick={() => goToProfile()}
+        >
+          Profile
         </div>
-        <div className="header instruction" style={{"margin-left": "40px", "color": "#B59978"}}>
-          Friends     
+        <div
+          className="header instruction"
+          style={{ "margin-left": "40px", color: "#B59978" }}
+        >
+          Friends
         </div>
-        <div className="header instruction" style={{"margin-left": "40px", "color": "#83692C"}}>
-          Notification     
+        <div
+          className="header instruction"
+          style={{ "margin-left": "40px", color: "#83692C" }}
+        >
+          Notification
         </div>
-        <div className="header instruction" style={{"margin-left": "40px", "color": "#000000", "textDecorationLine": "underline"}}
-          onClick={() => goToRules()}>
+        <div
+          className="header instruction"
+          style={{
+            "margin-left": "40px",
+            color: "#000000",
+            textDecorationLine: "underline",
+          }}
+          onClick={() => goToRules()}
+        >
           Rules
         </div>
-        <Button style={{"margin-left": "40px", "background-color": "#FFFFFF", "margin-bottom": "5px", "border": "2px solid #000000"}}
-          onClick={() => logout()}>
+        <Button
+          style={{
+            "margin-left": "40px",
+            "background-color": "#FFFFFF",
+            "margin-bottom": "5px",
+            border: "2px solid #000000",
+          }}
+          onClick={() => logout()}
+        >
           Log out
         </Button>
       </div>

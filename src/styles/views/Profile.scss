@@ -4,7 +4,7 @@
   &.container {
     // margin-top: 2em;
     margin-top: 1em;
-    min-height: 30px;
+    min-height: 40px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
@@ -19,7 +19,7 @@
     justify-content: center;
     width: 100%;
     max-width: 30em;
-    height: 27em;
+    height: 30em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
@@ -57,17 +57,25 @@
   }
   &.button-container {
     justify-content: center;
-    position: absolute;
-    left:350px;
-    top: 350px;
-    width: 20em;
+    // position: absolute;
+    // left: 350px;
+    // top: 350px;
+    // width: 20em;
+    display: flex;
+    margin-top: 2em;
   }
   &.img_cat_left {
-    position: relative;
-    width: 10%;
-    height: 40px;
-    left: 0px;
-    top: 15px;
+    // position: absolute;
+    width: 56px;
+    height: 56px;
+    left: 435px;
+    // top: 460px;
+    top: 475px;
+    // position: relative;
+    // width: 10%;
+    // height: 40px;
+    // left: 0px;
+    // top: 15px;
     // position: absolute;
     // width: 56px;
     // height: 56px;
@@ -80,11 +88,17 @@
     // height: 56px;
     // left: 760px;
     // top: 400px;
-    position: relative;
-    width: 10%;
-    height: 40px;
-    left: 0px;
-    top: 15px;
+    // position: relative;
+    // width: 10%;
+    // height: 40px;
+    // left: 0px;
+    // top: 15px;
+    // position: absolute;
+    width: 56px;
+    height: 56px;
+    left: 760px;
+    // top: 460px;
+    top: 475px;
   }
   &.img_cat_middle {
     // position: absolute;
@@ -92,7 +106,7 @@
     height: 56px;
     left: 570px;
     top: 475px;
-    position: absolute;
+    // position: absolute;
     // width: 150px;
     // height: 150px;
     // left: 570px;
@@ -104,7 +118,7 @@
     height: 56px;
     left: 650px;
     top: 475px;
-    position: absolute;
+    // position: absolute;
     // width: 150px;
     // height: 150px;
     // left: 570px;
@@ -153,7 +167,7 @@
     align-items: center;
     padding: 8px 16px;
     gap: 8px;
-    position: absolute;
+    // position: absolute;
     width: 250px;
     height: 50px;
     left: 500px;

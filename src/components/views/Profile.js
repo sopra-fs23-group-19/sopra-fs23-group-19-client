@@ -53,11 +53,16 @@ const Profile = () => {
   const [password, setPassword] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isShowPwd, setIsShowPwd] = useState(false);
-  const visitId = useParams();
-  const editable = localStorage.getItem("id") === visitId;
+  const visitIdStr = useParams();
+  console.log("visitIdStr");
+  console.log(visitIdStr);
+  const visitId = parseInt(visitIdStr["id"]);
+  console.log(visitId);
+  const editable = localStorage.getItem("id") === visitIdStr["id"];
+  console.log(localStorage.getItem("id"));
   // const [isShown, setIsSHown] = useState(false); //password shown or hidden
   // console.log("editable");
-  // console.log(editable);
+  console.log(editable);
   // const currentUserId = localStorage.getItem("userId"); //save userId
 
   useEffect(() => {
@@ -84,7 +89,8 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [userProfile, visitId]);
+    // }, [userProfile, visitId]);
+  }, []);
 
   const handleUpdateProfile = async () => {
     console.log("handle update");
@@ -104,10 +110,10 @@ const Profile = () => {
         `Something went wrong during updating profile: \n${handleError(error)}`
       );
     }
-    history.push(`/users/${visitId}`);
+    history.push(`/profile/${visitId}`);
     setIsEditing(false);
     setUsername("");
-    setPassword(null);
+    setPassword("");
   };
 
   const handleEdit = () => {

@@ -38,6 +38,8 @@ const Header = (props) => {
   const goToProfile = async () => {
     try {
       const curUserId = localStorage.getItem("id");
+      console.log("curUserId");
+      console.log(curUserId);
       history.push(`/profile/${curUserId}`);
     } catch (error) {
       alert(

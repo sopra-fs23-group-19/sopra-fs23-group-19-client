@@ -43,11 +43,11 @@ FormField.propTypes = {
 const Profile = () => {
   const history = useHistory();
   const [userProfile, setUserProfile] = useState({
-    id: null,
-    username: null,
-    status: null,
-    bestScore: null,
-    totalScore: null,
+    id: "",
+    username: "",
+    status: "",
+    bestScore: "",
+    totalScore: "",
   });
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -89,8 +89,8 @@ const Profile = () => {
       }
     };
     fetchProfile();
-    // }, [userProfile, visitId]);
-  }, []);
+  }, [userProfile, visitId]);
+  // }, []);
 
   const handleUpdateProfile = async () => {
     console.log("handle update");
@@ -100,10 +100,13 @@ const Profile = () => {
     console.log(newUsername);
     console.log(newPassword);
     const requestBody = JSON.stringify({
+      id: visitId,
       username: newUsername,
-      birthday: newPassword,
+      password: newPassword,
     });
+    console.log(requestBody);
     try {
+      // console.log(visitId);
       await api().put(`/users/${visitId}`, requestBody);
     } catch (error) {
       alert(

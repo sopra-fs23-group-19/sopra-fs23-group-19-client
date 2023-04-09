@@ -60,6 +60,8 @@ const Profile = () => {
   console.log(visitId);
   const editable = localStorage.getItem("id") === visitIdStr["id"];
   console.log(localStorage.getItem("id"));
+  console.log(localStorage.getItem("token"));
+  console.log("local storage");
   // const [isShown, setIsSHown] = useState(false); //password shown or hidden
   // console.log("editable");
   console.log(editable);
@@ -89,7 +91,14 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [userProfile, visitId]);
+  }, [
+    isEditing,
+    userProfile.bestScore,
+    userProfile.totalScore,
+    userProfile.id,
+    userProfile.status,
+    userProfile.username,
+  ]);
   // }, []);
 
   const handleUpdateProfile = async () => {

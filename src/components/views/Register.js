@@ -47,7 +47,7 @@ const Register = (props) => {
       // const user = new User(response.data);
 
       // Store the token into the local storage.
-      await autoLoginAfterRegister(username, password);
+      await autoLoginAfterRegister(requestBody);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/lobby`);
@@ -57,15 +57,17 @@ const Register = (props) => {
       );
     }
   };
-  const autoLoginAfterRegister = async () => {
+  const autoLoginAfterRegister = async (credentials) => {
     try {
-      const requestBody = JSON.stringify({ username, password }); //edit by runze
+      // const requestBody = JSON.stringify({ username, password }); //edit by runze
       //login with username and password
-      const response = await api().post("/users/login", requestBody);
+      const response = await api().post("/users/login", credentials);
       // Get the returned user and update a new object.
       // const user = new User(response.data);
 
       // Store the token into the local storage.
+      console.log(response.data.token);
+      console.log("response.data.token");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.id);
     } catch (error) {

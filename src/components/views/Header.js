@@ -35,19 +35,25 @@ const Header = (props) => {
       );
     }
   };
-  const goToProfile = async () => {
-    try {
-      const curUserId = localStorage.getItem("id");
-      console.log("curUserId");
-      console.log(curUserId);
-      history.push(`/profile/${curUserId}`);
-    } catch (error) {
-      alert(
-        `Something went wrong when going to profile page: \n${handleError(
-          error
-        )}`
-      );
-    }
+  // const goToProfile = async () => {
+  //   try {
+  //     const curUserId = localStorage.getItem("id");
+  //     console.log("curUserId");
+  //     console.log(curUserId);
+  //     history.push(`/profile/${curUserId}`);
+  //   } catch (error) {
+  //     alert(
+  //       `Something went wrong when going to profile page: \n${handleError(
+  //         error
+  //       )}`
+  //     );
+  //   }
+  // };
+  const goToProfile = () => {
+    const curUserId = localStorage.getItem("id");
+    console.log("curUserId");
+    console.log(curUserId);
+    history.push(`/profile/${curUserId}`);
   };
   const logout = async () => {
     //localStorage.removeItem('token');
@@ -57,6 +63,7 @@ const Header = (props) => {
     } catch (error) {
       alert(`Something went wrong while logout: \n${handleError(error)}`);
     }
+
     localStorage.removeItem("token");
     localStorage.removeItem("id");
     history.push("/login");

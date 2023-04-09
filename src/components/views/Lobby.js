@@ -21,7 +21,7 @@ const Rooms = ({ room }) => (
   </div>
 );
 
-Room.propTypes = {
+Rooms.propTypes = {
   room: PropTypes.object,
 };
 
@@ -156,16 +156,21 @@ const Lobby = () => {
   }
   const createGame = async () => {
     try {
+      const roomName0 = "test" + localStorage.getItem("id");
       const requestBody = JSON.stringify({
-        // id: 1,
-        roomName: "test",
+        id: 1,
+        roomName: roomName0 + "1",
         mode: "4",
+
+        palyers: localStorage.getItem("id"),
         ownerId: localStorage.getItem("id"),
-        palyers: "1",
       });
       const response0 = await api().post(`/games`, requestBody);
-      const id0 = response0.data.id;
-      const pushTo = "/wait/" + id0.toString;
+      const newRoom = new Room(response0.data);
+      console.log(newRoom);
+      const id0 = newRoom.id;
+      const pushTo = "/wait/" + id0.toString();
+   
       history.push(pushTo);
     } catch (error) {
       alert(`Something went wrong during create game: \n${handleError(error)}`);

@@ -44,7 +44,9 @@ const AppRouter = () => {
           <WaitingArea />
         </Route>
         <Route exact path="/lobby">
+        <GameGuard>
           <Lobby />
+          </GameGuard>
         </Route>
         <Route exact path="/rules">
           <Rules />

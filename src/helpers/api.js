@@ -12,7 +12,7 @@ const api = () => {
   };
   const bearerToken = localStorage.getItem("token");
   if (bearerToken != null) {
-    token_header["authToken"] = `${bearerToken}`;
+    token_header["Authorization"] = `Bearer ${bearerToken}`;
   }
   return axios.create({
     baseURL: getDomain(),

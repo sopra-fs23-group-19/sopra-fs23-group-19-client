@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleError } from "helpers/api";
-import { getDomain } from "helpers/getDomain";
 import "styles/views/WaitingArea.scss";
 import Socket from "socket/socket";
 import BaseContainer from "components/ui/BaseContainer";
@@ -25,7 +24,9 @@ Player.propTypes = {
   user: PropTypes.object,
 };
 const WaitingArea = () => {
-  const { roomId } = useParams();
+  // console.log("useparams");
+  // console.log(useParams().gameId);
+  const roomId = useParams().gameId;
   //   const [playerIds, setPlayerIds] = useState([]); //player id and player username needed
   //   const [playerNames, setPlayerNames] = useState(null); //player id and player username needed
   const [playerCount, setPlayerCount] = useState(1); //current number of players
@@ -34,10 +35,11 @@ const WaitingArea = () => {
   const history = useHistory();
   const [playerNames, setPlayerNames] = useState([{ id: "", username: "" }]);
   const [roomName, setRoomName] = useState("");
+
   //   const [isPolling, setIsPolling] = useState(true); //NOTE - for pausing the polling
   // const curSocket = socket();
-  const URL = getDomain();
-  const str_URL = URL + "/waitingArea";
+  // const URL = getDomain();
+  // const str_URL = URL + "/waitingArea";
   // const waitSocket = io(str_URL, {
   //   transports: ["websocket", "polling"], // use WebSocket first, if available
   //   extraHeaders: {
@@ -71,11 +73,6 @@ const WaitingArea = () => {
       //   setPlayerIds(response.listOfPlayerIds);
       setOwnerId(response.ownerId);
       setRoomSeats(response.roomSeats);
-      // console.log(playerNames[0]);
-      //   if (playerCount === 4) {
-      //     // await new Promise((resolve) => setTimeout(resolve, 3000));
-      //     history.push(`/game/${gameId}`);
-      //   }
     } catch (error) {
       alert(
         `Something went wrong during get user profile: \n${handleError(error)}`
@@ -85,7 +82,47 @@ const WaitingArea = () => {
   };
 
   useEffect(() => {
-    fetchRoomInfo();
+    async function fetchData() {
+      try {
+        // const response = await api().get("/games/waitingArea/" + roomId);
+
+        // waitSocket.emit("getWaitingInfo", roomId);
+        // waitSocket.on("getWaitingInfo", (arg) => {
+        //   console.log(arg); // world
+        // });
+
+        const response = {
+          numOfPlayers: 2,
+          roomName: "room1",
+          listOfPlayerNames: [
+            { id: 1, username: "Alabama" },
+            { id: 2, username: "Georgia1" },
+          ],
+          ownerId: 1,
+          roomSeats: 4,
+        };
+        setPlayerCount(response.numOfPlayers);
+        setRoomName(response.roomName);
+        const temp = response.listOfPlayerNames;
+        console.log(temp);
+        setPlayerNames(temp);
+        //   setPlayerIds(response.listOfPlayerIds);
+        setOwnerId(response.ownerId);
+        setRoomSeats(response.roomSeats);
+        // console.log(playerNames[0]);
+        //   if (playerCount === 4) {
+        //     // await new Promise((resolve) => setTimeout(resolve, 3000));
+        //     history.push(`/game/${gameId}`);
+        //   }
+      } catch (error) {
+        alert(
+          `Something went wrong during get user profile: \n${handleError(
+            error
+          )}`
+        );
+      }
+    }
+    fetchData();
   }, []);
 
   //   useInterval(
@@ -122,11 +159,10 @@ const WaitingArea = () => {
         userId: localStorage.getItem("id"),
         roomId: roomId,
       });
+      console.log(requestBody);
       await api().put("/games/join", requestBody); //leave waiting area
     } catch (error) {
-      alert(
-        `Something went wrong during get user profile: \n${handleError(error)}`
-      );
+      alert(`Something went wrong during join room: \n${handleError(error)}`);
       // history.push("/lobby"); // redirect back to lobby
     }
   };
@@ -135,9 +171,7 @@ const WaitingArea = () => {
       await api().post(`/gameRounds/${roomId}`);
       history.push("/lobby"); // should be changed later
     } catch (error) {
-      alert(
-        `Something went wrong during get user profile: \n${handleError(error)}`
-      );
+      alert(`Something went wrong during start game: \n${handleError(error)}`);
       history.push("/lobby"); // redirect back to lobby
     }
   };
@@ -159,7 +193,6 @@ const WaitingArea = () => {
   let userChoiceArea = <SpinnerBouncing />;
   //   const playerInfoBoard = <SpinnerBouncing />;
   if (roomName !== "") {
-    console.log("why");
     // var names = ["Michael", "Brian", "John"];
     // playerInfoBoard = names.map((name) => <Player name={name} />);
     // playerInfoBoard = names.map(function (name) {
@@ -170,6 +203,8 @@ const WaitingArea = () => {
     // for (i = 0; i < playerNames.length; i++) {
     //   playerInfoBoard.push(<Avatar {...stringAvatar(playerNames[i])} />);
     // }
+    console.log(roomId);
+    console.log("rommId");
     userChoiceArea =
       playerCount === roomSeats ? (
         parseInt(localStorage.getItem("id")) === parseInt(ownerId) ? (
@@ -247,7 +282,10 @@ const WaitingArea = () => {
         <img src={cats} alt="" />
       </div>
       <div>
-        <Socket topics="/waiting/1" onMessage={onMessage} />
+        <Socket
+          topics={`/waiting/${localStorage.getItem("id")}`}
+          onMessage={onMessage}
+        />
       </div>
       {content}
     </BaseContainer>

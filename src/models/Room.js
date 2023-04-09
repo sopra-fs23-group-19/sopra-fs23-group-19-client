@@ -3,9 +3,9 @@
  */
 class Room {
   constructor(data = {}) {
-    this.mode = null;
     this.id = null;
     this.ownerId = null;
+    this.mode = null;
     this.name = null;
     this.players = null;
     Object.assign(this, data);

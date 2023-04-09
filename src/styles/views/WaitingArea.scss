@@ -1,0 +1,137 @@
+@import "styles/theme";
+.waitingArea {
+  &.container {
+    // margin-top: 2em;
+    margin-top: 1em;
+    min-height: 40px;
+    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+    @include center;
+    flex-direction: column;
+    top: 200px;
+    left: 350px;
+    width: 1000px;
+    position: absolute;
+  }
+
+  &.label {
+    color: black;
+    margin-bottom: 12px;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 16px;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  //   &.base {
+  //     padding-top: 5em;
+  //   }
+
+  &.playerCountinfo {
+    color: #83692c;
+    transition: color 1s ease;
+  }
+
+  &.progress {
+    width: 100%;
+    background-color: #ffffff;
+    border: solid 1px black;
+    border-radius: 4px;
+    // align-items: center;
+    justify-content: right;
+
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &.join {
+    h2 {
+      text-decoration: underline;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-style: italic;
+      color: green;
+    }
+  }
+
+  &.bar {
+    height: 30px;
+    background-color: #b59978;
+    &.b1 {
+      width: 25%;
+      transition: width 1s ease;
+    }
+    &.b2 {
+      width: 50%;
+      transition: width 1s ease;
+    }
+    &.b3 {
+      width: 75%;
+      transition: width 1s ease;
+    }
+    &.b4 {
+      width: 100%;
+      transition: width 1s ease;
+    }
+  }
+
+  &.button-container {
+    justify-content: center;
+    // position: absolute;
+    // left: 350px;
+    // top: 350px;
+    // width: 20em;
+    display: flex;
+    margin-top: 2em;
+  }
+  &.button_style1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 8px;
+    // position: absolute;
+    width: 250px;
+    height: 50px;
+    left: 500px;
+    // top: 460px;
+    top: 475px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 999px;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    color: #000000;
+  }
+}
+.player {
+  &.container {
+    margin: 0.5em 0;
+    width: 20em;
+    padding: 10px;
+    border-radius: $borderRadius;
+    display: flex;
+    align-items: center;
+    background: lighten($background, 5);
+  }
+  &.username {
+    font-weight: 500;
+    color: $accent;
+  }
+  &.id {
+    margin-left: auto;
+    margin-right: 10px;
+    font-family: $fontMono;
+    font-weight: 300;
+  }
+}

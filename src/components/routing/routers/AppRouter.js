@@ -10,7 +10,7 @@ import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
 import WaitingArea from "components/views/WaitingArea";
-//import { Profiler } from "react/cjs/react.production.min";
+import GamePage from "components/views/GamePage";
 
 /**
  * Main router of your application.
@@ -53,6 +53,9 @@ const AppRouter = () => {
           <ProfileGuard>
             <Profile />
           </ProfileGuard>
+        </Route>
+        <Route exact path="/timer">
+            <GamePage />
         </Route>
         <Route exact path="/">
           <Redirect to="/game" />

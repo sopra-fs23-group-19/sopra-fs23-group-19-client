@@ -31,6 +31,19 @@ const DrawingBoard = () => {
         canvasObject.arc(start.x, start.y, width*0.45, 0, width * Math.PI);
         canvasObject.fill();
     }
+
+    function download(selector) {
+        
+        const canvas = document.querySelector(selector);
+      
+        const img = document.createElement('a');
+        
+        img.href = canvas.toDataURL();
+        img.download = 'your drawing';
+        
+        const event = new MouseEvent('click');
+        img.dispatchEvent(event);
+      }
   
     const eraser  = async() => {
         lineColor = "#FFFFFF";
@@ -55,7 +68,7 @@ const DrawingBoard = () => {
     return(
         <><div className="drawingBoard board">
             <canvas
-                id="1"
+                id="board"
                 width="500"
                 height="600"
                 style={{ "border": "2px solid #000000", "background": "#FFFFFF" }}
@@ -84,6 +97,11 @@ const DrawingBoard = () => {
               onClick={()=> lineThinner()}
             >
               line thinner
+            </Button>
+            <Button
+              onClick={()=> download('#board')}
+            >
+              download
             </Button>
         </div></>
         

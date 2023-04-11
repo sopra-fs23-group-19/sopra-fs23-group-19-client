@@ -1,23 +1,30 @@
 import React, { useEffect , useState} from "react";
 import PropTypes from "prop-types";
 import "styles/views/DrawingBoard.scss";
-import { ReactSketchCanvas } from "react-sketch-canvas";
-import {handleError} from 'helpers/api';
-import {useHistory} from 'react-router-dom';
 import { useRef } from "react";
 import {Button} from 'components/ui/Button';
+import BaseContainer from "components/ui/BaseContainer";
 
 const DrawingBoard = () => {
 
     const setConvasRef = useOnDraw(onDraw);
-    let lineColor = "#A52A2A";
+    let lineColor = "#000000";
     let lineWidth = 5;
 
+    window.onload=function(){
+        let canvas = document.querySelector('#board');
+        let ctx = canvas.getContext('2d');
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    
     function onDraw(canvasObject, point, previousPoint) {
         drawLine(previousPoint, point, canvasObject, lineColor, lineWidth)
     }
 
     function drawLine(start,end,canvasObject,color,width) {
+
         start = start ?? end;
         canvasObject.beginPath();
         canvasObject.lineWidth = width;
@@ -33,9 +40,8 @@ const DrawingBoard = () => {
     }
 
     function download(selector) {
-        
+
         const canvas = document.querySelector(selector);
-      
         const img = document.createElement('a');
         
         img.href = canvas.toDataURL();
@@ -44,14 +50,13 @@ const DrawingBoard = () => {
         const event = new MouseEvent('click');
         img.dispatchEvent(event);
       }
-  
-    const eraser  = async() => {
-        lineColor = "#FFFFFF";
-    }
 
-    const blackPen  = async() => {
-        lineColor = "#000000";
+    function clear() {
+        const canvas = document.querySelector('#board');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
+  
 
     const lineBold = async() => {
         lineWidth = lineWidth + 1;
@@ -66,47 +71,58 @@ const DrawingBoard = () => {
     }
 
     return(
-        <><div className="drawingBoard board">
+        <BaseContainer>
+        <div className="drawingBoard board">
             <canvas
                 id="board"
-                width="500"
-                height="600"
-                style={{ "border": "2px solid #000000", "background": "#FFFFFF" }}
+                width="500px"
+                height="600px"
+                style={{ "border": "2px solid #000000", "backgroundColor": "#FFFFFF" }}
                 ref={setConvasRef}
             >
             </canvas>
         </div>
         <div className="drawingBoard container">
-        <Button
-              width="100%"
-              onClick={() => eraser()}
-            >
-              Eraser
+            <div className="drawingBoard circle" style={{"backgroundColor": "#FF0000" }}
+            onClick={()=> lineColor='#FF0000'}>
+            </div>
+            <div className="drawingBoard circle" style={{"backgroundColor": "#FF7B00" }}
+            onClick={()=> lineColor='#FF7B00'}>
+            </div>
+            <div className="drawingBoard circle" style={{"backgroundColor": "#FFFF00" }}
+            onClick={()=> lineColor='#FFFF00'}>
+            </div>
+            <div className="drawingBoard circle" style={{"backgroundColor": "#00FF00" }}
+            onClick={()=> lineColor='#00FF00'}>
+            </div>
+            <div className="drawingBoard circle" style={{"backgroundColor": "#0000FF" }}
+            onClick={()=> lineColor='#0000FF'}>
+            </div>
+            <div className="drawingBoard circle" style={{"backgroundColor": "#FF00FF" }}
+            onClick={()=> lineColor='#FF00FF'}>
+            </div>
+            <div className="drawingBoard circle" style={{"backgroundColor": "#000000" }}
+            onClick={()=> lineColor='#000000'}>
+            </div>
+        </div>
+        <div className="drawingBoard container" style={{"margin-top":"15px"}}>
+            <Button onClick={()=> download('#board')} style={{ "border": "2px solid #000000"}}>
+                download
             </Button>
-            <Button
-              onClick={()=> blackPen()}
-            >
-              Black
+            <Button onClick={()=> clear()} style={{ "border": "2px solid #000000", "margin-left":"15px"}}>
+                clear
             </Button>
-            <Button
-              onClick={()=> lineBold()}
-            >
-              line bold
+            <Button onClick={()=> lineColor='#FFFFFF'} style={{ "border": "2px solid #000000", "margin-left":"15px"}}>
+                eraser
             </Button>
-            <Button
-              onClick={()=> lineThinner()}
-            >
-              line thinner
+            <Button onClick={()=> lineBold()} style={{ "border": "2px solid #000000","margin-left":"15px", "width":"40px"}}>
+                 + 
             </Button>
-            <Button
-              onClick={()=> download('#board')}
-            >
-              download
+            <Button onClick={()=> lineThinner()} style={{ "border": "2px solid #000000","margin-left":"15px", "width":"40px"}}>
+                 -  
             </Button>
-        </div></>
-        
-     
-      
+        </div>
+        </BaseContainer>
     );
   };
 

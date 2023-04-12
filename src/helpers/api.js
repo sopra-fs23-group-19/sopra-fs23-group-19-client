@@ -14,6 +14,7 @@ const api = () => {
   if (bearerToken != null) {
     token_header["Authorization"] = `Bearer ${bearerToken}`;
   }
+  console.log(token_header);
   return axios.create({
     baseURL: getDomain(),
     headers: token_header,

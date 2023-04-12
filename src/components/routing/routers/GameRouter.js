@@ -1,7 +1,7 @@
 import { Redirect, Route } from "react-router-dom";
 import Game from "components/views/Game";
 import PropTypes from "prop-types";
-import WaitingArea from "components/views/WaitingArea";
+import WaitingView from "components/views/WaitingView";
 const GameRouter = (props) => {
   /**
    * "this.props.base" is "/app" because as been passed as a prop in the parent of GameRouter, i.e., App.js
@@ -15,7 +15,7 @@ const GameRouter = (props) => {
         <Redirect to={`${props.base}/dashboard`} />
       </Route>
       <Route path={`${props.base}/wait/:gameId`}>
-        <WaitingArea />
+        <WaitingView />
       </Route>
     </div>
   );

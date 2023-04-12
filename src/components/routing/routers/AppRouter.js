@@ -9,7 +9,7 @@ import Register from "components/views/Register";
 import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
-import WaitingArea from "components/views/WaitingArea";
+import WaitingView from "components/views/WaitingView";
 import DrawingStage from "components/views/DrawingStage";
 import GuessingStage from "components/views/GuessingStage";
 import Ranking from "components/views/Ranking";
@@ -43,10 +43,12 @@ const AppRouter = () => {
           </RegisterGuard>
         </Route>
         <Route path={`/wait/:gameId`}>
-          <WaitingArea />
+          <WaitingView />
         </Route>
         <Route exact path="/lobby">
+        <GameGuard>
           <Lobby />
+          </GameGuard>
         </Route>
         <Route exact path="/rules">
           <Rules />
@@ -66,7 +68,7 @@ const AppRouter = () => {
             <Ranking />
         </Route>
         <Route exact path="/">
-          <Redirect to="/game" />
+          <Redirect to="/lobby" />
         </Route>
       </Switch>
     </BrowserRouter>

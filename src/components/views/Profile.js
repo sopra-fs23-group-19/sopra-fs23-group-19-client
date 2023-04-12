@@ -7,11 +7,10 @@ import { useParams } from "react-router-dom";
 import BaseContainer from "components/ui/BaseContainer";
 import { Spinner } from "components/ui/Spinner";
 import cat_left from "styles/images/cat_left.png";
-//import cat_gif from "styles/images/gif/cat_paint.gif";
 import showPwdIcon from "styles/images/svg/show-password.svg";
 import hidePwdIcon from "styles/images/svg/hide-password.svg";
 import PropTypes from "prop-types";
-import cats from "styles/images/cats2.png"
+import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Button } from "components/ui/Button";
 
@@ -44,27 +43,34 @@ FormField.propTypes = {
 const Profile = () => {
   const history = useHistory();
   const [userProfile, setUserProfile] = useState({
-    id: null,
-    username: null,
-    status: null,
-    bestScore: null,
-    totalScore: null,
+    id: "",
+    username: "",
+    status: "",
+    bestScore: "",
+    totalScore: "",
   });
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isShowPwd, setIsShowPwd] = useState(false);
-  const visitId = useParams();
-  const editable = localStorage.getItem("id") === visitId;
+  const visitIdStr = useParams();
+  console.log("visitIdStr");
+  console.log(visitIdStr);
+  const visitId = parseInt(visitIdStr["id"]);
+  console.log(visitId);
+  const editable = localStorage.getItem("id") === visitIdStr["id"];
+  console.log(localStorage.getItem("id"));
+  console.log(localStorage.getItem("token"));
+  console.log("local storage");
   // const [isShown, setIsSHown] = useState(false); //password shown or hidden
-  console.log("editable");
+  // console.log("editable");
   console.log(editable);
   // const currentUserId = localStorage.getItem("userId"); //save userId
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await api.get(`/users/${visitId}`);
+        const response = await api().get(`/users/${visitId}`);
         //for test reason
         // const response = {
         //   id: 1,
@@ -76,7 +82,6 @@ const Profile = () => {
         const userProfile1 = new User(response.data);
         // const userProfile1 = new User(response);
         setUserProfile(userProfile1);
-        console.log(userProfile);
       } catch (error) {
         alert(
           `Something went wrong during get user profile: \n${handleError(
@@ -86,36 +91,47 @@ const Profile = () => {
       }
     };
     fetchProfile();
-  }, [userProfile, visitId]);
+  }, [
+    isEditing,
+    userProfile.bestScore,
+    userProfile.totalScore,
+    userProfile.id,
+    userProfile.status,
+    userProfile.username,
+  ]);
+  // }, []);
 
   const handleUpdateProfile = async () => {
     console.log("handle update");
-    const newUsername = username || userProfile.username;
-    const newPassword = password || null; // if didn't update password, the password is still null
+    const newUsername = username || "";
+    const newPassword = password || ""; // if didn't update password
 
     console.log(newUsername);
     console.log(newPassword);
     const requestBody = JSON.stringify({
+      id: visitId,
       username: newUsername,
-      birthday: newPassword,
+      password: newPassword,
     });
+    console.log(requestBody);
     try {
-      await api.put(`/users/${visitId}`, requestBody);
+      // console.log(visitId);
+      await api().put(`/users/${visitId}`, requestBody);
     } catch (error) {
       alert(
         `Something went wrong during updating profile: \n${handleError(error)}`
       );
     }
-    history.push(`/users/${visitId}`);
+    history.push(`/profile/${visitId}`);
     setIsEditing(false);
     setUsername("");
-    setPassword(null);
+    setPassword("");
   };
 
   const handleEdit = () => {
     setIsEditing(true);
     setUsername("");
-    setPassword(null);
+    setPassword("");
   };
 
   const ShowAndHidePassword = () => {
@@ -138,6 +154,9 @@ const Profile = () => {
         />
       </div>
     );
+  };
+  const goToFriends = () => {
+    history.push(`/friends`);
   };
 
   const guestProfile = () => {
@@ -164,16 +183,31 @@ const Profile = () => {
             {"Total Score:" + userProfile.totalScore}
           </label>
           <div className="profile button-container">
-            <img className="profile img_cat_left" src={cat_left} alt=""/>
-            <img className="profile img_cat_right" src={cat_left} alt=""/>
+            <img className="profile img_cat_left" src={cat_left} />
+
+            <Button
+              onClick={() => goToFriends()}
+              className="profile button_style1"
+            >
+              Back
+            </Button>
+            <img className="profile img_cat_right" src={cat_left} />
           </div>
-          <img className="profile img_cat_middle" src={cat_left} alt="cat 1"/>
-          <img className="profile img_cat_middle1" src={cat_left} alt="cat 2" />
-          {/* <img
-            className="profile img_cat_middle"
-            src={cat_gif}
-            alt="cat image"
-          /> */}
+          {/* <div className="profile button-container">
+            <img className="profile img_cat_left" src={cat_left} alt="" />
+            <img className="profile img_cat_right" src={cat_left} alt="" />
+
+            <img
+              className="profile img_cat_middle"
+              src={cat_left}
+              alt="cat 1"
+            />
+            <img
+              className="profile img_cat_middle1"
+              src={cat_left}
+              alt="cat 2"
+            />
+          </div> */}
         </div>
       </div>
     );
@@ -204,21 +238,32 @@ const Profile = () => {
           <label className="profile label">
             {"Total Score:" + userProfile.totalScore}
           </label>
-          {/* <img className="profile img_cat_left" src={cat_left} />
-          <img className="profile img_cat_right" src={cat_left} />
-          <Button
-            onClick={() => handleEdit()}
-            className="profile button_style1"
-          >
-            Edit
-          </Button> */}
           <div className="profile button-container">
-            <img className="profile img_cat_left" src={cat_left} alt=""/>
-            <Button style={{"width":"80%","left": "20px", "top": "-10px","background-color": "#FFFFFF", "border": "2px solid #000000"}}>
+            <img className="profile img_cat_left" src={cat_left} />
+
+            <Button
+              onClick={() => handleEdit()}
+              className="profile button_style1"
+            >
+              Edit
+            </Button>
+            <img className="profile img_cat_right" src={cat_left} />
+          </div>
+          {/* <div className="profile button-container">
+            <img className="profile img_cat_left" src={cat_left} alt="" />
+            <Button
+              style={{
+                width: "80%",
+                left: "20px",
+                top: "-10px",
+                "background-color": "#FFFFFF",
+                border: "2px solid #000000",
+              }}
+            >
               EDIT
             </Button>
-            <img className="profile img_cat_right" src={cat_left} alt=""/>
-          </div>
+            <img className="profile img_cat_right" src={cat_left} alt="" />
+          </div> */}
         </div>
       </div>
     );
@@ -241,17 +286,22 @@ const Profile = () => {
           />
           {ShowAndHidePassword()}
 
-          <button
-            // disabled={!username || !password}
-            width="100%"
-            onClick={() => handleUpdateProfile()}
-            className="profile button_style1"
-          >
-            Update
-          </button>
+          {/* <button */}
+          <div className="profile button-container">
+            <img className="profile img_cat_left" src={cat_left} alt="" />
+            <div>
+              <Button
+                // disabled={!username || !password}
+                onClick={() => handleUpdateProfile()}
+                className="profile button_style1"
+              >
+                Update
+                {/* </button> */}
+              </Button>
+            </div>
 
-          <img className="profile img_cat_left" src={cat_left} alt=""/>
-          <img className="profile img_cat_right" src={cat_left} alt=""/>
+            <img className="profile img_cat_right" src={cat_left} alt="" />
+          </div>
         </div>
       </div>
     );
@@ -259,16 +309,19 @@ const Profile = () => {
 
   return (
     <BaseContainer>
-      <Header/>
-      <div className = "lobby pic" style={{"opacity":"20%", "left":"1000px", "top":"280px"}}>
-        <img src={cats} alt=""/>
+      <Header />
+      <div
+        className="lobby pic"
+        style={{ opacity: "20%", left: "1000px", top: "280px" }}
+      >
+        <img src={cats} alt="" />
       </div>
       {!userProfile ? (
         <Spinner />
       ) : (
         <div>
-          {/* <div>{editable ? Profile() : guestProfile()}</div> */}
-          <div>{editable ? guestProfile() : Profile()}</div>
+          <div>{editable ? Profile() : guestProfile()}</div>
+          {/* <div>{editable ? guestProfile() : Profile()}</div> */}
         </div>
       )}
     </BaseContainer>

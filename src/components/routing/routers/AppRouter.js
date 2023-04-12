@@ -4,11 +4,12 @@ import GameRouter from "components/routing/routers/GameRouter";
 import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import { RegisterGuard } from "components/routing/routeProtectors/RegisterGuard";
 import Login from "components/views/Login";
-//import {ProfileGuard} from "components/routing/routeProtectors/ProfileGuard";
+import { ProfileGuard } from "components/routing/routeProtectors/ProfileGuard";
 import Register from "components/views/Register";
-import Lobby from "components/views/Lobby"
-import Rules from "components/views/Rules"
-import Profile from "components/views/Profile"
+import Lobby from "components/views/Lobby";
+import Rules from "components/views/Rules";
+import Profile from "components/views/Profile";
+import WaitingArea from "components/views/WaitingArea";
 //import { Profiler } from "react/cjs/react.production.min";
 
 /**
@@ -36,20 +37,24 @@ const AppRouter = () => {
         </Route>
         <Route exact path="/register">
           <RegisterGuard>
-            <Register/>
+            <Register />
           </RegisterGuard>
         </Route>
+        <Route path={`/wait/:gameId`}>
+          <WaitingArea />
+        </Route>
         <Route exact path="/lobby">
-            <Lobby/>
+        <GameGuard>
+          <Lobby />
+          </GameGuard>
         </Route>
         <Route exact path="/rules">
-            <Rules/>
+          <Rules />
         </Route>
-        <Route exact path="/profile">
-          {/* <ProfileGuard>
-            <Profile/>
-          </ProfileGuard> */}
-          <Profile/>
+        <Route exact path="/profile/:id">
+          <ProfileGuard>
+            <Profile />
+          </ProfileGuard>
         </Route>
         <Route exact path="/">
           <Redirect to="/game" />

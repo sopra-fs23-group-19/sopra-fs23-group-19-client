@@ -7,8 +7,9 @@ class User {
     this.id = null;
     this.username = null;
     this.status = null;
+    this.creationDate = null;
     this.bestScore = null;
-    this.totalScore =  null;
+    this.totalScore = null;
     Object.assign(this, data);
   }
 }

@@ -55,6 +55,8 @@ const DrawingBoard = () => {
         const canvas = document.querySelector('#board');
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
   
 

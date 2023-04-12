@@ -50,7 +50,6 @@ const Header = (props) => {
     }
   };
   const logout = async () => {
-    //localStorage.removeItem('token');
     var aValue = localStorage.getItem("id");
     try {
       await api().post(`/users/logout/${aValue}`);

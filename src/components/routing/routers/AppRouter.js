@@ -9,7 +9,7 @@ import Register from "components/views/Register";
 import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
-import WaitingArea from "components/views/WaitingArea";
+import WaitingView from "components/views/WaitingView";
 //import { Profiler } from "react/cjs/react.production.min";
 
 /**
@@ -41,7 +41,7 @@ const AppRouter = () => {
           </RegisterGuard>
         </Route>
         <Route path={`/wait/:gameId`}>
-          <WaitingArea />
+          <WaitingView />
         </Route>
         <Route exact path="/lobby">
           <Lobby />
@@ -55,7 +55,7 @@ const AppRouter = () => {
           </ProfileGuard>
         </Route>
         <Route exact path="/">
-          <Redirect to="/game" />
+          <Redirect to="/lobby" />
         </Route>
       </Switch>
     </BrowserRouter>

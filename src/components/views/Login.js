@@ -50,6 +50,9 @@ const Login = (props) => {
       // Store the token into the local storage.
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.id);
+      console.log(localStorage.getItem("id"));
+      console.log(localStorage.getItem("token"));
+      console.log("localStorage.getItem(token)");
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/lobby`);
     } catch (error) {

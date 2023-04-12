@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleError } from "helpers/api";
-import "styles/views/WaitingArea.scss";
+import "styles/views/WaitingView.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import cats from "styles/images/cats2.png";
@@ -21,7 +21,7 @@ const Player = ({ user }) => (
 Player.propTypes = {
   user: PropTypes.object,
 };
-const WaitingArea = () => {
+const WaitingView = () => {
   const { roomId } = useParams();
   //   const [playerIds, setPlayerIds] = useState([]); //player id and player username needed
   //   const [playerNames, setPlayerNames] = useState(null); //player id and player username needed
@@ -199,4 +199,4 @@ const WaitingArea = () => {
   );
 };
 
-export default WaitingArea;
+export default WaitingView;

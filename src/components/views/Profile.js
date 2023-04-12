@@ -127,6 +127,11 @@ const Profile = () => {
     setUsername("");
     setPassword("");
   };
+  const cancelEdit = () => {
+    setIsEditing(false);
+    setUsername("");
+    setPassword("");
+  };
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -296,6 +301,14 @@ const Profile = () => {
                 className="profile button_style1"
               >
                 Update
+                {/* </button> */}
+              </Button>
+              <Button
+                // disabled={!username || !password}
+                onClick={() => cancelEdit()}
+                className="profile button_style1"
+              >
+                Back
                 {/* </button> */}
               </Button>
             </div>

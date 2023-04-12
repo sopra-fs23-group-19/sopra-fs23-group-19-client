@@ -6,7 +6,7 @@ import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import cats from "styles/images/cats1.png";
-
+import LoginModel from "models/LoginModel";
 /*
 It is possible to add multiple components inside a single file,
 however be sure not to clutter your files with an endless amount!
@@ -61,15 +61,16 @@ const Register = (props) => {
     try {
       // const requestBody = JSON.stringify({ username, password }); //edit by runze
       //login with username and password
+      console.log(credentials);
       const response = await api().post("/users/login", credentials);
       // Get the returned user and update a new object.
-      // const user = new User(response.data);
+      const user = new LoginModel(response.data);
 
       // Store the token into the local storage.
-      console.log(response.data.token);
+      console.log(user.token);
       console.log("response.data.token");
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("id", response.data.id);
+      localStorage.setItem("token", user.token);
+      localStorage.setItem("id", user.id);
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }

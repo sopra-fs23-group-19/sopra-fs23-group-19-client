@@ -7,7 +7,7 @@ import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import cats from "styles/images/cats1.png";
-
+import LoginModel from "models/LoginModel";
 /*
 It is possible to add multiple components inside a single file,
 however be sure not to clutter your files with an endless amount!
@@ -42,17 +42,18 @@ const Login = (props) => {
   const doLogin = async () => {
     try {
       const requestBody = JSON.stringify({ username, password });
+      console.log(requestBody);
       // const response = await api.post('/users', requestBody);
       const response = await api().post("/users/login", requestBody);
       // Get the returned user and update a new object.
-      // const user = new User(response.data);
+      const user = new LoginModel(response.data);
 
       // Store the token into the local storage.
-      localStorage.setItem("token", response.data.token);
-      console.log(response.data.token);
-      console.log("response.data.token");
-      localStorage.setItem("id", response.data.id);
+      localStorage.setItem("token", user.token);
 
+      localStorage.setItem("id", user.id);
+      console.log(localStorage.getItem("token"));
+      console.log("response.data.token");
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/lobby`);
     } catch (error) {

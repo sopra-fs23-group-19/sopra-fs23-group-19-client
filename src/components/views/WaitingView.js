@@ -22,7 +22,8 @@ Player.propTypes = {
   user: PropTypes.object,
 };
 const WaitingView = () => {
-  const { roomId } = useParams();
+  // const { roomId } = useParams();
+    const roomId = useParams().gameId;
   //   const [playerIds, setPlayerIds] = useState([]); //player id and player username needed
   //   const [playerNames, setPlayerNames] = useState(null); //player id and player username needed
   const [playerCount, setPlayerCount] = useState(0); //current number of players

@@ -10,6 +10,7 @@ import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
 import WaitingView from "components/views/WaitingView";
+import GameCreationView from "components/views/GameCreationView";
 //import { Profiler } from "react/cjs/react.production.min";
 
 /**
@@ -44,8 +45,8 @@ const AppRouter = () => {
           <WaitingView />
         </Route>
         <Route exact path="/lobby">
-        <GameGuard>
-          <Lobby />
+          <GameGuard>
+            <Lobby />
           </GameGuard>
         </Route>
         <Route exact path="/rules">
@@ -58,6 +59,9 @@ const AppRouter = () => {
         </Route>
         <Route exact path="/">
           <Redirect to="/lobby" />
+        </Route>
+        <Route exact path="/gameCreation">
+          <GameCreationView />
         </Route>
       </Switch>
     </BrowserRouter>

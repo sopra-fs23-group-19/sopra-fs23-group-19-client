@@ -11,13 +11,18 @@ const DrawingBoard = () => {
     let lineColor = "#000000";
     let lineWidth = 5;
 
-    window.onload=function(){
-        let canvas = document.querySelector('#board');
-        let ctx = canvas.getContext('2d');
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-    
+    // window.onload=function(){
+    //     let canvas = document.querySelector('#board');
+    //     let ctx = canvas.getContext('2d');
+    //     ctx.fillStyle = "#ffffff";
+    //     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // }
+    useEffect(() => {
+        let ignore = false;
+        
+        if (!ignore)  clear();
+        return () => { ignore = true; }
+    },[]);
     
     function onDraw(canvasObject, point, previousPoint) {
         drawLine(previousPoint, point, canvasObject, lineColor, lineWidth)
@@ -217,4 +222,3 @@ const DrawingBoard = () => {
    * Don't forget to export your component!
    */
   export default DrawingBoard;
-  

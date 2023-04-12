@@ -12,15 +12,6 @@ import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import { useState } from "react";
 
-const Rooms = ({ room }) => (
-  <div className="lobby container">
-    <div className="lobby id">{room.id}</div>
-    <div className="lobby name">{room.name}</div>
-    <div className="lobby players">id: {room.players}</div>
-    <Button>Join</Button>
-  </div>
-);
-
 Room.propTypes = {
   room: PropTypes.object,
 };
@@ -28,6 +19,17 @@ Room.propTypes = {
 const Lobby = () => {
   const history = useHistory();
   const [rooms, setRooms] = useState(null);
+  const goToDrawing = async () => {
+    history.push("/drawingStage");
+  }
+  const Rooms = ({ room }) => (
+    <div className="lobby container">
+      <div className="lobby id">{room.id}</div>
+      <div className="lobby name">{room.name}</div>
+      <div className="lobby players">id: {room.players}</div>
+      <Button onClick={() => goToDrawing()}>JOIN</Button>
+    </div>
+  );
   // const [rooms, setRooms] = useState({
   //   id: 2,
   //   name: "second room",
@@ -113,6 +115,7 @@ const Lobby = () => {
             <div className="lobby content">long room</div>
             <div className="lobby content">3/4</div>
             <Button
+              onClick={() => goToDrawing()}
               style={{
                 "margin-right": "30px",
                 "background-color": "#FFFFFF",

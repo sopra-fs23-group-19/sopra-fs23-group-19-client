@@ -72,9 +72,6 @@ const Login = (props) => {
   const doTest = async () => {
     history.push("/lobby");
   };
-  const goToTimer = async () => {
-    history.push("/timer");
-  }
 
   return (
     <BaseContainer>
@@ -103,7 +100,6 @@ const Login = (props) => {
               Login
             </Button>
             <Button onClick={() => doTest()}>Test</Button>
-            <Button onClick={() => goToTimer()}>timer</Button>
           </div>
           <div className="login button-container">
             <div style={{ "margin-right": "40px" }}>

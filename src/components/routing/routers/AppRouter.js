@@ -10,7 +10,9 @@ import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
 import WaitingArea from "components/views/WaitingArea";
-import GamePage from "components/views/GamePage";
+import DrawingStage from "components/views/DrawingStage";
+import GuessingStage from "components/views/GuessingStage";
+import Ranking from "components/views/Ranking";
 
 /**
  * Main router of your application.
@@ -54,8 +56,14 @@ const AppRouter = () => {
             <Profile />
           </ProfileGuard>
         </Route>
-        <Route exact path="/timer">
-            <GamePage />
+        <Route exact path="/drawingStage">
+            <DrawingStage />
+        </Route>
+        <Route exact path="/guessingStage">
+            <GuessingStage />
+        </Route>
+        <Route exact path="/ranking">
+            <Ranking />
         </Route>
         <Route exact path="/">
           <Redirect to="/game" />

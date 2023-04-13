@@ -1,0 +1,274 @@
+@import "styles/theme";
+
+.GameCreationView {
+  &.container {
+    // margin-top: 2em;
+    margin-top: 1em;
+    min-height: 40px;
+    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
+    @include center;
+    flex-direction: column;
+    top: 200px;
+    left: 350px;
+    width: 1000px;
+    position: absolute;
+  }
+  &.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 30em;
+    height: 30em;
+    font-size: 16px;
+    font-weight: 300;
+    padding-left: 37px;
+    padding-right: 37px;
+    border-radius: 0.75em;
+    background-color: #b59978;
+    box-shadow: $dropShadow;
+  }
+  &.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  &.input {
+    height: 45px;
+    padding-left: 15px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 0.75em;
+    margin-bottom: 20px;
+    // background: transparentize(white, 0.85);
+    background: #d9d9d9;
+    color: #000000;
+    font-size: 20px;
+  }
+
+  &.label {
+    color: $textColor;
+    margin-bottom: 10px;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 16px;
+  }
+  &.button-container {
+    justify-content: center;
+    // position: absolute;
+    // left: 350px;
+    // top: 350px;
+    // width: 20em;
+    display: flex;
+    margin-top: 20px;
+  }
+  &.img_cat_left {
+    // position: absolute;
+    width: 56px;
+    height: 56px;
+    left: 435px;
+    // top: 460px;
+    top: 475px;
+    // position: relative;
+    // width: 10%;
+    // height: 40px;
+    // left: 0px;
+    // top: 15px;
+    // position: absolute;
+    // width: 56px;
+    // height: 56px;
+    // left: 477px;
+    // top: 749px;
+  }
+  &.img_cat_right {
+    // position: absolute;
+    // width: 56px;
+    // height: 56px;
+    // left: 760px;
+    // top: 400px;
+    // position: relative;
+    // width: 10%;
+    // height: 40px;
+    // left: 0px;
+    // top: 15px;
+    // position: absolute;
+    width: 56px;
+    height: 56px;
+    left: 760px;
+    // top: 460px;
+    top: 475px;
+  }
+
+  &.title {
+    position: absolute;
+    width: 555px;
+    height: 171px;
+    left: 250px;
+    top: 600px;
+    font-family: "Irish Grover";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 55px;
+    line-height: 66px;
+    text-align: center;
+
+    color: #000000;
+  }
+  &.pic {
+    position: absolute;
+    width: 580px;
+    height: 430px;
+    left: 240px;
+    top: 160px;
+  }
+  &.fontWhite {
+    width: 222px;
+    height: 73px;
+    left: 408px;
+    top: 585px;
+
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 16px;
+    /* or 44% */
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #ffffff;
+  }
+
+  /* Auto layout */
+  &.button_style1 {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 8px;
+    // position: absolute;
+    width: 250px;
+    height: 50px;
+    left: 500px;
+    // top: 460px;
+    top: 475px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 999px;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    color: #000000;
+  }
+  &.button_style2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 8px;
+    width: 250px;
+    height: 100px;
+    left: 527px;
+    top: 475px;
+    margin-left: 1em;
+    background: #d9d9d9;
+    border: 1px solid #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.icon {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  left: 760px;
+  // top: 460px;
+
+  padding: 0px;
+  position: absolute;
+  box-sizing: border-box;
+  top: 50%;
+  left: -30px;
+  transform: translateY(20%);
+}
+.iconTop {
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  left: 760px;
+  // top: 460px;
+
+  padding: 0px;
+  position: absolute;
+  box-sizing: border-box;
+  top: 50%;
+  left: 180px;
+  transform: translateY(30%);
+}
+
+.input {
+  // height: 50px;
+  // box-sizing: border-box;
+  // padding-left: 1.5rem;
+  height: 45px;
+  padding-left: 40px; //position cursor in input field after icon
+  margin-left: -4px;
+  border: none;
+  border-radius: 0.75em;
+  margin-bottom: 30px;
+  // background: transparentize(white, 0.85);
+  background: #d9d9d9;
+  color: #000000;
+  font-size: 20px;
+}
+.selected {
+  // background-color: #00867d;
+  background-color: #8c9399;
+  // border: 1px solid #00867d;
+  border: 1px solid #000000;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 8px;
+  width: 250px;
+  height: 100px;
+  left: 527px;
+  top: 475px;
+  margin-left: 1em;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.notSelected {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 8px;
+  width: 250px;
+  height: 100px;
+  left: 527px;
+  top: 475px;
+  margin-left: 1em;
+  background: #d9d9d9;
+  border: 1px solid #000000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}

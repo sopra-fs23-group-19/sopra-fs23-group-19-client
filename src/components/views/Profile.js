@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Button } from "components/ui/Button";
-import { useInterval } from "helpers/hooks";
+// import { useInterval } from "helpers/hooks";
 
 const FormField = (props) => {
   return (
@@ -50,7 +50,7 @@ const Profile = () => {
     bestScore: "",
     totalScore: "",
   });
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -89,45 +89,45 @@ const Profile = () => {
       }
     };
     fetchProfile1();
-    // }, [userProfile, visitId]);
-  }, []);
+  }, [userProfile, visitId]);
+  // }, []);
 
-  useEffect(() => {
-    return () => {
-      // componentwillunmount in functional component.
-      // Anything in here is fired on component unmount.
-      setCount = 20;
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     // componentwillunmount in functional component.
+  //     // Anything in here is fired on component unmount.
+  //     setCount = 20;
+  //   };
+  // }, []);
 
-  const fetchProfile = async () => {
-    try {
-      const response = await api().get(`/users/${visitId}`);
-      //for test reason
-      // const response = {
-      //   id: 1,
-      //   username: "r1",
-      //   status: "online",
-      //   bestScore: 10,
-      //   totalScore: 10,
-      // };
-      const userProfile1 = new User(response.data);
-      // const userProfile1 = new User(response);
-      setUserProfile(userProfile1);
-      setCount(count + 1);
-    } catch (error) {
-      alert(
-        `Something went wrong during get user profile: \n${handleError(error)}`
-      );
-    }
-  };
+  // const fetchProfile = async () => {
+  //   try {
+  //     const response = await api().get(`/users/${visitId}`);
+  //     //for test reason
+  //     // const response = {
+  //     //   id: 1,
+  //     //   username: "r1",
+  //     //   status: "online",
+  //     //   bestScore: 10,
+  //     //   totalScore: 10,
+  //     // };
+  //     const userProfile1 = new User(response.data);
+  //     // const userProfile1 = new User(response);
+  //     setUserProfile(userProfile1);
+  //     setCount(count + 1);
+  //   } catch (error) {
+  //     alert(
+  //       `Something went wrong during get user profile: \n${handleError(error)}`
+  //     );
+  //   }
+  // };
 
-  useInterval(
-    async () => {
-      fetchProfile();
-    },
-    count > 10 ? null : 1000
-  );
+  // useInterval(
+  //   async () => {
+  //     fetchProfile();
+  //   },
+  //   count > 10 ? null : 1000
+  // );
 
   const handleUpdateProfile = async () => {
     console.log("handle update");
@@ -351,7 +351,7 @@ const Profile = () => {
   return (
     <BaseContainer>
       <Header />
-      <h1>{count}</h1>
+      {/* <h1>{count}</h1> */}
       <div
         className="lobby pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}

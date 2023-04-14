@@ -28,6 +28,21 @@ Rooms.propTypes = {
 const Lobby = () => {
   const history = useHistory();
   const [rooms, setRooms] = useState(null);
+  // const goToDrawing = async () => {
+  //   history.push("/drawingStage");
+  // }
+  const goToWaiting = async (id) => {
+    history.push(`/wait/${id}`);
+  };
+  const Rooms = ({ room }) => (
+    <div className="lobby container">
+      <div className="lobby id">{room.id}</div>
+      <div className="lobby name">{room.name}</div>
+      <div className="lobby players">id: {room.players}</div>
+      {/* <Button onClick={() => goToDrawing()}>JOIN</Button> */}
+      <Button onClick={() => goToWaiting(room.id)}>JOIN</Button>
+    </div>
+  );
   // const [rooms, setRooms] = useState({
   //   id: 2,
   //   name: "second room",
@@ -113,6 +128,7 @@ const Lobby = () => {
             <div className="lobby content">long room</div>
             <div className="lobby content">3/4</div>
             <Button
+              onClick={() => goToWaiting(1)}
               style={{
                 "margin-right": "30px",
                 "background-color": "#FFFFFF",
@@ -154,29 +170,32 @@ const Lobby = () => {
       </div>
     );
   }
-  const createGame = async () => {
-    try {
-      const roomName0 = "test" + localStorage.getItem("id");
-      const requestBody = JSON.stringify({
-        id: 1,
-        roomName: roomName0 + "1",
-        mode: "4",
-
-        palyers: localStorage.getItem("id"),
-        ownerId: localStorage.getItem("id"),
-      });
-      const response0 = await api().post(`/games`, requestBody);
-      const newRoom = new Room(response0.data);
-      console.log(newRoom);
-      const id0 = newRoom.id;
-      const pushTo = "/wait/" + id0.toString();
-   
-      history.push(pushTo);
-    } catch (error) {
-      alert(`Something went wrong during create game: \n${handleError(error)}`);
-      // history.push("/lobby"); // redirect back to lobby
-    }
+  const goTocreateGameView = () => {
+    history.push("/gameCreation");
   };
+  // const createGame = async () => {
+  //   try {
+  //     const roomName0 = "test" + localStorage.getItem("id");
+  //     const requestBody = JSON.stringify({
+  //       id: 1,
+  //       roomName: roomName0 + "1",
+  //       mode: "4",
+
+  //       palyers: localStorage.getItem("id"),
+  //       ownerId: localStorage.getItem("id"),
+  //     });
+  //     const response0 = await api().post(`/games`, requestBody);
+  //     const newRoom = new Room(response0.data);
+  //     console.log(newRoom);
+  //     const id0 = newRoom.id;
+  //     const pushTo = "/wait/" + id0.toString();
+
+  //     history.push(pushTo);
+  //   } catch (error) {
+  //     alert(`Something went wrong during create game: \n${handleError(error)}`);
+  //     // history.push("/lobby"); // redirect back to lobby
+  //   }
+  // };
   return (
     <BaseContainer>
       <Header />
@@ -204,7 +223,7 @@ const Lobby = () => {
           "background-color": "#FFFFFF",
           border: "2px solid #000000",
         }}
-        onClick={() => createGame()}
+        onClick={() => goTocreateGameView()}
       >
         Create a new room
       </Button>

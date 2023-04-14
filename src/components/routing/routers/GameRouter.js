@@ -17,6 +17,9 @@ const GameRouter = (props) => {
       <Route path={`${props.base}/wait/:gameId`}>
         <WaitingView />
       </Route>
+      <Route path={`${props.base}/game/:gameId`}>
+        <Game />
+      </Route>
     </div>
   );
 };

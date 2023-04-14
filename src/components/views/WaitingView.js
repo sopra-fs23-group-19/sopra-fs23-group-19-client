@@ -22,13 +22,17 @@ Player.propTypes = {
   user: PropTypes.object,
 };
 const WaitingView = () => {
-  const { roomId } = useParams();
+  // const { roomId } = useParams();
+  const roomId = useParams().gameId;
   //   const [playerIds, setPlayerIds] = useState([]); //player id and player username needed
   //   const [playerNames, setPlayerNames] = useState(null); //player id and player username needed
   const [playerCount, setPlayerCount] = useState(0); //current number of players
   const [roomSeats, setRoomSeats] = useState(2); //default 2 persons?
   const [ownerId, setOwnerId] = useState(null);
+  const [status, setStatus] = useState("");
   const history = useHistory();
+  // const curUserId = localStorage.getItem("id")
+  const curUserId = "1";
   const [playerNames, setPlayerNames] = useState([{ id: "", username: "" }]);
   const [roomName, setRoomName] = useState("");
   //   const [isPolling, setIsPolling] = useState(true); //NOTE - for pausing the polling
@@ -40,7 +44,7 @@ const WaitingView = () => {
       //   setPlayerCount(response.data.numOfPlayersJoined);
       //   setGameName(response.data.gameName);
       const response = {
-        // numOfPlayers: 2,
+        numOfPlayers: 2,
         roomName: "room1",
         listOfPlayerNames: [
           { id: 1, username: "Alabama" },
@@ -48,21 +52,23 @@ const WaitingView = () => {
         ],
         // listOfPlayerIds: [1, 2],
         ownerId: 1,
-        roomSeats: 4,
+        roomSeats: 2,
+        status: "wait",
       };
-      // setPlayerCount(response.numOfPlayers);
-      setPlayerCount(playerCount + 1);
+      setPlayerCount(response.numOfPlayers);
+      // setPlayerCount(playerCount + 1);
       setRoomName(response.roomName);
       const temp = response.listOfPlayerNames;
       setPlayerNames(temp);
       //   setPlayerIds(response.listOfPlayerIds);
       setOwnerId(response.ownerId);
       setRoomSeats(response.roomSeats);
+      setStatus(response.status);
 
-      //   if (playerCount === 4) {
-      //     // await new Promise((resolve) => setTimeout(resolve, 3000));
-      //     history.push(`/game/${gameId}`);
-      //   }
+      if (status != "wait") {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        goToGame();
+      }
     } catch (error) {
       alert(
         `Something went wrong during get user profile: \n${handleError(error)}`
@@ -85,7 +91,8 @@ const WaitingView = () => {
   const leaveRoom = async () => {
     try {
       const requestBody = JSON.stringify({
-        id: roomId,
+        roomId: roomId,
+        userId: localStorage.getItem("id"),
       });
       await api().put("/games/waitingArea", requestBody); //leave waiting area
       history.push("/lobby");
@@ -98,8 +105,8 @@ const WaitingView = () => {
   };
   const startGame = async () => {
     try {
-      //   await api().post(`/gameRounds/${roomId}`);
-      history.push("/lobby"); // should be changed later
+      await api().post(`/gameRounds/${roomId}`);
+      history.push(`/game/${roomId}`); // should be changed later
     } catch (error) {
       alert(
         `Something went wrong during get user profile: \n${handleError(error)}`
@@ -120,6 +127,10 @@ const WaitingView = () => {
   const bar_id = barStyles[str_percent];
   const barStyle = "waitingArea bar b" + bar_id;
 
+  const goToGame = () => {
+    history.push(`/game/${roomId}`);
+  };
+
   let content = <SpinnerBouncing />;
   let userChoiceArea = <SpinnerBouncing />;
   //   const playerInfoBoard = <SpinnerBouncing />;
@@ -137,6 +148,7 @@ const WaitingView = () => {
     userChoiceArea =
       playerCount === roomSeats ? (
         parseInt(localStorage.getItem("id")) === parseInt(ownerId) ? (
+          // parseInt(curUserId) === parseInt(ownerId) ? (
           <div className="waitingArea button-container">
             <Button
               width="100%"
@@ -184,10 +196,10 @@ const WaitingView = () => {
       </div>
     );
   }
-
+  //game page: user cannot leave game/log out, unless explicitly click a leave game button.
   return (
     <BaseContainer>
-      <Header />
+      {/* <Header /> */}
       <div
         className="lobby pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}

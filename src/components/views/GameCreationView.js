@@ -136,7 +136,7 @@ const GameCreationView = () => {
     <BaseContainer>
       <Header />
       <div
-        className="createGameView pic"
+        className="GameCreationView pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}
       >
         <img src={cats} alt="" />

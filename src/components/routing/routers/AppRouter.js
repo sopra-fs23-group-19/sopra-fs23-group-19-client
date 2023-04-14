@@ -17,7 +17,6 @@ import DrawingStage from "components/views/DrawingStage";
 import GuessingStage from "components/views/GuessingStage";
 import Ranking from "components/views/Ranking";
 
-
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -50,9 +49,9 @@ const AppRouter = () => {
           <WaitingView />
         </Route>
         <Route exact path="/lobby">
-          <GameGuard>
-            <Lobby />
-          </GameGuard>
+          {/* <GameGuard> */}
+          <Lobby />
+          {/* </GameGuard> */}
         </Route>
         <Route exact path="/rules">
           <Rules />
@@ -63,13 +62,13 @@ const AppRouter = () => {
           </ProfileGuard>
         </Route>
         <Route exact path="/drawingStage">
-            <DrawingStage />
+          <DrawingStage />
         </Route>
         <Route exact path="/guessingStage">
-            <GuessingStage />
+          <GuessingStage />
         </Route>
         <Route exact path="/ranking">
-            <Ranking />
+          <Ranking />
         </Route>
         <Route exact path="/">
           <Redirect to="/lobby" />

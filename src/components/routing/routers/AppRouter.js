@@ -9,8 +9,13 @@ import Register from "components/views/Register";
 import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
-import WaitingArea from "components/views/WaitingArea";
+import WaitingView from "components/views/WaitingView";
+
+import GameCreationView from "components/views/GameCreationView";
 //import { Profiler } from "react/cjs/react.production.min";
+import DrawingStage from "components/views/DrawingStage";
+import GuessingStage from "components/views/GuessingStage";
+import Ranking from "components/views/Ranking";
 
 /**
  * Main router of your application.
@@ -41,12 +46,12 @@ const AppRouter = () => {
           </RegisterGuard>
         </Route>
         <Route path={`/wait/:gameId`}>
-          <WaitingArea />
+          <WaitingView />
         </Route>
         <Route exact path="/lobby">
-        <GameGuard>
+          {/* <GameGuard> */}
           <Lobby />
-          </GameGuard>
+          {/* </GameGuard> */}
         </Route>
         <Route exact path="/rules">
           <Rules />
@@ -56,8 +61,20 @@ const AppRouter = () => {
             <Profile />
           </ProfileGuard>
         </Route>
+        <Route exact path="/drawingStage">
+          <DrawingStage />
+        </Route>
+        <Route exact path="/guessingStage">
+          <GuessingStage />
+        </Route>
+        <Route exact path="/ranking">
+          <Ranking />
+        </Route>
         <Route exact path="/">
-          <Redirect to="/game" />
+          <Redirect to="/lobby" />
+        </Route>
+        <Route exact path="/gameCreation">
+          <GameCreationView />
         </Route>
       </Switch>
     </BrowserRouter>

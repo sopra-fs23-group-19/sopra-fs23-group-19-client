@@ -56,7 +56,6 @@ const Header = (props) => {
     history.push(`/profile/${curUserId}`);
   };
   const logout = async () => {
-    //localStorage.removeItem('token');
     var aValue = localStorage.getItem("id");
     try {
       await api().post(`/users/logout/${aValue}`);

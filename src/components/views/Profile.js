@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Button } from "components/ui/Button";
+// import { useInterval } from "helpers/hooks";
 
 const FormField = (props) => {
   return (
@@ -49,6 +50,8 @@ const Profile = () => {
     bestScore: "",
     totalScore: "",
   });
+  // const [count, setCount] = useState(0);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -62,23 +65,18 @@ const Profile = () => {
   console.log(localStorage.getItem("id"));
   console.log(localStorage.getItem("token"));
   console.log("local storage");
+  console.log(localStorage.getItem("token"));
+  console.log("local storage");
   // const [isShown, setIsSHown] = useState(false); //password shown or hidden
   // console.log("editable");
   console.log(editable);
   // const currentUserId = localStorage.getItem("userId"); //save userId
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfile1 = async () => {
       try {
         const response = await api().get(`/users/${visitId}`);
-        //for test reason
-        // const response = {
-        //   id: 1,
-        //   username: "r1",
-        //   status: "online",
-        //   bestScore: 10,
-        //   totalScore: 10,
-        // };
+
         const userProfile1 = new User(response.data);
         // const userProfile1 = new User(response);
         setUserProfile(userProfile1);
@@ -90,16 +88,46 @@ const Profile = () => {
         );
       }
     };
-    fetchProfile();
-  }, [
-    isEditing,
-    userProfile.bestScore,
-    userProfile.totalScore,
-    userProfile.id,
-    userProfile.status,
-    userProfile.username,
-  ]);
+    fetchProfile1();
+  }, [userProfile, visitId]);
   // }, []);
+
+  // useEffect(() => {
+  //   return () => {
+  //     // componentwillunmount in functional component.
+  //     // Anything in here is fired on component unmount.
+  //     setCount = 20;
+  //   };
+  // }, []);
+
+  // const fetchProfile = async () => {
+  //   try {
+  //     const response = await api().get(`/users/${visitId}`);
+  //     //for test reason
+  //     // const response = {
+  //     //   id: 1,
+  //     //   username: "r1",
+  //     //   status: "online",
+  //     //   bestScore: 10,
+  //     //   totalScore: 10,
+  //     // };
+  //     const userProfile1 = new User(response.data);
+  //     // const userProfile1 = new User(response);
+  //     setUserProfile(userProfile1);
+  //     setCount(count + 1);
+  //   } catch (error) {
+  //     alert(
+  //       `Something went wrong during get user profile: \n${handleError(error)}`
+  //     );
+  //   }
+  // };
+
+  // useInterval(
+  //   async () => {
+  //     fetchProfile();
+  //   },
+  //   count > 10 ? null : 1000
+  // );
 
   const handleUpdateProfile = async () => {
     console.log("handle update");
@@ -123,6 +151,11 @@ const Profile = () => {
       );
     }
     history.push(`/profile/${visitId}`);
+    setIsEditing(false);
+    setUsername("");
+    setPassword("");
+  };
+  const cancelEdit = () => {
     setIsEditing(false);
     setUsername("");
     setPassword("");
@@ -298,6 +331,14 @@ const Profile = () => {
                 Update
                 {/* </button> */}
               </Button>
+              <Button
+                // disabled={!username || !password}
+                onClick={() => cancelEdit()}
+                className="profile button_style1"
+              >
+                Back
+                {/* </button> */}
+              </Button>
             </div>
 
             <img className="profile img_cat_right" src={cat_left} alt="" />
@@ -310,6 +351,7 @@ const Profile = () => {
   return (
     <BaseContainer>
       <Header />
+      {/* <h1>{count}</h1> */}
       <div
         className="lobby pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}

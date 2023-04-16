@@ -3,8 +3,8 @@
 .drawingBoard {
   &.board {
     margin-top: 0em;
-    left: 500px;
-    top: 200px;
+    left: 200px;
+    top: 330px;
     width: 500px;
     height: 600px;
     border-color: #000000;
@@ -15,7 +15,9 @@
   &.container {
     display: flex;
     justify-content: center;
-    margin-top: 7em;
+    left: 200px;
+    top: 250px;
+    position: absolute;
   }
   &.circle {
     width: 35px;

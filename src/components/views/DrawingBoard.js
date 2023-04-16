@@ -11,12 +11,6 @@ const DrawingBoard = () => {
     let lineColor = "#000000";
     let lineWidth = 5;
 
-    // window.onload=function(){
-    //     let canvas = document.querySelector('#board');
-    //     let ctx = canvas.getContext('2d');
-    //     ctx.fillStyle = "#ffffff";
-    //     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // }
     useEffect(() => {
         let ignore = false;
         
@@ -54,7 +48,7 @@ const DrawingBoard = () => {
         
         const event = new MouseEvent('click');
         img.dispatchEvent(event);
-      }
+    }
 
     function clear() {
         const canvas = document.querySelector('#board');
@@ -131,9 +125,9 @@ const DrawingBoard = () => {
         </div>
         </BaseContainer>
     );
-  };
+};
 
-  function useOnDraw(onDraw) {
+function useOnDraw(onDraw) {
     const canvasRef = useRef(null);
 
     const isDrawingRef = useRef(false);
@@ -212,13 +206,13 @@ const DrawingBoard = () => {
         
     }
     return setConvasRef;
-  }
-  
-  DrawingBoard.propTypes = {
+}
+
+DrawingBoard.propTypes = {
     height: PropTypes.string,
-  };
+};
   
   /**
    * Don't forget to export your component!
    */
-  export default DrawingBoard;
+export default DrawingBoard;

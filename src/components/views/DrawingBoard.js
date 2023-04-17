@@ -213,16 +213,6 @@ const DrawingBoard = (props) => {
             }
             
         </div>
-        {/* <div className="drawingBoard board" style={{"left": "600px", "top": "330px"}}>
-        <canvas
-                id="showingBoard"
-                width="500px"
-                height="600px"
-                style={{ "border": "2px solid #000000", "backgroundColor": "#FFFFFF" }}
-                // ref={setConvasRef}
-            >
-        </canvas>
-        </div> */}
         <div className="drawingBoard container">
             <div className="drawingBoard circle" style={{"backgroundColor": "#FF0000" }}
             onClick={()=> redPen()}>
@@ -247,24 +237,29 @@ const DrawingBoard = (props) => {
             </div>
         </div>
         <div className="drawingBoard container" style={{"margin-top":"40px"}}>
-            <Button onClick={()=> download('#board')} style={{ "border": "2px solid #000000"}}>
-                download
-            </Button>
-            <Button onClick={()=> clear()} style={{ "border": "2px solid #000000", "margin-left":"15px"}}>
-                clear
-            </Button>
-            <Button onClick={()=> eraser()} style={{ "border": "2px solid #000000", "margin-left":"15px"}}>
-                eraser
-            </Button>
-            <Button onClick={()=> doSubmit()} style={{ "border": "2px solid #000000","margin-left":"15px"}}>
-                submit
-            </Button>
-            <Button onClick={()=> lineBold()} style={{ "border": "2px solid #000000","margin-left":"15px", "width":"40px"}}>
-                 + 
-            </Button>
-            <Button onClick={()=> lineThinner()} style={{ "border": "2px solid #000000","margin-left":"15px", "width":"40px"}}>
-                 -  
-            </Button>
+            {(role==="drawingPlayer") ? (
+            <>
+                    <Button onClick={() => download('#board')} style={{ "border": "2px solid #000000" }}>
+                            download
+                    </Button>
+                    <Button onClick={() => clear()} style={{ "border": "2px solid #000000", "margin-left": "15px" }}>
+                            clear
+                    </Button>
+                    <Button onClick={() => eraser()} style={{ "border": "2px solid #000000", "margin-left": "15px" }}>
+                            eraser
+                    </Button>
+                    <Button onClick={() => doSubmit()} style={{ "border": "2px solid #000000", "margin-left": "15px" }}>
+                            submit
+                    </Button>
+                    <Button onClick={() => lineBold()} style={{ "border": "2px solid #000000", "margin-left": "15px", "width": "40px" }}>
+                            +
+                    </Button>
+                    <Button onClick={() => lineThinner()} style={{ "border": "2px solid #000000", "margin-left": "15px", "width": "40px" }}>
+                            -
+                    </Button></>
+            )
+            :(<></>)
+        }
         </div>
         </BaseContainer>
     );

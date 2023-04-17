@@ -220,6 +220,7 @@ const GuessingStage = () => {
                 </div>
             ):(<></>)}
             {/* <DrawingBoard /> */}
+            <div style={{"left": "200px", "top": "330px", "position": "absolute"}}>
             <canvas
                 id="showingBoard"
                 width="500px"
@@ -227,6 +228,7 @@ const GuessingStage = () => {
                 style={{ "border": "2px solid #000000", "backgroundColor": "#FFFFFF" }}
             >
             </canvas>
+            </div>
         </BaseContainer>
     );
 }

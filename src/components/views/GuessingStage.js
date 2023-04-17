@@ -5,7 +5,7 @@ import Header from "components/views/Header";
 import BaseContainer from 'components/ui/BaseContainer';
 import "styles/views/Guessing.scss";
 import DrawingBoard from './DrawingBoard';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import PropTypes from "prop-types";
@@ -47,6 +47,8 @@ FormField.propTypes = {
 const GuessingStage = () => {
     const [startGuessing, setStartGuessing]=useState(1); //to test the timer, set to 1
     const history = useHistory();
+    const location = useLocation();
+    const url = location.state.url;
     //get the room and user information
     const role = "guessingPlayer";
     const [answer, setAnswer]=useState(null); //the answer player guesses
@@ -54,6 +56,20 @@ const GuessingStage = () => {
     const [username2, setUsername2]=useState("user2");
     const [username3, setUsername3]=useState("user3");
     const [username4, setUsername4]=useState("user4");
+
+    function getImage(){
+        const myCanvas = document.getElementById('showingBoard'); 
+        const myContext = myCanvas.getContext('2d');
+        const img = new Image(); 
+        img.src = url;
+        img.onload = () => {myContext.drawImage(img, 0, 0);};
+    }
+
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {getImage();}
+        return () => { ignore = true; }
+        },[]);
 
     const answerBox = (
         <div>
@@ -202,7 +218,15 @@ const GuessingStage = () => {
                     </div>
                 </div>
             ):(<></>)}
-            <DrawingBoard />
+            {/* <DrawingBoard /> */}
+            <canvas
+                id="showingBoard"
+                width="500px"
+                height="600px"
+                style={{ "border": "2px solid #000000", "backgroundColor": "#FFFFFF" }}
+                // ref={setConvasRef}
+            >
+            </canvas>
         </BaseContainer>
     );
 }

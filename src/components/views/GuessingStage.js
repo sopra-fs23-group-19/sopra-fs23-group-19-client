@@ -6,6 +6,7 @@ import BaseContainer from 'components/ui/BaseContainer';
 import "styles/views/Guessing.scss";
 import DrawingBoard from './DrawingBoard';
 import {useHistory, useLocation} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import PropTypes from "prop-types";
@@ -45,7 +46,7 @@ FormField.propTypes = {
 };
 
 const GuessingStage = () => {
-    const [startGuessing, setStartGuessing]=useState(1); //to test the timer, set to 1
+    //const [startGuessing, setStartGuessing]=useState(1); //to test the timer, set to 1
     const history = useHistory();
     const location = useLocation();
     const url = location.state.url;

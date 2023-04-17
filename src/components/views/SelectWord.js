@@ -9,22 +9,62 @@ import Header from "components/views/Header";
 import BaseContainer from 'components/ui/BaseContainer';
 import "styles/views/Guessing.scss";
 import DrawingBoard from './DrawingBoard';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import { Button } from "components/ui/Button";
 import { Spinner } from 'components/ui/Spinner';
 
-const DrawingStage = (props) => {
-    const location = useLocation();
-    const startDrawing = location.state.startDrawing;
-    const word = location.state.word;
+const SelectWord = () => {
+    //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
+    let startDrawing;
     const history = useHistory();
     //get the room and user information
     const role = "drawingPlayer";
-    //const [word, setWord]=useState('apple'); //the chosen word
+    const [word, setWord]=useState("apple"); //the chosen word
     const [username1, setUsername1]=useState("user1");
     const [username2, setUsername2]=useState("user2");
     const [username3, setUsername3]=useState("user3");
     const [username4, setUsername4]=useState("user4");
+
+    const displayWords = (
+        <div>
+            <div>
+                <Button
+                    // need to connect to backend later
+                    onClick={() => {
+                        startDrawing = +new Date();
+                        // console.log(startDrawing);
+                        setWord("apple"); //need to be modified
+                        history.push({pathname:'/drawingStage', state:{startDrawing:startDrawing, word:word}});
+                    }}
+                    style={{left: "50px", top: "320px", position: "absolute", 
+                    "font-family": "Nunito", "font-size":"20px", "color":"black", 
+                    "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
+                >
+                apple
+                </Button>
+            </div>
+            <div>
+                <Button
+                    //onClick={() => goToDrawing()} need to connect to backend later
+                    style={{left: "50px", top: "370px", position: "absolute", 
+                    "font-family": "Nunito", "font-size":"20px", "color":"black", 
+                    "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
+                >
+                banana
+                </Button>
+            </div>
+            <div>
+                <Button
+                    //onClick={() => goToDrawing()} need to connect to backend later
+                    style={{left: "50px", top: "420px", position: "absolute", 
+                    "font-family": "Nunito", "font-size":"20px", "color":"black", 
+                    "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
+                >
+                orange
+                </Button>
+            </div>
+        </div>
+    );
 
     //display cat and username
     const player1 = (
@@ -139,42 +179,13 @@ const DrawingStage = (props) => {
             <div>
                 {ranking}
             </div>
-            {role==="guessingPlayer" ? (
-                <DrawingBoard start = {startDrawing} role = {"guessingPlayer"}/>
-            ):(<></>)}
-            {/* {(startDrawing)?(
-                <div style={{left: "350px", top: "160px", position: "absolute", "font-family": "Nunito", "font-size": "30px", "color":"black"}}>
-                    Drawing stage 
-                    <Timer start = {startDrawing} stage="drawing"/>
-                </div>
-            ):(<></>)} */}
-            <div style={{left: "350px", top: "160px", position: "absolute", "font-family": "Nunito", "font-size": "30px", "color":"black"}}>
-                Drawing stage 
-                <Timer start = {startDrawing} stage="drawing"/>
-            </div>
-            {(startDrawing && (role==="drawingPlayer"))?(
+            {(!startDrawing && (role==="drawingPlayer"))? (
                 <div>
-                    <div style={{left: "150px", top: "180px", position: "absolute",
-                    "font-family": "Nunito", "font-size":"20px","color":"black",
-                    border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}>
-                        chosen word: <br/>
-                        {word}
-                    </div>
-                    <Button
-                        onClick={() => {
-                            const startGuessing = +new Date();
-                            history.push({pathname:'/guessingStage', state:{startGuessing:startGuessing}});
-                        }}
-                        style={{left: "600px", top: "290px", position: "absolute", 
-                        "font-family": "Nunito", "font-size":"20px", "color":"black", 
-                        "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
-                    >
-                        Submit
-                    </Button>
-                    <DrawingBoard start = {startDrawing} role = {"drawingPlayer"}/>
+                    <h2 style={{left: "250px", top: "180px", position: "absolute", "font-family": "Nunito", "color":"black"}}>Choose one word first!</h2>
+                    {displayWords}
                 </div>
             ):(<></>)}
         </BaseContainer>
     );
 }
-export default DrawingStage;
+export default SelectWord;

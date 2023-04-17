@@ -160,7 +160,7 @@ const DrawingStage = (props) => {
                         chosen word: <br/>
                         {word}
                     </div>
-                    <Button
+                    {/* <Button
                         onClick={() => {
                             const startGuessing = +new Date();
                             history.push({pathname:'/guessingStage', state:{startGuessing:startGuessing}});
@@ -170,7 +170,7 @@ const DrawingStage = (props) => {
                         "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
                     >
                         Submit
-                    </Button>
+                    </Button> */}
                     <DrawingBoard start = {startDrawing} role = {"drawingPlayer"}/>
                 </div>
             ):(<></>)}

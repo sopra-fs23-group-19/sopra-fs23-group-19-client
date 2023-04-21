@@ -48,6 +48,7 @@ const GuessingStage = () => {
     //const [startGuessing, setStartGuessing]=useState(1); //to test the timer, set to 1
     const history = useHistory();
     const location = useLocation();
+    const url = location.state.url;
     const startGuessing = location.state.startGuessing;
     //get the room and user information
     const role = "guessingPlayer";
@@ -56,6 +57,20 @@ const GuessingStage = () => {
     const [username2, setUsername2]=useState("user2");
     const [username3, setUsername3]=useState("user3");
     const [username4, setUsername4]=useState("user4");
+
+    function getImage(){
+        const myCanvas = document.getElementById('showingBoard'); 
+        const myContext = myCanvas.getContext('2d');
+        const img = new Image(); 
+        img.src = url;
+        img.onload = () => {myContext.drawImage(img, 0, 0);};
+    }
+
+    useEffect(() => {
+        let ignore = false;
+        if (!ignore) {getImage();}
+        return () => { ignore = true; }
+        },[]);
 
     const answerBox = (
         <div>
@@ -208,7 +223,16 @@ const GuessingStage = () => {
                     </div>
                 </div>
             ):(<></>)}
-            <DrawingBoard start = {startGuessing} role = {"guessingPlayer"}/>
+            {/* <DrawingBoard /> */}
+            <div style={{"left": "200px", "top": "330px", "position": "absolute"}}>
+            <canvas
+                id="showingBoard"
+                width="500px"
+                height="600px"
+                style={{ "border": "2px solid #000000", "backgroundColor": "#FFFFFF" }}
+            >
+            </canvas>
+            </div>
         </BaseContainer>
     );
 }

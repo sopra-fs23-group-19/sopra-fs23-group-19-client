@@ -114,6 +114,9 @@ const DrawingStage = (props) => {
             </div>
         </div>
     );
+    window.addEventListener("popstate", () => {
+        history.go(1);
+    });
 
     return (
         <BaseContainer>

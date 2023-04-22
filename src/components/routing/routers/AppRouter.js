@@ -16,6 +16,7 @@ import GameCreationView from "components/views/GameCreationView";
 import DrawingStage from "components/views/DrawingStage";
 import GuessingStage from "components/views/GuessingStage";
 import Ranking from "components/views/Ranking";
+import SelectWord from "components/views/SelectWord";
 
 /**
  * Main router of your application.
@@ -60,6 +61,9 @@ const AppRouter = () => {
           <ProfileGuard>
             <Profile />
           </ProfileGuard>
+        </Route>
+        <Route exact path="/selectWord">
+          <SelectWord />
         </Route>
         <Route exact path="/drawingStage">
           <DrawingStage />

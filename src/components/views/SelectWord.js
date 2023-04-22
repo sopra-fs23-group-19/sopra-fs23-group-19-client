@@ -1,88 +1,67 @@
 import { useState, useRef, useEffect } from 'react';
 import Timer from "components/views/Timer";
 import cats from "styles/images/cats2.png";
-import Header from "components/views/Header";
-import BaseContainer from 'components/ui/BaseContainer';
-import "styles/views/Guessing.scss";
-import DrawingBoard from './DrawingBoard';
-import {useHistory, useLocation} from 'react-router-dom';
-import { Button } from "components/ui/Button";
-import "styles/views/Login.scss";
-import PropTypes from "prop-types";
 import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
+import Header from "components/views/Header";
+import BaseContainer from 'components/ui/BaseContainer';
+import "styles/views/Guessing.scss";
+import DrawingBoard from './DrawingBoard';
+import {useHistory} from 'react-router-dom';
+import { Button } from "components/ui/Button";
+import { Spinner } from 'components/ui/Spinner';
 
-const FormField = (props) => {
-    return (
-      <div className="guessing field">
-        <label className="guessing label">{props.label}</label>
-        <input
-          className="guessing input"
-          placeholder="enter here.."
-          value={props.value}
-          onChange={(e) => props.onChange(e.target.value)}
-        />
-        {/* <div className='guessing button-container'>
-            <Button
-                disabled={props.role=="drawingPlayer"}
-                onClick={() => {
-                    history.push('/ranking');
-                }}
-            >
-                Submit
-            </Button>
-        </div> */}
-      </div>
-    );
-};
-
-FormField.propTypes = {
-    label: PropTypes.string,
-    value: PropTypes.string,
-    onChange: PropTypes.func,
-};
-
-const GuessingStage = () => {
-    //const [startGuessing, setStartGuessing]=useState(1); //to test the timer, set to 1
+const SelectWord = () => {
+    //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
+    let startDrawing;
     const history = useHistory();
-    const location = useLocation();
-    const url = location.state.url;
-    const startGuessing = location.state.startGuessing;
     //get the room and user information
-    const role = "guessingPlayer";
-    const [answer, setAnswer]=useState(null); //the answer player guesses
+    const role = "drawingPlayer";
+    const [word, setWord]=useState("apple"); //the chosen word
     const [username1, setUsername1]=useState("user1");
     const [username2, setUsername2]=useState("user2");
     const [username3, setUsername3]=useState("user3");
     const [username4, setUsername4]=useState("user4");
 
-    function getImage(){
-        const myCanvas = document.getElementById('showingBoard'); 
-        const myContext = myCanvas.getContext('2d');
-        const img = new Image(); 
-        img.src = url;
-        img.onload = () => {myContext.drawImage(img, 0, 0);};
-    }
-
-    useEffect(() => {
-        let ignore = false;
-        if (!ignore) {getImage();}
-        return () => { ignore = true; }
-        },[]);
-
-    const answerBox = (
+    const displayWords = (
         <div>
-            <div className="guessing container">
-                <div className="guessing form">
-                    <FormField
-                        label="Answer"
-                        value={answer}
-                        role={role}
-                        onChange={(un) => setAnswer(un)}
-                    />
-                </div>
+            <div>
+                <Button
+                    // need to connect to backend later
+                    onClick={() => {
+                        startDrawing = +new Date();
+                        // console.log(startDrawing);
+                        setWord("apple"); //need to be modified
+                        history.push({pathname:'/drawingStage', state:{startDrawing:startDrawing, word:word}});
+                    }}
+                    style={{left: "50px", top: "320px", position: "absolute", 
+                    "font-family": "Nunito", "font-size":"20px", "color":"black", 
+                    "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
+                >
+                apple
+                </Button>
+            </div>
+            <div>
+                <Button
+                    //onClick={() => goToDrawing()} need to connect to backend later
+                    style={{left: "50px", top: "370px", position: "absolute", 
+                    "font-family": "Nunito", "font-size":"20px", "color":"black", 
+                    "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
+                >
+                banana
+                </Button>
+            </div>
+            <div>
+                <Button
+                    //onClick={() => goToDrawing()} need to connect to backend later
+                    style={{left: "50px", top: "420px", position: "absolute", 
+                    "font-family": "Nunito", "font-size":"20px", "color":"black", 
+                    "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
+                >
+                orange
+                </Button>
             </div>
         </div>
     );
@@ -121,6 +100,7 @@ const GuessingStage = () => {
         </div>
     );
 
+    //ranking component
     const ranking = (
         <div>
             <div className="guessing score-list">
@@ -174,16 +154,12 @@ const GuessingStage = () => {
             </div>
         </div>
     );
-    
-    window.addEventListener("popstate", () => {
-        history.go(1);
-    });
 
     return (
         <BaseContainer>
             {/* <Header /> */}
             <div
-                className="lobby pic"
+                className="guessing pic"
                 style={{ opacity: "20%", left: "1000px", top: "280px" }}
             >
                 <img src={cats} alt="" />
@@ -203,37 +179,13 @@ const GuessingStage = () => {
             <div>
                 {ranking}
             </div>
-            {(startGuessing)?(
-                <div style={{left: "350px", top: "160px", position: "absolute", "font-family": "Nunito", "font-size": "30px", "color":"black"}}>
-                    Guessing stage 
-                    <Timer start={startGuessing} stage="guessing"/>
-                </div>
-            ):(<></>)}
-            {(startGuessing && (role==="guessingPlayer"))?(
+            {(!startDrawing && (role==="drawingPlayer"))? (
                 <div>
-                    {answerBox}
-                    <div className='guessing button-container' style={{left: "1150px", top: "440px", position: "absolute"}}>
-                        <Button
-                            disabled={role==="drawingPlayer"}
-                            onClick={() => {
-                            history.push('/ranking');
-                        }}>
-                            Submit
-                        </Button>
-                    </div>
+                    <h2 style={{left: "250px", top: "180px", position: "absolute", "font-family": "Nunito", "color":"black"}}>Choose one word first!</h2>
+                    {displayWords}
                 </div>
             ):(<></>)}
-            {/* <DrawingBoard /> */}
-            <div style={{"left": "200px", "top": "330px", "position": "absolute"}}>
-            <canvas
-                id="showingBoard"
-                width="500px"
-                height="600px"
-                style={{ "border": "2px solid #000000", "backgroundColor": "#FFFFFF" }}
-            >
-            </canvas>
-            </div>
         </BaseContainer>
     );
 }
-export default GuessingStage;
+export default SelectWord;

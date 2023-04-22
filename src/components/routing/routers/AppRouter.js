@@ -45,7 +45,7 @@ const AppRouter = () => {
             <Register />
           </RegisterGuard>
         </Route>
-        <Route path={`/wait/:gameId`}>
+        <Route path={`/waiting/:roomId`}>
           <WaitingView />
         </Route>
         <Route exact path="/lobby">

@@ -9,6 +9,7 @@ import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import PropTypes from "prop-types";
 import { useInterval } from "helpers/hooks";
+import WaitRoom from "models/WaitRoom";
 
 const Player = ({ user }) => (
   <div className="player container">
@@ -16,62 +17,70 @@ const Player = ({ user }) => (
     {/* <div className="player name">{user.name}</div> */}
     {/* <div className="player id">id: {user.id}</div> */}
   </div>
-);
+)
 
 Player.propTypes = {
   user: PropTypes.object,
 };
 const WaitingView = () => {
-  // const { roomId } = useParams();
-  const roomId = useParams().gameId;
+  const { roomId } = useParams();
+  // console.log("wait");
   //   const [playerIds, setPlayerIds] = useState([]); //player id and player username needed
   //   const [playerNames, setPlayerNames] = useState(null); //player id and player username needed
-  const [playerCount, setPlayerCount] = useState(0); //current number of players
+  const [playerCount, setPlayerCount] = useState(1); //current number of players
   const [roomSeats, setRoomSeats] = useState(2); //default 2 persons?
   const [ownerId, setOwnerId] = useState(null);
   const [status, setStatus] = useState("");
   const history = useHistory();
-  // const curUserId = localStorage.getItem("id")
-  const curUserId = "1";
-  const [playerNames, setPlayerNames] = useState([{ id: "", username: "" }]);
+  const curUserId = localStorage.getItem("id");
+  // const curUserId = "1";
+  const [players, setPlayers] = useState([{ id: "", username: "" }]);
   const [roomName, setRoomName] = useState("");
   //   const [isPolling, setIsPolling] = useState(true); //NOTE - for pausing the polling
 
   const fetchRoomInfo = async () => {
     try {
-      //   const response = await api.get("/games/waitingArea/" + gameId);
-      //console.log(response);
-      //   setPlayerCount(response.data.numOfPlayersJoined);
-      //   setGameName(response.data.gameName);
-      const response = {
-        numOfPlayers: 2,
-        roomName: "room1",
-        listOfPlayerNames: [
-          { id: 1, username: "Alabama" },
-          { id: 2, username: "Georgia1" },
-        ],
-        // listOfPlayerIds: [1, 2],
-        ownerId: 1,
-        roomSeats: 2,
-        status: "wait",
-      };
-      setPlayerCount(response.numOfPlayers);
+      const response = await api().get(`/gameRounds/${roomId}`);
+      console.log(response);
+      const waitingRoom = new WaitRoom(response.data);
+      console.log(waitingRoom);
+      setPlayerCount(waitingRoom.numberOfPlayers);
+      setStatus(waitingRoom.status);
+      setRoomName(waitingRoom.roomName);
+      setRoomSeats(waitingRoom.roomSeats);
+      setPlayers(waitingRoom.players);
+      // setPlayerCount(response.data.numberOfPlayers);
+      // const response = {
+      //   numOfPlayers: 2,
+      //   roomName: "room1",
+      //   listOfPlayerNames: [
+      //     { id: 1, username: "Alabama" },
+      //     { id: 2, username: "Georgia1" },
+      //   ],
+      //   // listOfPlayerIds: [1, 2],
+      //   ownerId: 1,
+      //   roomSeats: 2,
+      //   status: "wait",
+      // };
+      // setPlayerCount(response.numOfPlayers);
       // setPlayerCount(playerCount + 1);
-      setRoomName(response.roomName);
-      const temp = response.listOfPlayerNames;
-      setPlayerNames(temp);
+      // setRoomName(response.roomName);
+      // const temp = response.listOfPlayerNames;
+      // setPlayerNames(temp);
       //   setPlayerIds(response.listOfPlayerIds);
-      setOwnerId(response.ownerId);
-      setRoomSeats(response.roomSeats);
-      setStatus(response.status);
+      // setOwnerId(response.ownerId);
+      // setRoomSeats(response.roomSeats);
+      // setStatus(response.status);
 
-      if (status != "wait") {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (status == "STARTING") {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         goToGame();
       }
     } catch (error) {
       alert(
-        `Something went wrong during get user profile: \n${handleError(error)}`
+        `Something went wrong during get waiting room information: \n${handleError(
+          error
+        )}`
       );
       history.push("/lobby"); // redirect back to lobby
     }
@@ -92,26 +101,28 @@ const WaitingView = () => {
     try {
       const requestBody = JSON.stringify({
         roomId: roomId,
-        userId: localStorage.getItem("id"),
+        userId: curUserId,
       });
-      await api().put("/games/waitingArea", requestBody); //leave waiting area
+      await api().put("/games/leave", requestBody); //leave waiting area
       history.push("/lobby");
     } catch (error) {
       alert(
-        `Something went wrong during get user profile: \n${handleError(error)}`
+        `Something went wrong during leave waiting room: \n${handleError(
+          error
+        )}`
       );
       // history.push("/lobby"); // redirect back to lobby
     }
   };
   const startGame = async () => {
     try {
-      await api().post(`/gameRounds/${roomId}`);
+      // await api().post(`/gameRounds/${roomId}`);
       history.push(`/game/${roomId}`); // should be changed later
     } catch (error) {
       alert(
-        `Something went wrong during get user profile: \n${handleError(error)}`
+        `Something went wrong during starting game: \n${handleError(error)}`
       );
-      history.push("/lobby"); // redirect back to lobby
+      // history.push("/lobby"); // redirect back to lobby
     }
   };
 
@@ -178,7 +189,7 @@ const WaitingView = () => {
       <div className="waitingArea container">
         <label className="waitingArea label">{roomName}</label>
         <div>
-          {playerNames.map((user) => (
+          {players.map((user) => (
             <Player user={user} key={user.id} />
           ))}
         </div>

@@ -50,9 +50,9 @@ const GameCreationView = () => {
   //
   const proceedToWait = async () => {
     const requestBody = JSON.stringify({
-      owner: currentId,
+      roomName: roomName,
       mode: mode,
-      name: roomName,
+      ownerId: currentId,
     });
 
     console.log(requestBody);

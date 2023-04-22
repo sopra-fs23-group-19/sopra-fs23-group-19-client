@@ -19,9 +19,6 @@ const DrawingBoard = (props) => {
     console.log(cursorStyle)
     // let cursorStyle = "url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto"
 
-    const [seconds, setSeconds]=useState(null);
-    const Timer = useRef();
-
     // const check = () => {
     //     const nowTime = +new Date();
     //     const times = 60-parseInt(`${(nowTime - start)/1000}`); //是剩余时间

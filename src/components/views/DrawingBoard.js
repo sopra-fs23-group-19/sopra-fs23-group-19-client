@@ -10,10 +10,14 @@ const DrawingBoard = (props) => {
 
     const history = useHistory();
     const role = props.role;
+    // const role = "GuessingPlayer"
     const start = props.start;
     const setConvasRef = useOnDraw(onDraw);
     let lineColor = "#000000";
     let lineWidth = 5;
+    const [cursorStyle, setCursorStyle] = useState("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
+    console.log(cursorStyle)
+    // let cursorStyle = "url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto"
 
     const [seconds, setSeconds]=useState(null);
     const Timer = useRef();
@@ -44,7 +48,14 @@ const DrawingBoard = (props) => {
 
     useEffect(() => {
         let ignore = false;
-        if (!ignore) {clear();}
+        if (!ignore) {
+            if(document.querySelector('#board')!=null){
+                const canvas = document.querySelector('#board');
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
         return () => { ignore = true; }
         },[]);
 
@@ -158,7 +169,6 @@ const DrawingBoard = (props) => {
     }
 
     const greenPen = async() => {
-        lineColor = '#00FF00';
     }
 
     const bluePen = async() => {
@@ -174,7 +184,7 @@ const DrawingBoard = (props) => {
     }
 
     const eraser = async() =>{
-        lineColor = '#FFFFFF'
+        lineColor = '#FFFFFF';
     }
 
     const lineBold = async() => {
@@ -197,7 +207,7 @@ const DrawingBoard = (props) => {
                 id="board"
                 width="500px"
                 height="600px"
-                style={{ "border": "2px solid #000000", "backgroundColor": "#FFFFFF", "cursor":"pointer"}}
+                style={{ "border": "2px solid #000000", "backgroundColor": "#FFFFFF", "cursor": cursorStyle}}
                 ref={setConvasRef}
             >
             </canvas>
@@ -214,6 +224,8 @@ const DrawingBoard = (props) => {
             
         </div>
         <div className="drawingBoard container">
+            {(role==="drawingPlayer") ? (
+            <>
             <div className="drawingBoard circle" style={{"backgroundColor": "#FF0000" }}
             onClick={()=> redPen()}>
             </div>
@@ -235,6 +247,9 @@ const DrawingBoard = (props) => {
             <div className="drawingBoard circle" style={{"backgroundColor": "#000000" }}
             onClick={()=> blackPen()}>
             </div>
+            </>
+            ):(<></>)
+            }
         </div>
         <div className="drawingBoard container" style={{"margin-top":"40px"}}>
             {(role==="drawingPlayer") ? (

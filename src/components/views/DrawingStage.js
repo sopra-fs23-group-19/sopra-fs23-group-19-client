@@ -120,7 +120,7 @@ const DrawingStage = (props) => {
 
     return (
         <BaseContainer>
-            <Header />
+            {/* <Header /> */}
             <div
                 className="guessing pic"
                 style={{ opacity: "20%", left: "1000px", top: "280px" }}

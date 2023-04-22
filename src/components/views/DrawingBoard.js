@@ -15,9 +15,6 @@ const DrawingBoard = (props) => {
     let lineColor = "#000000";
     let lineWidth = 5;
 
-    const [seconds, setSeconds]=useState(null);
-    const Timer = useRef();
-
     // const check = () => {
     //     const nowTime = +new Date();
     //     const times = 60-parseInt(`${(nowTime - start)/1000}`); //是剩余时间

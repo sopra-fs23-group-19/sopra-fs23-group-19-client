@@ -181,7 +181,7 @@ const GuessingStage = () => {
 
     return (
         <BaseContainer>
-            <Header />
+            {/* <Header /> */}
             <div
                 className="lobby pic"
                 style={{ opacity: "20%", left: "1000px", top: "280px" }}

@@ -1,40 +1,48 @@
 import { useEffect, useState, useRef } from "react";
-import {useHistory} from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
-const Timer = (props) =>{
-  const history = useHistory();
+const Timer = ({ start, stage, sendTimeInfo }) => {
+  // const history = useHistory();
   const countDownTimer = useRef();
-  const start = props.start;
-  const stage = props.stage;
-  const [seconds, setSeconds]=useState(null);
+  // const start = props.start;
+  // const stage = props.stage;
+  const [seconds, setSeconds] = useState(null);
   const countDown = () => {
-		const nowTime = +new Date();
-		const times = 60-parseInt(`${(nowTime - start)/1000}`);
-		// setS(parseInt(`${times%60}`));
+    const nowTime = +new Date();
+    let times = 6 - parseInt(`${(nowTime - start) / 1000}`);
+    // setS(parseInt(`${times%60}`));
+    if (stage === "drawing") {
+      times = 2 - parseInt(`${(nowTime - start) / 1000}`);
+    }
     setSeconds(times);
-		if(times <= 0){
-			clearTimeout(countDownTimer.current);
-      if(stage==="drawing"){
-        const startGuessing = +new Date();
-        history.push({pathname:'/guessingStage', state:{startGuessing:startGuessing}});
-      }else if(stage==="guessing"){
-        history.push('/ranking');
-      }
-		}else{
-			countDownTimer.current = setTimeout(()=>{
-				countDown();
-			},1000);
-		}
-	};
+    if (times <= 0) {
+      sendTimeInfo(0);
+      clearTimeout(countDownTimer.current);
+      // if (stage === "drawing") {
+      //   const startGuessing = +new Date();
+      //   history.push({
+      //     pathname: "/guessingStage",
+      //     state: { startGuessing: startGuessing },
+      //   });
+      // } else if (stage === "guessing") {
+      //   history.push("/ranking");
+      // }
+    } else {
+      countDownTimer.current = setTimeout(() => {
+        countDown();
+      }, 1000);
+    }
+  };
 
-  useEffect(()=>{
-		if(props.start){
-			countDown();
-		}
-		return () => {
-			clearTimeout(countDownTimer.current);
-		};
-	},[]);
+  useEffect(() => {
+    // if (props.start)
+    if (start) {
+      countDown();
+    }
+    return () => {
+      clearTimeout(countDownTimer.current);
+    };
+  }, []);
 
   // useEffect(() => {
   //   let myInterval = setInterval(() => {
@@ -63,6 +71,6 @@ const Timer = (props) =>{
       left time: {seconds}s
     </div>
   );
-}
+};
 
 export default Timer;

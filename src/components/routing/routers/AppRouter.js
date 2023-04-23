@@ -10,7 +10,7 @@ import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
 import WaitingView from "components/views/WaitingView";
-
+import Game from "components/views/Game";
 import GameCreationView from "components/views/GameCreationView";
 //import { Profiler } from "react/cjs/react.production.min";
 import DrawingStage from "components/views/DrawingStage";
@@ -31,10 +31,13 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/game">
+        {/* <Route path="/game">
           <GameGuard>
             <GameRouter base="/game" />
           </GameGuard>
+        </Route> */}
+        <Route exact path="/game/:gameId">
+          <Game />
         </Route>
         <Route exact path="/login">
           <LoginGuard>

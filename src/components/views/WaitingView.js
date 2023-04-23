@@ -17,7 +17,7 @@ const Player = ({ user }) => (
     {/* <div className="player name">{user.name}</div> */}
     {/* <div className="player id">id: {user.id}</div> */}
   </div>
-)
+);
 
 Player.propTypes = {
   user: PropTypes.object,
@@ -36,11 +36,13 @@ const WaitingView = () => {
   // const curUserId = "1";
   const [players, setPlayers] = useState([{ id: "", username: "" }]);
   const [roomName, setRoomName] = useState("");
+  const [startGameId, setStartGameId] = useState(null);
+  const [StartTurnId, setStartTurnId] = useState(null);
   //   const [isPolling, setIsPolling] = useState(true); //NOTE - for pausing the polling
 
   const fetchRoomInfo = async () => {
     try {
-      const response = await api().get(`/gameRounds/${roomId}`);
+      const response = await api().get(`/games/waitingArea/${roomId}`);
       console.log(response);
       const waitingRoom = new WaitRoom(response.data);
       console.log(waitingRoom);
@@ -49,6 +51,15 @@ const WaitingView = () => {
       setRoomName(waitingRoom.roomName);
       setRoomSeats(waitingRoom.roomSeats);
       setPlayers(waitingRoom.players);
+      setOwnerId(waitingRoom.ownerId);
+
+      const gameId0 = response.data.gameId;
+      const turnId0 = response.data.gameTurnId;
+      console.log(gameId0);
+      if (gameId0 != null) {
+        setStartGameId(gameId0);
+        setStartTurnId(turnId0);
+      }
       // setPlayerCount(response.data.numberOfPlayers);
       // const response = {
       //   numOfPlayers: 2,
@@ -72,9 +83,14 @@ const WaitingView = () => {
       // setRoomSeats(response.roomSeats);
       // setStatus(response.status);
 
-      if (status == "STARTING") {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        goToGame();
+      if (status == "END") {
+        history.push("/lobby");
+      }
+      if (status == "PLAYING") {
+        if (startGameId != null) {
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+          goToGame(startGameId, StartTurnId);
+        }
       }
     } catch (error) {
       alert(
@@ -94,7 +110,8 @@ const WaitingView = () => {
     async () => {
       fetchRoomInfo();
     },
-    playerCount == roomSeats ? null : 1000
+    1000
+    // status == "PLAYING" ? null : 1000
   );
 
   const leaveRoom = async () => {
@@ -116,8 +133,8 @@ const WaitingView = () => {
   };
   const startGame = async () => {
     try {
-      // await api().post(`/gameRounds/${roomId}`);
-      history.push(`/game/${roomId}`); // should be changed later
+      await api().post(`/games/waitingArea/${roomId}`);
+      // history.push(`/game/${roomId}`); // should be changed later
     } catch (error) {
       alert(
         `Something went wrong during starting game: \n${handleError(error)}`
@@ -138,8 +155,12 @@ const WaitingView = () => {
   const bar_id = barStyles[str_percent];
   const barStyle = "waitingArea bar b" + bar_id;
 
-  const goToGame = () => {
-    history.push(`/game/${roomId}`);
+  const goToGame = (id, turnId0) => {
+    history.push({
+      pathname: `/game/${id}`,
+      state: { turnId: turnId0 },
+    });
+    // history.push(`/game/${id}`);
   };
 
   let content = <SpinnerBouncing />;

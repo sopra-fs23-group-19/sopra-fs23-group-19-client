@@ -9,7 +9,7 @@ import Header from "components/views/Header";
 import BaseContainer from 'components/ui/BaseContainer';
 import "styles/views/Guessing.scss";
 import DrawingBoard from './DrawingBoard';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import { Button } from "components/ui/Button";
 import { Spinner } from 'components/ui/Spinner';
 
@@ -17,8 +17,9 @@ const SelectWord = () => {
     //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
     let startDrawing;
     const history = useHistory();
+    const location = useLocation();
     //get the room and user information
-    const role = "drawingPlayer";
+    const role = location.state.role;
     const [word, setWord]=useState("apple"); //the chosen word
     const [username1, setUsername1]=useState("user1");
     const [username2, setUsername2]=useState("user2");
@@ -184,7 +185,11 @@ const SelectWord = () => {
                     <h2 style={{left: "250px", top: "180px", position: "absolute", "font-family": "Nunito", "color":"black"}}>Choose one word first!</h2>
                     {displayWords}
                 </div>
-            ):(<></>)}
+            ):(
+                <div>
+                    <h2 style={{left: "250px", top: "180px", position: "absolute", "font-family": "Nunito", "color":"black"}}>Wait for the drawing player...</h2>
+                </div>
+            )}
         </BaseContainer>
     );
 }

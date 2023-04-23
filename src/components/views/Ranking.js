@@ -3,16 +3,23 @@ import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import BaseContainer from 'components/ui/BaseContainer';
 import "styles/views/Guessing.scss";
-import {useHistory} from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import { Button } from "components/ui/Button";
 
 const Ranking = () => {
     const history = useHistory();
+    const location = useLocation();
+    const data = location.state.data;
+    console.log(data);
     //get the username and score
-    const [username1, setUsername1]=useState("user1");
-    const [username2, setUsername2]=useState("user2");
-    const [username3, setUsername3]=useState("user3");
-    const [username4, setUsername4]=useState("user4");
+    const user1 = data[1];
+    const user2 = data[2];
+    const user3 = data[3];
+    const user4 = data[4];
+    // const [username1, setUsername1]=useState("user1");
+    // const [username2, setUsername2]=useState("user2");
+    // const [username3, setUsername3]=useState("user3");
+    // const [username4, setUsername4]=useState("user4");
 
     //ranking component
     //need to sort the score later
@@ -28,9 +35,9 @@ const Ranking = () => {
                 <div className="guessing line"></div>
                 <div className="guessing score-container">
                     <div className="guessing content" >
-                        {username1}
+                        {user1.username}
                     </div>
-                    <div className="guessing content">0</div>
+                    <div className="guessing content">{user1.currentGameScore}</div>
                 </div>
                 <div
                     className="guessing line"
@@ -38,9 +45,9 @@ const Ranking = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username2}
+                        {user2.username}
                     </div>
-                    <div className="guessing content">0</div>
+                    <div className="guessing content">{user2.currentGameScore}</div>
                 </div>
                 <div
                     className="guessing line"
@@ -48,9 +55,9 @@ const Ranking = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username3}
+                        {user3}
                     </div>
-                    <div className="guessing content">0</div>
+                    <div className="guessing content">{user3.currentGameScore}</div>
                 </div>
                 <div
                     className="guessing line"
@@ -58,9 +65,9 @@ const Ranking = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username4}
+                        {user4}
                     </div>
-                    <div className="guessing content">0</div>
+                    <div className="guessing content">{user4.currentGameScore}</div>
                 </div>
                 <div
                     className="guessing line"

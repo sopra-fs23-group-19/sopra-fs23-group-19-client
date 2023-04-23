@@ -119,7 +119,7 @@ const DrawingStage = () => {
                 <div className="guessing line"></div>
                 <div className="guessing score-container">
                     <div className="guessing content" >
-                        {username1}
+                        {drawingPlayerUsername}
                     </div>
                     <div className="guessing content">0</div>
                 </div>
@@ -129,7 +129,7 @@ const DrawingStage = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username2}
+                        {otherUsernames[0]}
                     </div>
                     <div className="guessing content">0</div>
                 </div>
@@ -139,7 +139,7 @@ const DrawingStage = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username3}
+                        {otherUsernames[1]}
                     </div>
                     <div className="guessing content">0</div>
                 </div>
@@ -149,7 +149,7 @@ const DrawingStage = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username4}
+                        {otherUsernames[2]}
                     </div>
                     <div className="guessing content">0</div>
                 </div>

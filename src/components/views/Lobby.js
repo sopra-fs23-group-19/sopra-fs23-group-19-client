@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Rooms = ({ room }) => (
   <div className="lobby container">
@@ -31,78 +31,53 @@ const Lobby = () => {
   // const goToDrawing = async () => {
   //   history.push("/drawingStage");
   // }
+  const getRooms = async () => {
+    try {
+      const response = await api().get("/games");
+      const rooms = new Room(response.data);
+      setRooms(response.data);
+
+      console.log(rooms.id);
+      console.log("room id");
+
+      // Login successfully worked --> navigate to the route /game in the GameRouter
+      // history.push(`/lobby`);
+    } catch (error) {
+      alert(`Something went wrong when get the rooms: \n${handleError(error)}`);
+    }
+  };
+
+  useEffect(() => {
+    getRooms();
+  }, []);
+
   const goToWaiting = async (id) => {
     history.push(`/wait/${id}`);
   };
+
   const Rooms = ({ room }) => (
     <div className="lobby container">
       <div className="lobby id">{room.id}</div>
-      <div className="lobby name">{room.name}</div>
-      <div className="lobby players">id: {room.players}</div>
+      <div className="lobby name">{room.roomName}</div>
+      <div className="lobby players">id: {room.numberOfPlayers}</div>
       {/* <Button onClick={() => goToDrawing()}>JOIN</Button> */}
       <Button onClick={() => goToWaiting(room.id)}>JOIN</Button>
     </div>
   );
-  // const [rooms, setRooms] = useState({
-  //   id: 2,
-  //   name: "second room",
-  //   players: 4,
-  // });
-  // useEffect(() => {
-  //   async function fetchRooms() {
-  //     try {
-  //       //const repsonse = await api.get('/rooms');
-  //       //just to test
-  //       const response = {
-  //         id: 1,
-  //         name: "first room",
-  //         players: 3,
-  //       };
-  //       const testRoom = new Room(response);
-  //       setRooms(testRoom);
-  //       console.log(testRoom);
-  //       console.log(rooms);
-  //       console.log(Array.from(testRoom));
-  //     } catch (error) {
-  //       console.error(`Something went wrong while fetching the users: \n${handleError(error)}`);
-  //       console.error("Details:", error);
-  //       alert("Something went wrong while fetching the users! See the console for details.");
-  //     }
-  //   }
-  //   fetchRooms();
-  // }, []);
-  // const fetchRooms = async () => {
-  //   try {
-  //     // const repsonse = await api.get('/rooms');
-  //     // just to test
-  //     const response = {
-  //       id: 1,
-  //       name: "first room",
-  //       players: 3,
-  //     };
-  //     const testRoom = new Room(response);
-  //     setRooms(testRoom);
-  //     console.log(rooms);
-  //   }catch (error) {
-  //     console.error(`Something went wrong while fetching the rooms: \n${handleError(error)}`);
-  //     console.error("Details:", error);
-  //     alert("Something went wrong while fetching the rooms! See the console for details.");
-  //   }
-  // }
-  // fetchRooms();
+  
   let content = <Spinner />;
   if (rooms) {
     content = (
       <div>
         <div className="lobby room-list">
-          <div className="lobby player-container">
-            <div className="lobby id">id</div>
-            <div className="lobby name">name</div>
-            <div className="lobby player">players</div>
+          <div className="lobby room-container">
+            <div className="lobby title" style={{ "margin-left": "80px" }}>id</div>
+            <div className="lobby title">name</div>
+            <div className="lobby title">players</div>
           </div>
         </div>
         <div className="lobby line"></div>
-        <ul className="lobby room-list">
+        <ul className="lobby room-container">
           {rooms.map((room) => (
             <Rooms room={room} key={room.id} />
           ))}
@@ -120,7 +95,8 @@ const Lobby = () => {
             <div className="lobby title">name</div>
             <div className="lobby title">players</div>
           </div>
-          <div className="lobby line"></div>
+          <div className="lobb
+          y line"></div>
           <div className="lobby room-container">
             <div className="lobby content" style={{ "margin-left": "80px" }}>
               1

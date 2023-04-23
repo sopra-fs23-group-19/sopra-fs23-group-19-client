@@ -10,17 +10,45 @@ const DrawingBoard = (props) => {
 
     const history = useHistory();
     const role = props.role;
-    // const role = "GuessingPlayer"
+    const gameTurnId = props.turn;
+    const gameId = props.gameId;
+    const targetWord = props.word;
     const start = props.start;
     const setConvasRef = useOnDraw(onDraw);
+
+    let guessingState = false;
+    let finalUrl = 0;
+    let finalStart = 0;
+
     let lineColor = "#000000";
     let lineWidth = 5;
     const [cursorStyle, setCursorStyle] = useState("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
     console.log(cursorStyle)
     // let cursorStyle = "url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto"
 
+    // const check = () => {
+    //     const nowTime = +new Date();
+    //     const times = 60-parseInt(`${(nowTime - start)/1000}`); //是剩余时间
+    //         setSeconds(times);
+    //         console.log(times);
+    //     if(times <= 0){
+    //      //如果到时间了
+    //      doSubmit();
+    //      clearTimeout(Timer.current);
+    //      //push到下一个页面之类的
+    //     }else{
+    //      //没到时间
+    //      Timer.current = setTimeout(()=>{
+    //       check();
+    //      },1000); //这里可以设置时间间隔，1000是1s，0.5s就是500等等
+    //     }
+    //    };
     const nowTime = +new Date();
     let times = 60-parseInt(`${(nowTime - start)/1000}`);
+    // Timer.current = setTimeout(()=>{
+    //     times = times - 1;
+    //     console.log(times);
+    // },1000);
 
     useEffect(() => {
         let ignore = false;
@@ -39,12 +67,28 @@ const DrawingBoard = (props) => {
         const timer = setInterval(() => {
             times = times - 1;
             console.log(times);
+            if(document.getElementById('board')!=null){
+                updateBoard();
+            }
+            if(document.getElementById('showingBoard')!=null){
+                showingBoardGetUpdatedBoard();
+            }
             if(times <= 0){
                 doSubmit();
             }
         }, 1000);
         return () => clearInterval(timer);
     },[])
+
+    //guessing Player jump to guessing stage
+    useEffect(() => {
+        if(guessingState){
+            startGuessing = finalStart;
+            url = finalUrl;
+            history.push({pathname:'/guessingStage',state:{url:url, startGuessing:startGuessing, gameId:gameId, gameTurnId:gameTurnId, role:role, targetWord:targetWord}}); 
+        }
+        return () => { guessingState = false; }
+    })
     
     // useEffect(()=>{
     //     if(start){check();}
@@ -96,6 +140,49 @@ const DrawingBoard = (props) => {
     //     img.onload = () => {myContext.drawImage(img, 0, 0);};
     // }
 
+    //drawing board put to the server
+    const updateBoard = async() =>{
+        if(document.getElementById('board')!=null){
+             const drawingCanvas = document.getElementById('board');
+             let boardUrl = drawingCanvas.toDataURL();
+             const requestBody = JSON.stringify({
+                id: gameTurnId,//get from drawing stage
+                image: boardUrl,
+                targetWord: targetWord,//get from drawing stage
+              });
+              try{
+                await api().put(`/gameRounds/drawings`, requestBody);
+              }catch (error) {
+                alert(
+                  `Something went wrong during updating image: \n${handleError(error)}`
+                );
+              }
+        }
+       
+    }
+
+    //showing board get current image from the server
+    const showingBoardGetUpdatedBoard = async() =>{
+        if(document.getElementById('showingBoard')!=null){
+            const showingCanvas = document.getElementById('showingBoard');
+            const showingContext = showingCanvas.getContext('2d');
+            const img = new Image();
+            const requestBody = JSON.stringify({
+               gameTurnId: gameTurnId,//get from drawing stage
+             });
+             try{
+                const response = await api().get(`/gameRounds/information/${gameTurnId}`, requestBody);
+                let currentImage = response.image;
+                img.src = currentImage;
+                img.onload = () => {showingContext.drawImage(img, 0, 0);};
+             }catch (error) {
+               alert(
+                 `Something went wrong during getting the updated image: \n${handleError(error)}`
+               );
+             }
+       }
+    }
+
     function download(selector) {
 
         const canvas = document.querySelector(selector);
@@ -116,11 +203,26 @@ const DrawingBoard = (props) => {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    function doSubmit() {
+    const doSubmit = async() => {
         const canvas = document.getElementById('board');
         const url = canvas.toDataURL();
+        const requestBody = JSON.stringify({
+            id: id,//get from drawing stage
+            image: url,
+            targetWord: targetWord,//get from drawing stage
+          });
+          try{
+            await api().post(`/gameRounds/finalDrawings`, requestBody);
+          }catch (error) {
+            alert(
+              `Something went wrong during submit the final image: \n${handleError(error)}`
+            );
+          }
         const startGuessing = +new Date();
-        history.push({pathname:'/guessingStage',state:{url:url, startGuessing:startGuessing}});  
+        finalUrl = url;
+        finalStart = startGuessing;
+        guessingState = true;
+        history.push({pathname:'/guessingStage',state:{url:url, startGuessing:startGuessing, gameId:gameId, gameTurnId:gameTurnId, role:role, targetWord:targetWord}});  
     }
 
     // function clearShowing() {
@@ -145,6 +247,7 @@ const DrawingBoard = (props) => {
     }
 
     const greenPen = async() => {
+        lineColor = '#00FF00';
     }
 
     const bluePen = async() => {

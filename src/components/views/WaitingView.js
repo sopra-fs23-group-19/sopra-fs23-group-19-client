@@ -116,8 +116,10 @@ const WaitingView = () => {
   };
   const startGame = async () => {
     try {
-      // await api().post(`/gameRounds/${roomId}`);
-      history.push(`/game/${roomId}`); // should be changed later
+      const response = await api().post(`/games/${roomId}`);
+      const gameId = response.data.gameId;
+      const turn = 1;
+      history.push({pathname:`/game/${roomId}`, state:{gameId:gameId, turn:turn}}); // should be changed later
     } catch (error) {
       alert(
         `Something went wrong during starting game: \n${handleError(error)}`

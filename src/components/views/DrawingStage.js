@@ -12,26 +12,72 @@ import DrawingBoard from './DrawingBoard';
 import {useHistory, useLocation} from 'react-router-dom';
 import { Button } from "components/ui/Button";
 import { Spinner } from 'components/ui/Spinner';
+import Turn from 'models/Turn';
 
-const DrawingStage = (props) => {
+const DrawingStage = () => {
     const location = useLocation();
     const startDrawing = location.state.startDrawing;
     const word = location.state.word;
+    const turn = location.state.turn;
+    const gameId = location.state.gameId;
     const history = useHistory();
+    const [drawingPlayerId, setDrawingPlayerId] = useState(null);
+    const currentId = localStorage.getItem("id");
+    const [currentRole, setCurrentRole] = useState(null);
+    const [players, setPlayers] = useState(null);
+    const [p1, setP1] = useState(null);
+    const [p2, setP2] = useState(null);
+    const [p3, setP3] = useState(null);
+    const [p4, setP4] = useState(null);
+    const [numberOfPlayers, setNumberOfPlayers] = useState(null);
     //get the room and user information
-    const role = "drawingPlayer";
-    //const [word, setWord]=useState('apple'); //the chosen word
-    const [username1, setUsername1]=useState("user1");
-    const [username2, setUsername2]=useState("user2");
-    const [username3, setUsername3]=useState("user3");
-    const [username4, setUsername4]=useState("user4");
+    const fetchTurn = async () => {
+        try {
+          const response = await api().get(`/gameRounds/information/${turn}`);
+          console.log(response);
+          const turnInfo = new Turn(response.data);
+          console.log(turnInfo);
+          setPlayers(turnInfo.players);
+          setNumberOfPlayers(players.length);
+          setDrawingPlayerId(turnInfo.drawingPlayerId);
+
+          setP1(players[0]);
+          setP2(players[1]);
+          setP3(players[2]);
+          setP4(players[3]);
+
+          if(drawingPlayerId==currentId){
+                setCurrentRole("drawingPlayer");
+          }else{
+                setCurrentRole("guessingPlayer");
+          }
+        } catch (error) {
+          alert(
+            `Something went wrong during get game information: \n${handleError(
+              error
+            )}`
+          );
+        }
+    };
+    fetchTurn();
 
     //display cat and username
+    let drawingPlayerUsername;
+    var otherUsernames = new Array();
+    let i;
+    for(i=0;i<numberOfPlayers;i++){
+        if (players[i].id === drawingPlayerId){
+            drawingPlayerUsername=players[i].username;
+        }else{
+            otherUsernames.push(players[i].username);
+        }
+    }
+
     const player1 = (
         <div className="guessing info">
             <img src={cat1} alt=""/>
             <div style={{"font-family": "Nunito", "font-size": "20px","color":"black"}}>
-                {username1}
+                {drawingPlayerUsername}
             </div>
         </div>
     );
@@ -39,7 +85,7 @@ const DrawingStage = (props) => {
         <div className="guessing info">
             <img src={cat2} alt="" />
             <div style={{"font-family": "Nunito", "font-size": "20px","color":"black"}}>
-                {username2}
+                {otherUsernames[0]}
             </div>
         </div>
     );
@@ -47,7 +93,7 @@ const DrawingStage = (props) => {
         <div className="guessing info">
             <img src={cat3} alt="" />
             <div style={{"font-family": "Nunito", "font-size": "20px","color":"black"}}>
-                {username3}
+                {otherUsernames[1]}
             </div>
         </div>
     );
@@ -55,7 +101,7 @@ const DrawingStage = (props) => {
         <div className="guessing info">
             <img src={cat4} alt="" />
             <div style={{"font-family": "Nunito", "font-size": "20px","color":"black"}}>
-                {username4}
+                {otherUsernames[2]}
             </div>
         </div>
     );
@@ -142,8 +188,8 @@ const DrawingStage = (props) => {
             <div>
                 {ranking}
             </div>
-            {role==="guessingPlayer" ? (
-                <DrawingBoard start = {startDrawing} role = {"guessingPlayer"}/>
+            {currentRole==="guessingPlayer" ? (
+                <DrawingBoard start = {startDrawing} role = {currentRole} turn = {turn} word = {word} gameId = {gameId}/>
             ):(<></>)}
             {/* {(startDrawing)?(
                 <div style={{left: "350px", top: "160px", position: "absolute", "font-family": "Nunito", "font-size": "30px", "color":"black"}}>
@@ -155,7 +201,7 @@ const DrawingStage = (props) => {
                 Drawing stage 
                 <Timer start = {startDrawing} stage="drawing"/>
             </div>
-            {(startDrawing && (role==="drawingPlayer"))?(
+            {(startDrawing && (currentRole==="drawingPlayer"))?(
                 <div>
                     <div style={{left: "150px", top: "180px", position: "absolute",
                     "font-family": "Nunito", "font-size":"20px","color":"black",
@@ -174,7 +220,7 @@ const DrawingStage = (props) => {
                     >
                         Submit
                     </Button> */}
-                    <DrawingBoard start = {startDrawing} role = {"drawingPlayer"}/>
+                    <DrawingBoard start = {startDrawing} role = {currentRole} turn = {turn} word = {word} gameId = {gameId}/>
                 </div>
             ):(<></>)}
         </BaseContainer>

@@ -62,6 +62,9 @@ const AppRouter = () => {
             <Profile />
           </ProfileGuard>
         </Route>
+        <Route exact path="/game/:gameId">
+          <SelectWord/>
+        </Route>
         <Route exact path="/selectWord">
           <SelectWord />
         </Route>

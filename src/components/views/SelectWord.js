@@ -1,17 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
-import Timer from "components/views/Timer";
 import cats from "styles/images/cats2.png";
 import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
-import Header from "components/views/Header";
 import BaseContainer from 'components/ui/BaseContainer';
 import "styles/views/Guessing.scss";
-import DrawingBoard from './DrawingBoard';
 import {useHistory, useLocation} from 'react-router-dom';
 import { Button } from "components/ui/Button";
 import { Spinner } from 'components/ui/Spinner';
+import Turn from 'models/Turn';
 
 const SelectWord = () => {
     //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
@@ -19,12 +17,74 @@ const SelectWord = () => {
     const history = useHistory();
     const location = useLocation();
     //get the room and user information
-    const role = location.state.role;
-    const [word, setWord]=useState("apple"); //the chosen word
-    const [username1, setUsername1]=useState("user1");
-    const [username2, setUsername2]=useState("user2");
-    const [username3, setUsername3]=useState("user3");
-    const [username4, setUsername4]=useState("user4");
+    const turn = location.state.turn;
+    const gameId = location.state.gameId;
+    const [drawingPlayerId, setDrawingPlayerId] = useState(null);
+    const currentId = localStorage.getItem("id");
+    const [currentRole, setCurrentRole] = useState(null);
+    const [players, setPlayers] = useState(null);
+    const [wordsToBeChosen, setWordsToBeChosen] = useState(null);
+    const [chosenWord, setChosenWord] = useState(null);
+    const [p1, setP1] = useState(null);
+    const [p2, setP2] = useState(null);
+    const [p3, setP3] = useState(null);
+    const [p4, setP4] = useState(null);
+    const [numberOfPlayers, setNumberOfPlayers] = useState(null);
+
+    const fetchTurn = async () => {
+        try {
+          const response = await api().get(`/gameRounds/information/${turn}`);
+          console.log(response);
+          const turnInfo = new Turn(response.data);
+          console.log(turnInfo);
+          setPlayers(turnInfo.players);
+          setNumberOfPlayers(players.length);
+          setDrawingPlayerId(turnInfo.drawingPlayerId);
+
+          setP1(players[0]);
+          setP2(players[1]);
+          setP3(players[2]);
+          setP4(players[3]);
+
+          if(drawingPlayerId==currentId){
+                setCurrentRole("drawingPlayer");
+                const response2 = await api().get(`/games/words/${turn}`);
+                setWordsToBeChosen(response2.wordsToBeChosen)
+          }else{
+                setCurrentRole("guessingPlayer");
+          }
+        } catch (error) {
+          alert(
+            `Something went wrong during get game information: \n${handleError(
+              error
+            )}`
+          );
+        }
+    };
+    fetchTurn();
+
+    async function fetchData(){
+        try{
+            const response = await api().get(`/gameRounds/information/${turn}`);
+            if(response.data.drawingPhase){
+                const word = response.data.targetWord;
+                startDrawing = +new Date();
+                history.push({pathname:'/drawingStage', state:{gameId:gameId,startDrawing:startDrawing, word:targetWord, turn:turn}})
+            }
+        }catch (error) {
+            alert(
+                `Something went wrong during get game information: \n${handleError(
+                  error
+                )}`
+            );
+        }
+    }
+
+    if(currentId!=drawingPlayerId){
+        useInterval(async () => {
+            fetchData();
+        }, 1000);
+    }
 
     const displayWords = (
         <div>
@@ -34,45 +94,71 @@ const SelectWord = () => {
                     onClick={() => {
                         startDrawing = +new Date();
                         // console.log(startDrawing);
-                        setWord("apple"); //need to be modified
-                        history.push({pathname:'/drawingStage', state:{startDrawing:startDrawing, word:word}});
+                        setChosenWord(wordsToBeChosen[0]); //need to be modified
+                        const requestBody = JSON.stringify({"id":turn,"targetWord":wordsToBeChosen[0]});
+                        const response = api().post(`/gameRounds/words`,requestBody);
+                        history.push({pathname:'/drawingStage', state:{gameId:gameId,startDrawing:startDrawing, word:chosenWord, turn:turn}});
                     }}
                     style={{left: "50px", top: "320px", position: "absolute", 
                     "font-family": "Nunito", "font-size":"20px", "color":"black", 
                     "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
                 >
-                apple
+                {wordsToBeChosen[0]}
                 </Button>
             </div>
             <div>
                 <Button
-                    //onClick={() => goToDrawing()} need to connect to backend later
+                    onClick={() => {
+                        startDrawing = +new Date();
+                        // console.log(startDrawing);
+                        setChosenWord(wordsToBeChosen[1]);
+                        const requestBody = JSON.stringify({"id":turn,"targetWord":wordsToBeChosen[1]});
+                        const response = api().post(`/gameRounds/words`,requestBody);
+                        history.push({pathname:'/drawingStage', state:{gameId:gameId,startDrawing:startDrawing, word:chosenWord, turn:turn}});
+                    }}
                     style={{left: "50px", top: "370px", position: "absolute", 
                     "font-family": "Nunito", "font-size":"20px", "color":"black", 
                     "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
                 >
-                banana
+                {wordsToBeChosen[1]}
                 </Button>
             </div>
             <div>
                 <Button
-                    //onClick={() => goToDrawing()} need to connect to backend later
+                    onClick={() => {
+                        startDrawing = +new Date();
+                        // console.log(startDrawing);
+                        setChosenWord(wordsToBeChosen[2]);
+                        const requestBody = JSON.stringify({"id":turn,"targetWord":wordsToBeChosen[2]});
+                        const response = api().post(`/gameRounds/words`,requestBody);
+                        history.push({pathname:'/drawingStage', state:{gameId:gameId,startDrawing:startDrawing, word:chosenWord, turn:turn}});
+                    }}
                     style={{left: "50px", top: "420px", position: "absolute", 
                     "font-family": "Nunito", "font-size":"20px", "color":"black", 
                     "margin-bottom": "5px",border: "2px solid #000000","background-color": "rgba(181, 153, 120, 0.5)",}}
                 >
-                orange
+                {wordsToBeChosen[2]}
                 </Button>
             </div>
         </div>
     );
 
-    //display cat and username
+    let drawingPlayerUsername;
+    var otherUsernames = new Array();
+    let i;
+    for(i=0;i<numberOfPlayers;i++){
+        if (players[i].id === drawingPlayerId){
+            drawingPlayerUsername=players[i].username;
+        }else{
+            otherUsernames.push(players[i].username);
+        }
+    }
+
     const player1 = (
         <div className="guessing info">
             <img src={cat1} alt=""/>
             <div style={{"font-family": "Nunito", "font-size": "20px","color":"black"}}>
-                {username1}
+                {drawingPlayerUsername}
             </div>
         </div>
     );
@@ -80,7 +166,7 @@ const SelectWord = () => {
         <div className="guessing info">
             <img src={cat2} alt="" />
             <div style={{"font-family": "Nunito", "font-size": "20px","color":"black"}}>
-                {username2}
+                {otherUsernames[0]}
             </div>
         </div>
     );
@@ -88,7 +174,7 @@ const SelectWord = () => {
         <div className="guessing info">
             <img src={cat3} alt="" />
             <div style={{"font-family": "Nunito", "font-size": "20px","color":"black"}}>
-                {username3}
+                {otherUsernames[1]}
             </div>
         </div>
     );
@@ -96,7 +182,7 @@ const SelectWord = () => {
         <div className="guessing info">
             <img src={cat4} alt="" />
             <div style={{"font-family": "Nunito", "font-size": "20px","color":"black"}}>
-                {username4}
+                {otherUsernames[2]}
             </div>
         </div>
     );
@@ -114,7 +200,7 @@ const SelectWord = () => {
                 <div className="guessing line"></div>
                 <div className="guessing score-container">
                     <div className="guessing content" >
-                        {username1}
+                        {p1.username}
                     </div>
                     <div className="guessing content">0</div>
                 </div>
@@ -124,7 +210,7 @@ const SelectWord = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username2}
+                        {p2.username}
                     </div>
                     <div className="guessing content">0</div>
                 </div>
@@ -134,7 +220,7 @@ const SelectWord = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username3}
+                        {p3.username}
                     </div>
                     <div className="guessing content">0</div>
                 </div>
@@ -144,7 +230,7 @@ const SelectWord = () => {
                 ></div>
                 <div className="guessing score-container">
                     <div className="guessing content">
-                        {username4}
+                        {p4.username}
                     </div>
                     <div className="guessing content">0</div>
                 </div>
@@ -180,7 +266,7 @@ const SelectWord = () => {
             <div>
                 {ranking}
             </div>
-            {(!startDrawing && (role==="drawingPlayer"))? (
+            {(!startDrawing && (currentRole==="drawingPlayer"))? (
                 <div>
                     <h2 style={{left: "250px", top: "180px", position: "absolute", "font-family": "Nunito", "color":"black"}}>Choose one word first!</h2>
                     {displayWords}

@@ -10,9 +10,23 @@ import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import { useInterval } from "helpers/hooks";
+
 const Rooms = ({ room }) => {
   const history = useHistory();
-  const goToWaiting = (id) => {
+  const goToWaiting = async (id) => {
+    const requestBody = JSON.stringify({
+      roomId: id,
+      userId: localStorage.getItem("id"),
+    });
+    try {
+      await api().put(`/games/join`, requestBody);
+    } catch (error) {
+      alert(
+        `Something went wrong during joining waiting room: \n${handleError(
+          error
+        )}`
+      );
+    }
     history.push(`/waiting/${id}`);
   };
   return (

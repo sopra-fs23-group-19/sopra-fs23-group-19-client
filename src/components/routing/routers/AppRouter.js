@@ -74,8 +74,10 @@ const AppRouter = () => {
         <Route exact path="/ranking">
           <Ranking />
         </Route>
+
+        {/* redirect to the login page */}
         <Route exact path="/">
-          <Redirect to="/lobby" />
+          <Redirect to="/login" />
         </Route>
         <Route exact path="/gameCreation">
           <GameCreationView />

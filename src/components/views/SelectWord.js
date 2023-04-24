@@ -25,6 +25,11 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [word1, setWord1] = useState(""); //
   const [word2, setWord2] = useState(""); //
   const [playerNum, setPlayerNum] = useState(2);
+  const [score1, setScore1] = useState("");
+  const [score2, setScore2] = useState("");
+  const [score3, setScore3] = useState("");
+  const [score4, setScore4] = useState("");
+  const [role, setRole] = useState("");
   //   const [guessingPlayer, setGuessingPlayer] = useState([
   //     { id: null, username: "" },
   //   ]);
@@ -36,7 +41,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
   const [username4, setUsername4] = useState("");
-
+  //   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
+  console.log(turnId);
   const fetchWord = async () => {
     try {
       const response0 = await api().get(`/gameRounds/words/${turnId}`);
@@ -69,46 +75,48 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setWord1(response.wordsToBeChosen[1]);
         setWord2(response.wordsToBeChosen[2]);
       }
-      const response1 = {
-        id: 1,
-        drawingPlayerId: 1,
-        drawingPlayerName: "test1",
-        players: [
-          {
-            id: 1,
-            username: "test1",
-          },
-          {
-            id: 2,
-            username: "test",
-          },
-        ],
-        image: null,
-        wordsToBeChosen: ["feet", "bench", "line"],
-        gameId: 1,
-        submittedAnswerIds: [],
-        status: "CHOOSE_WORD",
-      };
+      //   const response1 = {
+      //     id: 1,
+      //     drawingPlayerId: 1,
+      //     drawingPlayerName: "test1",
+      //     players: [
+      //       {
+      //         id: 1,
+      //         username: "test1",
+      //       },
+      //       {
+      //         id: 2,
+      //         username: "test",
+      //       },
+      //     ],
+      //     image: null,
+      //     wordsToBeChosen: ["feet", "bench", "line"],
+      //     gameId: 1,
+      //     submittedAnswerIds: [],
+      //     status: "CHOOSE_WORD",
+      //   };
+
       //   const playerNum = response1.players.length;
-      setPlayerNum(response1.players.length);
-      var allPlayers = response1.players;
-      const updatedPlayer = allPlayers.filter(
-        (item) => item.id !== response1.drawingPlayerId
-      );
-      console.log(updatedPlayer);
-      if (playerNum == 4) {
-        // setUsername1(response1.players[0].username);
-        setUsername1(response1.drawingPlayerName);
+      //   setPlayerNum(response1.players.length);
+      //   var allPlayers = response1.players;
+      //   const updatedPlayer = allPlayers.filter(
+      //     (item) => item.id !== response1.drawingPlayerId
+      //   );
+      //   console.log(updatedPlayer);
+      //   setDrawingPlayerId(response1.drawingPlayerId);
+      //   if (playerNum == 4) {
+      //     // setUsername1(response1.players[0].username);
+      //     setUsername1(response1.drawingPlayerName);
 
-        setUsername2(updatedPlayer[0].username);
-        setUsername3(updatedPlayer[1].username);
-        setUsername4(updatedPlayer[2].username);
-      }
+      //     setUsername2(updatedPlayer[0].username);
+      //     setUsername3(updatedPlayer[1].username);
+      //     setUsername4(updatedPlayer[2].username);
+      //   }
 
-      if (playerNum == 2) {
-        setUsername1(response1.drawingPlayerName);
-        setUsername2(updatedPlayer[0].username);
-      }
+      //   if (playerNum == 2) {
+      //     setUsername1(response1.drawingPlayerName);
+      //     setUsername2(updatedPlayer[0].username);
+      //   }
       // setPlayerCount(response.data.numberOfPlayers);
       // const response = {
       //   numOfPlayers: 2,
@@ -124,16 +132,103 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       // };
       // setPlayerCount(response.numOfPlayers);
       // setPlayerCount(playerCount + 1);
-      // setRoomName(response.roomName);
-      // const temp = response.listOfPlayerNames;
-      // setPlayerNames(temp);
-      //   setPlayerIds(response.listOfPlayerIds);
-      // setOwnerId(response.ownerId);
-      // setRoomSeats(response.roomSeats);
-      // setStatus(response.status);
+    } catch (error) {
+      alert(`Something went wrong during get words: \n${handleError(error)}`);
+      history.push("/lobby"); // redirect back to lobby
+    }
+  };
+  const fetchTurnInfo = async () => {
+    try {
+      const response0 = await api().get(
+        `/gameRounds/information/${turnId}/${curUserId}`
+      );
+      const response1 = response0.data;
+      console.log(response1);
+      setPlayerNum(response1.players.length);
+      var allPlayers = response1.players;
+      const updatedPlayer = allPlayers.filter(
+        (item) => item.id !== response1.drawingPlayerId
+      );
+
+      if (playerNum == 4) {
+        // setUsername1(response1.players[0].username);
+        setUsername1(response1.drawingPlayerName);
+
+        setUsername2(updatedPlayer[0].username);
+        setUsername3(updatedPlayer[1].username);
+        setUsername4(updatedPlayer[2].username);
+      }
+
+      if (playerNum == 2) {
+        setUsername1(response1.drawingPlayerName);
+        setUsername2(updatedPlayer[0].username);
+      }
+
+      if (curUserId == response1.drawingPlayerId) {
+        setRole("drawingPlayer");
+      } else if (curUserId != response1.drawingPlayerId) {
+        setRole("guessingPlayer");
+      }
     } catch (error) {
       alert(
-        `Something went wrong during get waiting room information: \n${handleError(
+        `Something went wrong during get game Turn information: \n${handleError(
+          error
+        )}`
+      );
+      history.push("/lobby"); // redirect back to lobby
+    }
+  };
+
+  useEffect(() => {
+    fetchTurnInfo();
+  }, []);
+
+  const fetchTurnScore = async () => {
+    try {
+      const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
+      const response = response0.data;
+      //response=
+      //   [
+      //     {
+      //         "id": 2,
+      //         "username": "test",
+      //         "token": "30e578e3-4329-41aa-8a16-d51f5d5294c2",
+      //         "status": "ISPLAYING",
+      //         "creationDate": "2023-04-24T07:51:30.741+00:00",
+      //         "bestScore": 0,
+      //         "totalScore": 0,
+      //         "currentScore": 0,
+      //         "guessingWord": null,
+      //         "currentGameScore": 0
+      //     },
+      //     {
+      //         "id": 1,
+      //         "username": "test1",
+      //         "token": "815bbb7e-eec9-466f-9132-a7c933f201d3",
+      //         "status": "ISPLAYING",
+      //         "creationDate": "2023-04-24T07:51:24.545+00:00",
+      //         "bestScore": 0,
+      //         "totalScore": 0,
+      //         "currentScore": 0,
+      //         "guessingWord": null,
+      //         "currentGameScore": 0
+      //     }
+      // ]
+
+      if (playerNum == 4) {
+        setScore1(response[0].currentScore);
+        setScore2(response[1].currentScore);
+        setScore3(response[2].currentScore);
+        setScore4(response[3].currentScore);
+      }
+
+      if (playerNum == 2) {
+        setScore1(response[0].currentScore);
+        setScore2(response[1].currentScore);
+      }
+    } catch (error) {
+      alert(
+        `Something went wrong during getting turn ranking information: \n${handleError(
           error
         )}`
       );
@@ -143,6 +238,9 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
 
   useEffect(() => {
     fetchWord();
+  }, []);
+  useEffect(() => {
+    fetchTurnScore();
   }, []);
 
   const displayWords = (
@@ -280,7 +378,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         <div className="guessing line"></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score1}</div>
         </div>
         <div
           className="guessing line"
@@ -288,7 +386,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score2}</div>
         </div>
         <div
           className="guessing line"
@@ -296,7 +394,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username3}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score3}</div>
         </div>
         <div
           className="guessing line"
@@ -304,7 +402,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username4}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score4}</div>
         </div>
         <div
           className="guessing line"
@@ -326,7 +424,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         <div className="guessing line"></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score1}</div>
         </div>
         <div
           className="guessing line"
@@ -334,7 +432,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score2}</div>
         </div>
         <div
           className="guessing line"
@@ -395,8 +493,40 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           <div>{rankingWhenTwoPlayers}</div>
         </div>
       }
+      {role == "drawingPlayer" ? (
+        <div>
+          <h2
+            style={{
+              left: "250px",
+              top: "180px",
+              position: "absolute",
+              "font-family": "Nunito",
+              color: "black",
+            }}
+          >
+            {" "}
+            It's your turn to paint. Choose one word first!
+          </h2>
 
-      <div>
+          {displayWords}
+        </div>
+      ) : (
+        <div>
+          <h2
+            style={{
+              left: "250px",
+              top: "180px",
+              position: "absolute",
+              "font-family": "Nunito",
+              color: "black",
+            }}
+          >
+            {" "}
+            Drawing player is choosing a word!
+          </h2>
+        </div>
+      )}
+      {/* <div>
         <h2
           style={{
             left: "250px",
@@ -409,9 +539,9 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           {" "}
           It's your turn to paint. Choose one word first!
         </h2>
-
+        
         {displayWords}
-      </div>
+      </div> */}
     </BaseContainer>
   );
 };

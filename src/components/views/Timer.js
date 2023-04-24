@@ -9,10 +9,10 @@ const Timer = ({ start, stage, sendTimeInfo }) => {
   const [seconds, setSeconds] = useState(null);
   const countDown = () => {
     const nowTime = +new Date();
-    let times = 6 - parseInt(`${(nowTime - start) / 1000}`);
+    let times = 60 - parseInt(`${(nowTime - start) / 1000}`);
     // setS(parseInt(`${times%60}`));
     if (stage === "drawing") {
-      times = 2 - parseInt(`${(nowTime - start) / 1000}`);
+      times = 120 - parseInt(`${(nowTime - start) / 1000}`);
     }
     setSeconds(times);
     if (times <= 0) {

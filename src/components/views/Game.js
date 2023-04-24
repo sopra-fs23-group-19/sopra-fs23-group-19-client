@@ -24,7 +24,7 @@ const Game = () => {
   // keep its value throughout render cycles.
   // a component can have as many state variables as you like.
   // more information can be found under https://reactjs.org/docs/hooks-state.html
-  const [drawingPlayerId, setDrawingPlayerId] = useState(null);
+  // const [drawingPlayerId, setDrawingPlayerId] = useState(null);
   const [gameStatus, setGameStatus] = useState(true);
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
@@ -76,25 +76,40 @@ const Game = () => {
   const handleSubmitAnswer = async (word) => {
     console.log("handle submit answer");
     const requestBody = JSON.stringify({
-      id: turnId,
+      id: curUserId,
       guessingWord: word,
+      currentGameId: gameId,
     });
     console.log(requestBody);
     try {
-      await api().post(`/gameRounds/answers/${turnId}`, requestBody);
+      await api().put(`/gameRounds/answers/${turnId}`, requestBody);
     } catch (error) {
       alert(
         `Something went wrong during submitting Answer: \n${handleError(error)}`
       );
     }
-    // setTurnStatus("END");
   };
+
+  // const handleQuitGame = async () => {
+  //   console.log("handle quit game");
+  //   const requestBody = JSON.stringify({
+  //     id: turnId,
+  //     guessingWord: word,
+  //   });
+  //   console.log(requestBody);
+  //   try {
+  //     await api().put(`/gameRounds/answers/${turnId}`, requestBody);
+  //   } catch (error) {
+  //     alert(
+  //       `Something went wrong during submitting Answer: \n${handleError(error)}`
+  //     );
+  //   }
+  // };
 
   const fetchData = async () => {
     try {
       const response0 = await api().get(`/games/${gameId}`);
       // // delays continuous execution of an async operation for 1 second.
-      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // // Get the returned users and update the state.
 
@@ -115,12 +130,13 @@ const Game = () => {
       // Get the returned users and update the state.
       // setGameModel(response.data);
       var arr = response.drawingPlayerIds;
-      var currentDrawingId = arr[arr.length - 1];
-      setDrawingPlayerId(currentDrawingId);
+      // var currentDrawingId = arr[arr.length - 1];
+      // setDrawingPlayerId(currentDrawingId);
       setGameStatus(response.gameStatus);
       setTurnStatus(response.gameTurnStatus);
       setCurrentGameTurn(response.currentGameTurn);
       console.log(turnStatus);
+      console.log(gameStatus);
       var arrTurnIds = response.gameTurnList;
       var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
       setTurnId(currentTurnId);
@@ -207,7 +223,7 @@ const Game = () => {
   const switchPages = () => {
     let content = <Spinner />;
     if (gameStatus) {
-      if (turnStatus === "CHOOSE_WORD" && curUserId == drawingPlayerId) {
+      if (turnStatus === "CHOOSE_WORD") {
         content = (
           <SelectWord
             gameId={gameId}
@@ -217,7 +233,7 @@ const Game = () => {
         );
       }
       // else if (turnStatus === "PAINTING" && curUserId == drawingPlayerId)
-      else if (turnStatus === "PAINTING") {
+      else if (turnStatus === "PAINITING") {
         content = (
           <DrawingStage
             gameId={gameId}

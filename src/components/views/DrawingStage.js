@@ -29,6 +29,10 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
   const [username4, setUsername4] = useState("");
+  const [score1, setScore1] = useState("");
+  const [score2, setScore2] = useState("");
+  const [score3, setScore3] = useState("");
+  const [score4, setScore4] = useState("");
   const [word, setWord] = useState("");
   const [role, setRole] = useState("");
   const [time, setTime] = useState(120);
@@ -100,10 +104,10 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
 
       if (parseInt(curUserId) == parseInt(response1.drawingPlayerId)) {
         setRole("drawingPlayer");
-      } else if (parseInt(curUserId) == parseInt(response1.drawingPlayerId)) {
+      } else if (parseInt(curUserId) != parseInt(response1.drawingPlayerId)) {
         setRole("guessingPlayer");
       }
-      setRole("drawingPlayer");
+      //   setRole("drawingPlayer");
     } catch (error) {
       alert(
         `Something went wrong during get game Turn information: \n${handleError(
@@ -116,6 +120,62 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
 
   useEffect(() => {
     fetchTurnInfo();
+  }, []);
+
+  const fetchTurnScore = async () => {
+    try {
+      const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
+      const response = response0.data;
+      //response=
+      //   [
+      //     {
+      //         "id": 2,
+      //         "username": "test",
+      //         "token": "30e578e3-4329-41aa-8a16-d51f5d5294c2",
+      //         "status": "ISPLAYING",
+      //         "creationDate": "2023-04-24T07:51:30.741+00:00",
+      //         "bestScore": 0,
+      //         "totalScore": 0,
+      //         "currentScore": 0,
+      //         "guessingWord": null,
+      //         "currentGameScore": 0
+      //     },
+      //     {
+      //         "id": 1,
+      //         "username": "test1",
+      //         "token": "815bbb7e-eec9-466f-9132-a7c933f201d3",
+      //         "status": "ISPLAYING",
+      //         "creationDate": "2023-04-24T07:51:24.545+00:00",
+      //         "bestScore": 0,
+      //         "totalScore": 0,
+      //         "currentScore": 0,
+      //         "guessingWord": null,
+      //         "currentGameScore": 0
+      //     }
+      // ]
+
+      if (playerNum == 4) {
+        setScore1(response[0].currentScore);
+        setScore2(response[1].currentScore);
+        setScore3(response[2].currentScore);
+        setScore4(response[3].currentScore);
+      }
+
+      if (playerNum == 2) {
+        setScore1(response[0].currentScore);
+        setScore2(response[1].currentScore);
+      }
+    } catch (error) {
+      alert(
+        `Something went wrong during getting turn ranking information: \n${handleError(
+          error
+        )}`
+      );
+      history.push("/lobby"); // redirect back to lobby
+    }
+  };
+  useEffect(() => {
+    fetchTurnScore();
   }, []);
 
   //display cat and username
@@ -173,7 +233,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
         <div className="guessing line"></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score1}</div>
         </div>
         <div
           className="guessing line"
@@ -181,7 +241,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score2}</div>
         </div>
         <div
           className="guessing line"
@@ -189,7 +249,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username3}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score3}</div>
         </div>
         <div
           className="guessing line"
@@ -197,7 +257,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username4}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score4}</div>
         </div>
         <div
           className="guessing line"
@@ -218,7 +278,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
         <div className="guessing line"></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score1}</div>
         </div>
         <div
           className="guessing line"
@@ -226,7 +286,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
-          <div className="guessing content">0</div>
+          <div className="guessing content">{score2}</div>
         </div>
         <div
           className="guessing line"
@@ -235,6 +295,48 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
       </div>
     </div>
   );
+
+  const drawingPlayerContent = () => {
+    console.log("drawing player content");
+    const content = (
+      <div
+        style={{
+          left: "350px",
+          top: "160px",
+          position: "absolute",
+          "font-family": "Nunito",
+          "font-size": "30px",
+          color: "black",
+        }}
+      >
+        Drawing stage
+        <Timer
+          start={startDrawing}
+          stage="drawing"
+          sendTimeInfo={sendTimeInfo}
+        />
+      </div>
+    );
+    return content;
+  };
+  const guessingPlayerContent = () => {
+    console.log("guessing player content");
+    const content = (
+      <div
+        style={{
+          left: "350px",
+          top: "160px",
+          position: "absolute",
+          "font-family": "Nunito",
+          "font-size": "30px",
+          color: "black",
+        }}
+      >
+        Drawing stage. The player is painting!
+      </div>
+    );
+    return content;
+  };
 
   return (
     <BaseContainer>
@@ -278,7 +380,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
         <></>
       )} */}
 
-      <div
+      {/* <div
         style={{
           left: "350px",
           top: "160px",
@@ -294,7 +396,10 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
           stage="drawing"
           sendTimeInfo={sendTimeInfo}
         />
-      </div>
+      </div> */}
+      {role === "drawingPlayer"
+        ? drawingPlayerContent()
+        : guessingPlayerContent()}
       {startDrawing && role === "drawingPlayer" ? (
         <div>
           <div

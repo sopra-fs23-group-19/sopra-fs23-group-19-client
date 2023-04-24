@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { api, handleError } from "helpers/api";
+import { api, handleNotLogInError } from "helpers/api";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
@@ -21,11 +21,12 @@ const Rooms = ({ room }) => {
     try {
       await api().put(`/games/join`, requestBody);
     } catch (error) {
-      alert(
-        `Something went wrong during joining waiting room: \n${handleError(
-          error
-        )}`
-      );
+      handleNotLogInError(history, error, "joining the room", true);
+      // alert(
+      //   `Something went wrong during joining waiting room: \n${handleError(
+      //     error
+      //   )}`
+      // );
     }
     history.push(`/waiting/${id}`);
   };
@@ -55,15 +56,17 @@ const Lobby = () => {
     try {
       const response = await api().get("/games");
       setRooms(response.data);
-      console.log(rooms);
+      // console.log(rooms);
     } catch (error) {
-      console.error(
-        `Something went wrong while fetching the rooms: \n${handleError(error)}`
-      );
-      console.error("Details:", error);
-      alert(
-        "Something went wrong while fetching the rooms! See the console for details."
-      );
+      // console.error(
+      //   `Something went wrong while fetching the rooms: \n${handleError(error)}`
+      // );
+      // console.error("Details:", error);
+      // alert(
+      //   "Something went wrong while fetching the rooms! See the console for details."
+      // );
+      handleNotLogInError(history, error, "getting lobby");
+      // history.push("/login");
     }
   };
   useEffect(() => {
@@ -71,7 +74,7 @@ const Lobby = () => {
   }, []);
   useInterval(async () => {
     fetchRooms();
-  }, 5000);
+  }, 3000);
 
   let content = <Spinner />;
   if (rooms) {

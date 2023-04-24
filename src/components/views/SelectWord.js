@@ -12,7 +12,7 @@ import DrawingBoard from "./DrawingBoard";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
-import { api, handleError } from "../../helpers/api";
+import { api, handleNotLogInError } from "../../helpers/api";
 
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
@@ -24,7 +24,9 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [word0, setWord0] = useState(""); //
   const [word1, setWord1] = useState(""); //
   const [word2, setWord2] = useState(""); //
-  const [playerNum, setPlayerNum] = useState(2);
+  //   const [playerNum, setPlayerNum] = useState(2);
+  const [playernum, setPlayernum] = useState(null);
+  //   const [playerNum, setPlayerNum] = useState(null);
   const [score1, setScore1] = useState("");
   const [score2, setScore2] = useState("");
   const [score3, setScore3] = useState("");
@@ -75,26 +77,26 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setWord1(response.wordsToBeChosen[1]);
         setWord2(response.wordsToBeChosen[2]);
       }
-      //   const response1 = {
-      //     id: 1,
-      //     drawingPlayerId: 1,
-      //     drawingPlayerName: "test1",
-      //     players: [
-      //       {
-      //         id: 1,
-      //         username: "test1",
-      //       },
-      //       {
-      //         id: 2,
-      //         username: "test",
-      //       },
-      //     ],
-      //     image: null,
-      //     wordsToBeChosen: ["feet", "bench", "line"],
-      //     gameId: 1,
-      //     submittedAnswerIds: [],
-      //     status: "CHOOSE_WORD",
-      //   };
+      // const response1 = {
+      //   id: 1,
+      //   drawingPlayerId: 1,
+      //   drawingPlayerName: "test1",
+      //   players: [
+      //     {
+      //       id: 1,
+      //       username: "test1",
+      //     },
+      //     {
+      //       id: 2,
+      //       username: "test",
+      //     },
+      //   ],
+      //   image: null,
+      //   wordsToBeChosen: ["feet", "bench", "line"],
+      //   gameId: 1,
+      //   submittedAnswerIds: [],
+      //   status: "CHOOSE_WORD",
+      // };
 
       //   const playerNum = response1.players.length;
       //   setPlayerNum(response1.players.length);
@@ -133,8 +135,9 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       // setPlayerCount(response.numOfPlayers);
       // setPlayerCount(playerCount + 1);
     } catch (error) {
-      alert(`Something went wrong during get words: \n${handleError(error)}`);
-      history.push("/lobby"); // redirect back to lobby
+      //   alert(`Something went wrong during get words: \n${handleError(error)}`);
+      //   history.push("/lobby"); // redirect back to lobby
+      handleNotLogInError(history, error, "fetching words for drawing Player");
     }
   };
   const fetchTurnInfo = async () => {
@@ -142,24 +145,63 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       const response0 = await api().get(
         `/gameRounds/information/${turnId}/${curUserId}`
       );
+      //   const response1 = {
+      //     id: 1,
+      //     drawingPlayerId: 1,
+      //     drawingPlayerName: "test1",
+      //     players: [
+      //       {
+      //         id: 1,
+      //         username: "test1",
+      //       },
+      //       {
+      //         id: 2,
+      //         username: "test",
+      //       },
+      //       {
+      //         id: 3,
+      //         username: "test3",
+      //       },
+      //       {
+      //         id: 4,
+      //         username: "test4",
+      //       },
+      //     ],
+      //     image: null,
+      //     wordsToBeChosen: ["feet", "bench", "line"],
+      //     gameId: 1,
+      //     submittedAnswerIds: [],
+      //     status: "CHOOSE_WORD",
+      //   };
       const response1 = response0.data;
-      console.log(response1);
-      setPlayerNum(response1.players.length);
+      console.log(response1.players);
+      console.log(typeof response1.players);
+      console.log(response1.players.length);
+      var temp = response1.players.length;
+      //   console.log(temp);
+      setPlayernum(temp);
       var allPlayers = response1.players;
       const updatedPlayer = allPlayers.filter(
         (item) => item.id !== response1.drawingPlayerId
       );
-
-      if (playerNum == 4) {
+      //   console.log(updatedPlayer);
+      console.log("player usernames in select word");
+      //   setPlayerNum(updatedPlayer.length + 1);
+      //   console.log(playerNum);
+      //   console.log(typeof playerNum);
+      if (playernum == 4) {
         // setUsername1(response1.players[0].username);
         setUsername1(response1.drawingPlayerName);
 
         setUsername2(updatedPlayer[0].username);
         setUsername3(updatedPlayer[1].username);
         setUsername4(updatedPlayer[2].username);
+        console.log(username2);
+        console.log(username3);
+        console.log(username4);
       }
 
-      if (playerNum == 2) {
+      if (playernum == 2) {
         setUsername1(response1.drawingPlayerName);
         setUsername2(updatedPlayer[0].username);
       }
@@ -170,78 +212,111 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setRole("guessingPlayer");
       }
     } catch (error) {
-      alert(
-        `Something went wrong during get game Turn information: \n${handleError(
-          error
-        )}`
+      //   alert(
+      //     `Something went wrong during get game Turn information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      //   history.push("/lobby"); // redirect back to lobby
+      handleNotLogInError(
+        history,
+        error,
+        "fetching Turn info in word selecting phase"
       );
-      history.push("/lobby"); // redirect back to lobby
     }
   };
 
   useEffect(() => {
     fetchTurnInfo();
-  }, []);
+  }, [playernum]);
 
   const fetchTurnScore = async () => {
     try {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
       const response = response0.data;
-      //response=
-      //   [
+      //   const response = [
       //     {
-      //         "id": 2,
-      //         "username": "test",
-      //         "token": "30e578e3-4329-41aa-8a16-d51f5d5294c2",
-      //         "status": "ISPLAYING",
-      //         "creationDate": "2023-04-24T07:51:30.741+00:00",
-      //         "bestScore": 0,
-      //         "totalScore": 0,
-      //         "currentScore": 0,
-      //         "guessingWord": null,
-      //         "currentGameScore": 0
+      //       id: 2,
+      //       username: "test",
+      //       token: "30e578e3-4329-41aa-8a16-d51f5d5294c2",
+      //       status: "ISPLAYING",
+      //       creationDate: "2023-04-24T07:51:30.741+00:00",
+      //       bestScore: 0,
+      //       totalScore: 0,
+      //       currentScore: 0,
+      //       guessingWord: null,
+      //       currentGameScore: 0,
       //     },
       //     {
-      //         "id": 1,
-      //         "username": "test1",
-      //         "token": "815bbb7e-eec9-466f-9132-a7c933f201d3",
-      //         "status": "ISPLAYING",
-      //         "creationDate": "2023-04-24T07:51:24.545+00:00",
-      //         "bestScore": 0,
-      //         "totalScore": 0,
-      //         "currentScore": 0,
-      //         "guessingWord": null,
-      //         "currentGameScore": 0
-      //     }
-      // ]
+      //       id: 1,
+      //       username: "test1",
+      //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
+      //       status: "ISPLAYING",
+      //       creationDate: "2023-04-24T07:51:24.545+00:00",
+      //       bestScore: 0,
+      //       totalScore: 0,
+      //       currentScore: 0,
+      //       guessingWord: null,
+      //       currentGameScore: 0,
+      //     },
+      //     {
+      //       id: 3,
+      //       username: "test00",
+      //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
+      //       status: "ISPLAYING",
+      //       creationDate: "2023-04-24T07:51:24.545+00:00",
+      //       bestScore: 0,
+      //       totalScore: 0,
+      //       currentScore: 0,
+      //       guessingWord: null,
+      //       currentGameScore: 0,
+      //     },
+      //     {
+      //       id: 4,
+      //       username: "test00",
+      //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
+      //       status: "ISPLAYING",
+      //       creationDate: "2023-04-24T07:51:24.545+00:00",
+      //       bestScore: 0,
+      //       totalScore: 0,
+      //       currentScore: 0,
+      //       guessingWord: null,
+      //       currentGameScore: 0,
+      //     },
+      //   ];
 
-      if (playerNum == 4) {
+      if (playernum == 4) {
         setScore1(response[0].currentScore);
         setScore2(response[1].currentScore);
         setScore3(response[2].currentScore);
         setScore4(response[3].currentScore);
       }
 
-      if (playerNum == 2) {
+      if (playernum == 2) {
         setScore1(response[0].currentScore);
         setScore2(response[1].currentScore);
       }
     } catch (error) {
-      alert(
-        `Something went wrong during getting turn ranking information: \n${handleError(
-          error
-        )}`
+      //   alert(
+      //     `Something went wrong during getting turn ranking information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      //   history.push("/lobby"); // redirect back to lobby
+      handleNotLogInError(
+        history,
+        error,
+        "fetching turn scores in selecting word phase"
       );
-      history.push("/lobby"); // redirect back to lobby
     }
   };
 
   useEffect(() => {
     fetchWord();
-  }, []);
+  }, [word0]);
   useEffect(() => {
     fetchTurnScore();
-  }, []);
+  }, [score1]);
 
   const displayWords = (
     <div>
@@ -463,7 +538,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         {player4}
       </div>
       <div>{ranking}</div> */}
-      {playerNum == 4 ? (
+      {playernum == 4 ? (
         <div>
           <div style={{ left: "40px", top: "170px", position: "absolute" }}>
             {player1}

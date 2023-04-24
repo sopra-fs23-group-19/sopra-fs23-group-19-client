@@ -5,7 +5,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import { api, handleError } from "../../helpers/api";
+import { api, handleNotLogInError } from "../../helpers/api";
 
 const Ranking = ({ gameId, turnId }) => {
   const history = useHistory();
@@ -78,11 +78,13 @@ const Ranking = ({ gameId, turnId }) => {
         setScore2(response1[1].currentGameScore);
       }
     } catch (error) {
-      alert(
-        `Something went wrong during get game Turn information: \n${handleError(
-          error
-        )}`
-      );
+      //   alert(
+      //     `Something went wrong during get game Turn information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      //   history.push("/lobby"); // redirect back to lobby
+      handleNotLogInError(history, error, "fetching ranking information");
       history.push("/lobby"); // redirect back to lobby
     }
   };

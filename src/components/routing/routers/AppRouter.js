@@ -77,6 +77,9 @@ const AppRouter = () => {
         <Route exact path="/ranking">
           <Ranking />
         </Route>
+        <Route exact path="/selectWord">
+          <SelectWord />
+        </Route>
         <Route exact path="/">
           <Redirect to="/login" />
         </Route>

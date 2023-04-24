@@ -12,7 +12,7 @@ import DrawingBoard from "./DrawingBoard";
 import { useHistory, useLocation } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
-import { api, handleError } from "../../helpers/api";
+import { api, handleNotLogInError } from "../../helpers/api";
 
 const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
   const curUserId = localStorage.getItem("id");
@@ -42,7 +42,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
 
   const sendTimeInfo = (timeValue) => {
     // the callback. Use a better name
-    console.log(timeValue);
+    // console.log(timeValue);
     setTime(timeValue);
   };
   function hanleDoSubmit(painting) {
@@ -82,7 +82,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
       //   const playerNum = response1.players.length;
       setPlayerNum(response1.players.length);
       setWord(response1.targetWord);
-      console.log(word);
+      //   console.log(word);
       var allPlayers = response1.players;
       const updatedPlayer = allPlayers.filter(
         (item) => item.id !== response1.drawingPlayerId
@@ -109,10 +109,15 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
       }
       //   setRole("drawingPlayer");
     } catch (error) {
-      alert(
-        `Something went wrong during get game Turn information: \n${handleError(
-          error
-        )}`
+      //   alert(
+      //     `Something went wrong during get game Turn information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      handleNotLogInError(
+        history,
+        error,
+        "fetching turn information in drawing phase"
       );
       history.push("/lobby"); // redirect back to lobby
     }
@@ -120,7 +125,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
 
   useEffect(() => {
     fetchTurnInfo();
-  }, []);
+  }, [playerNum]);
 
   const fetchTurnScore = async () => {
     try {
@@ -166,17 +171,22 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
         setScore2(response[1].currentScore);
       }
     } catch (error) {
-      alert(
-        `Something went wrong during getting turn ranking information: \n${handleError(
-          error
-        )}`
+      //   alert(
+      //     `Something went wrong during getting turn ranking information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      handleNotLogInError(
+        history,
+        error,
+        "fetching turn ranking information in drawing phase"
       );
       history.push("/lobby"); // redirect back to lobby
     }
   };
   useEffect(() => {
     fetchTurnScore();
-  }, []);
+  }, [score1]);
 
   //display cat and username
   const player1 = (
@@ -297,7 +307,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
   );
 
   const drawingPlayerContent = () => {
-    console.log("drawing player content");
+    // console.log("drawing player content");
     const content = (
       <div
         style={{
@@ -320,7 +330,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
     return content;
   };
   const guessingPlayerContent = () => {
-    console.log("guessing player content");
+    // console.log("guessing player content");
     const content = (
       <div
         style={{

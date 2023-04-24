@@ -66,13 +66,13 @@ const Register = (props) => {
       // const user = new User(response.data);
 
       // Store the token into the local storage.
-      console.log(response.data.token);
-      console.log("response.data.token");
+      // console.log(response.data.token);
+      // console.log("response.data.token");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.id);
-      console.log(localStorage.getItem("id"));
-      console.log(localStorage.getItem("token"));
-      console.log("localStorage.getItem(token)");
+      // console.log(localStorage.getItem("id"));
+      // console.log(localStorage.getItem("token"));
+      // console.log("localStorage.getItem(token)");
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }

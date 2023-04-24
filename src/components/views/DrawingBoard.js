@@ -18,7 +18,7 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
   const [cursorStyle, setCursorStyle] = useState(
     "url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto"
   );
-  console.log(cursorStyle);
+  //   console.log(cursorStyle);
   // let cursorStyle = "url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto"
 
   // const check = () => {
@@ -368,9 +368,9 @@ function useOnDraw(onDraw) {
   function initMouseMoveListener() {
     const mouseMoveListener = (e) => {
       if (isDrawingRef.current) {
-        console.log({ x: e.clientX, y: e.clientY });
+        // console.log({ x: e.clientX, y: e.clientY });
         const point = computePointInCanvas(e.clientX, e.clientY);
-        console.log(point); //receive the point in the board
+        // console.log(point); //receive the point in the board
         const canvasObject = canvasRef.current.getContext("2d");
         if (onDraw) {
           onDraw(canvasObject, point, previousPointRef.current);

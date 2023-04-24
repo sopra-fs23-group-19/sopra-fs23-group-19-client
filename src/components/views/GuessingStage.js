@@ -13,7 +13,7 @@ import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
-import { api, handleError } from "../../helpers/api";
+import { api, handleNotLogInError } from "../../helpers/api";
 
 const FormField = (props) => {
   return (
@@ -138,17 +138,22 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         setScore2(response[1].currentScore);
       }
     } catch (error) {
-      alert(
-        `Something went wrong during getting turn ranking information: \n${handleError(
-          error
-        )}`
+      //   alert(
+      //     `Something went wrong during getting turn ranking information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      handleNotLogInError(
+        history,
+        error,
+        "fetching game turn scores in guessing phase"
       );
       history.push("/lobby"); // redirect back to lobby
     }
   };
   useEffect(() => {
     fetchTurnScore();
-  }, []);
+  }, [score1]);
 
   const fetchTurnInfo = async () => {
     try {
@@ -206,10 +211,15 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         setRole("guessingPlayer");
       }
     } catch (error) {
-      alert(
-        `Something went wrong during get game Turn information: \n${handleError(
-          error
-        )}`
+      //   alert(
+      //     `Something went wrong during get game Turn information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      handleNotLogInError(
+        history,
+        error,
+        "fetching game turn in guessing phase"
       );
       history.push("/lobby"); // redirect back to lobby
     }
@@ -217,7 +227,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
 
   useEffect(() => {
     fetchTurnInfo();
-  }, []);
+  }, [playerNum]);
 
   //   useEffect(() => {
   //     let ignore = false;

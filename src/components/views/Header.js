@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import cats from "styles/images/cats3.png";
-import { api, handleError } from "helpers/api";
+import { api, handleError, handleNotLogInError } from "helpers/api";
 import { useHistory } from "react-router-dom";
 
 /**
@@ -51,8 +51,8 @@ const Header = (props) => {
   // };
   const goToProfile = () => {
     const curUserId = localStorage.getItem("id");
-    console.log("curUserId");
-    console.log(curUserId);
+    // console.log("curUserId");
+    // console.log(curUserId);
     history.push(`/profile/${curUserId}`);
   };
   const logout = async () => {
@@ -60,9 +60,14 @@ const Header = (props) => {
     try {
       await api().post(`/users/logout/${aValue}`);
     } catch (error) {
-      alert(`Something went wrong while logout: \n${handleError(error)}`);
-    }
+      //   alert(`Something went wrong while logout: \n${handleError(error)}`);
+      // }
 
+      // localStorage.removeItem("token");
+      // localStorage.removeItem("id");
+      // history.push("/login");
+      handleNotLogInError(history, error, "logout");
+    }
     localStorage.removeItem("token");
     localStorage.removeItem("id");
     history.push("/login");

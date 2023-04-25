@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { api, handleError } from "helpers/api";
+import { api, handleNotLogInError } from "helpers/api";
 import "styles/views/Profile.scss";
 import User from "models/User";
 import { useParams } from "react-router-dom";
@@ -57,19 +57,19 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const visitIdStr = useParams();
-  console.log("visitIdStr");
-  console.log(visitIdStr);
+  // console.log("visitIdStr");
+  // console.log(visitIdStr);
   const visitId = parseInt(visitIdStr["id"]);
-  console.log(visitId);
+  // console.log(visitId);
   const editable = localStorage.getItem("id") === visitIdStr["id"];
-  console.log(localStorage.getItem("id"));
-  console.log(localStorage.getItem("token"));
-  console.log("local storage");
-  console.log(localStorage.getItem("token"));
-  console.log("local storage");
+  // console.log(localStorage.getItem("id"));
+  // console.log(localStorage.getItem("token"));
+  // console.log("local storage");
+  // console.log(localStorage.getItem("token"));
+  // console.log("local storage");
   // const [isShown, setIsSHown] = useState(false); //password shown or hidden
   // console.log("editable");
-  console.log(editable);
+  // console.log(editable);
   // const currentUserId = localStorage.getItem("userId"); //save userId
 
   useEffect(() => {
@@ -81,11 +81,12 @@ const Profile = () => {
         // const userProfile1 = new User(response);
         setUserProfile(userProfile1);
       } catch (error) {
-        alert(
-          `Something went wrong during get user profile: \n${handleError(
-            error
-          )}`
-        );
+        // alert(
+        //   `Something went wrong during get user profile: \n${handleError(
+        //     error
+        //   )}`
+        // );
+        handleNotLogInError(history, error, "fetching profile", true);
       }
     };
     fetchProfile1();
@@ -130,25 +131,26 @@ const Profile = () => {
   // );
 
   const handleUpdateProfile = async () => {
-    console.log("handle update");
+    // console.log("handle update");
     const newUsername = username || "";
     const newPassword = password || ""; // if didn't update password
 
-    console.log(newUsername);
-    console.log(newPassword);
+    // console.log(newUsername);
+    // console.log(newPassword);
     const requestBody = JSON.stringify({
       id: visitId,
       username: newUsername,
       password: newPassword,
     });
-    console.log(requestBody);
+    // console.log(requestBody);
     try {
       // console.log(visitId);
       await api().put(`/users/${visitId}`, requestBody);
     } catch (error) {
-      alert(
-        `Something went wrong during updating profile: \n${handleError(error)}`
-      );
+      // alert(
+      //   `Something went wrong during updating profile: \n${handleError(error)}`
+      // );
+      handleNotLogInError(history, error, "updating profile", true);
     }
     history.push(`/profile/${visitId}`);
     setIsEditing(false);
@@ -193,7 +195,7 @@ const Profile = () => {
   };
 
   const guestProfile = () => {
-    console.log("guest profile");
+    // console.log("guest profile");
     const content = (
       <div className="profile container">
         <div className="profile form">
@@ -249,7 +251,7 @@ const Profile = () => {
   };
 
   const ownProfile = () => {
-    console.log("own profile");
+    // console.log("own profile");
     const content = (
       <div className="profile container">
         <div className="profile form">
@@ -308,7 +310,7 @@ const Profile = () => {
   };
 
   const ownProfileEdit = () => {
-    console.log("own edit profile");
+    // console.log("own edit profile");
     return (
       <div className="profile container">
         <div className="profile form">

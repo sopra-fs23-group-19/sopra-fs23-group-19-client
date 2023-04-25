@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import BaseContainer from "components/ui/BaseContainer";
 import { Spinner } from "components/ui/Spinner";
 import { withRouter } from "react-router-dom";
-import { api, handleError } from "../../helpers/api";
+import { api, handleNotLogInError } from "../../helpers/api";
 import DrawingStage from "components/views/DrawingStage";
 import Ranking from "components/views/Ranking";
 import SelectWord from "components/views/SelectWord";
@@ -45,9 +45,10 @@ const Game = () => {
     try {
       await api().put(`/gameRounds/words`, requestBody);
     } catch (error) {
-      alert(
-        `Something went wrong during choosing one word: \n${handleError(error)}`
-      );
+      // alert(
+      //   `Something went wrong during choosing one word: \n${handleError(error)}`
+      // );
+      handleNotLogInError(history, error, "handle choose words", true);
     }
 
     // setTurnStatus("PAINTING");
@@ -59,18 +60,17 @@ const Game = () => {
       id: turnId,
       image: painting,
     });
-    console.log(requestBody);
+    // console.log(requestBody);
     try {
       await api().post(`/gameRounds/finalDrawings`, requestBody);
     } catch (error) {
-      alert(
-        `Something went wrong during submitting Painting: \n${handleError(
-          error
-        )}`
-      );
+      // alert(
+      //   `Something went wrong during submitting Painting: \n${handleError(
+      //     error
+      //   )}`
+      // );
+      handleNotLogInError(history, error, "handle submitting Painting", true);
     }
-    console.log("enter guessing");
-    // setTurnStatus("GUESSING");
   };
 
   const handleSubmitAnswer = async (word) => {
@@ -80,13 +80,14 @@ const Game = () => {
       guessingWord: word,
       currentGameId: gameId,
     });
-    console.log(requestBody);
+    // console.log(requestBody);
     try {
       await api().put(`/gameRounds/answers/${turnId}`, requestBody);
     } catch (error) {
-      alert(
-        `Something went wrong during submitting Answer: \n${handleError(error)}`
-      );
+      // alert(
+      //   `Something went wrong during submitting Answer: \n${handleError(error)}`
+      // );
+      handleNotLogInError(history, error, "handle submitting answer", true);
     }
   };
 
@@ -133,21 +134,28 @@ const Game = () => {
       // var currentDrawingId = arr[arr.length - 1];
       // setDrawingPlayerId(currentDrawingId);
       setGameStatus(response.gameStatus);
-      setTurnStatus(response.gameTurnStatus);
-      setCurrentGameTurn(response.currentGameTurn);
-      console.log(turnStatus);
-      console.log(gameStatus);
       var arrTurnIds = response.gameTurnList;
       var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
       setTurnId(currentTurnId);
+      setTurnStatus(response.gameTurnStatus);
+      setCurrentGameTurn(response.currentGameTurn);
+      // console.log(response.gameTurnList);
+      // console.log("current turn status is");
+      // console.log(turnStatus);
+      // console.log("current game status is");
+      // console.log(gameStatus);
+      // console.log("current turn id is");
+      // console.log(turnId);
     } catch (error) {
-      console.error(
-        `Something went wrong while fetching the game: \n${handleError(error)}`
-      );
-      console.error("Details:", error);
-      alert(
-        "Something went wrong while fetching the game! See the console for details."
-      );
+      // console.error(
+      //   `Something went wrong while fetching the game: \n${handleError(error)}`
+      // );
+      // console.error("Details:", error);
+      // alert(
+      //   "Something went wrong while fetching the game! See the console for details."
+      // );
+      handleNotLogInError(history, error, "get game");
+      history.push("/lobby");
     }
   };
   // the effect hook can be used to react to change in your component.

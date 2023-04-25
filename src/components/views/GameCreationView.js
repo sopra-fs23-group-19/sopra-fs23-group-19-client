@@ -1,5 +1,5 @@
 import React from "react";
-import { api, handleError } from "helpers/api";
+import { api, handleNotLogInError } from "helpers/api";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
@@ -55,16 +55,18 @@ const GameCreationView = () => {
       ownerId: currentId,
     });
 
-    console.log(requestBody);
+    // console.log(requestBody);
     try {
       // console.log(visitId);
       const response = await api().post(`/games`, requestBody);
       const roomId = response.data.id;
       history.push(`/waiting/${roomId}`);
     } catch (error) {
-      alert(
-        `Something went wrong during creating Game: \n${handleError(error)}`
-      );
+      //   alert(
+      //     `Something went wrong during creating Game: \n${handleError(error)}`
+      //   );
+      // }
+      handleNotLogInError(history, error, "creating game room", true);
     }
     // history.push(`/waiting/`);
   };

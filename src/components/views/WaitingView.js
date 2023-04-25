@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import { api, handleError } from "helpers/api";
+import { api, handleNotLogInError } from "helpers/api";
 import "styles/views/WaitingView.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
@@ -43,9 +43,9 @@ const WaitingView = () => {
   const fetchRoomInfo = async () => {
     try {
       const response = await api().get(`/games/waitingArea/${roomId}`);
-      console.log(response);
+      // console.log(response);
       const waitingRoom = new WaitRoom(response.data);
-      console.log(waitingRoom);
+      // console.log(waitingRoom);
       setPlayerCount(waitingRoom.numberOfPlayers);
       setStatus(waitingRoom.status);
       setRoomName(waitingRoom.roomName);
@@ -55,7 +55,7 @@ const WaitingView = () => {
 
       const gameId0 = response.data.gameId;
       const turnId0 = response.data.gameTurnId;
-      console.log(gameId0);
+      // console.log(gameId0);
       if (gameId0 != null) {
         setStartGameId(gameId0);
         setStartTurnId(turnId0);
@@ -93,12 +93,13 @@ const WaitingView = () => {
         }
       }
     } catch (error) {
-      alert(
-        `Something went wrong during get waiting room information: \n${handleError(
-          error
-        )}`
-      );
-      history.push("/lobby"); // redirect back to lobby
+      // alert(
+      //   `Something went wrong during get waiting room information: \n${handleError(
+      //     error
+      //   )}`
+      // );
+      // history.push("/lobby"); // redirect back to lobby
+      handleNotLogInError(history, error, "fetching waiting Area");
     }
   };
 
@@ -123,12 +124,12 @@ const WaitingView = () => {
       await api().put("/games/leave", requestBody); //leave waiting area
       history.push("/lobby");
     } catch (error) {
-      alert(
-        `Something went wrong during leave waiting room: \n${handleError(
-          error
-        )}`
-      );
-      // history.push("/lobby"); // redirect back to lobby
+      // alert(
+      //   `Something went wrong during leave waiting room: \n${handleError(
+      //     error
+      //   )}`
+      // );
+      handleNotLogInError(history, error, "leave waiting area");
     }
   };
   const startGame = async () => {
@@ -136,9 +137,10 @@ const WaitingView = () => {
       await api().post(`/games/waitingArea/${roomId}`);
       // history.push(`/game/${roomId}`); // should be changed later
     } catch (error) {
-      alert(
-        `Something went wrong during starting game: \n${handleError(error)}`
-      );
+      // alert(
+      //   `Something went wrong during starting game: \n${handleError(error)}`
+      // );
+      handleNotLogInError(history, error, "start game");
       // history.push("/lobby"); // redirect back to lobby
     }
   };

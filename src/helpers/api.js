@@ -14,11 +14,33 @@ const api = () => {
   if (bearerToken != null) {
     token_header["Authorization"] = `Bearer ${bearerToken}`;
   }
-  console.log(token_header);
+  // console.log(token_header);
   return axios.create({
     baseURL: getDomain(),
     headers: token_header,
   });
+};
+const handleNotLogInError = (
+  history,
+  error,
+  statusName,
+  stayOnPage = false
+) => {
+  alert(
+    `Oops! Something went wrong while ${statusName}: \n${handleError(error)}`
+  );
+  //specifically for Not Log In, force the page return to /login.
+  if (error.response.data.status == 401 && stayOnPage == false) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    history.push("/login");
+  }
+  //internal server error
+  if (error.response.data.status == 500 && stayOnPage == false) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    history.push("/login");
+  }
 };
 
 const handleError = (error) => {
@@ -52,4 +74,4 @@ const handleError = (error) => {
   }
 };
 
-export { api, handleError };
+export { api, handleError, handleNotLogInError };

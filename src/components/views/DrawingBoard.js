@@ -15,9 +15,9 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
   const setConvasRef = useOnDraw(onDraw);
   let lineColor = "#000000";
   let lineWidth = 5;
-  const [cursorStyle, setCursorStyle] = useState(
-    "url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto"
-  );
+  // const [cursorStyle, setCursorStyle] = useState(
+  //   "url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto"
+  // );
   //   console.log(cursorStyle);
   // let cursorStyle = "url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto"
 
@@ -173,7 +173,9 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
     lineColor = "#FFFF00";
   };
 
-  const greenPen = async () => {};
+  const greenPen = async () => {
+    lineColor = "#00FF00"
+  };
 
   const bluePen = async () => {
     lineColor = "#0000FF";
@@ -214,7 +216,6 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
             style={{
               border: "2px solid #000000",
               backgroundColor: "#FFFFFF",
-              cursor: cursorStyle,
             }}
             ref={setConvasRef}
           ></canvas>

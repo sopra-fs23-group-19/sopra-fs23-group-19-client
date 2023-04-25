@@ -28,7 +28,7 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState(true);
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
-  const [currentGameTurn, setCurrentGameTurn] = useState(null);
+  // const [currentGameTurn, setCurrentGameTurn] = useState(null);
 
   // const leave = () => {
   //   history.push("/lobby");
@@ -109,7 +109,7 @@ const Game = () => {
 
   const fetchData = async () => {
     try {
-      const response0 = await api().get(`/games/${gameId}`);
+      const response0 = await api().get(`/games/waitingArea/${gameId}`);
       // // delays continuous execution of an async operation for 1 second.
 
       // // Get the returned users and update the state.
@@ -130,15 +130,15 @@ const Game = () => {
 
       // Get the returned users and update the state.
       // setGameModel(response.data);
-      var arr = response.drawingPlayerIds;
+      // var arr = response.drawingPlayerIds;
       // var currentDrawingId = arr[arr.length - 1];
       // setDrawingPlayerId(currentDrawingId);
-      setGameStatus(response.gameStatus);
-      var arrTurnIds = response.gameTurnList;
-      var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
-      setTurnId(currentTurnId);
-      setTurnStatus(response.gameTurnStatus);
-      setCurrentGameTurn(response.currentGameTurn);
+      setGameStatus(response.status);
+      // var arrTurnIds = response.gameTurnList;
+      // var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
+      setTurnId(response.currentTurnId);
+      setTurnStatus(response.currentTurnStatus);
+      // setCurrentGameTurn(response.currentGameTurn);
       // console.log(response.gameTurnList);
       // console.log("current turn status is");
       // console.log(turnStatus);

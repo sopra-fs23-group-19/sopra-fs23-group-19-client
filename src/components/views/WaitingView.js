@@ -36,7 +36,7 @@ const WaitingView = () => {
   // const curUserId = "1";
   const [players, setPlayers] = useState([{ id: "", username: "" }]);
   const [roomName, setRoomName] = useState("");
-  const [startGameId, setStartGameId] = useState(null);
+  const [startGameId, setStartGameId] = useState(roomId);
   const [StartTurnId, setStartTurnId] = useState(null);
   //   const [isPolling, setIsPolling] = useState(true); //NOTE - for pausing the polling
 
@@ -53,11 +53,12 @@ const WaitingView = () => {
       setPlayers(waitingRoom.players);
       setOwnerId(waitingRoom.ownerId);
 
-      const gameId0 = response.data.gameId;
-      const turnId0 = response.data.gameTurnId;
+      // const gameId0 = response.data.gameId;
+      // const turnId0 = response.data.gameTurnId;
+      const turnId0 = response.data.currentTurnId;
+      setStartGameId(roomId);
       // console.log(gameId0);
-      if (gameId0 != null) {
-        setStartGameId(gameId0);
+      if (turnId0 != null) {
         setStartTurnId(turnId0);
       }
       // setPlayerCount(response.data.numberOfPlayers);
@@ -87,7 +88,7 @@ const WaitingView = () => {
         history.push("/lobby");
       }
       if (status == "PLAYING") {
-        if (startGameId != null) {
+        if (StartTurnId != null) {
           await new Promise((resolve) => setTimeout(resolve, 1000));
           goToGame(startGameId, StartTurnId);
         }

@@ -69,13 +69,14 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       //     status: "CHOOSE_WORD",
       //   }; //word get api return
       //   response = response.data;
-      console.log(response.wordsToBeChosen);
+      //   console.log(response.wordsToBeChosen);
       //   const response1 = await api().get(`/gameRounds/information/${turnId}/${curUserId}`);
-      if (response.wordsToBeChosen.length == 3) {
+      console.log(response);
+      if (response.length == 3) {
         //correct response
-        setWord0(response.wordsToBeChosen[0]);
-        setWord1(response.wordsToBeChosen[1]);
-        setWord2(response.wordsToBeChosen[2]);
+        setWord0(response[0]);
+        setWord1(response[1]);
+        setWord2(response[2]);
       }
       // const response1 = {
       //   id: 1,
@@ -313,7 +314,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
 
   useEffect(() => {
     fetchWord();
-  }, [word0]);
+  }, []);
   useEffect(() => {
     fetchTurnScore();
   }, [score1]);

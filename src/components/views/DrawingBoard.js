@@ -104,9 +104,6 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
 
   function onDraw(canvasObject, point, previousPoint) {
     drawLine(previousPoint, point, canvasObject, lineColor, lineWidth);
-    console.log("hello")
-    console.log(lineColor)
-    console.log(lineWidth)
   }
 
   function drawLine(start, end, canvasObject, color, width) {

@@ -55,7 +55,7 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         lineColor='#000000';
         lineWidth=5;
-        // document.querySelector("#board").style.cursor = "pointer"
+        document.querySelector("#board").style.cursor = "pointer"
         // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
       }
     }
@@ -167,56 +167,56 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
 
   const redPen = async () => {
     lineColor = "#FF0000";
-    // document.querySelector("#board").style.cursor = "pointer";
+    document.querySelector("#board").style.cursor = "pointer";
     // setLineColor("#FF0000");
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
   };
 
   const orangePen = async () => {
     lineColor = "#FF7B00";
-    // document.querySelector("#board").style.cursor = "pointer";
+    document.querySelector("#board").style.cursor = "pointer";
     // setLineColor("#FF7B00");
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
   };
 
   const yellowPen = async () => {
     lineColor = "#FFFF00";
-    // document.querySelector("#board").style.cursor = "pointer";
+    document.querySelector("#board").style.cursor = "pointer";
     // setLineColor("#FFFF00");
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   };
 
   const greenPen = async () => {
     lineColor = "#00FF00";
-    // document.querySelector("#board").style.cursor = "pointer";
+    document.querySelector("#board").style.cursor = "pointer";
     // setLineColor("#00FF00");
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   };
 
   const bluePen = async () => {
     lineColor = "#0000FF";
-    // document.querySelector("#board").style.cursor = "pointer";
+    document.querySelector("#board").style.cursor = "pointer";
     // setLineColor("#0000FF");
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   };
 
   const purplePen = async () => {
     lineColor = "#FF00FF";
-    // document.querySelector("#board").style.cursor = "pointer";
+    document.querySelector("#board").style.cursor = "pointer";
     // setLineColor("#FF00FF");
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   };
 
   const blackPen = async () => {
     lineColor = "#000000";
-    // document.querySelector("#board").style.cursor = "pointer";
+    document.querySelector("#board").style.cursor = "pointer";
     // setLineColor("#000000");
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   };
 
   const eraser = async () => {
     lineColor = "#FFFFFF";
-    // document.querySelector("#board").style.cursor = "crosshair";
+    document.querySelector("#board").style.cursor = "crosshair";
     // setLineColor("#FFFFFF");
     // setCursorStyle("url('https://icons.iconarchive.com/icons/bootstrap/bootstrap/16/Bootstrap-eraser-fill-icon.png'),auto")
   };

@@ -18,6 +18,7 @@ import GuessingStage from "components/views/GuessingStage";
 import Ranking from "components/views/Ranking";
 import SelectWord from "components/views/SelectWord";
 import GameLoading from "components/views/GameLoading";
+import TurnRanking from "components/views/TurnRanking";
 
 /**
  * Main router of your application.

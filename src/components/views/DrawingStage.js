@@ -125,7 +125,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
 
   useEffect(() => {
     fetchTurnInfo();
-  }, [playerNum]);
+  }, []);
 
   const fetchTurnScore = async () => {
     try {
@@ -186,7 +186,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
   };
   useEffect(() => {
     fetchTurnScore();
-  }, [score1]);
+  }, []);
 
   //display cat and username
   const player1 = (

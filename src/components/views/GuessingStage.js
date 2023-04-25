@@ -153,7 +153,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   };
   useEffect(() => {
     fetchTurnScore();
-  }, [score1]);
+  }, []);
 
   const fetchTurnInfo = async () => {
     try {
@@ -227,7 +227,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
 
   useEffect(() => {
     fetchTurnInfo();
-  }, [playerNum]);
+  }, []);
 
   //   useEffect(() => {
   //     let ignore = false;

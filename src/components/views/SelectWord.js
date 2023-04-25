@@ -228,7 +228,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
 
   useEffect(() => {
     fetchTurnInfo();
-  }, [playernum]);
+  }, []);
 
   const fetchTurnScore = async () => {
     try {
@@ -313,10 +313,10 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
 
   useEffect(() => {
     fetchWord();
-  }, [word0]);
+  }, []);
   useEffect(() => {
     fetchTurnScore();
-  }, [score1]);
+  }, []);
 
   const displayWords = (
     <div>

@@ -8,10 +8,6 @@ import { useHistory } from "react-router-dom";
 
 const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
   const history = useHistory();
-  //   const role = props.role;
-
-  // const role = "GuessingPlayer"
-  //   const start = props.start;
   const setConvasRef = useOnDraw(onDraw);
   // const [lineColor, setLineColor] = useState();
   // const [lineWidth, setLineWidth] = useState();

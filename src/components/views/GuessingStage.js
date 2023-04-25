@@ -49,6 +49,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   //const [startGuessing, setStartGuessing]=useState(1); //to test the timer, set to 1
   const history = useHistory();
   const curUserId = localStorage.getItem("id");
+  const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
   //   const location = useLocation();
   //   const url = location.state.url;
   //   const url = location.state.url; ///use base64 image here
@@ -155,6 +156,10 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   //   fetchTurnScore();
   // }, [score1]);
 
+  const handleClick = () => {
+    handleSubmitAnswer(answer);
+    setIsDisabled(true);
+  };
   const fetchTurnInfo = async () => {
     try {
       const response0 = await api().get(
@@ -207,6 +212,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
 
       if (parseInt(curUserId) == parseInt(response1.drawingPlayerId)) {
         setRole("drawingPlayer");
+        setIsDisabled(true);
       } else if (parseInt(curUserId) != parseInt(response1.drawingPlayerId)) {
         setRole("guessingPlayer");
       }
@@ -380,7 +386,20 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   //   window.addEventListener("popstate", () => {
   //     history.go(1);
   //   });
-
+  const waitTnfo = (
+    <h3
+      style={{
+        left: "700px",
+        top: "100px",
+        position: "absolute",
+        "font-family": "Nunito",
+        "font-size": "30px",
+        color: "black",
+      }}
+    >
+      Please wait a while, others are answering!
+    </h3>
+  );
   return (
     <BaseContainer>
       {/* <Header /> */}
@@ -446,10 +465,12 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             style={{ left: "1150px", top: "440px", position: "absolute" }}
           >
             <Button
-              disabled={role === "drawingPlayer"}
+              // disabled={role === "drawingPlayer"}
+              disabled={isDisabled}
               onClick={() => {
                 // history.push("/ranking"); //
-                handleSubmitAnswer(answer);
+                // handleSubmitAnswer(answer);
+                handleClick();
               }}
             >
               Submit
@@ -467,9 +488,10 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             color: "black",
           }}
         >
-          Guessing stage. The players are answering!
+          Guessing stage.
         </div>
       )}
+      {isDisabled ? waitTnfo : <></>}
       <div style={{ left: "200px", top: "330px", position: "absolute" }}>
         <canvas
           id="showingBoard"

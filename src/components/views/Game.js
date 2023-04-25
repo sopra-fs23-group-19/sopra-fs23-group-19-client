@@ -5,12 +5,14 @@ import { Spinner } from "components/ui/Spinner";
 import { withRouter } from "react-router-dom";
 import { api, handleNotLogInError } from "../../helpers/api";
 import DrawingStage from "components/views/DrawingStage";
-// import Ranking from "components/views/Ranking";
+import Ranking from "components/views/Ranking";
 import GameLoading from "components/views/GameLoading";
 import SelectWord from "components/views/SelectWord";
 import GuessingStage from "components/views/GuessingStage";
+import TurnRanking from "components/views/TurnRanking";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { useInterval } from "helpers/hooks";
+
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
@@ -54,6 +56,22 @@ const Game = () => {
     }
 
     // setTurnStatus("PAINTING");
+  };
+
+  const handleConfirmRanking = async () => {
+    console.log("handle confirm ranking");
+
+    // console.log(requestBody);
+    try {
+      await api().get(`/gameRounds/rankConfirmation/${turnId}/${curUserId}`);
+    } catch (error) {
+      // alert(
+      //   `Something went wrong during submitting Painting: \n${handleError(
+      //     error
+      //   )}`
+      // );
+      handleNotLogInError(history, error, "confirm ranking", true);
+    }
   };
 
   const handleSubmitPainting = async (painting) => {
@@ -250,6 +268,7 @@ const Game = () => {
     let content = <Spinner />;
     if (gameStatus == "PLAYING") {
       console.log(gameStatus);
+      console.log(turnStatus);
       if (turnStatus === "CHOOSE_WORD") {
         console.log(turnStatus);
         content = (
@@ -261,7 +280,7 @@ const Game = () => {
         );
       }
       // else if (turnStatus === "PAINTING" && curUserId == drawingPlayerId)
-      else if (turnStatus === "PAINITING") {
+      else if (turnStatus === "PAINTING") {
         console.log(turnStatus);
         content = (
           <DrawingStage
@@ -281,15 +300,21 @@ const Game = () => {
         );
       } else if (turnStatus === "RANKING") {
         console.log(turnStatus);
-        content = <GameLoading />;
+        content = (
+          <TurnRanking
+            gameId={gameId}
+            turnId={turnId}
+            handleConfirmRanking={handleConfirmRanking}
+          />
+        );
       } else {
         content = <GameLoading />;
       }
     } else {
       console.log(gameId);
       console.log(gameStatus);
-      content = <GameLoading />;
-      // content = <Ranking gameId={gameId} />;
+
+      content = <Ranking gameId={gameId} />;
     }
 
     return content;

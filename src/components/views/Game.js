@@ -5,7 +5,8 @@ import { Spinner } from "components/ui/Spinner";
 import { withRouter } from "react-router-dom";
 import { api, handleNotLogInError } from "../../helpers/api";
 import DrawingStage from "components/views/DrawingStage";
-import Ranking from "components/views/Ranking";
+// import Ranking from "components/views/Ranking";
+import GameLoading from "components/views/GameLoading";
 import SelectWord from "components/views/SelectWord";
 import GuessingStage from "components/views/GuessingStage";
 import { useHistory, useParams, useLocation } from "react-router-dom";
@@ -110,7 +111,7 @@ const Game = () => {
 
   const fetchData = async () => {
     try {
-      const response0 = await api().get(`/games/waitingArea/${gameId}`);
+      const response0 = await api().get(`/games/${gameId}`);
       // // delays continuous execution of an async operation for 1 second.
 
       // // Get the returned users and update the state.
@@ -247,8 +248,10 @@ const Game = () => {
 
   const switchPages = () => {
     let content = <Spinner />;
-    if (gameStatus) {
+    if (gameStatus == "PLAYING") {
+      console.log(gameStatus);
       if (turnStatus === "CHOOSE_WORD") {
+        console.log(turnStatus);
         content = (
           <SelectWord
             gameId={gameId}
@@ -259,6 +262,7 @@ const Game = () => {
       }
       // else if (turnStatus === "PAINTING" && curUserId == drawingPlayerId)
       else if (turnStatus === "PAINITING") {
+        console.log(turnStatus);
         content = (
           <DrawingStage
             gameId={gameId}
@@ -267,6 +271,7 @@ const Game = () => {
           />
         );
       } else if (turnStatus === "GUESSING") {
+        console.log(turnStatus);
         content = (
           <GuessingStage
             gameId={gameId}
@@ -274,11 +279,17 @@ const Game = () => {
             handleSubmitAnswer={handleSubmitAnswer}
           />
         );
+      } else if (turnStatus === "RANKING") {
+        console.log(turnStatus);
+        content = <GameLoading />;
       } else {
-        content = <Ranking gameId={gameId} turnId={turnId} />;
+        content = <GameLoading />;
       }
     } else {
-      content = <Ranking gameId={gameId} turnId={turnId} />;
+      console.log(gameId);
+      console.log(gameStatus);
+      content = <GameLoading />;
+      // content = <Ranking gameId={gameId} />;
     }
 
     return content;

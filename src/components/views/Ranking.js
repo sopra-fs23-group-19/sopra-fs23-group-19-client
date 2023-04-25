@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleNotLogInError } from "../../helpers/api";
 
-const Ranking = ({ gameId, turnId }) => {
+const Ranking = ({ gameId }) => {
   const history = useHistory();
   //get the username and score
   const [username1, setUsername1] = useState("");

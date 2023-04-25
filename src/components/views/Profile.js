@@ -171,20 +171,20 @@ const Profile = () => {
 
   const ShowAndHidePassword = () => {
     return (
-      <div className="wrapper">
+      <div className="password wrapper">
         <label className="profile label">{"Password"}</label>
         <input
-          className="input"
+          className="password input"
           type={isShowPwd ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           // onChange={(e) => setPwd(e.target.value)}
         />
         <img
-          className="icon"
+          className="password icon"
           alt=""
           // title={isShowPwd ? "Hide password" : "Show password"}
-          src={isShowPwd ? hidePwdIcon : showPwdIcon}
+          src={isShowPwd ? showPwdIcon : hidePwdIcon}
           onClick={() => setIsShowPwd((prevState) => !prevState)}
         />
       </div>

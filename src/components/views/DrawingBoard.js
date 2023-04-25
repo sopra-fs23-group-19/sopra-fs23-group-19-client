@@ -267,37 +267,44 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
             <div
               className="drawingBoard circle"
               style={{ backgroundColor: "#FF0000" }}
-              onClick={() => redPen()}
+              // onClick={() => redPen()
+              onClick={() => lineColor="#FF0000" }
             ></div>
             <div
               className="drawingBoard circle"
               style={{ backgroundColor: "#FF7B00" }}
-              onClick={() => orangePen()}
+              // onClick={() => orangePen()}
+              onClick={() => lineColor="#FF7B00" }
             ></div>
             <div
               className="drawingBoard circle"
               style={{ backgroundColor: "#FFFF00" }}
-              onClick={() => yellowPen()}
+              // onClick={() => yellowPen()}
+              onClick={() => lineColor="#FFFF00" }
             ></div>
             <div
               className="drawingBoard circle"
               style={{ backgroundColor: "#00FF00" }}
-              onClick={() => greenPen()}
+              // onClick={() => greenPen()}
+              onClick={() => lineColor="#00FF00" }
             ></div>
             <div
               className="drawingBoard circle"
               style={{ backgroundColor: "#0000FF" }}
-              onClick={() => bluePen()}
+              // onClick={() => bluePen()}
+              onClick={() => lineColor="#0000FF" }
             ></div>
             <div
               className="drawingBoard circle"
               style={{ backgroundColor: "#FF00FF" }}
-              onClick={() => purplePen()}
+              // onClick={() => purplePen()}
+              onClick={() => lineColor="#FF00FF" }
             ></div>
             <div
               className="drawingBoard circle"
               style={{ backgroundColor: "#000000" }}
-              onClick={() => blackPen()}
+              // onClick={() => blackPen()}
+              onClick={() => lineColor="#000000" }
             ></div>
           </>
         ) : (
@@ -320,7 +327,8 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
               clear
             </Button>
             <Button
-              onClick={() => eraser()}
+              // onClick={() => eraser()}
+              onClick={() => lineColor="#FFFFFF" }
               style={{ border: "2px solid #000000", "margin-left": "15px" }}
             >
               eraser

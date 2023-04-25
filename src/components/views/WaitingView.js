@@ -38,7 +38,7 @@ const WaitingView = () => {
   const [roomName, setRoomName] = useState("");
   const [startGameId, setStartGameId] = useState(roomId);
   const [StartTurnId, setStartTurnId] = useState(null);
-  //   const [isPolling, setIsPolling] = useState(true); //NOTE - for pausing the polling
+  const [isUpdating, setIsUpdating] = useState(true);
 
   const fetchRoomInfo = async () => {
     try {
@@ -101,6 +101,7 @@ const WaitingView = () => {
       // );
       // history.push("/lobby"); // redirect back to lobby
       handleNotLogInError(history, error, "fetching waiting Area");
+      setIsUpdating(false);
     }
   };
 
@@ -112,8 +113,7 @@ const WaitingView = () => {
     async () => {
       fetchRoomInfo();
     },
-    1000
-    // status == "PLAYING" ? null : 1000
+    isUpdating ? 1000 : null
   );
 
   const leaveRoom = async () => {

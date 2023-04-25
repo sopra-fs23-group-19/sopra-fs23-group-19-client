@@ -28,6 +28,7 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState(true);
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(true);
   // const [currentGameTurn, setCurrentGameTurn] = useState(null);
 
   // const leave = () => {
@@ -155,6 +156,22 @@ const Game = () => {
       //   "Something went wrong while fetching the game! See the console for details."
       // );
       handleNotLogInError(history, error, "get game");
+      setIsUpdating(false);
+      handleGameError();
+      history.push("/lobby");
+    }
+  };
+
+  //force quit game
+  const handleGameError = async () => {
+    console.log("handle game error");
+
+    try {
+      await api().get(`/games/ending/${gameId}`);
+    } catch (error) {
+      // alert(
+      //   `Something went wrong during submitting Answer: \n${handleError(error)}`
+      // );
       history.push("/lobby");
     }
   };
@@ -217,7 +234,7 @@ const Game = () => {
     async () => {
       fetchData();
     },
-    1000
+    isUpdating ? 1000 : null
     // status == "PLAYING" ? null : 1000
   );
 

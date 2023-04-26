@@ -100,14 +100,14 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   useEffect(() => {
     fetchTurnScore();
     fetchTurnInfo();
-  }, [playerNum, turnId]);
+  }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
 
   const handleClick = () => {
     handleConfirmRanking();
     setIsDisabled(true);
   };
 
-  const rankingWhenFourPlayers = (
+  let rankingWhenFourPlayers = (
     <div id = "rankFour">
       <div
         className="guessing score-list"
@@ -148,7 +148,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     </div>
   );
 
-  const rankingWhenTwoPlayers = (
+  let rankingWhenTwoPlayers = (
     <div id="rankTwo">
       <div
         className="guessing score-list"

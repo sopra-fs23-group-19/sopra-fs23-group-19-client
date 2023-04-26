@@ -136,11 +136,9 @@ const Lobby = () => {
       >
         Want to create a new game? Click here:
       </h2>
+      <div className="lobby button-container">
       <Button
         style={{
-          position: "absolute",
-          left: "900px",
-          top: "200px",
           "background-color": "#FFFFFF",
           border: "2px solid #000000",
         }}
@@ -148,6 +146,7 @@ const Lobby = () => {
       >
         Create a new room
       </Button>
+      </div>
       {content}
     </BaseContainer>
   );

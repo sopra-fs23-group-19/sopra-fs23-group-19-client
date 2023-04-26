@@ -9,9 +9,9 @@
     line-height: 16px;
   }
   &.li {
-    position: absolute;
-    left: 600px;
-    top: 130px;
+    position: relative;
+    left: 0px;
+    top: 0px;
   }
   &.spinner {
     position: absolute;
@@ -21,8 +21,8 @@
   &.gif {
     width: 150px;
     height: auto;
-    position: absolute;
-    left: 830px;
-    top: 80px;
+    position: relative;
+    left: 550px;
+    top: 0px;
   }
 }

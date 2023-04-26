@@ -67,13 +67,13 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     }
   };
   useEffect(() => {
-    let ignore = true;
-    if(ignore){
+    //let ignore = true;
+    if(username1=="" || username2==""){
       fetchTurnScore();
     }
-    return() => {
-      ignore = false;
-    }
+    // return() => {
+    //   ignore = false;
+    // }
   }, [drawingPlayerId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
   //fetch game Turn information
   const fetchTurnInfo = async () => {

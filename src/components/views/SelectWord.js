@@ -315,6 +315,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   useEffect(() => {
     fetchWord();
   }, []);
+
   // useEffect(() => {
   //   fetchTurnScore();
   // }, [score1]);

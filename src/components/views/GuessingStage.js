@@ -134,6 +134,8 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   //       setScore4(response[3].currentScore);
   //     }
 
+
+
   //     if (playerNum == 2) {
   //       setScore1(response[0].currentScore);
   //       setScore2(response[1].currentScore);
@@ -155,6 +157,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   // useEffect(() => {
   //   fetchTurnScore();
   // }, [score1]);
+
 
   const handleClick = () => {
     handleSubmitAnswer(answer);

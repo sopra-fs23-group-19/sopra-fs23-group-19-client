@@ -166,6 +166,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
   //       setScore4(response[3].currentScore);
   //     }
 
+
   //     if (playerNum == 2) {
   //       setScore1(response[0].currentScore);
   //       setScore2(response[1].currentScore);
@@ -187,6 +188,7 @@ const DrawingStage = ({ gameId, turnId, handleSubmitPainting }) => {
   // useEffect(() => {
   //   fetchTurnScore();
   // }, [score1]);
+
 
   //display cat and username
   const player1 = (

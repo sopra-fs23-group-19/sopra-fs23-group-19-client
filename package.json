@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "a11y-react-emoji": "^1.2.0",
     "axios": "^0.24.0",
     "canvas": "^2.11.2",
     "node-gyp": "^8.4.1",

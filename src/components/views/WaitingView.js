@@ -42,7 +42,7 @@ const WaitingView = () => {
 
   const fetchRoomInfo = async () => {
     try {
-      const response = await api().get(`/games/${roomId}`);
+      const response = await api().get(`/games/waitingArea/${roomId}`);
       // console.log(response);
       const waitingRoom = new WaitRoom(response.data);
       // console.log(waitingRoom);

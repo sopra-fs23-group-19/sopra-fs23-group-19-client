@@ -6,6 +6,7 @@ import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleNotLogInError } from "../../helpers/api";
+import Emoji from "a11y-react-emoji";
 
 const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
@@ -262,31 +263,37 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const title =
     // targetWord === userAnswer ? (
     parseInt(userScore) > 0 ? (
-      <h2
-        style={{
-          left: "700px",
-          top: "80px",
-          position: "absolute",
-          "font-family": "Nunito",
-          "font-size": "30px",
-          color: "black",
-        }}
-      >
-        You win!
-      </h2>
+      <div>
+        <h2
+          style={{
+            left: "700px",
+            top: "80px",
+            position: "absolute",
+            "font-family": "Nunito",
+            "font-size": "30px",
+            color: "black",
+          }}
+        >
+          You win!
+        </h2>
+        <Emoji symbol="👀" className="li" />
+      </div>
     ) : (
-      <h2
-        style={{
-          left: "700px",
-          top: "80px",
-          position: "absolute",
-          "font-family": "Nunito",
-          "font-size": "30px",
-          color: "black",
-        }}
-      >
-        You lose!
-      </h2>
+      <div>
+        <h2
+          style={{
+            left: "700px",
+            top: "80px",
+            position: "absolute",
+            "font-family": "Nunito",
+            "font-size": "30px",
+            color: "black",
+          }}
+        >
+          Answer not correct
+        </h2>
+        <Emoji symbol="👀" label="eyes" />
+      </div>
     );
   const waitTnfo = (
     <h3

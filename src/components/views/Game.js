@@ -129,7 +129,7 @@ const Game = () => {
 
   const fetchData = async () => {
     try {
-      const response0 = await api().get(`/games/${gameId}`);
+      const response0 = await api().get(`/games/waitingArea/${gameId}`);
       // // delays continuous execution of an async operation for 1 second.
 
       // // Get the returned users and update the state.

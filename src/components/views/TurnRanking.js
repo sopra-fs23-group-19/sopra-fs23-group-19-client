@@ -33,13 +33,13 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     try {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
       const response = response0.data;
-      const updatedPlayer = response.filter((item) => item.id === curUserId);
+      const updatedPlayer = response.filter((item) => item.id == curUserId);
       setUserScore(parseInt(updatedPlayer[0].currentScore));
       const updatedPlayer1 = response.filter(
-        (item) => item.id !== drawingPlayerId
+        (item) => item.id != drawingPlayerId
       );
       setPlayerNum(response.length);
-      if (playerNum === 4) {
+      if (playerNum == 4) {
         setUsername1(updatedPlayer1[0].username);
         setUsername2(updatedPlayer1[1].username);
         setUsername3(updatedPlayer1[2].username);
@@ -50,7 +50,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         // setScore4(response[3].currentScore);
       }
 
-      if (playerNum === 2) {
+      if (playerNum == 2) {
         setUsername1(updatedPlayer1[0].username);
         // setUsername2(response[1].username);
         setScore1(updatedPlayer1[0].currentScore);
@@ -74,9 +74,9 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     try {
       const response0 = await api().get(`/gameRounds/information/${turnId}`);
       const response1 = response0.data;
-      if (parseInt(curUserId) === parseInt(response1.drawingPlayerId)) {
+      if (parseInt(curUserId) == parseInt(response1.drawingPlayerId)) {
         setRole("drawingPlayer");
-      } else if (parseInt(curUserId) !== parseInt(response1.drawingPlayerId)) {
+      } else if (parseInt(curUserId) != parseInt(response1.drawingPlayerId)) {
         setRole("guessingPlayer");
       }
       setDrawingPlayerId(response1.drawingPlayerId);
@@ -244,7 +244,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       >
         <img src={cats} alt="" />
       </div>
-      {role === "guessingPlayer" ? (
+      {role == "guessingPlayer" ? (
         title
       ) : (
         <div>
@@ -276,8 +276,8 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         </div>
       )}
       {isDisabled ? waitTnfo : <></>}
-      {role === "guessingPlayer" ? content : <></>}
-      {playerNum === 4 ? (
+      {role == "guessingPlayer" ? content : <></>}
+      {playerNum == 4 ? (
         <div>{rankingWhenFourPlayers}</div>
       ) : (
         <div>{rankingWhenTwoPlayers}</div>

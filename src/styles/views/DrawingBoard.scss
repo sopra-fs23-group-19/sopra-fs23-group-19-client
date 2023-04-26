@@ -19,13 +19,18 @@
     top: 250px;
     position: absolute;
   }
+
   &.circle {
     width: 35px;
     height: 35px;
     border-radius: 50%;
     border: 2px solid #000000;
     margin-left: 10px;
+    &:hover {
+      transform: translateY(-2px);
+    }
   }
+
   &.input {
     display: flex;
     justify-content: center;

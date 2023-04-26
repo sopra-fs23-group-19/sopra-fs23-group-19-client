@@ -25,6 +25,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
         setLineColor("#000000");
         setLineWidth(5);
         document.querySelector("#board").style.cursor = "pointer";
+        document.querySelector("#black").style.transform= "translateY(-5px)";
         // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
       }
     }
@@ -71,6 +72,16 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     img.dispatchEvent(event);
   }
 
+  function resetColorButton(){
+    document.querySelector("#red").style.transform= "translateY(0px)";
+    document.querySelector("#orange").style.transform= "translateY(0px)";
+    document.querySelector("#yellow").style.transform= "translateY(0px)";
+    document.querySelector("#green").style.transform= "translateY(0px)";
+    document.querySelector("#blue").style.transform= "translateY(0px)";
+    document.querySelector("#purple").style.transform= "translateY(0px)";
+    document.querySelector("#black").style.transform= "translateY(0px)";
+  }
+  
   function clear() {
     const canvas = document.querySelector("#board");
     const ctx = canvas.getContext("2d");
@@ -82,49 +93,54 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
   function redPen() {
     // lineColor = "#FF0000";
     document.querySelector("#board").style.cursor = "pointer";
-    console.log(lineColor);
     setLineColor("#FF0000");
+    resetColorButton();
+    document.querySelector("#red").style.transform= "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
   }
 
   function orangePen() {
     // lineColor = "#FF7B00";
     document.querySelector("#board").style.cursor = "pointer";
-    console.log(lineColor);
     setLineColor("#FF7B00");
+    resetColorButton();
+    document.querySelector("#orange").style.transform= "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
   }
 
   function yellowPen() {
     // lineColor = "#FFFF00";
     document.querySelector("#board").style.cursor = "pointer";
-    console.log(lineColor);
     setLineColor("#FFFF00");
+    resetColorButton();
+    document.querySelector("#yellow").style.transform= "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
   function greenPen() {
     // lineColor = "#00FF00";
     document.querySelector("#board").style.cursor = "pointer";
-    console.log(lineColor);
     setLineColor("#00FF00");
+    resetColorButton();
+    document.querySelector("#green").style.transform= "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
   function bluePen() {
     // lineColor = "#0000FF";
     document.querySelector("#board").style.cursor = "pointer";
-    console.log(lineColor);
     setLineColor("#0000FF");
+    resetColorButton();
+    document.querySelector("#blue").style.transform= "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
   function purplePen() {
     // lineColor = "#FF00FF";
     document.querySelector("#board").style.cursor = "pointer";
-    console.log(lineColor);
-    setLineColor("#FF00FF");
-    // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
+    setLineColor("#FF00FF");    
+    resetColorButton();
+    document.querySelector("#purple").style.transform= "translateY(-5px)";
   }
 
   function blackPen() {
@@ -132,7 +148,8 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     document.querySelector("#board").style.cursor = "pointer";
     console.log(lineColor);
     setLineColor("#000000");
-    // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
+    resetColorButton();
+    document.querySelector("#black").style.transform= "translateY(-5px)";
   }
 
   function eraser() {
@@ -140,6 +157,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     document.querySelector("#board").style.cursor = "crosshair";
     console.log(lineColor);
     setLineColor("#FFFFFF");
+    resetColorButton();
     // setCursorStyle("url('https://icons.iconarchive.com/icons/bootstrap/bootstrap/16/Bootstrap-eraser-fill-icon.png'),auto")
   }
 
@@ -188,44 +206,45 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
           <>
             <div
               className="drawingBoard circle"
-              style={{ backgroundColor: "#FF0000" }}
+              id="red"
+              style={{ backgroundColor: "#FF0000"}}
               onClick={() => redPen()}
             ></div>
             <div
               className="drawingBoard circle"
+              id="orange"
               style={{ backgroundColor: "#FF7B00" }}
               onClick={() => orangePen()}
-              // onClick={() => lineColor="#FF7B00" }
             ></div>
             <div
               className="drawingBoard circle"
+              id="yellow"
               style={{ backgroundColor: "#FFFF00" }}
               onClick={() => yellowPen()}
-              // onClick={() => lineColor="#FFFF00" }
             ></div>
             <div
               className="drawingBoard circle"
+              id="green"
               style={{ backgroundColor: "#00FF00" }}
               onClick={() => greenPen()}
-              // onClick={() => lineColor="#00FF00" }
             ></div>
             <div
               className="drawingBoard circle"
+              id="blue"
               style={{ backgroundColor: "#0000FF" }}
               onClick={() => bluePen()}
-              // onClick={() => lineColor="#0000FF" }
             ></div>
             <div
               className="drawingBoard circle"
+              id="purple"
               style={{ backgroundColor: "#FF00FF" }}
               onClick={() => purplePen()}
-              // onClick={() => lineColor="#FF00FF" }
             ></div>
             <div
               className="drawingBoard circle"
+              id="black"
               style={{ backgroundColor: "#000000" }}
               onClick={() => blackPen()}
-              // onClick={() => lineColor="#000000" }
             ></div>
           </>
         ) : (

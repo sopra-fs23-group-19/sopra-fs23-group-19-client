@@ -6,10 +6,13 @@ import { withRouter } from "react-router-dom";
 import { api, handleNotLogInError } from "../../helpers/api";
 import DrawingStage from "components/views/DrawingStage";
 import Ranking from "components/views/Ranking";
+import GameLoading from "components/views/GameLoading";
 import SelectWord from "components/views/SelectWord";
 import GuessingStage from "components/views/GuessingStage";
+import TurnRanking from "components/views/TurnRanking";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { useInterval } from "helpers/hooks";
+
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
@@ -28,7 +31,8 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState(true);
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
-  const [currentGameTurn, setCurrentGameTurn] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(true);
+  // const [currentGameTurn, setCurrentGameTurn] = useState(null);
 
   // const leave = () => {
   //   history.push("/lobby");
@@ -52,6 +56,22 @@ const Game = () => {
     }
 
     // setTurnStatus("PAINTING");
+  };
+
+  const handleConfirmRanking = async () => {
+    console.log("handle confirm ranking");
+
+    // console.log(requestBody);
+    try {
+      await api().get(`/gameRounds/rankConfirmation/${turnId}/${curUserId}`);
+    } catch (error) {
+      // alert(
+      //   `Something went wrong during submitting Painting: \n${handleError(
+      //     error
+      //   )}`
+      // );
+      handleNotLogInError(history, error, "confirm ranking", true);
+    }
   };
 
   const handleSubmitPainting = async (painting) => {
@@ -130,15 +150,15 @@ const Game = () => {
 
       // Get the returned users and update the state.
       // setGameModel(response.data);
-      var arr = response.drawingPlayerIds;
+      // var arr = response.drawingPlayerIds;
       // var currentDrawingId = arr[arr.length - 1];
       // setDrawingPlayerId(currentDrawingId);
-      setGameStatus(response.gameStatus);
-      var arrTurnIds = response.gameTurnList;
-      var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
-      setTurnId(currentTurnId);
-      setTurnStatus(response.gameTurnStatus);
-      setCurrentGameTurn(response.currentGameTurn);
+      setGameStatus(response.status);
+      // var arrTurnIds = response.gameTurnList;
+      // var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
+      setTurnId(response.currentTurnId);
+      setTurnStatus(response.currentTurnStatus);
+      // setCurrentGameTurn(response.currentGameTurn);
       // console.log(response.gameTurnList);
       // console.log("current turn status is");
       // console.log(turnStatus);
@@ -155,6 +175,22 @@ const Game = () => {
       //   "Something went wrong while fetching the game! See the console for details."
       // );
       handleNotLogInError(history, error, "get game");
+      setIsUpdating(false);
+      handleGameError();
+      history.push("/lobby");
+    }
+  };
+
+  //force quit game
+  const handleGameError = async () => {
+    console.log("handle game error");
+
+    try {
+      await api().get(`/games/ending/${gameId}`);
+    } catch (error) {
+      // alert(
+      //   `Something went wrong during submitting Answer: \n${handleError(error)}`
+      // );
       history.push("/lobby");
     }
   };
@@ -217,7 +253,7 @@ const Game = () => {
     async () => {
       fetchData();
     },
-    1000
+    isUpdating ? 1000 : null
     // status == "PLAYING" ? null : 1000
   );
 
@@ -230,8 +266,11 @@ const Game = () => {
 
   const switchPages = () => {
     let content = <Spinner />;
-    if (gameStatus) {
+    if (gameStatus == "PLAYING") {
+      console.log(gameStatus);
+      console.log(turnStatus);
       if (turnStatus === "CHOOSE_WORD") {
+        console.log(turnStatus);
         content = (
           <SelectWord
             gameId={gameId}
@@ -241,7 +280,8 @@ const Game = () => {
         );
       }
       // else if (turnStatus === "PAINTING" && curUserId == drawingPlayerId)
-      else if (turnStatus === "PAINITING") {
+      else if (turnStatus === "PAINTING") {
+        console.log(turnStatus);
         content = (
           <DrawingStage
             gameId={gameId}
@@ -250,6 +290,7 @@ const Game = () => {
           />
         );
       } else if (turnStatus === "GUESSING") {
+        console.log(turnStatus);
         content = (
           <GuessingStage
             gameId={gameId}
@@ -257,11 +298,23 @@ const Game = () => {
             handleSubmitAnswer={handleSubmitAnswer}
           />
         );
+      } else if (turnStatus === "RANKING") {
+        console.log(turnStatus);
+        content = (
+          <TurnRanking
+            gameId={gameId}
+            turnId={turnId}
+            handleConfirmRanking={handleConfirmRanking}
+          />
+        );
       } else {
-        content = <Ranking gameId={gameId} turnId={turnId} />;
+        content = <GameLoading />;
       }
     } else {
-      content = <Ranking gameId={gameId} turnId={turnId} />;
+      console.log(gameId);
+      console.log(gameStatus);
+
+      content = <Ranking gameId={gameId} />;
     }
 
     return content;

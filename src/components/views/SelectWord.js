@@ -27,10 +27,10 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //   const [playerNum, setPlayerNum] = useState(2);
   const [playernum, setPlayernum] = useState(null);
   //   const [playerNum, setPlayerNum] = useState(null);
-  const [score1, setScore1] = useState("");
-  const [score2, setScore2] = useState("");
-  const [score3, setScore3] = useState("");
-  const [score4, setScore4] = useState("");
+  // const [score1, setScore1] = useState("");
+  // const [score2, setScore2] = useState("");
+  // const [score3, setScore3] = useState("");
+  // const [score4, setScore4] = useState("");
   const [role, setRole] = useState("");
   //   const [guessingPlayer, setGuessingPlayer] = useState([
   //     { id: null, username: "" },
@@ -69,13 +69,14 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       //     status: "CHOOSE_WORD",
       //   }; //word get api return
       //   response = response.data;
-      console.log(response.wordsToBeChosen);
+      //   console.log(response.wordsToBeChosen);
       //   const response1 = await api().get(`/gameRounds/information/${turnId}/${curUserId}`);
-      if (response.wordsToBeChosen.length == 3) {
+      console.log(response);
+      if (response.length == 3) {
         //correct response
-        setWord0(response.wordsToBeChosen[0]);
-        setWord1(response.wordsToBeChosen[1]);
-        setWord2(response.wordsToBeChosen[2]);
+        setWord0(response[0]);
+        setWord1(response[1]);
+        setWord2(response[2]);
       }
       // const response1 = {
       //   id: 1,
@@ -230,93 +231,94 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     fetchTurnInfo();
   }, []);
 
-  const fetchTurnScore = async () => {
-    try {
-      const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
-      const response = response0.data;
-      //   const response = [
-      //     {
-      //       id: 2,
-      //       username: "test",
-      //       token: "30e578e3-4329-41aa-8a16-d51f5d5294c2",
-      //       status: "ISPLAYING",
-      //       creationDate: "2023-04-24T07:51:30.741+00:00",
-      //       bestScore: 0,
-      //       totalScore: 0,
-      //       currentScore: 0,
-      //       guessingWord: null,
-      //       currentGameScore: 0,
-      //     },
-      //     {
-      //       id: 1,
-      //       username: "test1",
-      //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
-      //       status: "ISPLAYING",
-      //       creationDate: "2023-04-24T07:51:24.545+00:00",
-      //       bestScore: 0,
-      //       totalScore: 0,
-      //       currentScore: 0,
-      //       guessingWord: null,
-      //       currentGameScore: 0,
-      //     },
-      //     {
-      //       id: 3,
-      //       username: "test00",
-      //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
-      //       status: "ISPLAYING",
-      //       creationDate: "2023-04-24T07:51:24.545+00:00",
-      //       bestScore: 0,
-      //       totalScore: 0,
-      //       currentScore: 0,
-      //       guessingWord: null,
-      //       currentGameScore: 0,
-      //     },
-      //     {
-      //       id: 4,
-      //       username: "test00",
-      //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
-      //       status: "ISPLAYING",
-      //       creationDate: "2023-04-24T07:51:24.545+00:00",
-      //       bestScore: 0,
-      //       totalScore: 0,
-      //       currentScore: 0,
-      //       guessingWord: null,
-      //       currentGameScore: 0,
-      //     },
-      //   ];
+  // const fetchTurnScore = async () => {
+  //   try {
+  //     const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
+  //     const response = response0.data;
+  //     //   const response = [
+  //     //     {
+  //     //       id: 2,
+  //     //       username: "test",
+  //     //       token: "30e578e3-4329-41aa-8a16-d51f5d5294c2",
+  //     //       status: "ISPLAYING",
+  //     //       creationDate: "2023-04-24T07:51:30.741+00:00",
+  //     //       bestScore: 0,
+  //     //       totalScore: 0,
+  //     //       currentScore: 0,
+  //     //       guessingWord: null,
+  //     //       currentGameScore: 0,
+  //     //     },
+  //     //     {
+  //     //       id: 1,
+  //     //       username: "test1",
+  //     //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
+  //     //       status: "ISPLAYING",
+  //     //       creationDate: "2023-04-24T07:51:24.545+00:00",
+  //     //       bestScore: 0,
+  //     //       totalScore: 0,
+  //     //       currentScore: 0,
+  //     //       guessingWord: null,
+  //     //       currentGameScore: 0,
+  //     //     },
+  //     //     {
+  //     //       id: 3,
+  //     //       username: "test00",
+  //     //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
+  //     //       status: "ISPLAYING",
+  //     //       creationDate: "2023-04-24T07:51:24.545+00:00",
+  //     //       bestScore: 0,
+  //     //       totalScore: 0,
+  //     //       currentScore: 0,
+  //     //       guessingWord: null,
+  //     //       currentGameScore: 0,
+  //     //     },
+  //     //     {
+  //     //       id: 4,
+  //     //       username: "test00",
+  //     //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
+  //     //       status: "ISPLAYING",
+  //     //       creationDate: "2023-04-24T07:51:24.545+00:00",
+  //     //       bestScore: 0,
+  //     //       totalScore: 0,
+  //     //       currentScore: 0,
+  //     //       guessingWord: null,
+  //     //       currentGameScore: 0,
+  //     //     },
+  //     //   ];
 
-      if (playernum == 4) {
-        setScore1(response[0].currentScore);
-        setScore2(response[1].currentScore);
-        setScore3(response[2].currentScore);
-        setScore4(response[3].currentScore);
-      }
+  //     if (playernum == 4) {
+  //       setScore1(response[0].currentScore);
+  //       setScore2(response[1].currentScore);
+  //       setScore3(response[2].currentScore);
+  //       setScore4(response[3].currentScore);
+  //     }
 
-      if (playernum == 2) {
-        setScore1(response[0].currentScore);
-        setScore2(response[1].currentScore);
-      }
-    } catch (error) {
-      //   alert(
-      //     `Something went wrong during getting turn ranking information: \n${handleError(
-      //       error
-      //     )}`
-      //   );
-      //   history.push("/lobby"); // redirect back to lobby
-      handleNotLogInError(
-        history,
-        error,
-        "fetching turn scores in selecting word phase"
-      );
-    }
-  };
+  //     if (playernum == 2) {
+  //       setScore1(response[0].currentScore);
+  //       setScore2(response[1].currentScore);
+  //     }
+  //   } catch (error) {
+  //     //   alert(
+  //     //     `Something went wrong during getting turn ranking information: \n${handleError(
+  //     //       error
+  //     //     )}`
+  //     //   );
+  //     //   history.push("/lobby"); // redirect back to lobby
+  //     handleNotLogInError(
+  //       history,
+  //       error,
+  //       "fetching turn scores in selecting word phase"
+  //     );
+  //   }
+  // };
 
   useEffect(() => {
     fetchWord();
   }, []);
-  useEffect(() => {
-    fetchTurnScore();
-  }, []);
+
+  // useEffect(() => {
+  //   fetchTurnScore();
+  // }, [score1]);
 
   const displayWords = (
     <div>
@@ -440,82 +442,82 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     </div>
   );
 
-  //ranking component
-  const rankingWhenFourPlayers = (
-    <div>
-      <div className="guessing score-list">
-        <div className="guessing score-container">
-          <div className="guessing rank-title" style={{}}>
-            Username
-          </div>
-          <div className="guessing rank-title">Score</div>
-        </div>
-        <div className="guessing line"></div>
-        <div className="guessing score-container">
-          <div className="guessing content">{username1}</div>
-          <div className="guessing content">{score1}</div>
-        </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
-        <div className="guessing score-container">
-          <div className="guessing content">{username2}</div>
-          <div className="guessing content">{score2}</div>
-        </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
-        <div className="guessing score-container">
-          <div className="guessing content">{username3}</div>
-          <div className="guessing content">{score3}</div>
-        </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
-        <div className="guessing score-container">
-          <div className="guessing content">{username4}</div>
-          <div className="guessing content">{score4}</div>
-        </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
-      </div>
-    </div>
-  );
-  //ranking component
-  const rankingWhenTwoPlayers = (
-    <div>
-      <div className="guessing score-list">
-        <div className="guessing score-container">
-          <div className="guessing rank-title" style={{}}>
-            Username
-          </div>
-          <div className="guessing rank-title">Score</div>
-        </div>
-        <div className="guessing line"></div>
-        <div className="guessing score-container">
-          <div className="guessing content">{username1}</div>
-          <div className="guessing content">{score1}</div>
-        </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
-        <div className="guessing score-container">
-          <div className="guessing content">{username2}</div>
-          <div className="guessing content">{score2}</div>
-        </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
-      </div>
-    </div>
-  );
+  // //ranking component
+  // const rankingWhenFourPlayers = (
+  //   <div>
+  //     <div className="guessing score-list">
+  //       <div className="guessing score-container">
+  //         <div className="guessing rank-title" style={{}}>
+  //           Username
+  //         </div>
+  //         <div className="guessing rank-title">Score</div>
+  //       </div>
+  //       <div className="guessing line"></div>
+  //       <div className="guessing score-container">
+  //         <div className="guessing content">{username1}</div>
+  //         <div className="guessing content">{score1}</div>
+  //       </div>
+  //       <div
+  //         className="guessing line"
+  //         style={{ border: "2px solid #ad9a66" }}
+  //       ></div>
+  //       <div className="guessing score-container">
+  //         <div className="guessing content">{username2}</div>
+  //         <div className="guessing content">{score2}</div>
+  //       </div>
+  //       <div
+  //         className="guessing line"
+  //         style={{ border: "2px solid #ad9a66" }}
+  //       ></div>
+  //       <div className="guessing score-container">
+  //         <div className="guessing content">{username3}</div>
+  //         <div className="guessing content">{score3}</div>
+  //       </div>
+  //       <div
+  //         className="guessing line"
+  //         style={{ border: "2px solid #ad9a66" }}
+  //       ></div>
+  //       <div className="guessing score-container">
+  //         <div className="guessing content">{username4}</div>
+  //         <div className="guessing content">{score4}</div>
+  //       </div>
+  //       <div
+  //         className="guessing line"
+  //         style={{ border: "2px solid #ad9a66" }}
+  //       ></div>
+  //     </div>
+  //   </div>
+  // );
+  // //ranking component
+  // const rankingWhenTwoPlayers = (
+  //   <div>
+  //     <div className="guessing score-list">
+  //       <div className="guessing score-container">
+  //         <div className="guessing rank-title" style={{}}>
+  //           Username
+  //         </div>
+  //         <div className="guessing rank-title">Score</div>
+  //       </div>
+  //       <div className="guessing line"></div>
+  //       <div className="guessing score-container">
+  //         <div className="guessing content">{username1}</div>
+  //         <div className="guessing content">{score1}</div>
+  //       </div>
+  //       <div
+  //         className="guessing line"
+  //         style={{ border: "2px solid #ad9a66" }}
+  //       ></div>
+  //       <div className="guessing score-container">
+  //         <div className="guessing content">{username2}</div>
+  //         <div className="guessing content">{score2}</div>
+  //       </div>
+  //       <div
+  //         className="guessing line"
+  //         style={{ border: "2px solid #ad9a66" }}
+  //       ></div>
+  //     </div>
+  //   </div>
+  // );
   return (
     <BaseContainer>
       {/* <Header /> */}
@@ -552,7 +554,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           <div style={{ left: "1300px", top: "170px", position: "absolute" }}>
             {player4}
           </div>
-          <div>{rankingWhenFourPlayers}</div>
+          {/* <div>{rankingWhenFourPlayers}</div> */}
         </div>
       ) : (
         <></>
@@ -565,7 +567,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           <div style={{ left: "900px", top: "170px", position: "absolute" }}>
             {player2}
           </div>
-          <div>{rankingWhenTwoPlayers}</div>
+          {/* <div>{rankingWhenTwoPlayers}</div> */}
         </div>
       }
       {role == "drawingPlayer" ? (

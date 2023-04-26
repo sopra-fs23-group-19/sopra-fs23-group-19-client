@@ -118,6 +118,7 @@ const GameCreationView = () => {
               Back
             </Button>
             <Button
+              disabled={roomName.trim().length === 0}
               onClick={() => proceedToWait()}
               className="GameCreationView button_style1"
             >

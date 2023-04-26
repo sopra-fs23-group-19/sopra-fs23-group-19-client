@@ -52,6 +52,7 @@ Rooms.propTypes = {
 const Lobby = () => {
   const history = useHistory();
   const [rooms, setRooms] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
   const fetchRooms = async () => {
     try {
       const response = await api().get("/games");
@@ -66,15 +67,19 @@ const Lobby = () => {
       //   "Something went wrong while fetching the rooms! See the console for details."
       // );
       handleNotLogInError(history, error, "getting lobby");
+      setIsUpdating(false);
       // history.push("/login");
     }
   };
   useEffect(() => {
     fetchRooms();
   }, []);
-  useInterval(async () => {
-    fetchRooms();
-  }, 3000);
+  useInterval(
+    async () => {
+      fetchRooms();
+    },
+    isUpdating ? 3000 : null
+  );
 
   let content = <Spinner />;
   if (rooms) {
@@ -83,10 +88,10 @@ const Lobby = () => {
         <div className="lobby container">
           <div className="lobby room-container">
             <div className="lobby title" style={{ "margin-left": "80px" }}>
-              id
+              Room Id
             </div>
-            <div className="lobby title">name</div>
-            <div className="lobby title">players</div>
+            <div className="lobby title">Room Name</div>
+            <div className="lobby title">Players</div>
           </div>
 
           <div className="lobby line"></div>

@@ -57,6 +57,8 @@ const Login = (props) => {
       history.push(`/lobby`);
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
+      setUsername(null);
+      setPassword(null);
     }
   };
 

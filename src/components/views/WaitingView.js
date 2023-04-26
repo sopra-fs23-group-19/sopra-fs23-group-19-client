@@ -6,7 +6,7 @@ import "styles/views/WaitingView.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import cats from "styles/images/cats2.png";
-import Header from "components/views/Header";
+// import Header from "components/views/Header";
 import PropTypes from "prop-types";
 import { useInterval } from "helpers/hooks";
 import WaitRoom from "models/WaitRoom";
@@ -36,13 +36,13 @@ const WaitingView = () => {
   // const curUserId = "1";
   const [players, setPlayers] = useState([{ id: "", username: "" }]);
   const [roomName, setRoomName] = useState("");
-  const [startGameId, setStartGameId] = useState(null);
+  const [startGameId, setStartGameId] = useState(roomId);
   const [StartTurnId, setStartTurnId] = useState(null);
-  //   const [isPolling, setIsPolling] = useState(true); //NOTE - for pausing the polling
+  const [isUpdating, setIsUpdating] = useState(true);
 
   const fetchRoomInfo = async () => {
     try {
-      const response = await api().get(`/games/waitingArea/${roomId}`);
+      const response = await api().get(`/games/${roomId}`);
       // console.log(response);
       const waitingRoom = new WaitRoom(response.data);
       // console.log(waitingRoom);
@@ -53,11 +53,12 @@ const WaitingView = () => {
       setPlayers(waitingRoom.players);
       setOwnerId(waitingRoom.ownerId);
 
-      const gameId0 = response.data.gameId;
-      const turnId0 = response.data.gameTurnId;
+      // const gameId0 = response.data.gameId;
+      // const turnId0 = response.data.gameTurnId;
+      const turnId0 = response.data.currentTurnId;
+      setStartGameId(roomId);
       // console.log(gameId0);
-      if (gameId0 != null) {
-        setStartGameId(gameId0);
+      if (turnId0 != null) {
         setStartTurnId(turnId0);
       }
       // setPlayerCount(response.data.numberOfPlayers);
@@ -86,9 +87,12 @@ const WaitingView = () => {
       if (status == "END") {
         history.push("/lobby");
       }
+      if (status == "END_GAME") {
+        history.push("/lobby");
+      }
       if (status == "PLAYING") {
-        if (startGameId != null) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+        if (StartTurnId != null) {
+          // await new Promise((resolve) => setTimeout(resolve, 1000));
           goToGame(startGameId, StartTurnId);
         }
       }
@@ -100,6 +104,8 @@ const WaitingView = () => {
       // );
       // history.push("/lobby"); // redirect back to lobby
       handleNotLogInError(history, error, "fetching waiting Area");
+      setIsUpdating(false);
+      history.push("/lobby"); // redirect back to lobby
     }
   };
 
@@ -111,8 +117,7 @@ const WaitingView = () => {
     async () => {
       fetchRoomInfo();
     },
-    1000
-    // status == "PLAYING" ? null : 1000
+    isUpdating ? 1000 : null
   );
 
   const leaveRoom = async () => {
@@ -134,7 +139,7 @@ const WaitingView = () => {
   };
   const startGame = async () => {
     try {
-      await api().post(`/games/waitingArea/${roomId}`);
+      await api().post(`/games/${roomId}`);
       // history.push(`/game/${roomId}`); // should be changed later
     } catch (error) {
       // alert(

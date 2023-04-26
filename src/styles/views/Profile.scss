@@ -183,37 +183,40 @@
     color: #000000;
   }
 }
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-}
+.password {
+  &.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
 
-.icon {
-  cursor: pointer;
-  height: 1.5rem;
-  width: 1.5rem;
-  padding: 1px;
-  position: absolute;
-  box-sizing: border-box;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-}
+  &.icon {
+    cursor: pointer;
+    height: 1.5rem;
+    width: 1.5rem;
+    padding: 1px;
+    position: absolute;
+    box-sizing: border-box;
+    top: 50%;
+    left: 2px;
+    transform: translateY(-50%);
+  }
 
-.input {
-  // height: 50px;
-  // box-sizing: border-box;
-  // padding-left: 1.5rem;
-  height: 45px;
-  padding-left: 40px; //position cursor in input field after icon
-  margin-left: -4px;
-  border: none;
-  border-radius: 0.75em;
-  margin-bottom: 30px;
-  // background: transparentize(white, 0.85);
-  background: #d9d9d9;
-  color: #000000;
-  font-size: 20px;
+  &.input {
+    // height: 50px;
+    // box-sizing: border-box;
+    // padding-left: 1.5rem;
+    height: 45px;
+    box-sizing: border-box;
+    padding-left: 40px; //position cursor in input field after icon
+    margin-left: -4px;
+    border: none;
+    border-radius: 0.75em;
+    margin-bottom: 30px;
+    // background: transparentize(white, 0.85);
+    background: #d9d9d9;
+    color: #000000;
+    font-size: 20px;
+  }
 }

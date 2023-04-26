@@ -6,7 +6,7 @@ import "styles/views/WaitingView.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import cats from "styles/images/cats2.png";
-import Header from "components/views/Header";
+// import Header from "components/views/Header";
 import PropTypes from "prop-types";
 import { useInterval } from "helpers/hooks";
 import WaitRoom from "models/WaitRoom";
@@ -14,8 +14,6 @@ import WaitRoom from "models/WaitRoom";
 const Player = ({ user }) => (
   <div className="player container">
     <div className="player username">{user.username}</div>
-    {/* <div className="player name">{user.name}</div> */}
-    {/* <div className="player id">id: {user.id}</div> */}
   </div>
 );
 
@@ -24,28 +22,26 @@ Player.propTypes = {
 };
 const WaitingView = () => {
   const { roomId } = useParams();
-  // console.log("wait");
-  //   const [playerIds, setPlayerIds] = useState([]); //player id and player username needed
-  //   const [playerNames, setPlayerNames] = useState(null); //player id and player username needed
+
   const [playerCount, setPlayerCount] = useState(1); //current number of players
   const [roomSeats, setRoomSeats] = useState(2); //default 2 persons?
   const [ownerId, setOwnerId] = useState(null);
   const [status, setStatus] = useState("");
   const history = useHistory();
   const curUserId = localStorage.getItem("id");
-  // const curUserId = "1";
+
   const [players, setPlayers] = useState([{ id: "", username: "" }]);
   const [roomName, setRoomName] = useState("");
-  const [startGameId, setStartGameId] = useState(null);
+  const [startGameId, setStartGameId] = useState(roomId);
   const [StartTurnId, setStartTurnId] = useState(null);
-  //   const [isPolling, setIsPolling] = useState(true); //NOTE - for pausing the polling
+  const [isUpdating, setIsUpdating] = useState(true);
 
   const fetchRoomInfo = async () => {
     try {
-      const response = await api().get(`/games/waitingArea/${roomId}`);
-      // console.log(response);
+      const response = await api().get(`/rooms/${roomId}`);
+
       const waitingRoom = new WaitRoom(response.data);
-      // console.log(waitingRoom);
+
       setPlayerCount(waitingRoom.numberOfPlayers);
       setStatus(waitingRoom.status);
       setRoomName(waitingRoom.roomName);
@@ -53,53 +49,29 @@ const WaitingView = () => {
       setPlayers(waitingRoom.players);
       setOwnerId(waitingRoom.ownerId);
 
-      const gameId0 = response.data.gameId;
-      const turnId0 = response.data.gameTurnId;
+      const turnId0 = response.data.currentTurnId;
+      setStartGameId(roomId);
       // console.log(gameId0);
-      if (gameId0 != null) {
-        setStartGameId(gameId0);
+      if (turnId0 != null) {
         setStartTurnId(turnId0);
       }
-      // setPlayerCount(response.data.numberOfPlayers);
-      // const response = {
-      //   numOfPlayers: 2,
-      //   roomName: "room1",
-      //   listOfPlayerNames: [
-      //     { id: 1, username: "Alabama" },
-      //     { id: 2, username: "Georgia1" },
-      //   ],
-      //   // listOfPlayerIds: [1, 2],
-      //   ownerId: 1,
-      //   roomSeats: 2,
-      //   status: "wait",
-      // };
-      // setPlayerCount(response.numOfPlayers);
-      // setPlayerCount(playerCount + 1);
-      // setRoomName(response.roomName);
-      // const temp = response.listOfPlayerNames;
-      // setPlayerNames(temp);
-      //   setPlayerIds(response.listOfPlayerIds);
-      // setOwnerId(response.ownerId);
-      // setRoomSeats(response.roomSeats);
-      // setStatus(response.status);
 
       if (status == "END") {
         history.push("/lobby");
       }
+      if (status == "END_GAME") {
+        history.push("/lobby");
+      }
       if (status == "PLAYING") {
-        if (startGameId != null) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+        if (StartTurnId != null) {
+          // await new Promise((resolve) => setTimeout(resolve, 1000));
           goToGame(startGameId, StartTurnId);
         }
       }
     } catch (error) {
-      // alert(
-      //   `Something went wrong during get waiting room information: \n${handleError(
-      //     error
-      //   )}`
-      // );
-      // history.push("/lobby"); // redirect back to lobby
       handleNotLogInError(history, error, "fetching waiting Area");
+      setIsUpdating(false);
+      history.push("/lobby"); // redirect back to lobby
     }
   };
 
@@ -111,8 +83,7 @@ const WaitingView = () => {
     async () => {
       fetchRoomInfo();
     },
-    1000
-    // status == "PLAYING" ? null : 1000
+    isUpdating ? 1000 : null
   );
 
   const leaveRoom = async () => {
@@ -121,25 +92,16 @@ const WaitingView = () => {
         roomId: roomId,
         userId: curUserId,
       });
-      await api().put("/games/leave", requestBody); //leave waiting area
+      await api().put("/rooms/leave", requestBody); //leave waiting area
       history.push("/lobby");
     } catch (error) {
-      // alert(
-      //   `Something went wrong during leave waiting room: \n${handleError(
-      //     error
-      //   )}`
-      // );
       handleNotLogInError(history, error, "leave waiting area");
     }
   };
   const startGame = async () => {
     try {
       await api().post(`/games/waitingArea/${roomId}`);
-      // history.push(`/game/${roomId}`); // should be changed later
     } catch (error) {
-      // alert(
-      //   `Something went wrong during starting game: \n${handleError(error)}`
-      // );
       handleNotLogInError(history, error, "start game");
       // history.push("/lobby"); // redirect back to lobby
     }
@@ -169,16 +131,6 @@ const WaitingView = () => {
   let userChoiceArea = <SpinnerBouncing />;
   //   const playerInfoBoard = <SpinnerBouncing />;
   if (roomName !== "") {
-    // var names = ["Michael", "Brian", "John"];
-    // playerInfoBoard = names.map((name) => <Player name={name} />);
-    // playerInfoBoard = names.map(function (name) {
-    //   return <Avatar {...stringAvatar(name)} />;
-    // });
-    // console.log(playerNames[1]);
-    // var i;
-    // for (i = 0; i < playerNames.length; i++) {
-    //   playerInfoBoard.push(<Avatar {...stringAvatar(playerNames[i])} />);
-    // }
     userChoiceArea =
       playerCount === roomSeats ? (
         parseInt(localStorage.getItem("id")) === parseInt(ownerId) ? (
@@ -216,7 +168,7 @@ const WaitingView = () => {
             <Player user={user} key={user.id} />
           ))}
         </div>
-        {/* <div>{playerInfoBoard}</div> */}
+
         <SpinnerBouncing />
 
         <h2 className="waitingArea playerCountinfo">

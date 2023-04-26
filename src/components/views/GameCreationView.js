@@ -55,17 +55,11 @@ const GameCreationView = () => {
       ownerId: currentId,
     });
 
-    // console.log(requestBody);
     try {
-      // console.log(visitId);
-      const response = await api().post(`/games`, requestBody);
+      const response = await api().post(`/rooms`, requestBody);
       const roomId = response.data.id;
       history.push(`/waiting/${roomId}`);
     } catch (error) {
-      //   alert(
-      //     `Something went wrong during creating Game: \n${handleError(error)}`
-      //   );
-      // }
       handleNotLogInError(history, error, "creating game room", true);
     }
     // history.push(`/waiting/`);
@@ -95,12 +89,6 @@ const GameCreationView = () => {
               2 Players
             </Button>
 
-            {/* <OptionButton
-              btnName1="2 Players"
-              btnName2="4 Players"
-              handleOption={handleOption}
-            /> */}
-
             <Button
               // onClick={() => setMode(4)}
               onClick={() => changeColor(4)}
@@ -118,6 +106,7 @@ const GameCreationView = () => {
               Back
             </Button>
             <Button
+              disabled={roomName.trim().length === 0}
               onClick={() => proceedToWait()}
               className="GameCreationView button_style1"
             >

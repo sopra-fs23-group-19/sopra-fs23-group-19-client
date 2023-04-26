@@ -6,10 +6,13 @@ import { withRouter } from "react-router-dom";
 import { api, handleNotLogInError } from "../../helpers/api";
 import DrawingStage from "components/views/DrawingStage";
 import Ranking from "components/views/Ranking";
+import GameLoading from "components/views/GameLoading";
 import SelectWord from "components/views/SelectWord";
 import GuessingStage from "components/views/GuessingStage";
+import TurnRanking from "components/views/TurnRanking";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { useInterval } from "helpers/hooks";
+import { Link } from "react-router-dom";
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
@@ -28,7 +31,9 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState(true);
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
-  const [currentGameTurn, setCurrentGameTurn] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(true);
+  const [isUpdatingPainting, setIsUpdatingPainting] = useState(true);
+  // const [currentGameTurn, setCurrentGameTurn] = useState(null);
 
   // const leave = () => {
   //   history.push("/lobby");
@@ -52,6 +57,22 @@ const Game = () => {
     }
 
     // setTurnStatus("PAINTING");
+  };
+
+  const handleConfirmRanking = async () => {
+    console.log("handle confirm ranking");
+
+    // console.log(requestBody);
+    try {
+      await api().get(`/gameRounds/rankConfirmation/${turnId}/${curUserId}`);
+    } catch (error) {
+      // alert(
+      //   `Something went wrong during submitting Painting: \n${handleError(
+      //     error
+      //   )}`
+      // );
+      handleNotLogInError(history, error, "confirm ranking", true);
+    }
   };
 
   const handleSubmitPainting = async (painting) => {
@@ -91,147 +112,81 @@ const Game = () => {
     }
   };
 
-  // const handleQuitGame = async () => {
-  //   console.log("handle quit game");
-  //   const requestBody = JSON.stringify({
-  //     id: turnId,
-  //     guessingWord: word,
-  //   });
-  //   console.log(requestBody);
-  //   try {
-  //     await api().put(`/gameRounds/answers/${turnId}`, requestBody);
-  //   } catch (error) {
-  //     alert(
-  //       `Something went wrong during submitting Answer: \n${handleError(error)}`
-  //     );
-  //   }
-  // };
+  const handleUpdatePainting = async (painting) => {
+    console.log("handle update painting");
+    if (isUpdatingPainting) {
+      const requestBody = JSON.stringify({
+        id: turnId,
+        image: painting,
+      });
+      try {
+        await api().put(`/gameRounds/drawings`, requestBody);
+      } catch (error) {
+        handleNotLogInError(history, error, "handle updating Painting", true);
+        setIsUpdatingPainting(false);
+      }
+    }
+  };
 
   const fetchData = async () => {
     try {
-      const response0 = await api().get(`/games/${gameId}`);
+      const response0 = await api().get(`/rooms/${gameId}`);
       // // delays continuous execution of an async operation for 1 second.
 
       // // Get the returned users and update the state.
 
       const response = response0.data;
 
-      ///for test
-      // const response = {
-      //   id: 1,
-      //   drawingPlayerIds: [1, 2],
-      //   allPlayersIds: [1, 2],
-      //   gameTurnList: [1, 2],
-      //   // gameTurnStatus: "CHOOSE_WORD",
-      //   gameTurnStatus: "PAINTING",
-      //   currentGameTurn: 2,
-      //   gameStatus: true,
-      // };
+      setGameStatus(response.status);
 
-      // Get the returned users and update the state.
-      // setGameModel(response.data);
-      var arr = response.drawingPlayerIds;
-      // var currentDrawingId = arr[arr.length - 1];
-      // setDrawingPlayerId(currentDrawingId);
-      setGameStatus(response.gameStatus);
-      var arrTurnIds = response.gameTurnList;
-      var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
-      setTurnId(currentTurnId);
-      setTurnStatus(response.gameTurnStatus);
-      setCurrentGameTurn(response.currentGameTurn);
-      // console.log(response.gameTurnList);
-      // console.log("current turn status is");
-      // console.log(turnStatus);
-      // console.log("current game status is");
-      // console.log(gameStatus);
-      // console.log("current turn id is");
-      // console.log(turnId);
+      setTurnId(response.currentTurnId);
+      setTurnStatus(response.currentTurnStatus);
     } catch (error) {
-      // console.error(
-      //   `Something went wrong while fetching the game: \n${handleError(error)}`
-      // );
-      // console.error("Details:", error);
-      // alert(
-      //   "Something went wrong while fetching the game! See the console for details."
-      // );
       handleNotLogInError(history, error, "get game");
+      setIsUpdating(false);
+      handleGameError();
       history.push("/lobby");
     }
   };
-  // the effect hook can be used to react to change in your component.
-  // in this case, the effect hook is only run once, the first time the component is mounted
-  // this can be achieved by leaving the second argument an empty array.
-  // for more information on the effect hook, please see https://reactjs.org/docs/hooks-effect.html
+
+  const handleQuitGame = async () => {
+    console.log("handle quit game");
+
+    try {
+      await api().put(`/games/ending/${gameId}`);
+    } catch (error) {
+      handleNotLogInError(history, error, "leaving game", true);
+    }
+    history.push("/lobby");
+  };
+  //force quit game
+  const handleGameError = async () => {
+    console.log("handle game error");
+
+    try {
+      await api().put(`/games/ending/${gameId}`);
+    } catch (error) {
+      history.push("/lobby");
+    }
+  };
+
   useEffect(() => {
-    // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
-    // async function fetchData() {
-    //   try {
-    //     const response0 = await api().get(`/games/${gameId}`);
-    //     // // delays continuous execution of an async operation for 1 second.
-    //     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    //     // // Get the returned users and update the state.
-
-    //     const response = response0.data;
-
-    //     ///for test
-    //     // const response = {
-    //     //   id: 1,
-    //     //   drawingPlayerIds: [1, 2],
-    //     //   allPlayersIds: [1, 2],
-    //     //   gameTurnList: [1, 2],
-    //     //   // gameTurnStatus: "CHOOSE_WORD",
-    //     //   gameTurnStatus: "PAINTING",
-    //     //   currentGameTurn: 2,
-    //     //   gameStatus: true,
-    //     // };
-
-    //     // Get the returned users and update the state.
-    //     // setGameModel(response.data);
-    //     var arr = response.drawingPlayerIds;
-    //     var currentDrawingId = arr[arr.length - 1];
-    //     setDrawingPlayerId(currentDrawingId);
-    //     setGameStatus(response.gameStatus);
-    //     setTurnStatus(response.gameTurnStatus);
-    //     setCurrentGameTurn(response.currentGameTurn);
-    //     console.log(currentDrawingId);
-    //     var arrTurnIds = response.gameTurnList;
-    //     var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
-    //     setTurnId(currentTurnId);
-    // } catch (error) {
-    //   console.error(
-    //     `Something went wrong while fetching the game: \n${handleError(
-    //       error
-    //     )}`
-    //   );
-    //   console.error("Details:", error);
-    //   alert(
-    //     "Something went wrong while fetching the game! See the console for details."
-    //   );
-    // }
-    // }
-
     fetchData();
   }, []);
   useInterval(
     async () => {
       fetchData();
     },
-    1000
-    // status == "PLAYING" ? null : 1000
+    isUpdating ? 1000 : null
   );
-
-  // useInterval(
-  //   async () => {
-  //     fetchRoomInfo();
-  //   },
-  //   gameStatus == false ? null : 1000
-  // );
 
   const switchPages = () => {
     let content = <Spinner />;
-    if (gameStatus) {
+    if (gameStatus == "PLAYING") {
+      console.log(gameStatus);
+      console.log(turnStatus);
       if (turnStatus === "CHOOSE_WORD") {
+        console.log(turnStatus);
         content = (
           <SelectWord
             gameId={gameId}
@@ -241,15 +196,18 @@ const Game = () => {
         );
       }
       // else if (turnStatus === "PAINTING" && curUserId == drawingPlayerId)
-      else if (turnStatus === "PAINITING") {
+      else if (turnStatus === "PAINTING") {
+        console.log(turnStatus);
         content = (
           <DrawingStage
             gameId={gameId}
             turnId={turnId}
+            handleUpdatePainting={handleUpdatePainting}
             handleSubmitPainting={handleSubmitPainting}
           />
         );
       } else if (turnStatus === "GUESSING") {
+        console.log(turnStatus);
         content = (
           <GuessingStage
             gameId={gameId}
@@ -257,49 +215,45 @@ const Game = () => {
             handleSubmitAnswer={handleSubmitAnswer}
           />
         );
+      } else if (turnStatus === "RANKING") {
+        console.log(turnStatus);
+        content = (
+          <TurnRanking
+            gameId={gameId}
+            turnId={turnId}
+            handleConfirmRanking={handleConfirmRanking}
+          />
+        );
       } else {
-        content = <Ranking gameId={gameId} turnId={turnId} />;
+        content = <GameLoading />;
       }
+    } else if (gameStatus == "END_GAME") {
+      console.log(gameId);
+      console.log(gameStatus);
+
+      content = <Ranking gameId={gameId} handleQuitGame={handleQuitGame} />;
+    } else if (gameStatus == "END") {
+      content = (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "20vh",
+          }}
+        >
+          <Link to="/lobby">
+            That page cannot be found! Back to the lobby...
+          </Link>
+        </div>
+      );
     } else {
-      content = <Ranking gameId={gameId} turnId={turnId} />;
+      content = <GameLoading />;
     }
 
     return content;
   };
-  // let content = <Spinner />;
-  // if (gameStatus) {
-  //   if (turnStatus === "CHOOSE_WORD" && curUserId == drawingPlayerId) {
-  //     content = (
-  //       <SelectWord
-  //         gameId={gameId}
-  //         turnId={turnId}
-  //         handleChooseWord={handleChooseWord}
-  //       />
-  //     );
-  //   }
-  //   // else if (turnStatus === "PAINTING" && curUserId == drawingPlayerId)
-  //   else if (turnStatus === "PAINTING") {
-  //     content = (
-  //       <DrawingStage
-  //         gameId={gameId}
-  //         turnId={turnId}
-  //         handleSubmitPainting={handleSubmitPainting}
-  //       />
-  //     );
-  //   } else if (turnStatus === "GUESSING") {
-  //     content = (
-  //       <GuessingStage
-  //         gameId={gameId}
-  //         turnId={turnId}
-  //         handleSubmitAnswer={handleSubmitAnswer}
-  //       />
-  //     );
-  //   } else {
-  //     content = <Ranking gameId={gameId} turnId={turnId} />;
-  //   }
-  // } else {
-  //   content = <Ranking gameId={gameId} turnId={turnId} />;
-  // }
+
   return (
     <BaseContainer className="game container">{switchPages()}</BaseContainer>
   );

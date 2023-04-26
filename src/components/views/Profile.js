@@ -62,15 +62,6 @@ const Profile = () => {
   const visitId = parseInt(visitIdStr["id"]);
   // console.log(visitId);
   const editable = localStorage.getItem("id") === visitIdStr["id"];
-  // console.log(localStorage.getItem("id"));
-  // console.log(localStorage.getItem("token"));
-  // console.log("local storage");
-  // console.log(localStorage.getItem("token"));
-  // console.log("local storage");
-  // const [isShown, setIsSHown] = useState(false); //password shown or hidden
-  // console.log("editable");
-  // console.log(editable);
-  // const currentUserId = localStorage.getItem("userId"); //save userId
 
   useEffect(() => {
     const fetchProfile1 = async () => {
@@ -81,54 +72,12 @@ const Profile = () => {
         // const userProfile1 = new User(response);
         setUserProfile(userProfile1);
       } catch (error) {
-        // alert(
-        //   `Something went wrong during get user profile: \n${handleError(
-        //     error
-        //   )}`
-        // );
         handleNotLogInError(history, error, "fetching profile", true);
       }
     };
     fetchProfile1();
   }, [userProfile, visitId]);
   // }, []);
-
-  // useEffect(() => {
-  //   return () => {
-  //     // componentwillunmount in functional component.
-  //     // Anything in here is fired on component unmount.
-  //     setCount = 20;
-  //   };
-  // }, []);
-
-  // const fetchProfile = async () => {
-  //   try {
-  //     const response = await api().get(`/users/${visitId}`);
-  //     //for test reason
-  //     // const response = {
-  //     //   id: 1,
-  //     //   username: "r1",
-  //     //   status: "online",
-  //     //   bestScore: 10,
-  //     //   totalScore: 10,
-  //     // };
-  //     const userProfile1 = new User(response.data);
-  //     // const userProfile1 = new User(response);
-  //     setUserProfile(userProfile1);
-  //     setCount(count + 1);
-  //   } catch (error) {
-  //     alert(
-  //       `Something went wrong during get user profile: \n${handleError(error)}`
-  //     );
-  //   }
-  // };
-
-  // useInterval(
-  //   async () => {
-  //     fetchProfile();
-  //   },
-  //   count > 10 ? null : 1000
-  // );
 
   const handleUpdateProfile = async () => {
     // console.log("handle update");
@@ -171,20 +120,20 @@ const Profile = () => {
 
   const ShowAndHidePassword = () => {
     return (
-      <div className="wrapper">
+      <div className="password wrapper">
         <label className="profile label">{"Password"}</label>
         <input
-          className="input"
+          className="password input"
           type={isShowPwd ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           // onChange={(e) => setPwd(e.target.value)}
         />
         <img
-          className="icon"
+          className="password icon"
           alt=""
           // title={isShowPwd ? "Hide password" : "Show password"}
-          src={isShowPwd ? hidePwdIcon : showPwdIcon}
+          src={isShowPwd ? showPwdIcon : hidePwdIcon}
           onClick={() => setIsShowPwd((prevState) => !prevState)}
         />
       </div>
@@ -228,21 +177,6 @@ const Profile = () => {
             </Button>
             <img className="profile img_cat_right" src={cat_left} />
           </div>
-          {/* <div className="profile button-container">
-            <img className="profile img_cat_left" src={cat_left} alt="" />
-            <img className="profile img_cat_right" src={cat_left} alt="" />
-
-            <img
-              className="profile img_cat_middle"
-              src={cat_left}
-              alt="cat 1"
-            />
-            <img
-              className="profile img_cat_middle1"
-              src={cat_left}
-              alt="cat 2"
-            />
-          </div> */}
         </div>
       </div>
     );
@@ -284,21 +218,6 @@ const Profile = () => {
             </Button>
             <img className="profile img_cat_right" src={cat_left} />
           </div>
-          {/* <div className="profile button-container">
-            <img className="profile img_cat_left" src={cat_left} alt="" />
-            <Button
-              style={{
-                width: "80%",
-                left: "20px",
-                top: "-10px",
-                "background-color": "#FFFFFF",
-                border: "2px solid #000000",
-              }}
-            >
-              EDIT
-            </Button>
-            <img className="profile img_cat_right" src={cat_left} alt="" />
-          </div> */}
         </div>
       </div>
     );

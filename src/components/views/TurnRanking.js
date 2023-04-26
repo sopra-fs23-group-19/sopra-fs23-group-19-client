@@ -16,19 +16,19 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const history = useHistory();
   //get the username and score
   const curUserId = localStorage.getItem("id");
-  const [username1, setUsername1] = useState("user1");
-  const [username2, setUsername2] = useState("user2");
-  const [username3, setUsername3] = useState("user3");
-  const [username4, setUsername4] = useState("user4");
-  const [score1, setScore1] = useState("0");
-  const [score2, setScore2] = useState("0");
-  const [score3, setScore3] = useState("0");
-  const [score4, setScore4] = useState("0");
+  const [username1, setUsername1] = useState(null);
+  const [username2, setUsername2] = useState(null);
+  const [username3, setUsername3] = useState(null);
+  const [username4, setUsername4] = useState(null);
+  const [score1, setScore1] = useState(null);
+  const [score2, setScore2] = useState(null);
+  const [score3, setScore3] = useState(null);
+  const [score4, setScore4] = useState(null);
   const [targetWord, setTargetWord] = useState("");
   const [userScore, setUserScore] = useState(0);
   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
   const [role, setRole] = useState("");
-  const [playerNum, setPlayerNum] = useState(2);
+  const [playerNum, setPlayerNum] = useState(null);
   const fetchTurnScore = async () => {
     try {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);

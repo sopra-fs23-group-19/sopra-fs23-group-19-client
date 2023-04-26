@@ -91,8 +91,13 @@ const DrawingStage = ({
       //   console.log(word);
       var allPlayers = response1.players;
       const updatedPlayer = allPlayers.filter(
-        (item) => item.id !== response1.drawingPlayerId
+        (item) => item.id != response1.drawingPlayerId
       );
+      // const thisPlayer = allPlayers.filter(
+      //   (item) => item.id == curUserId
+      // )
+      // const currentUsername = thisPlayer.username;
+      // console.log(currentUsername);
 
       if (playerNum == 4) {
         // setUsername1(response1.players[0].username);
@@ -107,6 +112,19 @@ const DrawingStage = ({
         setUsername1(response1.drawingPlayerName);
         setUsername2(updatedPlayer[0].username);
       }
+
+      // if(currentUsername==username1){
+      //   document.querySelector("#player1").style.border = "2px solid #000000";
+      // }
+      // if(currentUsername==username2){
+      //   document.querySelector("#player2").style.border = "2px solid #000000";
+      // }
+      // if(currentUsername==username3){
+      //   document.querySelector("#player3").style.border = "2px solid #000000";
+      // }
+      // if(currentUsername==username4){
+      //   document.querySelector("#player4").style.border = "2px solid #000000";
+      // }
 
       // console.log(imageData);
       console.log("fetch turn info");
@@ -139,11 +157,13 @@ const DrawingStage = ({
     // status == "PLAYING" ? null : 1000
   );
 
+
   //display cat and username
   const player1 = (
     <div className="guessing info">
       <img src={cat1} alt="" />
       <div
+        id="player1"
         style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
       >
         {username1}
@@ -154,6 +174,7 @@ const DrawingStage = ({
     <div className="guessing info">
       <img src={cat2} alt="" />
       <div
+        id="player2"
         style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
       >
         {username2}
@@ -164,6 +185,7 @@ const DrawingStage = ({
     <div className="guessing info">
       <img src={cat3} alt="" />
       <div
+        id="player3"
         style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
       >
         {username3}
@@ -174,6 +196,7 @@ const DrawingStage = ({
     <div className="guessing info">
       <img src={cat4} alt="" />
       <div
+        id="player4"
         style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
       >
         {username4}

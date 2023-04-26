@@ -16,10 +16,10 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const history = useHistory();
   //get the username and score
   const curUserId = localStorage.getItem("id");
-  const [username1, setUsername1] = useState(null);
-  const [username2, setUsername2] = useState(null);
-  const [username3, setUsername3] = useState(null);
-  const [username4, setUsername4] = useState(null);
+  const [username1, setUsername1] = useState("");
+  const [username2, setUsername2] = useState("");
+  const [username3, setUsername3] = useState("");
+  const [username4, setUsername4] = useState("");
   const [score1, setScore1] = useState(null);
   const [score2, setScore2] = useState(null);
   const [score3, setScore3] = useState(null);
@@ -70,7 +70,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     let ignore = true;
     if(ignore){
       fetchTurnScore();
-      window.location.reload();
     }
     return() => {
       ignore = false;

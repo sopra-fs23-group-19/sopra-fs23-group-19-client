@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleNotLogInError } from "../../helpers/api";
 
-const Ranking = ({ gameId }) => {
+const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
   console.log("gameId is");
   console.log(gameId);
@@ -21,43 +21,17 @@ const Ranking = ({ gameId }) => {
   const [score3, setScore3] = useState("");
   const [score4, setScore4] = useState("");
 
+  function handleQuit() {
+    handleQuitGame();
+  }
+
   const [playerNum, setPlayerNum] = useState(2);
   const fetchRankInfo = async () => {
     try {
       const response0 = await api().get(`/games/ranks/${gameId}`);
       const response1 = response0.data;
-      //   const response1 = [
-      //     {
-      //       id: 2,
-      //       username: "test1",
-      //       token: "b04e95f7-4606-4a2e-9929-205ba685c2c3",
-      //       status: "ISPLAYING",
-      //       creationDate: "2023-04-23T19:39:52.928+00:00",
-      //       bestScore: 0,
-      //       totalScore: 0,
-      //       currentScore: 0,
-      //       guessingWord: null,
-      //       currentGameScore: 0,
-      //     },
-      //     {
-      //       id: 1,
-      //       username: "test",
-      //       token: "e53f43eb-ccb5-46f7-971b-44b470d2cd1b",
-      //       status: "ISPLAYING",
-      //       creationDate: "2023-04-23T19:39:47.433+00:00",
-      //       bestScore: 0,
-      //       totalScore: 0,
-      //       currentScore: 0,
-      //       guessingWord: "apple",
-      //       currentGameScore: 0,
-      //     },
-      //   ];
-      //   const playerNum = response1.players.length;
+
       setPlayerNum(response1.length);
-      //   var allPlayers = response1;
-      //   const updatedPlayer = allPlayers.filter(
-      //     (item) => item.id !== response1.drawingPlayerId
-      //   );
 
       if (playerNum == 4) {
         // setUsername1(response1.players[0].username);
@@ -80,19 +54,13 @@ const Ranking = ({ gameId }) => {
         setScore2(response1[1].currentGameScore);
       }
     } catch (error) {
-      //   alert(
-      //     `Something went wrong during get game Turn information: \n${handleError(
-      //       error
-      //     )}`
-      //   );
-      //   history.push("/lobby"); // redirect back to lobby
       handleNotLogInError(history, error, "fetching ranking information");
       history.push("/lobby"); // redirect back to lobby
     }
   };
   useEffect(() => {
     fetchRankInfo();
-  }, []);
+  }, [playerNum]);
   //ranking component
   //need to sort the score later
   const rankingWhenFourPlayers = (
@@ -203,8 +171,8 @@ const Ranking = ({ gameId }) => {
       >
         <Button
           onClick={() => {
-            // handleQuitGame(true);
-            history.push("/lobby");
+            handleQuit();
+            // history.push("/lobby");
           }}
           width="100%"
           style={{ "margin-top": "5px", border: "2px solid #000000" }}

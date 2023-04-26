@@ -1,0 +1,28 @@
+.rank {
+  &.label {
+    color: black;
+    margin-bottom: 12px;
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 16px;
+  }
+  &.li {
+    position: absolute;
+    left: 600px;
+    top: 130px;
+  }
+  &.spinner {
+    position: absolute;
+    left: 650px;
+    top: 450px;
+  }
+  &.gif {
+    width: 150px;
+    height: auto;
+    position: absolute;
+    left: 830px;
+    top: 80px;
+  }
+}

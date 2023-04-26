@@ -47,8 +47,9 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   console.log(turnId);
   const fetchWord = async () => {
     try {
-      const response0 = await api().get(`/gameRounds/words/${turnId}`);
-      const response = response0.data;
+      // const response0 = await api().get(`/gameRounds/words/${turnId}`);
+      // const response = response0.data;
+      const response = ["feet", "bench", "line"];
       //   const response = {
       //     id: 1,
       //     drawingPlayerId: 1,
@@ -143,9 +144,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   };
   const fetchTurnInfo = async () => {
     try {
-      const response0 = await api().get(
-        `/gameRounds/information/${turnId}/${curUserId}`
-      );
+      const response0 = await api().get(`/gameRounds/information/${turnId}`);
       //   const response1 = {
       //     id: 1,
       //     drawingPlayerId: 1,
@@ -229,88 +228,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
 
   useEffect(() => {
     fetchTurnInfo();
-  }, []);
-
-  // const fetchTurnScore = async () => {
-  //   try {
-  //     const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
-  //     const response = response0.data;
-  //     //   const response = [
-  //     //     {
-  //     //       id: 2,
-  //     //       username: "test",
-  //     //       token: "30e578e3-4329-41aa-8a16-d51f5d5294c2",
-  //     //       status: "ISPLAYING",
-  //     //       creationDate: "2023-04-24T07:51:30.741+00:00",
-  //     //       bestScore: 0,
-  //     //       totalScore: 0,
-  //     //       currentScore: 0,
-  //     //       guessingWord: null,
-  //     //       currentGameScore: 0,
-  //     //     },
-  //     //     {
-  //     //       id: 1,
-  //     //       username: "test1",
-  //     //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
-  //     //       status: "ISPLAYING",
-  //     //       creationDate: "2023-04-24T07:51:24.545+00:00",
-  //     //       bestScore: 0,
-  //     //       totalScore: 0,
-  //     //       currentScore: 0,
-  //     //       guessingWord: null,
-  //     //       currentGameScore: 0,
-  //     //     },
-  //     //     {
-  //     //       id: 3,
-  //     //       username: "test00",
-  //     //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
-  //     //       status: "ISPLAYING",
-  //     //       creationDate: "2023-04-24T07:51:24.545+00:00",
-  //     //       bestScore: 0,
-  //     //       totalScore: 0,
-  //     //       currentScore: 0,
-  //     //       guessingWord: null,
-  //     //       currentGameScore: 0,
-  //     //     },
-  //     //     {
-  //     //       id: 4,
-  //     //       username: "test00",
-  //     //       token: "815bbb7e-eec9-466f-9132-a7c933f201d3",
-  //     //       status: "ISPLAYING",
-  //     //       creationDate: "2023-04-24T07:51:24.545+00:00",
-  //     //       bestScore: 0,
-  //     //       totalScore: 0,
-  //     //       currentScore: 0,
-  //     //       guessingWord: null,
-  //     //       currentGameScore: 0,
-  //     //     },
-  //     //   ];
-
-  //     if (playernum == 4) {
-  //       setScore1(response[0].currentScore);
-  //       setScore2(response[1].currentScore);
-  //       setScore3(response[2].currentScore);
-  //       setScore4(response[3].currentScore);
-  //     }
-
-  //     if (playernum == 2) {
-  //       setScore1(response[0].currentScore);
-  //       setScore2(response[1].currentScore);
-  //     }
-  //   } catch (error) {
-  //     //   alert(
-  //     //     `Something went wrong during getting turn ranking information: \n${handleError(
-  //     //       error
-  //     //     )}`
-  //     //   );
-  //     //   history.push("/lobby"); // redirect back to lobby
-  //     handleNotLogInError(
-  //       history,
-  //       error,
-  //       "fetching turn scores in selecting word phase"
-  //     );
-  //   }
-  // };
+  }, [playernum]);
 
   useEffect(() => {
     fetchWord();
@@ -326,14 +244,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         <Button
           // need to connect to backend later
           onClick={() => {
-            // console.log(startDrawing);
-            // setWord("apple"); //need to be modified
-            // setWord(word0);
             handleChooseWord(word0);
-            // history.push({
-            //   pathname: "/drawingStage",
-            //   state: { startDrawing: startDrawing, word: word },
-            // });
           }}
           style={{
             left: "50px",
@@ -369,7 +280,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             "background-color": "rgba(181, 153, 120, 0.5)",
           }}
         >
-          {/* banana */}
           {word1}
         </Button>
       </div>
@@ -392,7 +302,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             "background-color": "rgba(181, 153, 120, 0.5)",
           }}
         >
-          {/* orange */}
           {word2}
         </Button>
       </div>
@@ -442,82 +351,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     </div>
   );
 
-  // //ranking component
-  // const rankingWhenFourPlayers = (
-  //   <div>
-  //     <div className="guessing score-list">
-  //       <div className="guessing score-container">
-  //         <div className="guessing rank-title" style={{}}>
-  //           Username
-  //         </div>
-  //         <div className="guessing rank-title">Score</div>
-  //       </div>
-  //       <div className="guessing line"></div>
-  //       <div className="guessing score-container">
-  //         <div className="guessing content">{username1}</div>
-  //         <div className="guessing content">{score1}</div>
-  //       </div>
-  //       <div
-  //         className="guessing line"
-  //         style={{ border: "2px solid #ad9a66" }}
-  //       ></div>
-  //       <div className="guessing score-container">
-  //         <div className="guessing content">{username2}</div>
-  //         <div className="guessing content">{score2}</div>
-  //       </div>
-  //       <div
-  //         className="guessing line"
-  //         style={{ border: "2px solid #ad9a66" }}
-  //       ></div>
-  //       <div className="guessing score-container">
-  //         <div className="guessing content">{username3}</div>
-  //         <div className="guessing content">{score3}</div>
-  //       </div>
-  //       <div
-  //         className="guessing line"
-  //         style={{ border: "2px solid #ad9a66" }}
-  //       ></div>
-  //       <div className="guessing score-container">
-  //         <div className="guessing content">{username4}</div>
-  //         <div className="guessing content">{score4}</div>
-  //       </div>
-  //       <div
-  //         className="guessing line"
-  //         style={{ border: "2px solid #ad9a66" }}
-  //       ></div>
-  //     </div>
-  //   </div>
-  // );
-  // //ranking component
-  // const rankingWhenTwoPlayers = (
-  //   <div>
-  //     <div className="guessing score-list">
-  //       <div className="guessing score-container">
-  //         <div className="guessing rank-title" style={{}}>
-  //           Username
-  //         </div>
-  //         <div className="guessing rank-title">Score</div>
-  //       </div>
-  //       <div className="guessing line"></div>
-  //       <div className="guessing score-container">
-  //         <div className="guessing content">{username1}</div>
-  //         <div className="guessing content">{score1}</div>
-  //       </div>
-  //       <div
-  //         className="guessing line"
-  //         style={{ border: "2px solid #ad9a66" }}
-  //       ></div>
-  //       <div className="guessing score-container">
-  //         <div className="guessing content">{username2}</div>
-  //         <div className="guessing content">{score2}</div>
-  //       </div>
-  //       <div
-  //         className="guessing line"
-  //         style={{ border: "2px solid #ad9a66" }}
-  //       ></div>
-  //     </div>
-  //   </div>
-  // );
   return (
     <BaseContainer>
       {/* <Header /> */}
@@ -527,19 +360,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       >
         <img src={cats} alt="" />
       </div>
-      {/* <div style={{ left: "40px", top: "170px", position: "absolute" }}>
-        {player1}
-      </div>
-      <div style={{ left: "900px", top: "170px", position: "absolute" }}>
-        {player2}
-      </div>
-      <div style={{ left: "1100px", top: "170px", position: "absolute" }}>
-        {player3}
-      </div>
-      <div style={{ left: "1300px", top: "170px", position: "absolute" }}>
-        {player4}
-      </div>
-      <div>{ranking}</div> */}
+
       {playernum == 4 ? (
         <div>
           <div style={{ left: "40px", top: "170px", position: "absolute" }}>
@@ -554,7 +375,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           <div style={{ left: "1300px", top: "170px", position: "absolute" }}>
             {player4}
           </div>
-          {/* <div>{rankingWhenFourPlayers}</div> */}
         </div>
       ) : (
         <></>
@@ -567,7 +387,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           <div style={{ left: "900px", top: "170px", position: "absolute" }}>
             {player2}
           </div>
-          {/* <div>{rankingWhenTwoPlayers}</div> */}
         </div>
       }
       {role == "drawingPlayer" ? (
@@ -603,22 +422,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           </h2>
         </div>
       )}
-      {/* <div>
-        <h2
-          style={{
-            left: "250px",
-            top: "180px",
-            position: "absolute",
-            "font-family": "Nunito",
-            color: "black",
-          }}
-        >
-          {" "}
-          It's your turn to paint. Choose one word first!
-        </h2>
-        
-        {displayWords}
-      </div> */}
     </BaseContainer>
   );
 };

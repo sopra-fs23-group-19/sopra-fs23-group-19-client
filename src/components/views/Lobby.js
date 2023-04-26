@@ -19,14 +19,9 @@ const Rooms = ({ room }) => {
       userId: localStorage.getItem("id"),
     });
     try {
-      await api().put(`/games/join`, requestBody);
+      await api().put(`/rooms/join`, requestBody);
     } catch (error) {
       handleNotLogInError(history, error, "joining the room", true);
-      // alert(
-      //   `Something went wrong during joining waiting room: \n${handleError(
-      //     error
-      //   )}`
-      // );
     }
     history.push(`/waiting/${id}`);
   };
@@ -55,17 +50,10 @@ const Lobby = () => {
   const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
   const fetchRooms = async () => {
     try {
-      const response = await api().get("/games");
+      const response = await api().get("/rooms");
       setRooms(response.data);
       // console.log(rooms);
     } catch (error) {
-      // console.error(
-      //   `Something went wrong while fetching the rooms: \n${handleError(error)}`
-      // );
-      // console.error("Details:", error);
-      // alert(
-      //   "Something went wrong while fetching the rooms! See the console for details."
-      // );
       handleNotLogInError(history, error, "getting lobby");
       setIsUpdating(false);
       // history.push("/login");
@@ -106,7 +94,8 @@ const Lobby = () => {
   } else {
     content = (
       <div>
-        <div className="lobby room-list">
+        {/* <div className="lobby room-list"> */}
+        <div className="lobby container">
           <div className="lobby room-container">
             <div className="lobby title" style={{ "margin-left": "80px" }}>
               id
@@ -120,11 +109,6 @@ const Lobby = () => {
             className="lobby line"
             style={{ border: "2px solid #ad9a66" }}
           ></div>
-
-          {/* <div
-            className="lobby line"
-            style={{ border: "2px solid #ad9a66" }}
-          ></div> */}
         </div>
       </div>
     );

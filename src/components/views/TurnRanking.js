@@ -7,7 +7,10 @@ import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleNotLogInError } from "../../helpers/api";
 import Emoji from "a11y-react-emoji";
-
+import "styles/views/Rank.scss";
+import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
+import wingame from "styles/images/gif/cat_happy.gif";
+import losegame from "styles/images/gif/cat_unhappy.gif";
 const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
   const history = useHistory();
@@ -23,59 +26,35 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [score4, setScore4] = useState("0");
   const [targetWord, setTargetWord] = useState("");
   const [userScore, setUserScore] = useState(0);
-
+  const [drawingPlayerId, setDrawingPlayerId] = useState(null);
+  const [role, setRole] = useState("");
   const [playerNum, setPlayerNum] = useState(2);
   const fetchTurnScore = async () => {
     try {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
       const response = response0.data;
-      //response=
-      //   [
-      //     {
-      //         "id": 2,
-      //         "username": "test",
-      //         "token": "30e578e3-4329-41aa-8a16-d51f5d5294c2",
-      //         "status": "ISPLAYING",
-      //         "creationDate": "2023-04-24T07:51:30.741+00:00",
-      //         "bestScore": 0,
-      //         "totalScore": 0,
-      //         "currentScore": 0,
-      //         "guessingWord": null,
-      //         "currentGameScore": 0
-      //     },
-      //     {
-      //         "id": 1,
-      //         "username": "test1",
-      //         "token": "815bbb7e-eec9-466f-9132-a7c933f201d3",
-      //         "status": "ISPLAYING",
-      //         "creationDate": "2023-04-24T07:51:24.545+00:00",
-      //         "bestScore": 0,
-      //         "totalScore": 0,
-      //         "currentScore": 0,
-      //         "guessingWord": null,
-      //         "currentGameScore": 0
-      //     }
-      // ]
-
       const updatedPlayer = response.filter((item) => item.id == curUserId);
       setUserScore(parseInt(updatedPlayer[0].currentScore));
+      const updatedPlayer1 = response.filter(
+        (item) => item.id != drawingPlayerId
+      );
       setPlayerNum(response.length);
       if (playerNum == 4) {
-        setUsername1(response[0].username);
-        setUsername2(response[1].username);
-        setUsername3(response[2].username);
-        setUsername4(response[3].username);
-        setScore1(response[0].currentScore);
-        setScore2(response[1].currentScore);
-        setScore3(response[2].currentScore);
-        setScore4(response[3].currentScore);
+        setUsername1(updatedPlayer1[0].username);
+        setUsername2(updatedPlayer1[1].username);
+        setUsername3(updatedPlayer1[2].username);
+        // setUsername4(response[3].username);
+        setScore1(updatedPlayer1[0].currentScore);
+        setScore2(updatedPlayer1[1].currentScore);
+        setScore3(updatedPlayer1[2].currentScore);
+        // setScore4(response[3].currentScore);
       }
 
       if (playerNum == 2) {
-        setUsername1(response[0].username);
-        setUsername2(response[1].username);
-        setScore1(response[0].currentScore);
-        setScore2(response[1].currentScore);
+        setUsername1(updatedPlayer1[0].username);
+        // setUsername2(response[1].username);
+        setScore1(updatedPlayer1[0].currentScore);
+        // setScore2(response[1].currentScore);
       }
     } catch (error) {
       //   alert(
@@ -89,46 +68,20 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   };
   useEffect(() => {
     fetchTurnScore();
-  }, []);
+  }, [drawingPlayerId]);
   //fetch game Turn information
   const fetchTurnInfo = async () => {
     try {
-      const response0 = await api().get(
-        `/gameRounds/information/${turnId}/${curUserId}`
-      );
+      const response0 = await api().get(`/gameRounds/information/${turnId}`);
       const response1 = response0.data;
-      //   const response1 = {
-      //     id: 1,
-      //     drawingPlayerId: 1,
-      //     drawingPlayerName: "test1",
-      //     players: [
-      //       {
-      //         id: 1,
-      //         username: "test1",
-      //       },
-      //       {
-      //         id: 2,
-      //         username: "test",
-      //       },
-      //     ],
-      //     image: null,
-      //     wordsToBeChosen: ["feet", "bench", "line"],
-      //     targetWord: "line",
-      //     gameId: 1,
-      //     submittedAnswerIds: [],
-      //     status: "PAINTING",
-      //   };
-      //   const playerNum = response1.players.length;
-
+      if (parseInt(curUserId) == parseInt(response1.drawingPlayerId)) {
+        setRole("drawingPlayer");
+      } else if (parseInt(curUserId) != parseInt(response1.drawingPlayerId)) {
+        setRole("guessingPlayer");
+      }
+      setDrawingPlayerId(response1.drawingPlayerId);
       setTargetWord(response1.targetWord);
-
-      //   setRole("drawingPlayer");
     } catch (error) {
-      //   alert(
-      //     `Something went wrong during get game Turn information: \n${handleError(
-      //       error
-      //     )}`
-      //   );
       handleNotLogInError(
         history,
         error,
@@ -141,37 +94,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   useEffect(() => {
     fetchTurnInfo();
   }, []);
-  //   const fetchRankInfo = async () => {
-  //     try {
-  //       const response0 = await api().get(`/games/ranks/${gameId}`);
-  //       const response1 = response0.data;
-  //       setPlayerNum(response1.length);
-
-  //       if (playerNum == 4) {
-  //         setUsername1(response1[0].username);
-  //         setUsername2(response1[1].username);
-  //         setUsername3(response1[2].username);
-  //         setUsername4(response1[3].username);
-  //         setScore1(response1[0].currentGameScore);
-  //         setScore2(response1[1].currentGameScore);
-  //         setScore3(response1[2].currentGameScore);
-  //         setScore4(response1[3].currentGameScore);
-  //       }
-
-  //       if (playerNum == 2) {
-  //         setUsername1(response1[0].username);
-  //         setUsername2(response1[1].username);
-  //         setScore1(response1[0].currentGameScore);
-  //         setScore2(response1[1].currentGameScore);
-  //       }
-  //     } catch (error) {
-  //       handleNotLogInError(history, error, "fetching ranking information");
-  //       history.push("/lobby"); // redirect back to lobby
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     fetchRankInfo();
-  //   }, []);
 
   const handleClick = () => {
     handleConfirmRanking();
@@ -215,14 +137,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
           className="guessing line"
           style={{ border: "2px solid #ad9a66" }}
         ></div>
-        <div className="guessing score-container">
-          <div className="guessing content">{username4}</div>
-          <div className="guessing content">{score4}</div>
-        </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
       </div>
     </div>
   );
@@ -248,14 +162,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
           className="guessing line"
           style={{ border: "2px solid #ad9a66" }}
         ></div>
-        <div className="guessing score-container">
-          <div className="guessing content">{username2}</div>
-          <div className="guessing content">{score2}</div>
-        </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
       </div>
     </div>
   );
@@ -267,7 +173,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         <h2
           style={{
             left: "700px",
-            top: "80px",
+            top: "100px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "30px",
@@ -276,38 +182,47 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         >
           You win!
         </h2>
-        <Emoji symbol="👀" className="li" />
+        <Emoji symbol="🥳" className="rank li" />
+
+        <img className="rank gif" src={wingame} />
       </div>
     ) : (
       <div>
         <h2
           style={{
-            left: "700px",
-            top: "80px",
+            left: "650px",
+            top: "100px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
           }}
         >
-          Answer not correct
+          Wrong answer
         </h2>
-        <Emoji symbol="👀" label="eyes" />
+        <Emoji symbol="🙁" className="rank li" />
+
+        <img className="rank gif" src={losegame} />
       </div>
     );
   const waitTnfo = (
-    <h3
-      style={{
-        left: "700px",
-        top: "100px",
-        position: "absolute",
-        "font-family": "Nunito",
-        "font-size": "30px",
-        color: "black",
-      }}
-    >
-      Please wait a while, others are deciding to continue!
-    </h3>
+    <div>
+      <div className="rank spinner">
+        <SpinnerBouncing />
+      </div>
+      <div
+        style={{
+          left: "600px",
+          top: "500px",
+          position: "absolute",
+          "font-family": "Nunito",
+          "font-size": "20px",
+          color: "black",
+        }}
+      >
+        {"Please wait a while, others are deciding to continue!"}
+      </div>
+    </div>
   );
 
   //the score need to change later
@@ -323,7 +238,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       }}
     >
       <div>{"Correct word: " + targetWord}</div>
-      <div>{"Your score: " + userScore}</div>
+      <div>{"Your score: + " + userScore}</div>
     </div>
   );
   return (
@@ -334,9 +249,39 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       >
         <img src={cats} alt="" />
       </div>
-      {title}
+      {role == "guessingPlayer" ? (
+        title
+      ) : (
+        <div>
+          <h2
+            style={{
+              left: "700px",
+              top: "100px",
+              position: "absolute",
+              "font-family": "Nunito",
+              "font-size": "30px",
+              color: "black",
+            }}
+          >
+            Turn End!
+          </h2>
+          <h2
+            style={{
+              left: "600px",
+              top: "150px",
+              position: "absolute",
+              "font-family": "Nunito",
+              "font-size": "20px",
+              color: "black",
+            }}
+          >
+            Scores obtained by guessing players in this turn.
+          </h2>
+          <Emoji symbol="📢" className="rank li" />
+        </div>
+      )}
       {isDisabled ? waitTnfo : <></>}
-      {content}
+      {role == "guessingPlayer" ? content : <></>}
       {playerNum == 4 ? (
         <div>{rankingWhenFourPlayers}</div>
       ) : (

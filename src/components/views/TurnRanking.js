@@ -70,6 +70,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     let ignore = true;
     if(ignore){
       fetchTurnScore();
+      window.location.reload();
     }
     return() => {
       ignore = false;

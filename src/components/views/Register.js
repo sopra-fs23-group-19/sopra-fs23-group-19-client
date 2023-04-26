@@ -55,8 +55,8 @@ const Register = (props) => {
       alert(
         `Something went wrong during the register: \n${handleError(error)}`
       );
-      setUsername(null);
-      setPassword(null);
+      // setUsername(null);
+      // setPassword(null);
     }
   };
   const autoLoginAfterRegister = async (credentials) => {
@@ -77,8 +77,8 @@ const Register = (props) => {
       // console.log("localStorage.getItem(token)");
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
-      setUsername(null);
-      setPassword(null);
+      // setUsername(null);
+      // setPassword(null);
     }
   };
 

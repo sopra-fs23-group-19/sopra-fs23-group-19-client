@@ -6,7 +6,7 @@ import { Button } from "components/ui/Button";
 import BaseContainer from "components/ui/BaseContainer";
 import { useHistory } from "react-router-dom";
 
-const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
+const DrawingBoard = ({ role, time, hanleDoSubmit, handleUpdate }) => {
   const history = useHistory();
   const setConvasRef = useOnDraw(onDraw);
   const [lineColor, setLineColor] = useState(null);
@@ -62,6 +62,16 @@ const DrawingBoard = ({ role, time, hanleDoSubmit }) => {
     };
   }, []);
   useEffect(() => {
+    // if (time == 0) {
+    //   const canvas = document.getElementById("board");
+    //   const url = canvas.toDataURL();
+    //   hanleDoSubmit(url);
+    // }
+    if (time > 0 && time % 5 ==0) {
+      const canvas = document.getElementById("board");
+      const url = canvas.toDataURL();
+      handleUpdate(url);
+    }
     if (time == 0) {
       const canvas = document.getElementById("board");
       const url = canvas.toDataURL();

@@ -7,36 +7,34 @@ import { api, handleNotLogInError } from "../../helpers/api";
 import DrawingStage from "components/views/DrawingStage";
 import Ranking from "components/views/Ranking";
 import GameLoading from "components/views/GameLoading";
+import GameModel from "models/GameModel";
 import SelectWord from "components/views/SelectWord";
 import GuessingStage from "components/views/GuessingStage";
 import TurnRanking from "components/views/TurnRanking";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { useInterval } from "helpers/hooks";
+import TurnRankModel from "models/TurnRankModel";
+import GameRankModel from "models/GameRankModel";
 
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
   const location = useLocation();
   const { gameId } = useParams();
-  // const gameId = useParams().id;
-
   const InitialTurnId = location.state.turnId;
   const curUserId = localStorage.getItem("id");
-  // define a state variable (using the state hook).
-  // if this variable changes, the component will re-render, but the variable will
-  // keep its value throughout render cycles.
-  // a component can have as many state variables as you like.
-  // more information can be found under https://reactjs.org/docs/hooks-state.html
-  // const [drawingPlayerId, setDrawingPlayerId] = useState(null);
   const [gameStatus, setGameStatus] = useState(true);
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true);
-  // const [currentGameTurn, setCurrentGameTurn] = useState(null);
-
-  // const leave = () => {
-  //   history.push("/lobby");
-  // };
+  const [isUpdatingPainting, setIsUpdatingPainting] = useState(true);
+  const [currentGame, setCurrentGame] = useState(null);
+  // let currentGame = {};
+  let currentImage = "";
+  const [currentTurnRank, setCurrentTurnRank] = useState(null);
+  const [currentGameRank, setCurrentGameRank] = useState(null);
+  // let currentTurnRank = {};
+  // let currentGameRank = {};
 
   const handleChooseWord = async (word) => {
     console.log("handle choose Word");
@@ -44,7 +42,6 @@ const Game = () => {
       id: turnId,
       targetWord: word,
     });
-
     console.log(requestBody);
     try {
       await api().put(`/gameRounds/words`, requestBody);
@@ -54,8 +51,6 @@ const Game = () => {
       // );
       handleNotLogInError(history, error, "handle choose words", true);
     }
-
-    // setTurnStatus("PAINTING");
   };
 
   const handleConfirmRanking = async () => {
@@ -65,11 +60,6 @@ const Game = () => {
     try {
       await api().get(`/gameRounds/rankConfirmation/${turnId}/${curUserId}`);
     } catch (error) {
-      // alert(
-      //   `Something went wrong during submitting Painting: \n${handleError(
-      //     error
-      //   )}`
-      // );
       handleNotLogInError(history, error, "confirm ranking", true);
     }
   };
@@ -80,16 +70,25 @@ const Game = () => {
       id: turnId,
       image: painting,
     });
-    // console.log(requestBody);
     try {
       await api().post(`/gameRounds/finalDrawings`, requestBody);
     } catch (error) {
-      // alert(
-      //   `Something went wrong during submitting Painting: \n${handleError(
-      //     error
-      //   )}`
-      // );
       handleNotLogInError(history, error, "handle submitting Painting", true);
+    }
+  };
+  const handleUpdatePainting = async (painting) => {
+    console.log("handle update painting");
+    if (isUpdatingPainting) {
+      const requestBody = JSON.stringify({
+        id: turnId,
+        image: painting,
+      });
+      try {
+        await api().put(`/gameRounds/drawings`, requestBody);
+      } catch (error) {
+        handleNotLogInError(history, error, "handle updating Painting", true);
+        setIsUpdatingPainting(false);
+      }
     }
   };
 
@@ -100,80 +99,34 @@ const Game = () => {
       guessingWord: word,
       currentGameId: gameId,
     });
-    // console.log(requestBody);
     try {
       await api().put(`/gameRounds/answers/${turnId}`, requestBody);
     } catch (error) {
-      // alert(
-      //   `Something went wrong during submitting Answer: \n${handleError(error)}`
-      // );
       handleNotLogInError(history, error, "handle submitting answer", true);
     }
   };
 
-  // const handleQuitGame = async () => {
-  //   console.log("handle quit game");
-  //   const requestBody = JSON.stringify({
-  //     id: turnId,
-  //     guessingWord: word,
-  //   });
-  //   console.log(requestBody);
-  //   try {
-  //     await api().put(`/gameRounds/answers/${turnId}`, requestBody);
-  //   } catch (error) {
-  //     alert(
-  //       `Something went wrong during submitting Answer: \n${handleError(error)}`
-  //     );
-  //   }
-  // };
+  const handleQuitGame = async () => {
+    console.log("handle quit game");
+    try {
+      await api().put(`/games/ending/${gameId}`);
+    } catch (error) {
+      handleNotLogInError(history, error, "leaving game", true);
+    }
+    history.push("/lobby");
+  };
 
   const fetchData = async () => {
     try {
       const response0 = await api().get(`/games/waitingArea/${gameId}`);
-      // // delays continuous execution of an async operation for 1 second.
-
-      // // Get the returned users and update the state.
 
       const response = response0.data;
 
-      ///for test
-      // const response = {
-      //   id: 1,
-      //   drawingPlayerIds: [1, 2],
-      //   allPlayersIds: [1, 2],
-      //   gameTurnList: [1, 2],
-      //   // gameTurnStatus: "CHOOSE_WORD",
-      //   gameTurnStatus: "PAINTING",
-      //   currentGameTurn: 2,
-      //   gameStatus: true,
-      // };
-
-      // Get the returned users and update the state.
-      // setGameModel(response.data);
-      // var arr = response.drawingPlayerIds;
-      // var currentDrawingId = arr[arr.length - 1];
-      // setDrawingPlayerId(currentDrawingId);
       setGameStatus(response.status);
-      // var arrTurnIds = response.gameTurnList;
-      // var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
+
       setTurnId(response.currentTurnId);
       setTurnStatus(response.currentTurnStatus);
-      // setCurrentGameTurn(response.currentGameTurn);
-      // console.log(response.gameTurnList);
-      // console.log("current turn status is");
-      // console.log(turnStatus);
-      // console.log("current game status is");
-      // console.log(gameStatus);
-      // console.log("current turn id is");
-      // console.log(turnId);
     } catch (error) {
-      // console.error(
-      //   `Something went wrong while fetching the game: \n${handleError(error)}`
-      // );
-      // console.error("Details:", error);
-      // alert(
-      //   "Something went wrong while fetching the game! See the console for details."
-      // );
       handleNotLogInError(history, error, "get game");
       setIsUpdating(false);
       handleGameError();
@@ -199,55 +152,71 @@ const Game = () => {
   // this can be achieved by leaving the second argument an empty array.
   // for more information on the effect hook, please see https://reactjs.org/docs/hooks-effect.html
   useEffect(() => {
-    // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
-    // async function fetchData() {
-    //   try {
-    //     const response0 = await api().get(`/games/${gameId}`);
-    //     // // delays continuous execution of an async operation for 1 second.
-    //     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    //     // // Get the returned users and update the state.
-
-    //     const response = response0.data;
-
-    //     ///for test
-    //     // const response = {
-    //     //   id: 1,
-    //     //   drawingPlayerIds: [1, 2],
-    //     //   allPlayersIds: [1, 2],
-    //     //   gameTurnList: [1, 2],
-    //     //   // gameTurnStatus: "CHOOSE_WORD",
-    //     //   gameTurnStatus: "PAINTING",
-    //     //   currentGameTurn: 2,
-    //     //   gameStatus: true,
-    //     // };
-
-    //     // Get the returned users and update the state.
-    //     // setGameModel(response.data);
-    //     var arr = response.drawingPlayerIds;
-    //     var currentDrawingId = arr[arr.length - 1];
-    //     setDrawingPlayerId(currentDrawingId);
-    //     setGameStatus(response.gameStatus);
-    //     setTurnStatus(response.gameTurnStatus);
-    //     setCurrentGameTurn(response.currentGameTurn);
-    //     console.log(currentDrawingId);
-    //     var arrTurnIds = response.gameTurnList;
-    //     var currentTurnId = arrTurnIds[arrTurnIds.length - 1];
-    //     setTurnId(currentTurnId);
-    // } catch (error) {
-    //   console.error(
-    //     `Something went wrong while fetching the game: \n${handleError(
-    //       error
-    //     )}`
-    //   );
-    //   console.error("Details:", error);
-    //   alert(
-    //     "Something went wrong while fetching the game! See the console for details."
-    //   );
-    // }
-    // }
-
     fetchData();
+  }, []);
+
+  //fetch game Turn information
+  const IntializeTurn = async () => {
+    try {
+      const response0 = await api().get(
+        `/gameRounds/information/${turnId}/${curUserId}`
+      );
+      const response = response0.data;
+      currentGame.playerNum = response.players.length;
+      currentGame.drawingPlayerId = response.drawingPlayerId;
+      if (parseInt(curUserId) == parseInt(currentGame.drawingPlayerId)) {
+        currentGame.role = "drawingPlayer";
+      } else if (parseInt(curUserId) != parseInt(currentGame.drawingPlayerId)) {
+        currentGame.role = "guessingPlayer";
+      }
+      //   console.log(word);
+      var allPlayers = response.players;
+      const updatedPlayer = allPlayers.filter(
+        (item) =>
+          item.id !== currentGame.drawingPlayerId && item.id !== curUserId
+      );
+
+      const updatedPlayer0 = allPlayers.filter((item) => item.id == curUserId);
+      const updatedPlayer1 = allPlayers.filter(
+        (item) => item.id !== currentGame.drawingPlayerId
+      );
+
+      if (currentGame.playerNum == 4) {
+        // setUsername1(response1.players[0].username);
+        currentGame.username1 = response.drawingPlayerName; //left, all drawing players
+        if (currentGame.role == "drawingPlayer") {
+          currentGame.username2 = updatedPlayer[0].username;
+          currentGame.username3 = updatedPlayer[1].username;
+          currentGame.username4 = updatedPlayer[3].username;
+        } else {
+          currentGame.username2 = updatedPlayer0[0].username; ///right, first one is current user name
+          currentGame.username3 = updatedPlayer[1].username;
+          currentGame.username4 = updatedPlayer[2].username;
+        }
+      }
+
+      if (currentGame.playerNum == 2) {
+        currentGame.username1 = response.drawingPlayerName;
+        currentGame.username2 = updatedPlayer1[0].username;
+      }
+      currentImage = response.image;
+      //   setRole("drawingPlayer");
+    } catch (error) {
+      //   alert(
+      //     `Something went wrong during get game Turn information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      handleNotLogInError(
+        history,
+        error,
+        "fetching turn information in drawing phase"
+      );
+      history.push("/lobby"); // redirect back to lobby
+    }
+  };
+  useEffect(() => {
+    IntializeTurn();
   }, []);
   useInterval(
     async () => {
@@ -256,24 +225,245 @@ const Game = () => {
     isUpdating ? 1000 : null
     // status == "PLAYING" ? null : 1000
   );
+  const fetchWord = async () => {
+    try {
+      // const response0 = await api().get(`/gameRounds/words/${turnId}`);
+      // const response = response0.data;
+      const response = {
+        id: 1,
+        drawingPlayerId: 1,
+        players: [
+          {
+            id: 1,
+            username: "test1",
+          },
+          {
+            id: 2,
+            username: "test",
+          },
+        ],
+        image: null,
+        wordsToBeChosen: ["feet", "bench", "line"],
+        gameId: 1,
+        submittedAnswerIds: [],
+        status: "CHOOSE_WORD",
+      }; //word get api return
 
-  // useInterval(
-  //   async () => {
-  //     fetchRoomInfo();
-  //   },
-  //   gameStatus == false ? null : 1000
-  // );
+      console.log(response.wordsToBeChosen);
+      // let currentGame = {};
+      if (response.wordsToBeChosen.length == 3) {
+        //correct response
+        currentGame.word0 = response.wordsToBeChosen[0];
+        currentGame.word1 = response.wordsToBeChosen[1];
+        currentGame.word2 = response.wordsToBeChosen[2];
+      }
+    } catch (error) {
+      //   alert(`Something went wrong during get words: \n${handleError(error)}`);
+      //   history.push("/lobby"); // redirect back to lobby
+      handleNotLogInError(history, error, "fetching words for drawing Player");
+    }
+  };
+  const fetchRankInfo = async () => {
+    try {
+      const response0 = await api().get(`/games/ranks/${gameId}`);
+      const response1 = response0.data;
+
+      currentGameRank.playerNum = response1.length;
+      //   var allPlayers = response1;
+      //   const updatedPlayer = allPlayers.filter(
+      //     (item) => item.id !== response1.drawingPlayerId
+      //   );
+
+      if (currentGameRank.playerNum == 4) {
+        // setUsername1(response1.players[0].username);
+        currentGameRank.username1 = response1[0].username;
+        currentGameRank.username2 = response1[1].username;
+        currentGameRank.username3 = response1[2].username;
+        currentGameRank.username4 = response1[3].username;
+        currentGameRank.score1 = response1[0].score1;
+        currentGameRank.score2 = response1[0].score2;
+        currentGameRank.score3 = response1[0].score3;
+        currentGameRank.score4 = response1[0].score4;
+      }
+
+      if (currentGameRank.playerNum == 2) {
+        currentGameRank.username1 = response1[0].username;
+        currentGameRank.username2 = response1[1].username;
+        currentGameRank.score1 = response1[0].score1;
+        currentGameRank.score2 = response1[0].score2;
+      }
+    } catch (error) {
+      handleNotLogInError(history, error, "fetching ranking information");
+      history.push("/lobby"); // redirect back to lobby
+    }
+  };
+  //fetch game Turn information
+  const fetchTurnInfo = async () => {
+    try {
+      const response0 = await api().get(
+        `/gameRounds/information/${turnId}/${curUserId}`
+      );
+      const response = response0.data;
+      console.log("fetch turn info");
+
+      //   const response1 = {
+      //     id: 1,
+      //     drawingPlayerId: 1,
+      //     drawingPlayerName: "test1",
+      //     players: [
+      //       {
+      //         id: 1,
+      //         username: "test1",
+      //       },
+      //       {
+      //         id: 2,
+      //         username: "test",
+      //       },
+      //     ],
+      //     image: null,
+      //     wordsToBeChosen: ["feet", "bench", "line"],
+      //     targetWord: "line",
+      //     gameId: 1,
+      //     submittedAnswerIds: [],
+      //     status: "PAINTING",
+      //   };
+      //   const playerNum = response1.players.length;
+      // const game0 = new GameModel(response0.data);
+      // let currentGame = {};
+      currentGame.playerNum = response.players.length;
+      currentGame.drawingPlayerId = response.drawingPlayerId;
+      if (parseInt(curUserId) == parseInt(currentGame.drawingPlayerId)) {
+        currentGame.role = "drawingPlayer";
+      } else if (parseInt(curUserId) != parseInt(currentGame.drawingPlayerId)) {
+        currentGame.role = "guessingPlayer";
+      }
+      //   console.log(word);
+      var allPlayers = response.players;
+      const updatedPlayer = allPlayers.filter(
+        (item) =>
+          item.id !== currentGame.drawingPlayerId && item.id !== curUserId
+      );
+
+      const updatedPlayer0 = allPlayers.filter((item) => item.id == curUserId);
+      const updatedPlayer1 = allPlayers.filter(
+        (item) => item.id !== currentGame.drawingPlayerId
+      );
+
+      if (currentGame.playerNum == 4) {
+        // setUsername1(response1.players[0].username);
+        currentGame.username1 = response.drawingPlayerName; //left, all drawing players
+        if (currentGame.role == "drawingPlayer") {
+          currentGame.username2 = updatedPlayer[0].username;
+          currentGame.username3 = updatedPlayer[1].username;
+          currentGame.username4 = updatedPlayer[3].username;
+        } else {
+          currentGame.username2 = updatedPlayer0[0].username; ///right, first one is current user name
+          currentGame.username3 = updatedPlayer[1].username;
+          currentGame.username4 = updatedPlayer[2].username;
+        }
+      }
+
+      if (currentGame.playerNum == 2) {
+        currentGame.username1 = response.drawingPlayerName;
+        currentGame.username2 = updatedPlayer1[0].username;
+      }
+      currentImage = response.image;
+      console.log(currentGame);
+      console.log("currentGame after fetch");
+      //   setRole("drawingPlayer");
+    } catch (error) {
+      //   alert(
+      //     `Something went wrong during get game Turn information: \n${handleError(
+      //       error
+      //     )}`
+      //   );
+      handleNotLogInError(
+        history,
+        error,
+        "fetching turn information in drawing phase"
+      );
+      history.push("/lobby"); // redirect back to lobby
+    }
+  };
+  useEffect(() => {
+    fetchTurnInfo();
+  }, [turnStatus]);
+  useEffect(() => {
+    if (turnStatus == "RANKING") fetchTurnScore();
+  }, [turnStatus]);
+  useEffect(() => {
+    if (turnStatus == "CHOOSE_WORD") fetchWord();
+  }, [turnStatus]);
+  useEffect(() => {
+    if (gameStatus == "END_GAME") fetchRankInfo();
+  }, [gameStatus]);
+  const fetchTurnScore = async () => {
+    try {
+      const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
+      const response = response0.data;
+      //response=
+      //   [
+      //     {
+      //         "id": 2,
+      //         "username": "test",
+      //         "token": "30e578e3-4329-41aa-8a16-d51f5d5294c2",
+      //         "status": "ISPLAYING",
+      //         "creationDate": "2023-04-24T07:51:30.741+00:00",
+      //         "bestScore": 0,
+      //         "totalScore": 0,
+      //         "currentScore": 0,
+      //         "guessingWord": null,
+      //         "currentGameScore": 0
+      //     },
+      //     {
+      //         "id": 1,
+      //         "username": "test1",
+      //         "token": "815bbb7e-eec9-466f-9132-a7c933f201d3",
+      //         "status": "ISPLAYING",
+      //         "creationDate": "2023-04-24T07:51:24.545+00:00",
+      //         "bestScore": 0,
+      //         "totalScore": 0,
+      //         "currentScore": 0,
+      //         "guessingWord": null,
+      //         "currentGameScore": 0
+      //     }
+      // ]
+
+      const updatedPlayer = response.filter((item) => item.id == curUserId);
+      currentTurnRank.userScore = parseInt(updatedPlayer[0].currentScore);
+      currentTurnRank.playerNum = response.length;
+      if (currentTurnRank.playerNum == 4) {
+        currentTurnRank.username1 = response[0].username;
+        currentTurnRank.username2 = response[1].username;
+        currentTurnRank.username3 = response[2].username;
+        currentTurnRank.username4 = response[3].username;
+        currentTurnRank.score1 = response[0].currentScore;
+        currentTurnRank.score2 = response[1].currentScore;
+        currentTurnRank.score3 = response[2].currentScore;
+        currentTurnRank.score4 = response[3].currentScore;
+      }
+
+      if (currentTurnRank.playerNum == 2) {
+        currentTurnRank.username1 = response[0].username;
+        currentTurnRank.username2 = response[1].username;
+        currentTurnRank.score1 = response[0].currentScore;
+        currentTurnRank.score2 = response[1].currentScore;
+      }
+    } catch (error) {
+      handleNotLogInError(history, error, "fetching turn ranking information");
+      history.push("/lobby"); // redirect back to lobby
+    }
+  };
 
   const switchPages = () => {
-    let content = <Spinner />;
+    let content = <GameLoading />;
     if (gameStatus == "PLAYING") {
-      console.log(gameStatus);
-      console.log(turnStatus);
       if (turnStatus === "CHOOSE_WORD") {
-        console.log(turnStatus);
+        console.log("currentGame");
+        console.log(currentGame);
         content = (
           <SelectWord
-            gameId={gameId}
+            gameInfo={currentGame}
             turnId={turnId}
             handleChooseWord={handleChooseWord}
           />
@@ -281,29 +471,31 @@ const Game = () => {
       }
       // else if (turnStatus === "PAINTING" && curUserId == drawingPlayerId)
       else if (turnStatus === "PAINTING") {
-        console.log(turnStatus);
         content = (
           <DrawingStage
-            gameId={gameId}
+            gameInfo={currentGame}
             turnId={turnId}
+            // painting = {imag}
+            painting={currentImage}
+            handleUpdatePainting={handleUpdatePainting}
             handleSubmitPainting={handleSubmitPainting}
           />
         );
       } else if (turnStatus === "GUESSING") {
-        console.log(turnStatus);
         content = (
           <GuessingStage
-            gameId={gameId}
+            gameInfo={currentGame}
             turnId={turnId}
+            painting={currentImage}
             handleSubmitAnswer={handleSubmitAnswer}
           />
         );
       } else if (turnStatus === "RANKING") {
-        console.log(turnStatus);
         content = (
           <TurnRanking
-            gameId={gameId}
+            turnRankInfo={currentTurnRank}
             turnId={turnId}
+            role={currentGame.role}
             handleConfirmRanking={handleConfirmRanking}
           />
         );
@@ -311,10 +503,16 @@ const Game = () => {
         content = <GameLoading />;
       }
     } else {
-      console.log(gameId);
+      // console.log(gameId);
       console.log(gameStatus);
 
-      content = <Ranking gameId={gameId} />;
+      content = (
+        <Ranking
+          gameId={gameId}
+          gameRankInfo={currentGameRank}
+          handleQuitGame={handleQuitGame}
+        />
+      );
     }
 
     return content;

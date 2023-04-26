@@ -1,10 +1,10 @@
-class GameModel {
+class GameRankModel {
   constructor(data = {}) {
-    this.drawingPlayerId = null;
-    this.drawingPlayerName = null;
-    this.role = "";
     // this.image = null; // drawing display or save
-    this.targetWord = null; //
+    this.score1 = "0";
+    this.score2 = "0";
+    this.score3 = "0";
+    this.score4 = "0";
     //player usernames
     this.username1 = "";
     this.username2 = "";
@@ -12,11 +12,7 @@ class GameModel {
     this.username4 = "";
     // player numbers
     this.playerNum = 2;
-    //three words to be choosen
-    this.word0 = "";
-    this.word1 = "";
-    this.word2 = "";
     this.Object.assign(this, data);
   }
 }
-export default GameModel;
+export default GameRankModel;

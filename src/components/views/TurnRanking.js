@@ -170,28 +170,26 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     // targetWord === userAnswer ? (
     parseInt(userScore) > 0 ? (
       <div>
+        <Emoji symbol="🥳" className="rank li" />
         <h2
           style={{
-            left: "700px",
-            top: "100px",
-            position: "absolute",
+            left: "640px",top: "80px",position: "absolute",width:"700px",
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
+            width:"300px"
           }}
         >
           You win!
         </h2>
-        <Emoji symbol="🥳" className="rank li" />
-
         <img className="rank gif" src={wingame} />
       </div>
     ) : (
-      <div
-      style={{left: "400px",top: "80px",position: "absolute",width:"700px", "background-color":"white"}}>
+      <div>
         <Emoji symbol="🙁" className="rank li"/>
         <h2
           style={{
+            left: "640px",top: "80px",position: "absolute",width:"700px",
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
@@ -205,7 +203,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     );
   const waitTnfo = (
     <div
-    style={{width: "50em", left:"600px",top:"500px",position:"absolute"}}>
+    style={{width: "32em", left:"540px",top:"500px",position:"absolute"}}>
       <div className="rank spinner">
         <SpinnerBouncing />
       </div>
@@ -231,6 +229,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         "font-family": "Nunito",
         "font-size": "20px",
         color: "black",
+        width:"200px"
       }}
     >
       <div>{"Correct word: " + targetWord}</div>
@@ -251,28 +250,28 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         <div>
           <h2
             style={{
-              left: "700px",
-              top: "100px",
-              position: "absolute",
+              left: "680px",top: "80px",position: "absolute",width:"700px",
               "font-family": "Nunito",
               "font-size": "30px",
               color: "black",
+              width:"300px"
             }}
           >
             Turn End!
           </h2>
-          <h2
+          <div
             style={{
-              left: "600px",
+              left: "560px",
               top: "150px",
               position: "absolute",
               "font-family": "Nunito",
               "font-size": "20px",
               color: "black",
+              width:"500px"
             }}
           >
-            Scores obtained by guessing players in this turn.
-          </h2>
+            Scores obtained by guessing players in this turn:
+          </div>
           <Emoji symbol="📢" className="rank li" />
         </div>
       )}

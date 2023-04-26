@@ -278,6 +278,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         "font-family": "Nunito",
         "font-size": "30px",
         color: "black",
+        width:"200px"
       }}
     >
       Please wait a while, others are answering!
@@ -321,7 +322,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         <div
           style={{
             left: "350px",
-            top: "160px",
+            top: "40px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "30px",
@@ -357,21 +358,10 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
           </div>
         </div>
       ) : (
-        <div
-          style={{
-            left: "350px",
-            top: "160px",
-            position: "absolute",
-            "font-family": "Nunito",
-            "font-size": "30px",
-            color: "black",
-          }}
-        >
-          Guessing stage.
-        </div>
+        <></>
       )}
       {/* {isDisabled ? waitTnfo : <></>} */}
-      <div style={{ left: "200px", top: "330px", position: "absolute" }}>
+      <div style={{ left: "200px", top: "150px", position: "absolute" }}>
         <canvas
           id="showingBoard"
           width="500px"

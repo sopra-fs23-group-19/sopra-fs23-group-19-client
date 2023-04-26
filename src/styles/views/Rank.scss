@@ -9,20 +9,20 @@
     line-height: 16px;
   }
   &.li {
+    position: absolute;
+    left: 600px;
+    top: 110px;
+  }
+  &.spinner {
     position: relative;
     left: 0px;
     top: 0px;
   }
-  &.spinner {
-    position: absolute;
-    left: 650px;
-    top: 450px;
-  }
   &.gif {
     width: 150px;
     height: auto;
-    position: relative;
-    left: 550px;
-    top: 0px;
+    position: absolute;
+    left: 900px;
+    top: 80px;
   }
 }

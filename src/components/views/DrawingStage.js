@@ -187,7 +187,7 @@ const DrawingStage = ({
       <div
         style={{
           left: "350px",
-          top: "160px",
+          top: "30px",
           position: "absolute",
           "font-family": "Nunito",
           "font-size": "30px",
@@ -210,17 +210,18 @@ const DrawingStage = ({
       <div>
         <div
           style={{
-            left: "350px",
-            top: "160px",
+            left: "200px",
+            top: "80px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
+            width:"700px"
           }}
         >
           Drawing stage. The player is painting!
         </div>
-        <div style={{ left: "200px", top: "330px", position: "absolute" }}>
+        <div style={{ left: "200px", top: "200px", position: "absolute" }}>
           <canvas
             id="showingBoard"
             width="500px"
@@ -275,8 +276,8 @@ const DrawingStage = ({
         <div>
           <div
             style={{
-              left: "150px",
-              top: "180px",
+              left: "50px",
+              top: "30px",
               position: "absolute",
               "font-family": "Nunito",
               "font-size": "20px",

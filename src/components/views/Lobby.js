@@ -132,6 +132,7 @@ const Lobby = () => {
           top: "180px",
           color: "black",
           position: "absolute",
+          width:"50em"
         }}
       >
         Want to create a new game? Click here:

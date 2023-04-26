@@ -74,7 +74,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     return() => {
       ignore = false;
     }
-  }, [drawingPlayerId]);
+  }, [drawingPlayerId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
   //fetch game Turn information
   const fetchTurnInfo = async () => {
     try {
@@ -107,7 +107,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   };
 
   const rankingWhenFourPlayers = (
-    <div>
+    <div id = "rankFour">
       <div
         className="guessing score-list"
         style={{ left: "550px", top: "250px", position: "absolute" }}
@@ -148,7 +148,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   );
 
   const rankingWhenTwoPlayers = (
-    <div>
+    <div id="rankTwo">
       <div
         className="guessing score-list"
         style={{ left: "550px", top: "250px", position: "absolute" }}

@@ -117,6 +117,14 @@ const Lobby = () => {
     history.push("/gameCreation");
   };
 
+  const goToGame = () => {
+    const currentGameId = localStorage.getItem("gameId");
+    const currentTurnId = localStorage.getItem("intialTurnId");
+    history.push({
+      pathname: `/game/${currentGameId}`,
+      state: { turnId: currentTurnId },
+    });
+  };
   return (
     <BaseContainer>
       <Header />
@@ -132,22 +140,38 @@ const Lobby = () => {
           top: "180px",
           color: "black",
           position: "absolute",
-          width:"50em"
+          width: "50em",
         }}
       >
         Want to create a new game? Click here:
       </h2>
       <div className="lobby button-container">
-      <Button
-        style={{
-          "background-color": "#FFFFFF",
-          border: "2px solid #000000",
-        }}
-        onClick={() => goTocreateGameView()}
-      >
-        Create a new room
-      </Button>
+        <Button
+          style={{
+            "background-color": "#FFFFFF",
+            border: "2px solid #000000",
+          }}
+          onClick={() => goTocreateGameView()}
+        >
+          Create a new room
+        </Button>
       </div>
+      {localStorage.getItem("gameId") != null ? (
+        <div className="lobby button-container1">
+          <Button
+            style={{
+              "background-color": "#FFFFFF",
+              border: "2px solid #000000",
+            }}
+            onClick={() => goToGame()}
+          >
+            Go back to your game
+          </Button>
+        </div>
+      ) : (
+        <></>
+      )}
+
       {content}
     </BaseContainer>
   );

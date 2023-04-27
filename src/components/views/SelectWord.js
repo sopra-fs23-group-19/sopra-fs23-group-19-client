@@ -47,31 +47,9 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   console.log(turnId);
   const fetchWord = async () => {
     try {
-      // const response0 = await api().get(`/gameRounds/words/${turnId}`);
-      // const response = response0.data;
-      const response = ["feet", "bench", "line"];
-      //   const response = {
-      //     id: 1,
-      //     drawingPlayerId: 1,
-      //     players: [
-      //       {
-      //         id: 1,
-      //         username: "test1",
-      //       },
-      //       {
-      //         id: 2,
-      //         username: "test",
-      //       },
-      //     ],
-      //     image: null,
-      //     wordsToBeChosen: ["feet", "bench", "line"],
-      //     gameId: 1,
-      //     submittedAnswerIds: [],
-      //     status: "CHOOSE_WORD",
-      //   }; //word get api return
-      //   response = response.data;
-      //   console.log(response.wordsToBeChosen);
-      //   const response1 = await api().get(`/gameRounds/information/${turnId}/${curUserId}`);
+      const response0 = await api().get(`/gameRounds/words/${turnId}`);
+      const response = response0.data;
+      // const response = ["apple", "bike", "pencil"];
       console.log(response);
       if (response.length == 3) {
         //correct response
@@ -417,8 +395,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
               color: "black",
             }}
           >
-            {" "}
-            Drawing player is choosing a word!
+            {/* {" "} */}
+            {username1} is choosing a word!
           </h2>
         </div>
       )}

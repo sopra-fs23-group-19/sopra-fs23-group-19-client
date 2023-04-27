@@ -39,6 +39,8 @@ const handleNotLogInError = (
   if (error.response.data.status == 500 && stayOnPage == false) {
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("gameId");
+    localStorage.removeItem("intialTurnId");
     history.push("/login");
   }
 };

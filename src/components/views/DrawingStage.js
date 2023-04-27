@@ -157,7 +157,6 @@ const DrawingStage = ({
     // status == "PLAYING" ? null : 1000
   );
 
-
   //display cat and username
   const player1 = (
     <div className="guessing info">
@@ -239,10 +238,10 @@ const DrawingStage = ({
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
-            width:"700px"
+            width: "700px",
           }}
         >
-          Drawing stage. The player is painting!
+          Drawing stage. {username1} is painting!
         </div>
         <div style={{ left: "200px", top: "200px", position: "absolute" }}>
           <canvas

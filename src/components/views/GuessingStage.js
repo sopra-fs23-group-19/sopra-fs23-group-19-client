@@ -50,6 +50,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   //const [startGuessing, setStartGuessing]=useState(1); //to test the timer, set to 1
   const history = useHistory();
   const curUserId = localStorage.getItem("id");
+  const [currentUsername, setCurrentUsername] = useState("");
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
   //   const location = useLocation();
   //   const url = location.state.url;
@@ -112,6 +113,10 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       const updatedPlayer = allPlayers.filter(
         (item) => item.id !== response1.drawingPlayerId
       );
+      const thisPlayer = allPlayers.filter(
+        (item) => item.id == curUserId
+      )
+      setCurrentUsername(thisPlayer[0].username);
 
       if (playerNum == 4) {
         // setUsername1(response1.players[0].username);
@@ -168,42 +173,89 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     }
   }, [time]);
 
+  const style1 = ({ "font-family": "Nunito", "font-size": "20px", color: "black", border:"2px solid #000000" });
+  const style2 = ({ "font-family": "Nunito", "font-size": "20px", color: "black" });
+
   //display cat and username
-  const player1 = (
+  const player1 = (currentUsername==username1)?(
     <div className="guessing info">
       <img src={cat1} alt="" />
       <div
-        style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
+        id="player1"
+        style={style1}
+      >
+        {username1}
+      </div>
+    </div>
+  ):(
+    <div className="guessing info">
+      <img src={cat1} alt="" />
+      <div
+        id="player1"
+        style={style2}
       >
         {username1}
       </div>
     </div>
   );
-  const player2 = (
+  const player2 = (currentUsername==username2)?(
     <div className="guessing info">
       <img src={cat2} alt="" />
       <div
-        style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
+        id="player2"
+        style={style1}
+      >
+        {username2}
+      </div>
+    </div>
+  ):(
+    <div className="guessing info">
+      <img src={cat2} alt="" />
+      <div
+        id="player2"
+        style={style2}
       >
         {username2}
       </div>
     </div>
   );
-  const player3 = (
+  const player3 = (currentUsername==username3)?(
     <div className="guessing info">
       <img src={cat3} alt="" />
       <div
-        style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
+        id="player3"
+        style={style1}
+      >
+        {username3}
+      </div>
+    </div>
+  ):(
+    <div className="guessing info">
+      <img src={cat3} alt="" />
+      <div
+        id="player3"
+        style={style2}
       >
         {username3}
       </div>
     </div>
   );
-  const player4 = (
+  const player4 = (currentUsername==username4)?(
     <div className="guessing info">
       <img src={cat4} alt="" />
       <div
-        style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
+        id="player4"
+        style={style1}
+      >
+        {username4}
+      </div>
+    </div>
+  ):(
+    <div className="guessing info">
+      <img src={cat4} alt="" />
+      <div
+        id="player4"
+        style={style2}
       >
         {username4}
       </div>
@@ -227,7 +279,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     <div
       style={{
         width: "32em",
-        left: "540px",
+        left: "900px",
         top: "500px",
         position: "absolute",
       }}

@@ -19,6 +19,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //   let startDrawing;
   const history = useHistory();
   const curUserId = localStorage.getItem("id");
+  const [currentUsername, setCurrentUsername] = useState("");
   //get the room and user information
   //   const [word, setWord] = useState(""); //the chosen word
   const [word0, setWord0] = useState(""); //
@@ -69,6 +70,10 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       const updatedPlayer = allPlayers.filter(
         (item) => item.id !== response1.drawingPlayerId
       );
+      const thisPlayer = allPlayers.filter(
+        (item) => item.id == curUserId
+      )
+      setCurrentUsername(thisPlayer[0].username);
       //   console.log(updatedPlayer);
       // console.log("player usernames in select word");
       //   setPlayerNum(updatedPlayer.length + 1);
@@ -194,43 +199,89 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     </div>
   );
 
+  const style1 = ({ "font-family": "Nunito", "font-size": "20px", color: "black", border:"2px solid #000000" });
+  const style2 = ({ "font-family": "Nunito", "font-size": "20px", color: "black" });
+
   //display cat and username
-  const player1 = (
+  const player1 = (currentUsername==username1)?(
     <div className="guessing info">
       <img src={cat1} alt="" />
       <div
-        style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
+        id="player1"
+        style={style1}
+      >
+        {username1}
+      </div>
+    </div>
+  ):(
+    <div className="guessing info">
+      <img src={cat1} alt="" />
+      <div
+        id="player1"
+        style={style2}
       >
         {username1}
       </div>
     </div>
   );
-  const player2 = (
+  const player2 = (currentUsername==username2)?(
     <div className="guessing info">
       <img src={cat2} alt="" />
       <div
-        style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
+        id="player2"
+        style={style1}
+      >
+        {username2}
+      </div>
+    </div>
+  ):(
+    <div className="guessing info">
+      <img src={cat2} alt="" />
+      <div
+        id="player2"
+        style={style2}
       >
         {username2}
       </div>
     </div>
   );
-
-  const player3 = (
+  const player3 = (currentUsername==username3)?(
     <div className="guessing info">
       <img src={cat3} alt="" />
       <div
-        style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
+        id="player3"
+        style={style1}
+      >
+        {username3}
+      </div>
+    </div>
+  ):(
+    <div className="guessing info">
+      <img src={cat3} alt="" />
+      <div
+        id="player3"
+        style={style2}
       >
         {username3}
       </div>
     </div>
   );
-  const player4 = (
+  const player4 = (currentUsername==username4)?(
     <div className="guessing info">
       <img src={cat4} alt="" />
       <div
-        style={{ "font-family": "Nunito", "font-size": "20px", color: "black" }}
+        id="player4"
+        style={style1}
+      >
+        {username4}
+      </div>
+    </div>
+  ):(
+    <div className="guessing info">
+      <img src={cat4} alt="" />
+      <div
+        id="player4"
+        style={style2}
       >
         {username4}
       </div>

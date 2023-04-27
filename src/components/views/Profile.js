@@ -67,7 +67,6 @@ const Profile = () => {
     const fetchProfile1 = async () => {
       try {
         const response = await api().get(`/users/${visitId}`);
-
         const userProfile1 = new User(response.data);
         // const userProfile1 = new User(response);
         setUserProfile(userProfile1);
@@ -76,7 +75,15 @@ const Profile = () => {
       }
     };
     fetchProfile1();
-  }, [userProfile, visitId]);
+  }, [
+    visitId,
+    isEditing,
+    userProfile.username,
+    userProfile.status,
+    userProfile.bestScore,
+    userProfile.totalScore,
+    userProfile.id,
+  ]);
   // }, []);
 
   const handleUpdateProfile = async () => {
@@ -95,6 +102,7 @@ const Profile = () => {
     try {
       // console.log(visitId);
       await api().put(`/users/${visitId}`, requestBody);
+      localStorage.setItem("username", newUsername);
     } catch (error) {
       // alert(
       //   `Something went wrong during updating profile: \n${handleError(error)}`

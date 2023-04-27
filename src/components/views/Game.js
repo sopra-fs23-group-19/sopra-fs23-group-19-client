@@ -40,13 +40,13 @@ const Game = () => {
   // };
 
   const handleChooseWord = async (word) => {
-    console.log("handle choose Word");
+    // console.log("handle choose Word");
     const requestBody = JSON.stringify({
       id: turnId,
       targetWord: word,
     });
 
-    console.log(requestBody);
+    // console.log(requestBody);
     try {
       await api().put(`/gameRounds/words`, requestBody);
     } catch (error) {
@@ -60,7 +60,7 @@ const Game = () => {
   };
 
   const handleConfirmRanking = async () => {
-    console.log("handle confirm ranking");
+    // console.log("handle confirm ranking");
 
     // console.log(requestBody);
     try {
@@ -113,7 +113,7 @@ const Game = () => {
   };
 
   const handleUpdatePainting = async (painting) => {
-    console.log("handle update painting");
+    // console.log("handle update painting");
     if (isUpdatingPainting) {
       const requestBody = JSON.stringify({
         id: turnId,
@@ -152,7 +152,7 @@ const Game = () => {
   };
 
   const handleQuitGame = async () => {
-    console.log("handle quit game");
+    // console.log("handle quit game");
 
     try {
       await api().put(`/games/ending/${gameId}`);
@@ -165,7 +165,7 @@ const Game = () => {
   };
   //force quit game
   const handleGameError = async () => {
-    console.log("handle game error");
+    // console.log("handle game error");
 
     try {
       await api().put(`/games/ending/${gameId}`);
@@ -174,6 +174,9 @@ const Game = () => {
       localStorage.removeItem("intialTurnId");
       history.push("/lobby");
     }
+    localStorage.removeItem("gameId");
+    localStorage.removeItem("intialTurnId");
+    history.push("/lobby");
   };
 
   useEffect(() => {
@@ -189,10 +192,10 @@ const Game = () => {
   const switchPages = () => {
     let content = <Spinner />;
     if (gameStatus == "PLAYING") {
-      console.log(gameStatus);
-      console.log(turnStatus);
+      // console.log(gameStatus);
+      // console.log(turnStatus);
       if (turnStatus === "CHOOSE_WORD") {
-        console.log(turnStatus);
+        // console.log(turnStatus);
         content = (
           <SelectWord
             gameId={gameId}
@@ -203,7 +206,7 @@ const Game = () => {
       }
       // else if (turnStatus === "PAINTING" && curUserId == drawingPlayerId)
       else if (turnStatus === "PAINTING") {
-        console.log(turnStatus);
+        // console.log(turnStatus);
         content = (
           <DrawingStage
             gameId={gameId}
@@ -213,7 +216,7 @@ const Game = () => {
           />
         );
       } else if (turnStatus === "GUESSING") {
-        console.log(turnStatus);
+        // console.log(turnStatus);
         content = (
           <GuessingStage
             gameId={gameId}
@@ -222,7 +225,7 @@ const Game = () => {
           />
         );
       } else if (turnStatus === "RANKING") {
-        console.log(turnStatus);
+        // console.log(turnStatus);
         content = (
           <TurnRanking
             gameId={gameId}
@@ -234,8 +237,8 @@ const Game = () => {
         content = <GameLoading />;
       }
     } else if (gameStatus == "END_GAME") {
-      console.log(gameId);
-      console.log(gameStatus);
+      // console.log(gameId);
+      // console.log(gameStatus);
 
       content = <Ranking gameId={gameId} handleQuitGame={handleQuitGame} />;
     } else if (gameStatus == "END") {

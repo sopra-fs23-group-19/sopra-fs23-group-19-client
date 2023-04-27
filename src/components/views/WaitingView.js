@@ -10,6 +10,7 @@ import cats from "styles/images/cats2.png";
 import PropTypes from "prop-types";
 import { useInterval } from "helpers/hooks";
 import WaitRoom from "models/WaitRoom";
+import HeaderInGame from "components/views/HeaderInGame";
 
 const Player = ({ user }) => (
   <div className="player container">
@@ -187,7 +188,7 @@ const WaitingView = () => {
   //game page: user cannot leave game/log out, unless explicitly click a leave game button.
   return (
     <BaseContainer>
-      {/* <Header /> */}
+      <HeaderInGame />
       <div
         className="lobby pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}

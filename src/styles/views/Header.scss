@@ -1,4 +1,4 @@
-@import 'styles/theme';
+@import "styles/theme";
 
 .header {
   &.container {
@@ -14,7 +14,7 @@
   &.title {
     font-weight: bold;
     color: $background;
-    font-family: 'Irish Grover';
+    font-family: "Irish Grover";
     left: 40px;
     position: absolute;
     width: 555px;
@@ -31,9 +31,20 @@
   }
 
   &.instruction {
-    font-family: 'Nunito';
+    font-family: "Nunito";
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
+  }
+  &.title1 {
+    font-weight: bold;
+    color: $background;
+    font-family: "Irish Grover";
+    left: 1000px;
+    position: absolute;
+    width: 555px;
+    height: 171px;
+    top: 60px;
+    font-size: 20px;
   }
 }

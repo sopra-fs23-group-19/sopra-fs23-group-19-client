@@ -67,6 +67,7 @@ const Register = (props) => {
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("id", response.data.id);
+      localStorage.setItem("username", response.data.username);
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }

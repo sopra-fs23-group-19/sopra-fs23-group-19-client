@@ -6,7 +6,9 @@ import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleNotLogInError } from "../../helpers/api";
-import Emoji from "a11y-react-emoji";
+// import Emoji from "a11y-react-emoji";
+import Emoji from "components/ui/Emoji";
+import HeaderInGame from "components/views/HeaderInGame";
 import "styles/views/Rank.scss";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import wingame from "styles/images/gif/cat_happy.gif";
@@ -96,11 +98,23 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       history.push("/lobby"); // redirect back to lobby
     }
   };
-
   useEffect(() => {
     fetchTurnScore();
     fetchTurnInfo();
-  }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
+  }, [
+    playerNum,
+    turnId,
+    username1,
+    username2,
+    username3,
+    score1,
+    score2,
+    score3,
+  ]);
+  // useEffect(() => {
+  //   fetchTurnScore();
+  //   fetchTurnInfo();
+  // }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
 
   const handleClick = () => {
     handleConfirmRanking();
@@ -108,7 +122,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   };
 
   let rankingWhenFourPlayers = (
-    <div id = "rankFour">
+    <div id="rankFour">
       <div
         className="guessing score-list"
         style={{ left: "550px", top: "250px", position: "absolute" }}
@@ -180,11 +194,14 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         <Emoji symbol="🥳" className="rank li" />
         <h2
           style={{
-            left: "640px",top: "80px",position: "absolute",width:"700px",
+            left: "640px",
+            top: "80px",
+            position: "absolute",
+            width: "700px",
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
-            width:"300px"
+            width: "300px",
           }}
         >
           You win!
@@ -193,14 +210,17 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       </div>
     ) : (
       <div>
-        <Emoji symbol="🙁" className="rank li"/>
+        <Emoji symbol="🙁" className="rank li" />
         <h2
           style={{
-            left: "640px",top: "80px",position: "absolute",width:"700px",
+            left: "640px",
+            top: "80px",
+            position: "absolute",
+            width: "700px",
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
-            width:"300px"
+            width: "300px",
           }}
         >
           Wrong answer
@@ -210,7 +230,13 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     );
   const waitTnfo = (
     <div
-    style={{width: "32em", left:"540px",top:"500px",position:"absolute"}}>
+      style={{
+        width: "32em",
+        left: "540px",
+        top: "500px",
+        position: "absolute",
+      }}
+    >
       <div className="rank spinner">
         <SpinnerBouncing />
       </div>
@@ -236,7 +262,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         "font-family": "Nunito",
         "font-size": "20px",
         color: "black",
-        width:"200px"
+        width: "200px",
       }}
     >
       <div>{"Correct word: " + targetWord}</div>
@@ -245,6 +271,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   );
   return (
     <BaseContainer>
+      <HeaderInGame />
       <div
         className="guessing pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}
@@ -257,11 +284,14 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         <div>
           <h2
             style={{
-              left: "680px",top: "80px",position: "absolute",width:"700px",
+              left: "680px",
+              top: "80px",
+              position: "absolute",
+              width: "700px",
               "font-family": "Nunito",
               "font-size": "30px",
               color: "black",
-              width:"300px"
+              width: "300px",
             }}
           >
             Turn End!
@@ -274,7 +304,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
               "font-family": "Nunito",
               "font-size": "20px",
               color: "black",
-              width:"500px"
+              width: "500px",
             }}
           >
             Scores obtained by guessing players in this turn:

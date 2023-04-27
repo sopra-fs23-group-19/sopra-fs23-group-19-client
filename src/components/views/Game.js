@@ -138,13 +138,15 @@ const Game = () => {
       const response = response0.data;
 
       setGameStatus(response.status);
-
+      // console.log("game status");
+      // console.log(response.status);
       setTurnId(response.currentTurnId);
+      localStorage.setItem("intialTurnId", response.currentTurnId);
       setTurnStatus(response.currentTurnStatus);
     } catch (error) {
       handleNotLogInError(history, error, "get game");
       setIsUpdating(false);
-      handleGameError();
+      // handleGameError();
       history.push("/lobby");
     }
   };
@@ -157,6 +159,8 @@ const Game = () => {
     } catch (error) {
       handleNotLogInError(history, error, "leaving game", true);
     }
+    localStorage.removeItem("gameId");
+    localStorage.removeItem("intialTurnId");
     history.push("/lobby");
   };
   //force quit game
@@ -166,6 +170,8 @@ const Game = () => {
     try {
       await api().put(`/games/ending/${gameId}`);
     } catch (error) {
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
       history.push("/lobby");
     }
   };

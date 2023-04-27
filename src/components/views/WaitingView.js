@@ -65,6 +65,8 @@ const WaitingView = () => {
       if (status == "PLAYING") {
         if (StartTurnId != null) {
           // await new Promise((resolve) => setTimeout(resolve, 1000));
+          localStorage.setItem("gameId", startGameId);
+          localStorage.setItem("intialTurnId", StartTurnId);
           goToGame(startGameId, StartTurnId);
         }
       }

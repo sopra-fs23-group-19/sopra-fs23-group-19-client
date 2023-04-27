@@ -14,7 +14,7 @@ import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
 import { api, handleNotLogInError } from "../../helpers/api";
-
+import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 const FormField = (props) => {
   return (
     <div className="guessing field">
@@ -270,20 +270,42 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   );
 
   const waitTnfo = (
-    <h3
+    // <h3
+    //   style={{
+    //     left: "700px",
+    //     top: "100px",
+    //     position: "absolute",
+    //     "font-family": "Nunito",
+    //     "font-size": "30px",
+    //     color: "black",
+    //     width: "200px",
+    //   }}
+    // >
+    //   Please wait a while!
+    // </h3>
+    <div
       style={{
-        left: "700px",
-        top: "100px",
+        width: "32em",
+        left: "540px",
+        top: "500px",
         position: "absolute",
-        "font-family": "Nunito",
-        "font-size": "30px",
-        color: "black",
-        width:"200px"
       }}
     >
-      Please wait a while, others are answering!
-    </h3>
+      <div>
+        <SpinnerBouncing />
+      </div>
+      <div
+        style={{
+          "font-family": "Nunito",
+          "font-size": "20px",
+          color: "black",
+        }}
+      >
+        {"Please wait a while"}
+      </div>
+    </div>
   );
+
   return (
     <BaseContainer>
       {/* <Header /> */}
@@ -360,7 +382,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       ) : (
         <></>
       )}
-      {/* {isDisabled ? waitTnfo : <></>} */}
+      {isDisabled ? waitTnfo : <></>}
       <div style={{ left: "200px", top: "150px", position: "absolute" }}>
         <canvas
           id="showingBoard"

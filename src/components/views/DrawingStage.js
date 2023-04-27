@@ -14,6 +14,7 @@ import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
 import { api, handleNotLogInError } from "../../helpers/api";
 import { useInterval } from "helpers/hooks";
+import HeaderInGame from "components/views/HeaderInGame";
 
 const DrawingStage = ({
   gameId,
@@ -93,11 +94,6 @@ const DrawingStage = ({
       const updatedPlayer = allPlayers.filter(
         (item) => item.id != response1.drawingPlayerId
       );
-      // const thisPlayer = allPlayers.filter(
-      //   (item) => item.id == curUserId
-      // )
-      // const currentUsername = thisPlayer.username;
-      // console.log(currentUsername);
 
       if (playerNum == 4) {
         // setUsername1(response1.players[0].username);
@@ -113,21 +109,7 @@ const DrawingStage = ({
         setUsername2(updatedPlayer[0].username);
       }
 
-      // if(currentUsername==username1){
-      //   document.querySelector("#player1").style.border = "2px solid #000000";
-      // }
-      // if(currentUsername==username2){
-      //   document.querySelector("#player2").style.border = "2px solid #000000";
-      // }
-      // if(currentUsername==username3){
-      //   document.querySelector("#player3").style.border = "2px solid #000000";
-      // }
-      // if(currentUsername==username4){
-      //   document.querySelector("#player4").style.border = "2px solid #000000";
-      // }
-
-      // console.log(imageData);
-      console.log("fetch turn info");
+      // console.log("fetch turn info");
       //   setRole("drawingPlayer");
     } catch (error) {
       //   alert(
@@ -258,7 +240,7 @@ const DrawingStage = ({
 
   return (
     <BaseContainer>
-      {/* <Header /> */}
+      <HeaderInGame />
       <div
         className="guessing pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}
@@ -299,7 +281,7 @@ const DrawingStage = ({
           <div
             style={{
               left: "50px",
-              top: "30px",
+              top: "70px",
               position: "absolute",
               "font-family": "Nunito",
               "font-size": "20px",

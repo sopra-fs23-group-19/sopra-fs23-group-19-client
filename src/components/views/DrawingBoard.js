@@ -25,7 +25,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
         setLineColor("#000000");
         setLineWidth(5);
         document.querySelector("#board").style.cursor = "pointer";
-        document.querySelector("#black").style.transform= "translateY(-5px)";
+        document.querySelector("#black").style.transform = "translateY(-5px)";
         // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
       }
     }
@@ -72,16 +72,16 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     img.dispatchEvent(event);
   }
 
-  function resetColorButton(){
-    document.querySelector("#red").style.transform= "translateY(0px)";
-    document.querySelector("#orange").style.transform= "translateY(0px)";
-    document.querySelector("#yellow").style.transform= "translateY(0px)";
-    document.querySelector("#green").style.transform= "translateY(0px)";
-    document.querySelector("#blue").style.transform= "translateY(0px)";
-    document.querySelector("#purple").style.transform= "translateY(0px)";
-    document.querySelector("#black").style.transform= "translateY(0px)";
+  function resetColorButton() {
+    document.querySelector("#red").style.transform = "translateY(0px)";
+    document.querySelector("#orange").style.transform = "translateY(0px)";
+    document.querySelector("#yellow").style.transform = "translateY(0px)";
+    document.querySelector("#green").style.transform = "translateY(0px)";
+    document.querySelector("#blue").style.transform = "translateY(0px)";
+    document.querySelector("#purple").style.transform = "translateY(0px)";
+    document.querySelector("#black").style.transform = "translateY(0px)";
   }
-  
+
   function clear() {
     const canvas = document.querySelector("#board");
     const ctx = canvas.getContext("2d");
@@ -95,7 +95,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#FF0000");
     resetColorButton();
-    document.querySelector("#red").style.transform= "translateY(-5px)";
+    document.querySelector("#red").style.transform = "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
   }
 
@@ -104,7 +104,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#FF7B00");
     resetColorButton();
-    document.querySelector("#orange").style.transform= "translateY(-5px)";
+    document.querySelector("#orange").style.transform = "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
   }
 
@@ -113,7 +113,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#FFFF00");
     resetColorButton();
-    document.querySelector("#yellow").style.transform= "translateY(-5px)";
+    document.querySelector("#yellow").style.transform = "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
@@ -122,7 +122,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#00FF00");
     resetColorButton();
-    document.querySelector("#green").style.transform= "translateY(-5px)";
+    document.querySelector("#green").style.transform = "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
@@ -131,31 +131,31 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#0000FF");
     resetColorButton();
-    document.querySelector("#blue").style.transform= "translateY(-5px)";
+    document.querySelector("#blue").style.transform = "translateY(-5px)";
     // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
   function purplePen() {
     // lineColor = "#FF00FF";
     document.querySelector("#board").style.cursor = "pointer";
-    setLineColor("#FF00FF");    
+    setLineColor("#FF00FF");
     resetColorButton();
-    document.querySelector("#purple").style.transform= "translateY(-5px)";
+    document.querySelector("#purple").style.transform = "translateY(-5px)";
   }
 
   function blackPen() {
     // lineColor = "#000000";
     document.querySelector("#board").style.cursor = "pointer";
-    console.log(lineColor);
+    // console.log(lineColor);
     setLineColor("#000000");
     resetColorButton();
-    document.querySelector("#black").style.transform= "translateY(-5px)";
+    document.querySelector("#black").style.transform = "translateY(-5px)";
   }
 
   function eraser() {
     // lineColor = "#FFFFFF";
     document.querySelector("#board").style.cursor = "crosshair";
-    console.log(lineColor);
+    // console.log(lineColor);
     setLineColor("#FFFFFF");
     resetColorButton();
     // setCursorStyle("url('https://icons.iconarchive.com/icons/bootstrap/bootstrap/16/Bootstrap-eraser-fill-icon.png'),auto")
@@ -207,7 +207,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
             <div
               className="drawingBoard circle"
               id="red"
-              style={{ backgroundColor: "#FF0000"}}
+              style={{ backgroundColor: "#FF0000" }}
               onClick={() => redPen()}
             ></div>
             <div

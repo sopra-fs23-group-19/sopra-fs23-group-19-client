@@ -6,11 +6,14 @@ import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleNotLogInError } from "../../helpers/api";
-
+import HeaderInGame from "components/views/HeaderInGame";
+import Emoji from "components/ui/Emoji";
+import cat_bye from "styles/images/gif/cat.gif";
+import "styles/views/Rank.scss";
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
-  console.log("gameId is");
-  console.log(gameId);
+  // console.log("gameId is");
+  // console.log(gameId);
   //get the username and score
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
@@ -67,7 +70,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     <div>
       <div
         className="guessing score-list"
-        style={{ left: "500px", top: "200px", position: "absolute" }}
+        style={{ left: "500px", top: "220px", position: "absolute" }}
       >
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
@@ -116,7 +119,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     <div>
       <div
         className="guessing score-list"
-        style={{ left: "500px", top: "200px", position: "absolute" }}
+        style={{ left: "500px", top: "220px", position: "absolute" }}
       >
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
@@ -144,15 +147,36 @@ const Ranking = ({ gameId, handleQuitGame }) => {
       </div>
     </div>
   );
+  const title = (
+    <div>
+      <Emoji symbol="👏" className="rank li" />
+      <h2
+        style={{
+          left: "640px",
+          top: "80px",
+          position: "absolute",
+          width: "700px",
+          "font-family": "Nunito",
+          "font-size": "30px",
+          color: "black",
+          width: "300px",
+        }}
+      >
+        Game end!
+      </h2>
+      <img className="rank gif1" src={cat_bye} />
+    </div>
+  );
   return (
     <BaseContainer>
-      <Header />
+      <HeaderInGame />
       <div
         className="guessing pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}
       >
         <img src={cats} alt="" />
       </div>
+      {title}
       {/* <div>{ranking}</div> */}
       {playerNum == 4 ? (
         <div>{rankingWhenFourPlayers}</div>

@@ -15,6 +15,7 @@ import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
 import { api, handleNotLogInError } from "../../helpers/api";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
+import HeaderInGame from "components/views/HeaderInGame";
 const FormField = (props) => {
   return (
     <div className="guessing field">
@@ -95,66 +96,6 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   useEffect(() => {
     getImage();
   }, [imageData]);
-  // const fetchTurnScore = async () => {
-  //   try {
-  //     const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
-  //     const response = response0.data;
-  //     //response=
-  //     //   [
-  //     //     {
-  //     //         "id": 2,
-  //     //         "username": "test",
-  //     //         "token": "30e578e3-4329-41aa-8a16-d51f5d5294c2",
-  //     //         "status": "ISPLAYING",
-  //     //         "creationDate": "2023-04-24T07:51:30.741+00:00",
-  //     //         "bestScore": 0,
-  //     //         "totalScore": 0,
-  //     //         "currentScore": 0,
-  //     //         "guessingWord": null,
-  //     //         "currentGameScore": 0
-  //     //     },
-  //     //     {
-  //     //         "id": 1,
-  //     //         "username": "test1",
-  //     //         "token": "815bbb7e-eec9-466f-9132-a7c933f201d3",
-  //     //         "status": "ISPLAYING",
-  //     //         "creationDate": "2023-04-24T07:51:24.545+00:00",
-  //     //         "bestScore": 0,
-  //     //         "totalScore": 0,
-  //     //         "currentScore": 0,
-  //     //         "guessingWord": null,
-  //     //         "currentGameScore": 0
-  //     //     }
-  //     // ]
-
-  //     if (playerNum == 4) {
-  //       setScore1(response[0].currentScore);
-  //       setScore2(response[1].currentScore);
-  //       setScore3(response[2].currentScore);
-  //       setScore4(response[3].currentScore);
-  //     }
-
-  //     if (playerNum == 2) {
-  //       setScore1(response[0].currentScore);
-  //       setScore2(response[1].currentScore);
-  //     }
-  //   } catch (error) {
-  //     //   alert(
-  //     //     `Something went wrong during getting turn ranking information: \n${handleError(
-  //     //       error
-  //     //     )}`
-  //     //   );
-  //     handleNotLogInError(
-  //       history,
-  //       error,
-  //       "fetching game turn scores in guessing phase"
-  //     );
-  //     history.push("/lobby"); // redirect back to lobby
-  //   }
-  // };
-  // useEffect(() => {
-  //   fetchTurnScore();
-  // }, [score1]);
 
   const handleClick = () => {
     handleSubmitAnswer(answer);
@@ -308,7 +249,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
 
   return (
     <BaseContainer>
-      {/* <Header /> */}
+      <HeaderInGame />
       <div
         className="lobby pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}

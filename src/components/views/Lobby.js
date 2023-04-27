@@ -114,7 +114,7 @@ const Lobby = () => {
     );
   }
   const goTocreateGameView = () => {
-    history.push("/gameCreation");
+    history.push("/create");
   };
 
   const goToGame = () => {

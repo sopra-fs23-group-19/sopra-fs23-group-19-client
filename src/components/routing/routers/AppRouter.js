@@ -1,6 +1,6 @@
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { GameGuard } from "components/routing/routeProtectors/GameGuard";
-import GameRouter from "components/routing/routers/GameRouter";
+// import GameRouter from "components/routing/routers/GameRouter";
 import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import { RegisterGuard } from "components/routing/routeProtectors/RegisterGuard";
 import Login from "components/views/Login";
@@ -12,13 +12,7 @@ import Profile from "components/views/Profile";
 import WaitingView from "components/views/WaitingView";
 import Game from "components/views/Game";
 import GameCreationView from "components/views/GameCreationView";
-//import { Profiler } from "react/cjs/react.production.min";
-import DrawingStage from "components/views/DrawingStage";
-import GuessingStage from "components/views/GuessingStage";
-import Ranking from "components/views/Ranking";
-import SelectWord from "components/views/SelectWord";
-import GameLoading from "components/views/GameLoading";
-import TurnRanking from "components/views/TurnRanking";
+import { LobbyGuard } from "components/routing/routeProtectors/LobbyGuard";
 
 /**
  * Main router of your application.
@@ -33,13 +27,10 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Switch>
-        {/* <Route path="/game">
-          <GameGuard>
-            <GameRouter base="/game" />
-          </GameGuard>
-        </Route> */}
         <Route exact path="/game/:gameId">
-          <Game />
+          <GameGuard>
+            <Game />
+          </GameGuard>
         </Route>
         <Route exact path="/login">
           <LoginGuard>
@@ -52,12 +43,14 @@ const AppRouter = () => {
           </RegisterGuard>
         </Route>
         <Route path={`/waiting/:roomId`}>
-          <WaitingView />
+          <LobbyGuard>
+            <WaitingView />
+          </LobbyGuard>
         </Route>
         <Route exact path="/lobby">
-          {/* <GameGuard> */}
-          <Lobby />
-          {/* </GameGuard> */}
+          <LobbyGuard>
+            <Lobby />
+          </LobbyGuard>
         </Route>
         <Route exact path="/rules">
           <Rules />
@@ -67,26 +60,13 @@ const AppRouter = () => {
             <Profile />
           </ProfileGuard>
         </Route>
-        <Route exact path="/selectWord">
-          <SelectWord />
-        </Route>
-        <Route exact path="/drawingStage">
-          <DrawingStage />
-        </Route>
-        <Route exact path="/guessingStage">
-          <GuessingStage />
-        </Route>
-        <Route exact path="/ranking">
-          <Ranking />
-        </Route>
-        <Route exact path="/selectWord">
-          <SelectWord />
-        </Route>
         <Route exact path="/">
           <Redirect to="/login" />
         </Route>
-        <Route exact path="/gameCreation">
-          <GameCreationView />
+        <Route exact path="/create">
+          <LobbyGuard>
+            <GameCreationView />
+          </LobbyGuard>
         </Route>
       </Switch>
     </BrowserRouter>

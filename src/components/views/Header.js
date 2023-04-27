@@ -69,12 +69,14 @@ const Header = (props) => {
       handleNotLogInError(history, error, "logout");
       localStorage.removeItem("token");
       localStorage.removeItem("id");
+      localStorage.removeItem("username");
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
       history.push("/login");
     }
     localStorage.removeItem("token");
     localStorage.removeItem("id");
+    localStorage.removeItem("username");
     localStorage.removeItem("gameId");
     localStorage.removeItem("intialTurnId");
     history.push("/login");

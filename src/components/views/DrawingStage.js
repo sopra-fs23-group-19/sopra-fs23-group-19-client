@@ -14,6 +14,7 @@ import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
 import { api, handleNotLogInError } from "../../helpers/api";
 import { useInterval } from "helpers/hooks";
+import HeaderInGame from "components/views/HeaderInGame";
 
 const DrawingStage = ({
   gameId,
@@ -94,6 +95,7 @@ const DrawingStage = ({
       const updatedPlayer = allPlayers.filter(
         (item) => item.id != response1.drawingPlayerId
       );
+
       const thisPlayer = allPlayers.filter(
         (item) => item.id == curUserId
       )
@@ -113,8 +115,6 @@ const DrawingStage = ({
         setUsername2(updatedPlayer[0].username);
       }
 
-      // console.log(imageData);
-      console.log("fetch turn info");
       //   setRole("drawingPlayer");
     } catch (error) {
       //   alert(
@@ -288,7 +288,7 @@ const DrawingStage = ({
 
   return (
     <BaseContainer>
-      {/* <Header /> */}
+      <HeaderInGame />
       <div
         className="guessing pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}
@@ -329,7 +329,7 @@ const DrawingStage = ({
           <div
             style={{
               left: "50px",
-              top: "30px",
+              top: "70px",
               position: "absolute",
               "font-family": "Nunito",
               "font-size": "20px",

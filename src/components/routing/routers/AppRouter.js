@@ -13,6 +13,7 @@ import WaitingView from "components/views/WaitingView";
 import Game from "components/views/Game";
 import GameCreationView from "components/views/GameCreationView";
 import { LobbyGuard } from "components/routing/routeProtectors/LobbyGuard";
+import Notification from "components/views/Notification";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -58,6 +59,9 @@ const AppRouter = () => {
         </Route>
         <Route exact path="/rules">
           <Rules />
+        </Route>
+        <Route exact path="/notification">
+          <Notification />
         </Route>
         <Route exact path="/profile/:id">
           <ProfileGuard>

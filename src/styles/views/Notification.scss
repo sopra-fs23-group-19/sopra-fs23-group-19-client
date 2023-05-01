@@ -1,0 +1,72 @@
+@import "styles/theme";
+
+.notification {
+  &.container {
+    margin-top: 2em;
+    flex-direction: column;
+    position: absolute;
+    left: 160px;
+    top: 200px;
+    width: 40em;
+    background: rgba(181, 153, 120, 0.5);
+  }
+  &.button-container {
+    justify-content: center;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    width: 15%;
+    text-align: center;
+  }
+  &.pic {
+    position: absolute;
+    width: 580px;
+    height: 430px;
+    left: 240px;
+    top: 160px;
+  }
+  &.friends-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  &.notice-container {
+    margin: 0.5em 0;
+    width: 40em;
+    padding: 10px;
+    border-radius: $borderRadius;
+    display: flex;
+    align-items: center;
+    left: 0px;
+    top: 0px;
+    position: relative;
+    //background: rgba(181, 153, 120, 0.5);
+  }
+  &.line {
+    position: relative;
+    width: 40em;
+    height: 0px;
+    left: 0px;
+    top: 0px;
+    border: 3px solid #ad9a66;
+  }
+  &.content-container {
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    color: #000000;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+  }
+  &.title-container {
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    align-items: center;
+    text-align: center;
+    width: 33%;
+  }
+}

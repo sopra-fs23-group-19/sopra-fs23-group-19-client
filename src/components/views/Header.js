@@ -55,6 +55,9 @@ const Header = (props) => {
     // console.log(curUserId);
     history.push(`/profile/${curUserId}`);
   };
+  const goToNotification = () => {
+    history.push(`/notification`);
+  }
   const logout = async () => {
     var aValue = localStorage.getItem("id");
     try {
@@ -121,7 +124,8 @@ const Header = (props) => {
         </div>
         <div
           className="header instruction"
-          style={{ "margin-left": "40px", color: "#83692C" }}
+          style={{ "margin-left": "40px", color: "#83692C", textDecorationLine: "underline"}}
+          onClick={() => goToNotification()}
         >
           Notification
         </div>

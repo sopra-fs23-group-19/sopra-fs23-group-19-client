@@ -14,6 +14,7 @@ import Game from "components/views/Game";
 import Friend from "components/views/Friend"
 import GameCreationView from "components/views/GameCreationView";
 import { LobbyGuard } from "components/routing/routeProtectors/LobbyGuard";
+import Notification from "components/views/Notification";
 import { FriendGuard } from "components/routing/routeProtectors/FriendGuard";
 /**
  * Main router of your application.
@@ -65,6 +66,9 @@ const AppRouter = () => {
         </Route>
         <Route exact path="/rules">
           <Rules />
+        </Route>
+        <Route exact path="/notification">
+          <Notification />
         </Route>
         <Route exact path="/profile/:id">
           <ProfileGuard>

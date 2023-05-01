@@ -11,8 +11,10 @@ import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
 import WaitingView from "components/views/WaitingView";
 import Game from "components/views/Game";
+import Friend from "components/views/Friend"
 import GameCreationView from "components/views/GameCreationView";
 import { LobbyGuard } from "components/routing/routeProtectors/LobbyGuard";
+import { FriendGuard } from "components/routing/routeProtectors/FriendGuard";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -55,6 +57,11 @@ const AppRouter = () => {
           <LobbyGuard>
             <Lobby />
           </LobbyGuard>
+        </Route>
+        <Route exact path="/friend">
+          <FriendGuard>
+            <Friend />
+          </FriendGuard>
         </Route>
         <Route exact path="/rules">
           <Rules />

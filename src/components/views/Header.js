@@ -97,7 +97,9 @@ const Header = (props) => {
   return (
     <div className="header container">
       <div className="header instruction-container">
-        <div className="header title">Drawing & Guessing</div>
+        <div className="header title">
+          Drawing & Guessing
+        </div>
         <div style={{ "margin-left": "1200px", "margin-top": "30px" }}>
           <img src={cats} alt="" style={{ width: 270, height: 35 }} />
         </div>

@@ -26,71 +26,180 @@ const FormField = (props) => {
   );
 };
 
-// const Friends = ({ friend }) => {
-//   const history = useHistory();
-//   const goToWaiting = async (id) => {
-//     const requestBody = JSON.stringify({
-//       roomId: id,
-//       userId: localStorage.getItem("id"),
-//     });
-//     try {
-//       await api().put(`/rooms/join`, requestBody);
-//     } catch (error) {
-//       handleNotLogInError(history, error, "joining the room", true);
-//     }
-//     history.push(`/waiting/${id}`);
-//   };
-//   return (
-//     <div className="lobby room-container">
-//       <div className="lobby content" style={{ "margin-left": "80px" }}>
-//         {room.id}
-//       </div>
-//       <div className="lobby content">{room.roomName}</div>
-//       {/* <div className="lobby players">{room.players}</div> */}
-//       <div className="lobby content">
-//         {room.numberOfPlayers + "/" + room.roomSeats}
-//       </div>
-//       <Button onClick={() => goToWaiting(room.id)}>JOIN</Button>
-//     </div>
-//   );
-// };
+const Friends = ({ friend }) => {
+  const history = useHistory();
+  const getFriends = async (id) => {
+    const requestBody = JSON.stringify({
+      friendId: id,
+      userId: localStorage.getItem("id"),
+    });
+    try {
+      // await api().get(`/friends`, requestBody);
+    } catch (error) {
+      handleNotLogInError(history, error, "catching friends' information", true);
+    }
+    history.push(`/waiting/${id}`);
+  };
+  return (
+    <div className="friend friend-container">
+      <div className="friend content" style={{ "margin-left": "80px" }}>
+        {friend.id}
+      </div>
+      <div className="friend content" style={{ "margin-left": "80px" }}>
+        {friend.friendName}</div>
+      {/* <div className="lobby players">{room.players}</div> */}
+      {/* <div className="friend content">
+        {room.numberOfPlayers + "/" + room.roomSeats}
+      </div> */}
+      {/* <Button onClick={() => goToWaiting(friend.id)}>JOIN</Button> */}
+    </div>
+  );
+};
 
-// Friends.propTypes = {
-//   friend: PropTypes.object,
-// };
 
-const Lobby = () => {
+const SearchFriend = ({ searchfriend }) => {
+  const history = useHistory();
+  const getsearchFriend = async (id) => {
+    const requestBody = JSON.stringify({
+      friendId: id,
+      userId: localStorage.getItem("id"),
+    });
+    try {
+      // await api().get(`/friends`, requestBody);
+    } catch (error) {
+      // handleNotLogInError(history, error, "search by username", true);
+    }
+    // history.push(`/waiting/${id}`);
+  };
+  const createFriendNotification = async() => {
+
+  }
+  return (
+    <div className="friend friend-container">
+      <div className="friend content" style={{ "margin-left": "80px" }}>
+        {searchfriend.id}
+      </div>
+      <div className="friend content" style={{ "margin-left": "80px" }}>
+        {searchfriend.friendName}</div>
+      {/* <div className="lobby players">{room.players}</div> */}
+      {/* <div className="friend content">
+        {room.numberOfPlayers + "/" + room.roomSeats}
+      </div> */}
+      <Button onClick={() => createFriendNotification()}>ADD</Button>
+    </div>
+  );
+};
+
+Friends.propTypes = {
+  friend: PropTypes.object,
+};
+SearchFriend.propTypes = {
+  searchfriend: PropTypes.object,
+};
+
+const Friend = () => {
   const history = useHistory();
   const [friends, setFriends] = useState(null);
+  const [searchedFriend, setSearchedFriend] = useState(null);
   const [username, setUsername] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
-//   const fetchFriends = async () => {
-//     try {
-//       const response = await api().get("/rooms");
-//       setRooms(response.data);
-//       // console.log(rooms);
-//     } catch (error) {
-//       handleNotLogInError(history, error, "getting lobby");
-//       setIsUpdating(false);
-//       // history.push("/login");
-//     }
-//   };
-//   useEffect(() => {
-//     fetchRooms();
-//   }, []);
-//   useInterval(
-//     async () => {
-//       fetchRooms();
-//     },
-//     isUpdating ? 3000 : null
-//   );
+  const fetchFriends = async () => {
+    try {
+      // const response = await api().get("/rooms");
+      // setRooms(response.data);
+      // console.log(rooms);
+    } catch (error) {
+      handleNotLogInError(history, error, "getting friends' information");
+      // setIsUpdating(false);
+      // history.push("/login");
+    }
+  };
+  const fetchSearchUsername = async() => {
+    try {
+      // const response = await api().get("/rooms");
+      // setRooms(response.data);
+      // console.log(rooms);
+    } catch (error) {
+      handleNotLogInError(history, error, "getting user by username");
+      // setIsUpdating(false);
+      // history.push("/login");
+    }
+  }
+
+  useEffect(() => {
+    fetchFriends();
+  }, []);
+  useEffect(() => {
+    fetchSearchUsername();
+  }, []);
+
+  useEffect(() => {
+    
+  })
+
+  const SearchByUsername = async () => {
+    try{
+
+    }catch (error) {
+      handleNotLogInError(history, error, "Search a user by username ");
+    }
+  }
+
+  let searchContent = <Spinner />;
+  if (searchedFriend) {
+    searchContent = (
+      <div>
+        <div className="friend container" 
+         style={{left:"140px", top:"550px"}}>
+          <div className="friend friend-container">
+            <div className="friend title" style={{ "margin-left": "80px" }}>
+              Id
+            </div>
+            <div className="friend title" style={{ "margin-left": "80px" }}>
+              Name
+            </div>
+          </div>
+
+          <div className="friend line"></div>
+          <ul className="friend friend-list">
+            {searchedFriend.map((searchfriend) => (
+              <SearchFriend searchfriend={searchfriend} key={searchfriend.id} />
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  } else {
+    searchContent = (
+      <div>
+        <div className="friend container"
+        style={{left:"140px", top:"550px"}}>
+          <div className="friend friend-container">
+            <div className="friend title" style={{ "margin-left": "80px" }}>
+              Id
+            </div>
+            <div className="friend title" style={{ "margin-left": "80px" }}>
+              Name
+            </div>
+          </div>
+
+          <div className="friend line"></div>
+          <div
+            className="friend line"
+            style={{ border: "2px solid #ad9a66" }}
+          ></div>
+        </div>
+      </div>
+    );
+  }
+
 
   let content = <Spinner />;
   if (friends) {
     content = (
       <div>
         <div className="friend container">
-          <div className="friend room-container">
+          <div className="friend friend-container">
             <div className="friend title" style={{ "margin-left": "80px" }}>
               Friend Id
             </div>
@@ -100,10 +209,10 @@ const Lobby = () => {
           </div>
 
           <div className="friend line"></div>
-          <ul className="friend room-list">
-            {/* {rooms.map((room) => (
-              <Rooms room={room} key={room.id} />
-            ))} */}
+          <ul className="friend friend-list">
+            {friends.map((friend) => (
+              <Friend friend={friend} key={friend.id} />
+            ))}
           </ul>
         </div>
       </div>
@@ -112,7 +221,7 @@ const Lobby = () => {
     content = (
       <div>
         <div className="friend container">
-          <div className="friend room-container">
+          <div className="friend friend-container">
             <div className="friend title" style={{ "margin-left": "80px" }}>
               Friend id
             </div>
@@ -130,6 +239,8 @@ const Lobby = () => {
       </div>
     );
   }
+
+
 
 
 
@@ -153,7 +264,7 @@ const Lobby = () => {
             <img className="friend img_cat_left" src={cat_left} />
 
             <Button
-              // onClick={() => goToFriends()}
+              onClick={() => SearchByUsername()}
               className="friend button_style1"
             >
               search
@@ -162,6 +273,7 @@ const Lobby = () => {
           </div>
         </div>
       </div>
+      {searchContent}
       {content}
     </BaseContainer>
   );
@@ -171,4 +283,4 @@ const Lobby = () => {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default Lobby;
+export default Friend;

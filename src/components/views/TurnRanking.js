@@ -21,11 +21,10 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
-  const [username4, setUsername4] = useState("");
+
   const [score1, setScore1] = useState("");
   const [score2, setScore2] = useState("");
   const [score3, setScore3] = useState("");
-  const [score4, setScore4] = useState("");
   const [targetWord, setTargetWord] = useState("");
   const [userScore, setUserScore] = useState(0);
   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
@@ -98,23 +97,23 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       history.push("/lobby"); // redirect back to lobby
     }
   };
-  useEffect(() => {
-    fetchTurnScore();
-    fetchTurnInfo();
-  }, [
-    playerNum,
-    turnId,
-    username1,
-    username2,
-    username3,
-    score1,
-    score2,
-    score3,
-  ]);
   // useEffect(() => {
   //   fetchTurnScore();
   //   fetchTurnInfo();
-  // }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
+  // }, [
+  //   playerNum,
+  //   turnId,
+  //   username1,
+  //   username2,
+  //   username3,
+  //   score1,
+  //   score2,
+  //   score3,
+  // ]);
+  useEffect(() => {
+    fetchTurnScore();
+    fetchTurnInfo();
+  }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
 
   const handleClick = () => {
     handleConfirmRanking();

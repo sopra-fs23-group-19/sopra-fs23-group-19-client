@@ -59,14 +59,15 @@ Friends.propTypes = {
 
 const Rooms = ({ room }) => {
     const history = useHistory();
-    const acceptRoom = async (roomId) => {
+    const acceptRoom = async (sendId, roomId) => {
       const requestBody = JSON.stringify({
-        sendId: roomId,
+        sendId: sendId,
         receiveId: localStorage.getItem("id"),
+        roomId: roomId,
         action: "accept"
       });
       try {
-        //await api().put(`/notification/friends`, requestBody);
+        //await api().put(`/notification/games`, requestBody);
       } catch (error) {
         handleNotLogInError(history, error, "accept game", true);
       }
@@ -78,7 +79,7 @@ const Rooms = ({ room }) => {
         action: "reject"
       });
       try {
-        //await api().put(`/notification/friends`, requestBody);
+        //await api().put(`/notification/games`, requestBody);
       } catch (error) {
         handleNotLogInError(history, error, "reject game", true);
       }

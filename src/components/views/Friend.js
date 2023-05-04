@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { api, handleNotLogInError } from "helpers/api";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
 import "styles/views/Friend.scss";
@@ -80,7 +80,7 @@ const SearchFriend = ({ searchfriend }) => {
         {searchfriend.id}
       </div>
       <div className="friend content" style={{ "margin-left": "80px" }}>
-        {searchfriend.friendName}</div>
+        {searchfriend.username}</div>
       {/* <div className="lobby players">{room.players}</div> */}
       {/* <div className="friend content">
         {room.numberOfPlayers + "/" + room.roomSeats}
@@ -102,44 +102,52 @@ const Friend = () => {
   const [friends, setFriends] = useState(null);
   const [searchedFriend, setSearchedFriend] = useState(null);
   const [username, setUsername] = useState(null);
-  const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
+
+  const visitIdStr = useParams();
+  const visitId = parseInt(visitIdStr["id"]);
+  // const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
   const fetchFriends = async () => {
     try {
-      // const response = await api().get("/rooms");
-      // setRooms(response.data);
-      // console.log(rooms);
+      const response = await api().get(`/users/returnFriends/${visitId}`);
+      setFriends(response.data);
+      console.log(friends);
     } catch (error) {
       handleNotLogInError(history, error, "getting friends' information");
       // setIsUpdating(false);
       // history.push("/login");
     }
   };
-  const fetchSearchUsername = async() => {
-    try {
-      // const response = await api().get("/rooms");
-      // setRooms(response.data);
-      // console.log(rooms);
-    } catch (error) {
-      handleNotLogInError(history, error, "getting user by username");
-      // setIsUpdating(false);
-      // history.push("/login");
-    }
-  }
+  // const fetchSearchUsername = async() => {
+  //   try {
+  //     // const response = await api().get("/rooms");
+  //     // setRooms(response.data);
+  //     // console.log(rooms);
+  //   } catch (error) {
+  //     handleNotLogInError(history, error, "getting user by username");
+  //     // setIsUpdating(false);
+  //     // history.push("/login");
+  //   }
+  // }
 
   useEffect(() => {
     fetchFriends();
   }, []);
-  useEffect(() => {
-    fetchSearchUsername();
-  }, []);
+  // useEffect(() => {
+  //   fetchSearchUsername();
+  // }, []);
 
   useEffect(() => {
     
   })
 
   const SearchByUsername = async () => {
+    const requestBody = JSON.stringify({
+      username: username,
+    });
     try{
-
+      console.log(username);
+      const response = await api().get(`/users/searchFriends`,requestBody);
+      setSearchedFriend(response.data);
     }catch (error) {
       handleNotLogInError(history, error, "Search a user by username ");
     }

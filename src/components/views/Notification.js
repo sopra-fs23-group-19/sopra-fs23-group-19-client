@@ -11,139 +11,145 @@ import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import { useInterval } from "helpers/hooks";
 
-const Friends = ({ friend }) => {
+const Friends = ({ message }) => {
   const history = useHistory();
-  const acceptFriend = async (id) => {
+
+  // accept add friend
+  const acceptFriend = async (messageId) => {
     const requestBody = JSON.stringify({
-      sendId: id,
-      receiveId: localStorage.getItem("id"),
-      action: "accept"
+      action: "AGREE"
     });
     try {
-      //await api().put(`/notification/friends`, requestBody);
+      await api().post(`/notification/friend/${messageId}`, requestBody);
     } catch (error) {
       handleNotLogInError(history, error, "accept friend", true);
     }
   };
-  const rejectFriend = async (id) => {
+
+  // reject add friend
+  const rejectFriend = async (messageId) => {
     const requestBody = JSON.stringify({
-      sendId: id,
-      receiveId: localStorage.getItem("id"),
-      action: "reject"
+      action: "REJECT"
     });
     try {
-      //await api().put(`/notification/friends`, requestBody);
+      await api().post(`/notification/friend/${messageId}`, requestBody);
     } catch (error) {
       handleNotLogInError(history, error, "reject friend", true);
     }
   };
+
   return (
     <div className="notification notice-container">
       <div className="notification content-container">
-        {friend.id}
+        {message.useridFrom}
       </div>
-      <div className="notification content-container">{friend.username}</div>
+      <div className="notification content-container">{message.usernameFrom}</div>
       <div className="notification button-container">
-        <Button onClick={() => acceptFriend(friend.id)}>Accept</Button>
+        <Button onClick={() => acceptFriend(message.messageId)}>Accept</Button>
       </div>
       <div className="notification button-container">
-        <Button onClick={() => rejectFriend(friend.id)}>Reject</Button>
+        <Button onClick={() => rejectFriend(message.messageId)}>Reject</Button>
       </div>
     </div>
   );
 };
 
-Friends.propTypes = {
-  friend: PropTypes.object,
-};
-
-const Rooms = ({ room }) => {
+const Rooms = ({ message }) => {
     const history = useHistory();
-    const acceptRoom = async (sendId, roomId) => {
+    const userId = localStorage.getItem("id");
+
+    // if accept invite to a game, go to the waiting page
+    const goToWaiting = async (roomId) => {
       const requestBody = JSON.stringify({
-        sendId: sendId,
-        receiveId: localStorage.getItem("id"),
         roomId: roomId,
-        action: "accept"
+        userId: userId,
       });
       try {
-        //await api().put(`/notification/games`, requestBody);
+        await api().put(`/rooms/join`, requestBody);
       } catch (error) {
-        handleNotLogInError(history, error, "accept game", true);
+        handleNotLogInError(history, error, "joining the room", true);
       }
+      history.push(`/waiting/${roomId}`);
     };
-    const rejectRoom = async (roomId) => {
+
+    // accept game invite
+    const acceptRoom = async (messageId) => {
       const requestBody = JSON.stringify({
-        sendId: roomId,
-        receiveId: localStorage.getItem("id"),
-        action: "reject"
+        action: "AGREE"
       });
       try {
-        //await api().put(`/notification/games`, requestBody);
+        const response = await api().post(`/notification/game/${messageId}`, requestBody);
+        goToWaiting(response.data.roomId);
       } catch (error) {
-        handleNotLogInError(history, error, "reject game", true);
+        handleNotLogInError(history, error, "accepting game invite", true);
       }
     };
+
+    // reject game invite
+    const rejectRoom = async (messageId) => {
+      const requestBody = JSON.stringify({
+        action: "REJECT"
+      });
+      try {
+        await api().post(`/notification/game/${messageId}`, requestBody);
+      } catch (error) {
+        handleNotLogInError(history, error, "rejecting game invite", true);
+      }
+    };
+
     return (
       <div className="notification notice-container">
         <div className="notification content-container">
-          {room.roomName}
+          {message.roomId}
         </div>
-        <div className="notification content-container">{room.numberOfPlayers + "/" + room.roomSeats}</div>
+        <div className="notification content-container">{message.roomName}</div>
         <div className="notification button-container">
-          <Button onClick={() => acceptRoom(room.id)}>Accept</Button>
+          <Button onClick={() => acceptRoom(message.messageId)}>Accept</Button>
         </div>
         <div className="notification button-container">
-          <Button onClick={() => rejectRoom(room.id)}>Reject</Button>
+          <Button onClick={() => rejectRoom(message.messageId)}>Reject</Button>
         </div>
       </div>
     );
 };
 
-Rooms.propTypes = {
-    room: PropTypes.object,
-};
-
 const Notification = () => {
   const history = useHistory();
+  const userId = localStorage.getItem("id");
   const [friendsNotice, setFriendsNotice] = useState(null);
   const [gamesNotice, setGamesNotice] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
 
-  const fetchFriends = async () => {
-    try {
-      // const response = await api().get("/notification/friends");
-      // setFriendsNotice(response.data);
-      // console.log(friendsNotice);
-    } catch (error) {
-      handleNotLogInError(history, error, "getting friends notification");
-      setIsUpdating(false);
-      // history.push("/login");
-    }
-  };
-
-  const fetchGames = async () => {
-    try {
-      // const response = await api().get("/notification/games");
-      // setGamesNotice(response.data);
-      // console.log(gamesNotice);
-    } catch (error) {
-      handleNotLogInError(history, error, "getting games notification");
-      setIsUpdating(false);
-      // history.push("/login");
-    }
-  };
+  //get all pending friend notifications
+  const fetchFriends = async()=>{
+    const response = await api().post(`/notification/friend/pending/${userId}`);
+    setFriendsNotice(response.data);
+  }
 
   useEffect(() => {
     fetchFriends();
-    fetchGames();
   }, []);
+
   useInterval(
     async () => {
       fetchFriends();
+    },3000
+  );
+
+  // get all game invites notifications
+  const fetchGames = async()=>{
+    const response = await api().post(`/notification/game/pending/${userId}`);
+    setGamesNotice(response.data);
+  }
+
+  useEffect(() => {
+    fetchGames();
+  }, []);
+
+  useInterval(
+    async () => {
       fetchGames();
-    },
-    isUpdating ? 3000 : null
+    },3000
   );
 
   let friendsContent = <Spinner />;
@@ -161,7 +167,7 @@ const Notification = () => {
           <div className="notification line"></div>
           <ul className="notification friends-list">
             {friendsNotice.map((friend) => (
-              <Friends friend={friend} key={friend.id} />
+              <Friends message={friend} key={friend.messageId} />
             ))}
           </ul>
         </div>
@@ -190,14 +196,14 @@ const Notification = () => {
         <div className="notification container" style={{position: "absolute", left: "850px"}}>
           <div className="notification notice-container">
             <div className="notification title-container">
-              Room Name
+              Room Id
             </div>
-            <div className="notification title-container">Players</div>
+            <div className="notification title-container">Room Name</div>
           </div>
           <div className="notification line"></div>
           <ul className="notification friends-list">
             {gamesNotice.map((room) => (
-              <Rooms room={room} key={room.roomName} />
+              <Rooms message={room} key={room.messageId} />
             ))}
           </ul>
         </div>
@@ -209,9 +215,9 @@ const Notification = () => {
         <div className="notification container" style={{position: "absolute", left: "850px"}}>
           <div className="notification notice-container">
             <div className="notification title-container">
-              Room Name
+              Room Id
             </div>
-            <div className="notification title-container">Players</div>
+            <div className="notification title-container">Room Name</div>
           </div>
           <div className="notification line"></div>
         </div>

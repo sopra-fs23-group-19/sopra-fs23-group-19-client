@@ -58,6 +58,8 @@ const Friends = ({ friend }) => {
 
 
 const SearchFriend = ({ searchfriend }) => {
+  const id = localStorage.getItem("id");
+  let disable = false;
   const history = useHistory();
   const getsearchFriend = async (id) => {
     const requestBody = JSON.stringify({
@@ -71,11 +73,25 @@ const SearchFriend = ({ searchfriend }) => {
     }
     // history.push(`/waiting/${id}`);
   };
-  const createFriendNotification = async() => {
-
+  const createFriendNotification = async(useridTo) => {
+    const requestBody = JSON.stringify({
+      useridFrom: id,
+      useridTo: useridTo
+    });
+    try {
+      if(id==useridTo){
+        disable=true;
+      }else{
+        const response = await api().post(`/notification/friend`, requestBody);
+        if(response.data.messageId){disable=true;}
+      }
+    } catch (error) {
+      handleNotLogInError(history, error, "add friend", true);
+    }
+    history.push(`/waiting/${id}`);
   }
   return (
-    <div className="friend friend-container">
+    <div className="friend friend-container" style={{width:"35em"}}>
       <div className="friend content" style={{ "margin-left": "80px" }}>
         {searchfriend.id}
       </div>
@@ -85,7 +101,10 @@ const SearchFriend = ({ searchfriend }) => {
       {/* <div className="friend content">
         {room.numberOfPlayers + "/" + room.roomSeats}
       </div> */}
-      <Button onClick={() => createFriendNotification()}>ADD</Button>
+      <Button onClick={() => createFriendNotification()}
+        disabled={disable}
+      >ADD
+      </Button>
     </div>
   );
 };
@@ -103,12 +122,11 @@ const Friend = () => {
   const [searchedFriend, setSearchedFriend] = useState(null);
   const [username, setUsername] = useState(null);
 
-  const visitIdStr = useParams();
-  const visitId = parseInt(visitIdStr["id"]);
+  const id = localStorage.getItem("id");
   // const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
   const fetchFriends = async () => {
     try {
-      const response = await api().get(`/users/returnFriends/${visitId}`);
+      const response = await api().get(`/users/returnFriends/${id}`);
       setFriends(response.data);
       console.log(friends);
     } catch (error) {
@@ -146,7 +164,7 @@ const Friend = () => {
     });
     try{
       console.log(username);
-      const response = await api().get(`/users/searchFriends`,requestBody);
+      const response = await api().post(`/users/searchFriends`,requestBody);
       setSearchedFriend(response.data);
     }catch (error) {
       handleNotLogInError(history, error, "Search a user by username ");
@@ -158,8 +176,8 @@ const Friend = () => {
     searchContent = (
       <div>
         <div className="friend container" 
-         style={{left:"140px", top:"550px"}}>
-          <div className="friend friend-container">
+         style={{left:"190px", top:"550px", width:"35em"}}>
+          <div className="friend friend-container" style={{width:"35em"}}>
             <div className="friend title" style={{ "margin-left": "80px" }}>
               Id
             </div>
@@ -168,7 +186,7 @@ const Friend = () => {
             </div>
           </div>
 
-          <div className="friend line"></div>
+          <div className="friend line" style={{width:"35em"}}></div>
           <ul className="friend friend-list">
             {searchedFriend.map((searchfriend) => (
               <SearchFriend searchfriend={searchfriend} key={searchfriend.id} />
@@ -181,8 +199,8 @@ const Friend = () => {
     searchContent = (
       <div>
         <div className="friend container"
-        style={{left:"140px", top:"550px"}}>
-          <div className="friend friend-container">
+        style={{left:"190px", top:"550px", width:"35em"}}>
+          <div className="friend friend-container" style={{width:"35em"}}>
             <div className="friend title" style={{ "margin-left": "80px" }}>
               Id
             </div>
@@ -191,11 +209,7 @@ const Friend = () => {
             </div>
           </div>
 
-          <div className="friend line"></div>
-          <div
-            className="friend line"
-            style={{ border: "2px solid #ad9a66" }}
-          ></div>
+          <div className="friend line" style={{width:"35em"}}></div>
         </div>
       </div>
     );

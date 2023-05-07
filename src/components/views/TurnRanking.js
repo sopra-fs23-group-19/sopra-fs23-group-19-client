@@ -13,6 +13,11 @@ import "styles/views/Rank.scss";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import wingame from "styles/images/gif/cat_happy.gif";
 import losegame from "styles/images/gif/cat_unhappy.gif";
+import useSound from "use-sound";
+import btClick from "styles/sounds/click_button.mp3";
+// import winSound from "styles/sounds/win.mp3";
+// import loseSound from "styles/sounds/not_correct.mp3";
+
 const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
   const history = useHistory();
@@ -116,10 +121,14 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
 
   const handleClick = () => {
+    playOn();
     handleConfirmRanking();
     setIsDisabled(true);
   };
 
+  const [playOn] = useSound(btClick);
+  // const [playWin] = useSound(winSound);
+  // const [playLose] = useSound(loseSound);
   let rankingWhenFourPlayers = (
     <div id="rankFour">
       <div
@@ -273,7 +282,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       <HeaderInGame />
       <div
         className="guessing pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
+        style={{ opacity: "40%", left: "1000px", top: "280px" }}
       >
         <img src={cats} alt="" />
       </div>

@@ -17,7 +17,7 @@ const Friends = ({ message }) => {
   // accept add friend
   const acceptFriend = async (messageId) => {
     const requestBody = JSON.stringify({
-      action: "agree"
+      action: "AGREE"
     });
     try {
       await api().post(`/friends/${messageId}`, requestBody);
@@ -29,7 +29,7 @@ const Friends = ({ message }) => {
   // reject add friend
   const rejectFriend = async (messageId) => {
     const requestBody = JSON.stringify({
-      action: "reject"
+      action: "REJECT"
     });
     try {
       await api().post(`/friends/${messageId}`, requestBody);
@@ -125,13 +125,6 @@ const Notification = () => {
   const fetchFriends = async()=>{
     const response = await api().get(`/notification/friends/${userId}`);
     setAllFriendsNotice(response.data);
-    let i = 0;
-    let n = allFriendsNotice.length;
-    console.log(n);
-    for(i;i<n;i++){
-      if(allFriendsNotice[i].status=="PENDING"){pendingFriendNotice.push(allFriendsNotice[i]);}
-    }
-    console.log(pendingFriendNotice);
   }
 
   useEffect(() => {
@@ -161,7 +154,7 @@ const Notification = () => {
   );
 
   let friendsContent = <Spinner />;
-  if (pendingFriendNotice) {
+  if (allFriendsNotice) {
     friendsContent = (
       <div>
         <div className="notification container">
@@ -174,7 +167,7 @@ const Notification = () => {
           </div>
           <div className="notification line"></div>
           <ul className="notification friends-list">
-            {pendingFriendNotice.map((friend) => (
+            {allFriendsNotice.map((friend) => (
               <Friends message={friend} key={friend.messageId} />
             ))}
           </ul>

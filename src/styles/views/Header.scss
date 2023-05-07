@@ -1,5 +1,5 @@
 @import "styles/theme";
-
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 .header {
   &.container {
     margin-top: 0em;
@@ -14,7 +14,8 @@
   &.title {
     font-weight: bold;
     color: $background;
-    font-family: "Irish Grover";
+    // font-family: "Irish Grover";
+    font-family: "Josefin Sans";
     left: 40px;
     position: absolute;
     width: 555px;

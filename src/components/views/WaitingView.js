@@ -6,11 +6,14 @@ import "styles/views/WaitingView.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import cats from "styles/images/cats2.png";
+import waitingbackground from "styles/images/waitingRoom.jpg";
 // import Header from "components/views/Header";
 import PropTypes from "prop-types";
 import { useInterval } from "helpers/hooks";
 import WaitRoom from "models/WaitRoom";
 import HeaderInGame from "components/views/HeaderInGame";
+import useSound from "use-sound";
+import btClick from "styles/sounds/click_button.mp3";
 
 const Player = ({ user }) => (
   <div className="player container">
@@ -70,7 +73,7 @@ const WaitingView = () => {
   const [startGameId, setStartGameId] = useState(roomId);
   const [StartTurnId, setStartTurnId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true);
-  const [friends, setFriends] = useState(null);
+  const [playOn] = useSound(btClick);  const [friends, setFriends] = useState(null);
 
   const fetchRoomInfo = async () => {
     try {
@@ -125,6 +128,7 @@ const WaitingView = () => {
   );
 
   const leaveRoom = async () => {
+    playOn();
     try {
       const requestBody = JSON.stringify({
         roomId: roomId,
@@ -137,6 +141,7 @@ const WaitingView = () => {
     }
   };
   const startGame = async () => {
+    playOn();
     try {
       await api().post(`/games/waitingArea/${roomId}`);
     } catch (error) {
@@ -282,9 +287,19 @@ const WaitingView = () => {
       <HeaderInGame />
       <div
         className="lobby pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
+        style={{ opacity: "50%", left: "1000px", top: "280px" }}
       >
         <img src={cats} alt="" />
+      </div>
+      <div
+        className="lobby pic"
+        style={{
+          opacity: "50%",
+          left: "100px",
+          top: "90px",
+        }}
+      >
+        <img src={waitingbackground} alt="" />
       </div>
       {content}
     </BaseContainer>

@@ -28,76 +28,48 @@ const FormField = (props) => {
 
 const Friends = ({ friend }) => {
   const history = useHistory();
-  const getFriends = async (id) => {
-    const requestBody = JSON.stringify({
-      friendId: id,
-      userId: localStorage.getItem("id"),
-    });
-    try {
-      // await api().get(`/friends`, requestBody);
-    } catch (error) {
-      handleNotLogInError(history, error, "catching friends' information", true);
-    }
-    history.push(`/waiting/${id}`);
-  };
   return (
     <div className="friend friend-container">
       <div className="friend content" style={{ "margin-left": "80px" }}>
         {friend.id}
       </div>
       <div className="friend content" style={{ "margin-left": "80px" }}>
-        {friend.friendName}</div>
-      {/* <div className="lobby players">{room.players}</div> */}
-      {/* <div className="friend content">
-        {room.numberOfPlayers + "/" + room.roomSeats}
-      </div> */}
-      {/* <Button onClick={() => goToWaiting(friend.id)}>JOIN</Button> */}
+        {friend.friendName}
+      </div>
     </div>
   );
 };
-
 
 const SearchFriend = ({ searchfriend }) => {
   const id = localStorage.getItem("id");
   let disable = false;
   const history = useHistory();
-  const getsearchFriend = async (id) => {
-    const requestBody = JSON.stringify({
-      friendId: id,
-      userId: localStorage.getItem("id"),
-    });
-    try {
-      // await api().get(`/friends`, requestBody);
-    } catch (error) {
-      // handleNotLogInError(history, error, "search by username", true);
-    }
-    // history.push(`/waiting/${id}`);
-  };
-  const createFriendNotification = async(useridTo) => {
+  const createFriendNotification = async (useridTo) => {
     const requestBody = JSON.stringify({
       useridFrom: id,
-      useridTo: useridTo
+      useridTo: useridTo,
     });
     try {
-      if(id==useridTo){
-        disable=true;
-      }else{
+      if (id == useridTo) {
+        disable = true;
+      } else {
         const response = await api().post(`/notification/friend`, requestBody);
-        if(response.data.messageId){disable=true;}
-        console.log("send friend message successfully");
-        console.log(response.data);
+        if (response.data.messageId) {
+          disable = true;
+        }
       }
     } catch (error) {
       handleNotLogInError(history, error, "add friend", true);
     }
-  }
+  };
   return (
-    <div className="friend friend-container" style={{width:"35em"}}>
+    <div className="friend friend-container" style={{ width: "35em" }}>
       <div className="friend content" style={{ "margin-left": "80px" }}>
         {searchfriend.id}
       </div>
       <div className="friend content" style={{ "margin-left": "80px" }}>
-        {searchfriend.username}</div>
+        {searchfriend.username}
+      </div>
       {/* <div className="lobby players">{room.players}</div> */}
       {/* <div className="friend content">
         {room.numberOfPlayers + "/" + room.roomSeats}
@@ -155,30 +127,30 @@ const Friend = () => {
   //   fetchSearchUsername();
   // }, []);
 
-  useEffect(() => {
-    
-  })
+  // useEffect(() => {});
 
   const SearchByUsername = async () => {
     const requestBody = JSON.stringify({
       username: username,
     });
-    try{
+    try {
       console.log(username);
-      const response = await api().post(`/users/searchFriends`,requestBody);
+      const response = await api().post(`/users/searchFriends`, requestBody);
       setSearchedFriend(response.data);
-    }catch (error) {
+    } catch (error) {
       handleNotLogInError(history, error, "Search a user by username ");
     }
-  }
+  };
 
   let searchContent = <Spinner />;
   if (searchedFriend) {
     searchContent = (
       <div>
-        <div className="friend container" 
-         style={{left:"190px", top:"550px", width:"35em"}}>
-          <div className="friend friend-container" style={{width:"35em"}}>
+        <div
+          className="friend container"
+          style={{ left: "190px", top: "550px", width: "35em" }}
+        >
+          <div className="friend friend-container" style={{ width: "35em" }}>
             <div className="friend title" style={{ "margin-left": "80px" }}>
               Id
             </div>
@@ -187,7 +159,7 @@ const Friend = () => {
             </div>
           </div>
 
-          <div className="friend line" style={{width:"35em"}}></div>
+          <div className="friend line" style={{ width: "35em" }}></div>
           <ul className="friend friend-list">
             {searchedFriend.map((searchfriend) => (
               <SearchFriend searchfriend={searchfriend} key={searchfriend.id} />
@@ -199,9 +171,11 @@ const Friend = () => {
   } else {
     searchContent = (
       <div>
-        <div className="friend container"
-        style={{left:"190px", top:"550px", width:"35em"}}>
-          <div className="friend friend-container" style={{width:"35em"}}>
+        <div
+          className="friend container"
+          style={{ left: "190px", top: "550px", width: "35em" }}
+        >
+          <div className="friend friend-container" style={{ width: "35em" }}>
             <div className="friend title" style={{ "margin-left": "80px" }}>
               Id
             </div>
@@ -210,12 +184,11 @@ const Friend = () => {
             </div>
           </div>
 
-          <div className="friend line" style={{width:"35em"}}></div>
+          <div className="friend line" style={{ width: "35em" }}></div>
         </div>
       </div>
     );
   }
-
 
   let content = <Spinner />;
   if (friends) {
@@ -262,10 +235,6 @@ const Friend = () => {
       </div>
     );
   }
-
-
-
-
 
   return (
     <BaseContainer>

@@ -50,7 +50,7 @@ const Register = (props) => {
       await autoLoginAfterRegister(requestBody);
 
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/lobby`);
+      history.push(`/welcome`);
     } catch (error) {
       alert(
         `Something went wrong during the register: \n${handleError(error)}`
@@ -87,7 +87,7 @@ const Register = (props) => {
         <img src={cats} alt="" />
       </div>
       <div className="login title">
-      <div class="login writing-letters">
+        <div class="login writing-letters">
           <span>D</span>
           <span>r</span>
           <span>a</span>
@@ -104,7 +104,7 @@ const Register = (props) => {
           <span>i</span>
           <span>n</span>
           <span>g</span>
-          </div>
+        </div>
       </div>
       <div className="login container">
         <div className="login form">

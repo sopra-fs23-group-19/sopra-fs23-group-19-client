@@ -54,7 +54,7 @@ const Login = (props) => {
       localStorage.setItem("id", response.data.id);
       localStorage.setItem("username", response.data.username);
       // Login successfully worked --> navigate to the route /game in the GameRouter
-      history.push(`/lobby`);
+      history.push(`/welcome`);
     } catch (error) {
       alert(`Something went wrong during the login: \n${handleError(error)}`);
     }
@@ -82,7 +82,7 @@ const Login = (props) => {
         <img src={cats} alt="" />
       </div>
       <div className="login title">
-      <div class="login writing-letters">
+        <div class="login writing-letters">
           <span>D</span>
           <span>r</span>
           <span>a</span>
@@ -99,8 +99,9 @@ const Login = (props) => {
           <span>i</span>
           <span>n</span>
           <span>g</span>
-          </div>
+        </div>
       </div>
+
       <div className="login container">
         <div className="login form">
           <FormField

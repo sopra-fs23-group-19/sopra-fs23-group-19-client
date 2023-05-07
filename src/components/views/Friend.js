@@ -84,11 +84,12 @@ const SearchFriend = ({ searchfriend }) => {
       }else{
         const response = await api().post(`/notification/friend`, requestBody);
         if(response.data.messageId){disable=true;}
+        console.log("send friend message successfully");
+        console.log(response.data);
       }
     } catch (error) {
       handleNotLogInError(history, error, "add friend", true);
     }
-    history.push(`/waiting/${id}`);
   }
   return (
     <div className="friend friend-container" style={{width:"35em"}}>
@@ -101,7 +102,7 @@ const SearchFriend = ({ searchfriend }) => {
       {/* <div className="friend content">
         {room.numberOfPlayers + "/" + room.roomSeats}
       </div> */}
-      <Button onClick={() => createFriendNotification()}
+      <Button onClick={() => createFriendNotification(searchfriend.id)}
         disabled={disable}
       >ADD
       </Button>

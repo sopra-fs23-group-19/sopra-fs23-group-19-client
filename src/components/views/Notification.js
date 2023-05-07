@@ -17,10 +17,10 @@ const Friends = ({ message }) => {
   // accept add friend
   const acceptFriend = async (messageId) => {
     const requestBody = JSON.stringify({
-      action: "AGREE"
+      action: "agree"
     });
     try {
-      await api().post(`/notification/friend/${messageId}`, requestBody);
+      await api().post(`/friends/${messageId}`, requestBody);
     } catch (error) {
       handleNotLogInError(history, error, "accept friend", true);
     }
@@ -29,17 +29,17 @@ const Friends = ({ message }) => {
   // reject add friend
   const rejectFriend = async (messageId) => {
     const requestBody = JSON.stringify({
-      action: "REJECT"
+      action: "reject"
     });
     try {
-      await api().post(`/notification/friend/${messageId}`, requestBody);
+      await api().post(`/friends/${messageId}`, requestBody);
     } catch (error) {
       handleNotLogInError(history, error, "reject friend", true);
     }
   };
 
   return (
-    <div className="notification notice-container">
+    <div className="notification notice-container" >
       <div className="notification content-container">
         {message.useridFrom}
       </div>
@@ -116,14 +116,22 @@ const Rooms = ({ message }) => {
 const Notification = () => {
   const history = useHistory();
   const userId = localStorage.getItem("id");
-  const [friendsNotice, setFriendsNotice] = useState(null);
+  const [allFriendsNotice, setAllFriendsNotice] = useState(null);
+  let pendingFriendNotice = [];
   const [gamesNotice, setGamesNotice] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
 
   //get all pending friend notifications
   const fetchFriends = async()=>{
-    const response = await api().post(`/notification/friend/pending/${userId}`);
-    setFriendsNotice(response.data);
+    const response = await api().get(`/notification/friends/${userId}`);
+    setAllFriendsNotice(response.data);
+    let i = 0;
+    let n = allFriendsNotice.length;
+    console.log(n);
+    for(i;i<n;i++){
+      if(allFriendsNotice[i].status=="PENDING"){pendingFriendNotice.push(allFriendsNotice[i]);}
+    }
+    console.log(pendingFriendNotice);
   }
 
   useEffect(() => {
@@ -138,7 +146,7 @@ const Notification = () => {
 
   // get all game invites notifications
   const fetchGames = async()=>{
-    const response = await api().post(`/notification/game/pending/${userId}`);
+    const response = await api().get(`/notification/game/pending/${userId}`);
     setGamesNotice(response.data);
   }
 
@@ -153,7 +161,7 @@ const Notification = () => {
   );
 
   let friendsContent = <Spinner />;
-  if (friendsNotice) {
+  if (pendingFriendNotice) {
     friendsContent = (
       <div>
         <div className="notification container">
@@ -166,7 +174,7 @@ const Notification = () => {
           </div>
           <div className="notification line"></div>
           <ul className="notification friends-list">
-            {friendsNotice.map((friend) => (
+            {pendingFriendNotice.map((friend) => (
               <Friends message={friend} key={friend.messageId} />
             ))}
           </ul>
@@ -235,12 +243,12 @@ const Notification = () => {
         <img src={cats} alt="" />
       </div>
       <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        top: "150px", left: "180px", position:"absolute"}}>
+        top: "150px", left: "180px", position:"absolute", width:"20em"}}>
         Friends invite
       </h2>
       {friendsContent}
       <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        top: "150px", left: "880px", position:"absolute"}}>
+        top: "150px", left: "880px", position:"absolute",width:"20em"}}>
         Games invite
       </h2>
       {roomsContent}

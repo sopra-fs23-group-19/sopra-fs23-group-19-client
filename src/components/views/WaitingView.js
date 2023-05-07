@@ -21,8 +21,42 @@ const Player = ({ user }) => (
 Player.propTypes = {
   user: PropTypes.object,
 };
+
+const Friends = ({ userId, roomId, friend}) => {
+  const history = useHistory();
+
+  // invite friend to game
+  const inviteFriend = async () => {
+    const requestBody = JSON.stringify({
+      useridFrom: userId,
+      useridTo: friend.id,
+      roomId: roomId
+    });
+    try {
+      await api().post(`/notification/game`, requestBody);
+      console.log("send game invitation successfully");
+    } catch (error) {
+      handleNotLogInError(history, error, "invite friend to game", true);
+    }
+  };
+
+  return (
+    <div className="waitingArea notice-container">
+      <div className="waitingArea content-container">
+        {friend.id}
+      </div>
+      <div className="waitingArea content-container">{friend.username}</div>
+      <div className="waitingArea content-container">{friend.status}</div>
+      <div className="waitingArea button-container2">
+        <Button onClick={() => inviteFriend()}>Invite</Button>
+      </div>
+    </div>
+  );
+};
+
 const WaitingView = () => {
   const { roomId } = useParams();
+  console.log(roomId);
 
   const [playerCount, setPlayerCount] = useState(1); //current number of players
   const [roomSeats, setRoomSeats] = useState(2); //default 2 persons?
@@ -36,6 +70,7 @@ const WaitingView = () => {
   const [startGameId, setStartGameId] = useState(roomId);
   const [StartTurnId, setStartTurnId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true);
+  const [friends, setFriends] = useState(null);
 
   const fetchRoomInfo = async () => {
     try {
@@ -110,6 +145,58 @@ const WaitingView = () => {
     }
   };
 
+  const fetchFriends = async ()=>{
+    try{
+      const response = await api().get(`/users/returnFriends/${curUserId}`);
+      setFriends(response.data);
+    }catch (error) {
+      handleNotLogInError(history, error, "get all friends");
+    }
+  };
+
+  useEffect(() => {
+    fetchFriends();
+  }, []);
+
+  // display friends information
+  let friendsContent = <SpinnerBouncing />;
+  if (friends) {
+    friendsContent = (
+      <div>
+        <div className="waitingArea container2" style={{position: "relative", left: "0px", top:"0px"}}>
+          <div className="waitingArea notice-container">
+            <div className="waitingArea title-container">
+              Friend Id
+            </div>
+            <div className="waitingArea title-container">Username</div>
+            <div className="waitingArea title-container">Status</div>
+          </div>
+          <div className="waitingArea line"></div>
+          <ul className="waitingArea friends-list">
+            {friends.map((friend) => (
+              <Friends userId={curUserId} roomId={roomId} friend={friend} key={friend.id} />
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  } else {
+    friendsContent = (
+        <div>
+        <div className="waitingArea container2" style={{position: "relative", left: "0px", top:"0px"}}>
+          <div className="waitingArea notice-container">
+            <div className="waitingArea title-container">
+              Friend Id
+            </div>
+            <div className="waitingArea title-container">Username</div>
+            <div className="waitingArea title-container">Status</div>
+          </div>
+          <div className="waitingArea line"></div>
+        </div>
+      </div>
+    );
+  }
+
   const barStyles = {
     "1/4": 1,
     "2/4": 2,
@@ -153,14 +240,18 @@ const WaitingView = () => {
           </div>
         )
       ) : (
-        <div className="waitingArea button-container">
-          <Button
-            width="100%"
-            className="waitingArea button_style1"
-            onClick={() => leaveRoom()}
-          >
-            Leave
-          </Button>
+        <div>
+          <div className="waitingArea button-container" style={{width:"30em", "marginLeft":"70px"}}>
+            <Button
+              width="100%"
+              className="waitingArea button_style1"
+              onClick={() => leaveRoom()}
+            >
+              Leave
+            </Button>
+          </div>
+          <h2 style={{color:"black", "marginLeft":"100px"}}>Invite friends to join this game!</h2>
+          {friendsContent}
         </div>
       );
     content = (

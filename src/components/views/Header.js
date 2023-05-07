@@ -5,7 +5,8 @@ import { Button } from "components/ui/Button";
 import cats from "styles/images/cats3.png";
 import { api, handleError, handleNotLogInError } from "helpers/api";
 import { useHistory } from "react-router-dom";
-
+// import useSound from "use-sound";
+// import btClick from "styles/sounds/click_button.mp3";
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
  * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
@@ -40,7 +41,9 @@ const Header = (props) => {
       history.push(`/friend`);
     } catch (error) {
       alert(
-        `Something went wrong when going to friend page: \n${handleError(error)}`
+        `Something went wrong when going to friend page: \n${handleError(
+          error
+        )}`
       );
     }
   };
@@ -58,6 +61,7 @@ const Header = (props) => {
   //     );
   //   }
   // };
+
   const goToProfile = () => {
     const curUserId = localStorage.getItem("id");
     // console.log("curUserId");
@@ -66,7 +70,7 @@ const Header = (props) => {
   };
   const goToNotification = () => {
     history.push(`/notification`);
-  }
+  };
   const logout = async () => {
     var aValue = localStorage.getItem("id");
     try {
@@ -97,9 +101,7 @@ const Header = (props) => {
   return (
     <div className="header container">
       <div className="header instruction-container">
-        <div className="header title">
-          Drawing & Guessing
-        </div>
+        <div className="header title">Drawing & Guessing</div>
         <div style={{ "margin-left": "1200px", "margin-top": "30px" }}>
           <img src={cats} alt="" style={{ width: 270, height: 35 }} />
         </div>
@@ -129,9 +131,9 @@ const Header = (props) => {
         </div>
         <div
           className="header instruction"
-          style={{ 
-            "margin-left": "40px", 
-            color: "#B59978" ,
+          style={{
+            "margin-left": "40px",
+            color: "#B59978",
             textDecorationLine: "underline",
           }}
           onClick={() => goToFriend()}
@@ -140,7 +142,11 @@ const Header = (props) => {
         </div>
         <div
           className="header instruction"
-          style={{ "margin-left": "40px", color: "#83692C", textDecorationLine: "underline"}}
+          style={{
+            "margin-left": "40px",
+            color: "#83692C",
+            textDecorationLine: "underline",
+          }}
           onClick={() => goToNotification()}
         >
           Notification

@@ -13,11 +13,13 @@ import TurnRanking from "components/views/TurnRanking";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { useInterval } from "helpers/hooks";
 import { Link } from "react-router-dom";
+import gameBackground from "styles/images/empty-room.jpg";
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
   const location = useLocation();
   const { gameId } = useParams();
+  console.log(typeof gameId);
   // const gameId = useParams().id;
 
   const InitialTurnId = location.state.turnId;
@@ -97,9 +99,9 @@ const Game = () => {
   const handleSubmitAnswer = async (word) => {
     console.log("handle submit answer");
     const requestBody = JSON.stringify({
-      id: curUserId,
+      id: Number(curUserId),
       guessingWord: word,
-      currentGameId: gameId,
+      currentGameId: Number(gameId),
     });
     // console.log(requestBody);
     try {
@@ -140,8 +142,15 @@ const Game = () => {
       setGameStatus(response.status);
       // console.log("game status");
       // console.log(response.status);
-      setTurnId(response.currentTurnId);
-      localStorage.setItem("intialTurnId", response.currentTurnId);
+      if (response.currentTurnId) {
+        setTurnId(response.currentTurnId);
+        localStorage.setItem("intialTurnId", response.currentTurnId);
+      } else if (!response.currentTurnId) {
+        setTurnId(response.currentTurnId);
+        localStorage.removeItem("intialTurnId");
+        localStorage.removeItem("gameId");
+      }
+
       setTurnStatus(response.currentTurnStatus);
     } catch (error) {
       handleNotLogInError(history, error, "get game");
@@ -241,7 +250,23 @@ const Game = () => {
       // console.log(gameStatus);
 
       content = <Ranking gameId={gameId} handleQuitGame={handleQuitGame} />;
-    } else if (gameStatus == "END") {
+    }
+    // else if (gameStatus == "END_GAME" && turnId == null) {
+
+    //   content = (
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         justifyContent: "center",
+    //         alignItems: "center",
+    //         height: "20vh",
+    //       }}
+    //     >
+    //       <Link to="/lobby">Game end! Back to the lobby...</Link>
+    //     </div>
+    //   );
+    // }
+    else if (gameStatus == "END") {
       content = (
         <div
           style={{
@@ -264,7 +289,15 @@ const Game = () => {
   };
 
   return (
-    <BaseContainer className="game container">{switchPages()}</BaseContainer>
+    <BaseContainer className="game container">
+      <div
+        className="lobby pic"
+        style={{ opacity: "60%", left: "0px", top: "85px" }}
+      >
+        <img src={gameBackground} alt="" />
+      </div>
+      {switchPages()}
+    </BaseContainer>
   );
   // return <BaseContainer className="game container">{content}</BaseContainer>;
 };

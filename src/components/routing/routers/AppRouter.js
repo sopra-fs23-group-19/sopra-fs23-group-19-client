@@ -11,8 +11,9 @@ import Rules from "components/views/Rules";
 import Profile from "components/views/Profile";
 import WaitingView from "components/views/WaitingView";
 import Game from "components/views/Game";
-import Friend from "components/views/Friend"
+import Friend from "components/views/Friend";
 import GameCreationView from "components/views/GameCreationView";
+import Welcome from "components/views/Welcome";
 import { LobbyGuard } from "components/routing/routeProtectors/LobbyGuard";
 import Notification from "components/views/Notification";
 import { FriendGuard } from "components/routing/routeProtectors/FriendGuard";
@@ -48,6 +49,11 @@ const AppRouter = () => {
           <RegisterGuard>
             <Register />
           </RegisterGuard>
+        </Route>
+        <Route exact path={`/welcome`}>
+          {/* <LobbyGuard> */}
+          <Welcome />
+          {/* </LobbyGuard> */}
         </Route>
         <Route path={`/waiting/:roomId`}>
           <LobbyGuard>

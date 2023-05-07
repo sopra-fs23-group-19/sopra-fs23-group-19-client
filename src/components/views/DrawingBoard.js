@@ -11,7 +11,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
   const setConvasRef = useOnDraw(onDraw);
   const [lineColor, setLineColor] = useState(null);
   const [lineWidth, setLineWidth] = useState(null);
-
   useEffect(() => {
     let ignore = false;
     if (!ignore) {

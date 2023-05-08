@@ -5,7 +5,8 @@ import { Button } from "components/ui/Button";
 import cats from "styles/images/cats3.png";
 import { api, handleError, handleNotLogInError } from "helpers/api";
 import { useHistory } from "react-router-dom";
-
+// import useSound from "use-sound";
+// import btClick from "styles/sounds/click_button.mp3";
 /**
  * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
  * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
@@ -35,6 +36,17 @@ const Header = (props) => {
       );
     }
   };
+  const goToFriend = async () => {
+    try {
+      history.push(`/friend`);
+    } catch (error) {
+      alert(
+        `Something went wrong when going to friend page: \n${handleError(
+          error
+        )}`
+      );
+    }
+  };
   // const goToProfile = async () => {
   //   try {
   //     const curUserId = localStorage.getItem("id");
@@ -49,11 +61,15 @@ const Header = (props) => {
   //     );
   //   }
   // };
+
   const goToProfile = () => {
     const curUserId = localStorage.getItem("id");
     // console.log("curUserId");
     // console.log(curUserId);
     history.push(`/profile/${curUserId}`);
+  };
+  const goToNotification = () => {
+    history.push(`/notification`);
   };
   const logout = async () => {
     var aValue = localStorage.getItem("id");
@@ -115,13 +131,23 @@ const Header = (props) => {
         </div>
         <div
           className="header instruction"
-          style={{ "margin-left": "40px", color: "#B59978" }}
+          style={{
+            "margin-left": "40px",
+            color: "#B59978",
+            textDecorationLine: "underline",
+          }}
+          onClick={() => goToFriend()}
         >
           Friends
         </div>
         <div
           className="header instruction"
-          style={{ "margin-left": "40px", color: "#83692C" }}
+          style={{
+            "margin-left": "40px",
+            color: "#83692C",
+            textDecorationLine: "underline",
+          }}
+          onClick={() => goToNotification()}
         >
           Notification
         </div>

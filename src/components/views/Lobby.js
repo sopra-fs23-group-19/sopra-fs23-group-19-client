@@ -10,13 +10,15 @@ import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import { useInterval } from "helpers/hooks";
+import useSound from "use-sound";
+import btClick from "styles/sounds/click_button.mp3";
 
 const Rooms = ({ room }) => {
   const history = useHistory();
   const goToWaiting = async (id) => {
     const requestBody = JSON.stringify({
       roomId: id,
-      userId: localStorage.getItem("id"),
+      userId: Number(localStorage.getItem("id")),
     });
     try {
       await api().put(`/rooms/join`, requestBody);
@@ -35,7 +37,13 @@ const Rooms = ({ room }) => {
       <div className="lobby content">
         {room.numberOfPlayers + "/" + room.roomSeats}
       </div>
-      <Button onClick={() => goToWaiting(room.id)}>JOIN</Button>
+      <Button
+        onClick={() => {
+          goToWaiting(room.id);
+        }}
+      >
+        JOIN
+      </Button>
     </div>
   );
 };
@@ -114,10 +122,14 @@ const Lobby = () => {
     );
   }
   const goTocreateGameView = () => {
+    playOn();
     history.push("/gameCreation");
   };
 
+  const [playOn] = useSound(btClick);
+
   const goToGame = () => {
+    playOn();
     const currentGameId = localStorage.getItem("gameId");
     const currentTurnId = localStorage.getItem("intialTurnId");
     history.push({

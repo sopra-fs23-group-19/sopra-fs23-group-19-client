@@ -10,6 +10,11 @@ import HeaderInGame from "components/views/HeaderInGame";
 import Emoji from "components/ui/Emoji";
 import cat_bye from "styles/images/gif/cat.gif";
 import "styles/views/Rank.scss";
+import Confetti from "react-confetti";
+import useWindowSize from "react-use/lib/useWindowSize";
+import useSound from "use-sound";
+import btClick from "styles/sounds/click_button.mp3";
+
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
   // console.log("gameId is");
@@ -23,20 +28,23 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   const [score2, setScore2] = useState("");
   const [score3, setScore3] = useState("");
   const [score4, setScore4] = useState("");
+  const { width, height } = useWindowSize();
 
   function handleQuit() {
+    playOn();
     handleQuitGame();
   }
+  const [playOn] = useSound(btClick);
 
   const [playerNum, setPlayerNum] = useState(2);
   const fetchRankInfo = async () => {
     try {
       const response0 = await api().get(`/games/ranks/${gameId}`);
       const response1 = response0.data;
-
+      console.log(response1);
       setPlayerNum(response1.length);
 
-      if (playerNum == 4) {
+      if (playerNum == 4 && response1[0].username != null) {
         // setUsername1(response1.players[0].username);
         setUsername1(response1[0].username);
 
@@ -49,7 +57,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         setScore4(response1[3].currentGameScore);
       }
 
-      if (playerNum == 2) {
+      if (playerNum == 2 && response1[0].username != null) {
         setUsername1(response1[0].username);
 
         setUsername2(response1[1].username);
@@ -170,11 +178,13 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   return (
     <BaseContainer>
       <HeaderInGame />
+      <Confetti numberOfPieces={150} width={width} height={height} />
+
       <div
         className="guessing pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}
       >
-        <img src={cats} alt="" />
+        {/* <img src={cats} alt="" /> */}
       </div>
       {title}
       {/* <div>{ranking}</div> */}

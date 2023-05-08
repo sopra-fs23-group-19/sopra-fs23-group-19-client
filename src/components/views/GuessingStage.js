@@ -16,6 +16,9 @@ import cat4 from "styles/images/player4.png";
 import { api, handleNotLogInError } from "../../helpers/api";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import HeaderInGame from "components/views/HeaderInGame";
+import useSound from "use-sound";
+import btClick from "styles/sounds/click_button.mp3";
+
 const FormField = (props) => {
   return (
     <div className="guessing field">
@@ -82,6 +85,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       myContext.drawImage(img, 0, 0);
     };
   }
+  const [playOn] = useSound(btClick);
   const sendTimeInfo = (timeValue) => {
     // the callback. Use a better name
     // console.log(timeValue);
@@ -99,6 +103,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   }, [imageData]);
 
   const handleClick = () => {
+    playOn();
     handleSubmitAnswer(answer);
     setIsDisabled(true);
   };
@@ -113,9 +118,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       const updatedPlayer = allPlayers.filter(
         (item) => item.id !== response1.drawingPlayerId
       );
-      const thisPlayer = allPlayers.filter(
-        (item) => item.id == curUserId
-      )
+      const thisPlayer = allPlayers.filter((item) => item.id == curUserId);
       setCurrentUsername(thisPlayer[0].username);
 
       if (playerNum == 4) {
@@ -173,94 +176,83 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     }
   }, [time]);
 
-  const style1 = ({ "font-family": "Nunito", "font-size": "20px", color: "black", border:"2px solid #000000" });
-  const style2 = ({ "font-family": "Nunito", "font-size": "20px", color: "black" });
+  const style1 = {
+    "font-family": "Nunito",
+    "font-size": "20px",
+    color: "black",
+    border: "2px solid #000000",
+  };
+  const style2 = {
+    "font-family": "Nunito",
+    "font-size": "20px",
+    color: "black",
+  };
 
   //display cat and username
-  const player1 = (currentUsername==username1)?(
-    <div className="guessing info">
-      <img src={cat1} alt="" />
-      <div
-        id="player1"
-        style={style1}
-      >
-        {username1}
+  const player1 =
+    currentUsername == username1 ? (
+      <div className="guessing info">
+        <img src={cat1} alt="" />
+        <div id="player1" style={style1}>
+          {username1}
+        </div>
       </div>
-    </div>
-  ):(
-    <div className="guessing info">
-      <img src={cat1} alt="" />
-      <div
-        id="player1"
-        style={style2}
-      >
-        {username1}
+    ) : (
+      <div className="guessing info">
+        <img src={cat1} alt="" />
+        <div id="player1" style={style2}>
+          {username1}
+        </div>
       </div>
-    </div>
-  );
-  const player2 = (currentUsername==username2)?(
-    <div className="guessing info">
-      <img src={cat2} alt="" />
-      <div
-        id="player2"
-        style={style1}
-      >
-        {username2}
+    );
+  const player2 =
+    currentUsername == username2 ? (
+      <div className="guessing info">
+        <img src={cat2} alt="" />
+        <div id="player2" style={style1}>
+          {username2}
+        </div>
       </div>
-    </div>
-  ):(
-    <div className="guessing info">
-      <img src={cat2} alt="" />
-      <div
-        id="player2"
-        style={style2}
-      >
-        {username2}
+    ) : (
+      <div className="guessing info">
+        <img src={cat2} alt="" />
+        <div id="player2" style={style2}>
+          {username2}
+        </div>
       </div>
-    </div>
-  );
-  const player3 = (currentUsername==username3)?(
-    <div className="guessing info">
-      <img src={cat3} alt="" />
-      <div
-        id="player3"
-        style={style1}
-      >
-        {username3}
+    );
+  const player3 =
+    currentUsername == username3 ? (
+      <div className="guessing info">
+        <img src={cat3} alt="" />
+        <div id="player3" style={style1}>
+          {username3}
+        </div>
       </div>
-    </div>
-  ):(
-    <div className="guessing info">
-      <img src={cat3} alt="" />
-      <div
-        id="player3"
-        style={style2}
-      >
-        {username3}
+    ) : (
+      <div className="guessing info">
+        <img src={cat3} alt="" />
+        <div id="player3" style={style2}>
+          {username3}
+        </div>
       </div>
-    </div>
-  );
-  const player4 = (currentUsername==username4)?(
-    <div className="guessing info">
-      <img src={cat4} alt="" />
-      <div
-        id="player4"
-        style={style1}
-      >
-        {username4}
+    );
+  const player4 =
+    currentUsername == username4 ? (
+      <div className="guessing info">
+        <img src={cat4} alt="" />
+        <div id="player4" style={style1}>
+          {username4}
+        </div>
       </div>
-    </div>
-  ):(
-    <div className="guessing info">
-      <img src={cat4} alt="" />
-      <div
-        id="player4"
-        style={style2}
-      >
-        {username4}
+    ) : (
+      <div className="guessing info">
+        <img src={cat4} alt="" />
+        <div id="player4" style={style2}>
+          {username4}
+        </div>
       </div>
-    </div>
-  );
+    );
 
   const waitTnfo = (
     // <h3
@@ -304,7 +296,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       <HeaderInGame />
       <div
         className="lobby pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
+        style={{ opacity: "40%", left: "1000px", top: "280px" }}
       >
         <img src={cats} alt="" />
       </div>

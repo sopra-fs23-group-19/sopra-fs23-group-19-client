@@ -7,6 +7,9 @@ import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import cats from "styles/images/cats1.png";
+import hidePwdIcon from "styles/images/svg/hide-password.svg";
+import showPwdIcon from "styles/images/svg/show-password.svg";
+
 
 /*
 It is possible to add multiple components inside a single file,
@@ -23,6 +26,7 @@ const FormField = (props) => {
         placeholder="enter here.."
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
+        disabled={props.disabled}
       />
     </div>
   );
@@ -38,6 +42,7 @@ const Login = (props) => {
   const history = useHistory();
   const [password, setPassword] = useState(null);
   const [username, setUsername] = useState(null);
+  const [isShowPwd, setIsShowPwd] = useState(false);
 
   const doLogin = async () => {
     try {
@@ -70,6 +75,28 @@ const Login = (props) => {
         )}`
       );
     }
+  };
+
+  const ShowAndHidePassword = () => {
+    return (
+      <div className="password wrapper">
+        <label className="profile label">{"Password"}</label>
+        <input
+          className="password input"
+          type={isShowPwd ? "text" : "password"}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          // onChange={(e) => setPwd(e.target.value)}
+        />
+        <img
+          className="password icon"
+          alt=""
+          // title={isShowPwd ? "Hide password" : "Show password"}
+          src={isShowPwd ? showPwdIcon : hidePwdIcon}
+          onClick={() => setIsShowPwd((prevState) => !prevState)}
+        />
+      </div>
+    );
   };
 
   // const doTest = async () => {
@@ -109,11 +136,12 @@ const Login = (props) => {
             value={username}
             onChange={(un) => setUsername(un)}
           />
-          <FormField
+          {/* <FormField
             label="Password"
             value={password}
             onChange={(n) => setPassword(n)}
-          />
+          /> */}
+          {ShowAndHidePassword()}
           <div className="login button-container">
             <Button
               disabled={!username || !password}

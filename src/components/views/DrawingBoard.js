@@ -5,12 +5,15 @@ import { useRef } from "react";
 import { Button } from "components/ui/Button";
 import BaseContainer from "components/ui/BaseContainer";
 import { useHistory } from "react-router-dom";
+import Option from "components/ui/Option";
 
 const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
   const history = useHistory();
   const setConvasRef = useOnDraw(onDraw);
   const [lineColor, setLineColor] = useState(null);
   const [lineWidth, setLineWidth] = useState(null);
+ 
+
   useEffect(() => {
     let ignore = false;
     if (!ignore) {
@@ -47,18 +50,42 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
 
   function onDraw(canvasObject, point, previousPoint) {
     drawLine(previousPoint, point, canvasObject, lineColor, lineWidth);
+    // drawCircle(previousPoint, point, canvasObject, lineColor, lineWidth);
   }
 
+  // function drawLine(start, end, canvasObject, color, width) {
+  //   start = start ?? end;
+  //   canvasObject.beginPath();
+  //   canvasObject.lineWidth = width;
+  //   canvasObject.strokeStyle = color;
+  //   canvasObject.fillStyle = color;
+  //   canvasObject.moveTo(start.x, start.y);
+  //   canvasObject.lineTo(end.x, end.y);
+  //   canvasObject.stroke();
+
+  // }
   function drawLine(start, end, canvasObject, color, width) {
     start = start ?? end;
     canvasObject.beginPath();
     canvasObject.lineWidth = width;
-    canvasObject.strokeStyle = color;
-    canvasObject.fillStyle = color;
+    canvasObject.strokeStyle = color; // set the strokeStyle to the passed color
     canvasObject.moveTo(start.x, start.y);
     canvasObject.lineTo(end.x, end.y);
     canvasObject.stroke();
   }
+
+  // function drawCircle(start, end, canvasObject, color, width) {
+  //   start = start ?? end;
+
+  //   canvasObject.fillStyle = lineColor;
+  //   canvasObject.beginPath();
+  //   canvasObject.arc(start.x, start.y, width * 0.35, 0, width * Math.PI);
+  //   canvasObject.strokeStyle = color;
+  //   canvasObject.stroke();
+  //   canvasObject.fillStyle = color
+  //   canvasObject.fill();
+  // }
+
 
   function download(selector) {
     const canvas = document.querySelector(selector);
@@ -175,6 +202,11 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     }
   }
 
+  function handleFontSizeChange(size){
+    setLineWidth(size);
+  }
+
+
   return (
     <BaseContainer>
       <div className="drawingBoard board">
@@ -280,7 +312,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
             >
               submit
             </Button>
-            <Button
+            {/* <Button
               onClick={() => lineBold()}
               style={{
                 border: "2px solid #000000",
@@ -299,7 +331,11 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
               }}
             >
               -
-            </Button>
+            </Button> */}
+            <div style={{marginLeft:"30px"}}>
+            <Option defaultLineSize="5" onLineSizeChange={handleFontSizeChange}>
+            </Option>
+            </div>
           </>
         ) : (
           <></>

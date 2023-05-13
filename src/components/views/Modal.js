@@ -20,8 +20,6 @@ import btClick from "styles/sounds/click_button.mp3";
 const ModalWrapper = styled.div`
   width: 560px;
   height: 350px;
-  top: 100px;
-  left: 300px;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
   background: #fbe8c8;
   color: #000;
@@ -46,6 +44,7 @@ const ModalContent = styled.div`
   align-items: center;
   line-height: 1.8;
   color: #141414;
+  font-family: "Josefin Sans";
 
   p {
     margin-bottom: 1rem;
@@ -110,7 +109,7 @@ export const Modal = ({ showModal, setShowModal }) => {
             <ModalImg src={catPaint} alt="cat paint" />
             <ModalContent>
               <h1>OUR AWESOME SUGGESTIONS! </h1>
-              <p>Do not draw letters, numbers or symbols, ok?</p>
+              <p>Please do not draw letters, numbers or symbols, ok?</p>
               <button
                 onClick={() => {
                   playOn();

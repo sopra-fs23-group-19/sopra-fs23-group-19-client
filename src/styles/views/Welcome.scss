@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
+@import "styles/theme";
+
 .welcome {
   &.content-container {
     margin-top: 2em;
@@ -70,15 +72,16 @@
     width: fit-content;
   }
   &.modalContainer {
-    // margin-top: 2em;
-    margin-top: 200px;
     min-height: 40px;
-    /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     flex-direction: column;
-    top: 0px;
-    left: 200px;
     width: 300px;
     position: absolute;
-    // background-color: orange;
+    left:45%;
+    top: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    @include center;
   }
 }

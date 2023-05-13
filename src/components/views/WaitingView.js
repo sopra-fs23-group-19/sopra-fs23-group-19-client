@@ -45,13 +45,15 @@ const Friends = ({ userId, roomId, friend}) => {
 
   return (
     <div className="waitingArea notice-container">
-      <div className="waitingArea content-container">
+      <div className="waitingArea text-container">
         {friend.id}
       </div>
-      <div className="waitingArea content-container">{friend.username}</div>
-      <div className="waitingArea content-container">{friend.status}</div>
+      <div className="waitingArea text-container">{friend.username}</div>
+      <div className="waitingArea text-container">{friend.status}</div>
       <div className="waitingArea button-container2">
-        <Button onClick={() => inviteFriend()}>Invite</Button>
+        <Button onClick={() => inviteFriend()}
+        style={{"background-color": "#FFFFFF", border: "2px solid #000000", "min-width":"100px", "font-family": "Josefin Sans"}}
+        >Invite</Button>
       </div>
     </div>
   );
@@ -177,11 +179,14 @@ const WaitingView = () => {
             <div className="waitingArea title-container">Status</div>
           </div>
           <div className="waitingArea line"></div>
-          <ul className="waitingArea friends-list">
+          {friends.map((friend) => (
+              <Friends userId={curUserId} roomId={roomId} friend={friend} key={friend.id} />
+          ))}
+          {/* <ul className="waitingArea friends-list">
             {friends.map((friend) => (
               <Friends userId={curUserId} roomId={roomId} friend={friend} key={friend.id} />
             ))}
-          </ul>
+          </ul> */}
         </div>
       </div>
     );
@@ -283,15 +288,18 @@ const WaitingView = () => {
   }
   //game page: user cannot leave game/log out, unless explicitly click a leave game button.
   return (
-    <BaseContainer>
+    <div>
       <HeaderInGame />
-      <div
-        className="lobby pic"
-        style={{ opacity: "50%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
+      <div className="waitingArea content-container">
+        <div className="waitingArea pic">
+          <img src={cats} alt="waiting background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        {/* <div className="waitingArea background-pic">
+          <img src={waitingbackground} alt="" style={{opacity: "50%"}}/>
+        </div> */}
+        {content}
       </div>
-      <div
+      {/* <div
         className="lobby pic"
         style={{
           opacity: "50%",
@@ -300,9 +308,8 @@ const WaitingView = () => {
         }}
       >
         <img src={waitingbackground} alt="" />
-      </div>
-      {content}
-    </BaseContainer>
+      </div> */}
+    </div>
   );
 };
 

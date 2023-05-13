@@ -37,7 +37,10 @@ const Rooms = ({ room }) => {
       <div className="lobby content">{room.roomName}</div>
       <div className="lobby content">{room.numberOfPlayers + "/" + room.roomSeats}</div>
       <div className="lobby content">
-        <Button onClick={() => {goToWaiting(room.id);}}>
+        <Button
+          onClick={() => {goToWaiting(room.id);}} 
+          style={{"background-color": "#FFFFFF",border: "2px solid #000000", "font-family": "Josefin Sans"}}
+        >
           JOIN
         </Button>
       </div>
@@ -89,11 +92,9 @@ const Lobby = () => {
             <div className="lobby title">Players</div>
           </div>
           <div className="lobby line"></div>
-          <ul className="lobby room-list">
-            {rooms.map((room) => (
-              <Rooms room={room} key={room.id} />
-            ))}
-          </ul>
+          {rooms.map((room) => (
+            <Rooms room={room} key={room.id} />
+          ))}
         </div>
       </div>
     );

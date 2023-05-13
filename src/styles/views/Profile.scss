@@ -1,17 +1,27 @@
 @import "styles/theme";
 
 .profile {
+  &.content-container {
+    margin-top: 2em;
+    margin-left: 5%;
+    width: 90%;
+    position: relative;
+    min-width: 50em;
+  }
+  &.pic {
+    position: absolute;
+    right: 5%;
+    margin-top: 50px;
+    min-width: 500px;
+  }
   &.container {
-    // margin-top: 2em;
     margin-top: 1em;
     min-height: 40px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
-    top: 200px;
-    left: 350px;
-    width: 1000px;
-    position: absolute;
+    width: 100%;
+    position: relative;
   }
   &.form {
     display: flex;
@@ -49,7 +59,7 @@
   &.label {
     color: $textColor;
     margin-bottom: 12px;
-    font-family: "Nunito";
+    font-family: "Josefin Sans";
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -57,43 +67,17 @@
   }
   &.button-container {
     justify-content: center;
-    // position: absolute;
-    // left: 350px;
-    // top: 350px;
-    // width: 20em;
     display: flex;
     margin-top: 2em;
+    font-family: "Josefin Sans";
   }
   &.img_cat_left {
-    // position: absolute;
     width: 56px;
     height: 56px;
     left: 435px;
-    // top: 460px;
     top: 475px;
-    // position: relative;
-    // width: 10%;
-    // height: 40px;
-    // left: 0px;
-    // top: 15px;
-    // position: absolute;
-    // width: 56px;
-    // height: 56px;
-    // left: 477px;
-    // top: 749px;
   }
   &.img_cat_right {
-    // position: absolute;
-    // width: 56px;
-    // height: 56px;
-    // left: 760px;
-    // top: 400px;
-    // position: relative;
-    // width: 10%;
-    // height: 40px;
-    // left: 0px;
-    // top: 15px;
-    // position: absolute;
     width: 56px;
     height: 56px;
     left: 760px;
@@ -101,28 +85,16 @@
     top: 475px;
   }
   &.img_cat_middle {
-    // position: absolute;
     width: 56px;
     height: 56px;
     left: 570px;
     top: 475px;
-    // position: absolute;
-    // width: 150px;
-    // height: 150px;
-    // left: 570px;
-    // top: 400px;
   }
   &.img_cat_middle1 {
-    // position: absolute;
     width: 56px;
     height: 56px;
     left: 650px;
     top: 475px;
-    // position: absolute;
-    // width: 150px;
-    // height: 150px;
-    // left: 570px;
-    // top: 400px;
   }
   &.title {
     position: absolute;
@@ -130,7 +102,7 @@
     height: 171px;
     left: 250px;
     top: 600px;
-    font-family: "Irish Grover";
+    font-family: "Josefin Sans";
     font-style: normal;
     font-weight: 400;
     font-size: 55px;
@@ -145,7 +117,7 @@
     left: 408px;
     top: 585px;
 
-    font-family: "Nunito";
+    font-family: "Josefin Sans";
     font-style: normal;
     font-weight: 700;
     font-size: 36px;
@@ -204,9 +176,6 @@
   }
 
   &.input {
-    // height: 50px;
-    // box-sizing: border-box;
-    // padding-left: 1.5rem;
     height: 45px;
     box-sizing: border-box;
     padding-left: 40px; //position cursor in input field after icon
@@ -214,7 +183,6 @@
     border: none;
     border-radius: 0.75em;
     margin-bottom: 30px;
-    // background: transparentize(white, 0.85);
     background: #d9d9d9;
     color: #000000;
     font-size: 20px;

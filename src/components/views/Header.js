@@ -99,7 +99,7 @@ const Header = (props) => {
       <div className="header instruction-container">
         <div className="header instrunction">
           <Button
-            style={{"background-color": "#FFFFFF", border: "2px solid #000000", "min-width":"100px"}}
+            style={{"background-color": "#FFFFFF", border: "2px solid #000000", "min-width":"100px", "font-family": "Josefin Sans"}}
             onClick={() => logout()}
           >
             Log out

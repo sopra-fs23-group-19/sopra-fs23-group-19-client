@@ -14,13 +14,15 @@ import cats from "styles/images/cats3.png";
 const HeaderInGame = (props) => {
   return (
     <div className="header container">
-      <div className="header instruction-container">
-        <div className="header title">Drawing & Guessing</div>
-        <div style={{ "margin-left": "1200px", "margin-top": "30px" }}>
-          <img src={cats} alt="" style={{ width: 270, height: 35 }} />
+      <div className="header title-container">
+        <div className="header title-content">Drawing & Guessing</div>
+        <div className="header title-content" style={{textAlign:"right"}}>
+          <img src={cats} alt="" style={{width:"270px",height:"35px"}}/>
         </div>
+      </div>
+      <div className="header instruction-container">
         {localStorage.getItem("username") ? (
-          <div className="header title1">
+          <div className="header title-content" style={{"fontSize":"20px", textAlign:"right"}}>
             {"welcome, " + localStorage.getItem("username")}
           </div>
         ) : (

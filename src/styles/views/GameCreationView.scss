@@ -1,6 +1,19 @@
 @import "styles/theme";
 
 .GameCreationView {
+  &.content-container {
+    margin-top: 2em;
+    margin-left: 5%;
+    width: 90%;
+    position: relative;
+    min-width: 50em;
+  }
+  &.pic {
+    position: absolute;
+    right: 5%;
+    margin-top: 50px;
+    min-width: 500px;
+  }
   &.container {
     // margin-top: 2em;
     margin-top: 1em;
@@ -8,10 +21,10 @@
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
-    top: 200px;
-    left: 350px;
-    width: 1000px;
-    position: absolute;
+    display: flex;
+    margin: 0 auto;
+    width: 500px;
+    position: relative;
   }
   &.form {
     display: flex;
@@ -117,13 +130,13 @@
 
     color: #000000;
   }
-  &.pic {
-    position: absolute;
-    width: 580px;
-    height: 430px;
-    left: 240px;
-    top: 160px;
-  }
+  // &.pic {
+  //   position: absolute;
+  //   width: 580px;
+  //   height: 430px;
+  //   left: 240px;
+  //   top: 160px;
+  // }
   &.fontWhite {
     width: 222px;
     height: 73px;

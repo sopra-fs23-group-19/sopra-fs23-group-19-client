@@ -92,9 +92,9 @@ const Welcome = (props) => {
             Explore now!
           </Button>
         </div>
-        <div className="welcome modalContainer">
-          <Modal showModal={showModal} setShowModal={setShowModal} />
-        </div>
+      </div>
+      <div className="welcome modalContainer">
+        <Modal showModal={showModal} setShowModal={setShowModal} />
       </div>
     </div>
   );

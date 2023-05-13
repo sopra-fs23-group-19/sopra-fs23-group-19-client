@@ -50,55 +50,53 @@ const Welcome = (props) => {
   const [playOn] = useSound(btClick);
 
   return (
-    <BaseContainer>
+    <div>
       <Header />
-      <div className="welcome title1">{"welcome, " + userName}</div>
-      <div
-        className="rules pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
+      <div className="welcome content-container">
+        <div className="welcome pic">
+          <img src={cats} alt="welcome background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        <div className="welcome title1">{"Welcome, " + userName + " !"}</div>
+        <div className="welcome displayWrapper">
+          <FunctionDisplay
+            // path="/lobby"
+            classname="welcome functionName"
+            name="Prepare"
+            detail="System randomly decides the order of becoming drawing player."
+          />
+          <FunctionDisplay
+            // path="/profile"
+            classname="welcome functionName"
+            name="Drawing Stage"
+            detail="Drawing player chooses a word, then has 60s to draw a picture describing that word."
+          />
+          <FunctionDisplay
+            // path="/friend"
+            classname="welcome functionName"
+            name="Guessing Stage"
+            detail="Guessing players have 60s to submit
+            answers guessing the word for once."
+          />
+          <FunctionDisplay
+            // path="/notification"
+            name="View Result"
+            classname="welcome functionName"
+            detail="The game ends if all the players have done the drawing once. "
+          />
+        </div>
+        <div className="welcome button-container">
+          <Button
+            style={{"background-color": "#FFFFFF",border: "2px solid #000000"}}
+            onClick={() => openModal()}
+          >
+            Explore now!
+          </Button>
+        </div>
+        <div className="welcome modalContainer">
+          <Modal showModal={showModal} setShowModal={setShowModal} />
+        </div>
       </div>
-      <div className="welcome displayWrapper">
-        <FunctionDisplay
-          // path="/lobby"
-          classname="welcome functionName1"
-          name="Prepare"
-          detail="System randomly decides the order of becoming drawing player."
-        />
-        <FunctionDisplay
-          // path="/profile"
-          classname="welcome functionName2"
-          name="Drawing Stage"
-          detail="Drawing player chooses a word, then has 60s to draw a picture describing that word."
-        />
-        <FunctionDisplay
-          // path="/friend"
-          classname="welcome functionName3"
-          name="Guessing Stage"
-          detail="Guessing players have 60s to submit
-          answers guessing the word for once."
-        />
-        <FunctionDisplay
-          // path="/notification"
-          name="View Result"
-          classname="welcome functionName3"
-          detail="The game ends if all the players have done the drawing once. "
-        />
-      </div>
-      <div className="welcome container">
-        <button
-          className="welecome button_style1"
-          width="100%"
-          onClick={() => openModal()}
-        >
-          Explore now!
-        </button>
-      </div>
-      <div className="welcome modalContainer">
-        <Modal showModal={showModal} setShowModal={setShowModal} />
-      </div>
-    </BaseContainer>
+    </div>
   );
 };
 

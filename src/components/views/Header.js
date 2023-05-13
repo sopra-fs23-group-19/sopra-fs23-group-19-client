@@ -18,6 +18,8 @@ import { useHistory } from "react-router-dom";
 
 const Header = (props) => {
   const history = useHistory();
+
+  // on click rules button, redirect to the rules page
   const goToRules = async () => {
     try {
       history.push(`/rules`);
@@ -27,6 +29,8 @@ const Header = (props) => {
       );
     }
   };
+
+  // on click the lobby button, redirect to the lobby page
   const goToLobby = async () => {
     try {
       history.push(`/lobby`);
@@ -36,6 +40,8 @@ const Header = (props) => {
       );
     }
   };
+
+  // on click the friend button, redirect to the friend page
   const goToFriend = async () => {
     try {
       history.push(`/friend`);
@@ -47,41 +53,24 @@ const Header = (props) => {
       );
     }
   };
-  // const goToProfile = async () => {
-  //   try {
-  //     const curUserId = localStorage.getItem("id");
-  //     console.log("curUserId");
-  //     console.log(curUserId);
-  //     history.push(`/profile/${curUserId}`);
-  //   } catch (error) {
-  //     alert(
-  //       `Something went wrong when going to profile page: \n${handleError(
-  //         error
-  //       )}`
-  //     );
-  //   }
-  // };
 
+  // on click the profile button, redirect to the profile page
   const goToProfile = () => {
     const curUserId = localStorage.getItem("id");
-    // console.log("curUserId");
-    // console.log(curUserId);
     history.push(`/profile/${curUserId}`);
   };
+
+  // on click the notification button, redirect to the notification page
   const goToNotification = () => {
     history.push(`/notification`);
   };
+
+  // on click the logout button, logout and clear local storage
   const logout = async () => {
     var aValue = localStorage.getItem("id");
     try {
       await api().post(`/users/logout/${aValue}`);
     } catch (error) {
-      //   alert(`Something went wrong while logout: \n${handleError(error)}`);
-      // }
-
-      // localStorage.removeItem("token");
-      // localStorage.removeItem("id");
-      // history.push("/login");
       handleNotLogInError(history, error, "logout");
       localStorage.removeItem("token");
       localStorage.removeItem("id");
@@ -98,81 +87,59 @@ const Header = (props) => {
     history.push("/login");
   };
 
+  // display the header
   return (
     <div className="header container">
-      <div className="header instruction-container">
-        <div className="header title">Drawing & Guessing</div>
-        <div style={{ "margin-left": "1200px", "margin-top": "30px" }}>
-          <img src={cats} alt="" style={{ width: 270, height: 35 }} />
+      <div className="header title-container">
+        <div className="header title-content">Drawing & Guessing</div>
+        <div className="header title-content" style={{textAlign:"right"}}>
+          <img src={cats} alt="" style={{width:"270px",height:"35px"}}/>
         </div>
       </div>
       <div className="header instruction-container">
-        <div
-          className="header instruction"
-          style={{
-            "margin-left": "800px",
-            color: "#E0B406",
-            textDecorationLine: "underline",
-          }}
-          onClick={() => goToLobby()}
-        >
-          Lobby
+        <div className="header instrunction">
+          <Button
+            style={{"background-color": "#FFFFFF", border: "2px solid #000000", "min-width":"100px"}}
+            onClick={() => logout()}
+          >
+            Log out
+          </Button>
         </div>
         <div
           className="header instruction"
-          style={{
-            "margin-left": "40px",
-            color: "#C18A2D",
-            textDecorationLine: "underline",
-          }}
-          onClick={() => goToProfile()}
+          style={{color: "#000000"}}
+          onClick={() => goToRules()}
         >
-          Profile
+          Rules
         </div>
         <div
           className="header instruction"
-          style={{
-            "margin-left": "40px",
-            color: "#B59978",
-            textDecorationLine: "underline",
-          }}
-          onClick={() => goToFriend()}
-        >
-          Friends
-        </div>
-        <div
-          className="header instruction"
-          style={{
-            "margin-left": "40px",
-            color: "#83692C",
-            textDecorationLine: "underline",
-          }}
+          style={{color: "#83692C"}}
           onClick={() => goToNotification()}
         >
           Notification
         </div>
         <div
           className="header instruction"
-          style={{
-            "margin-left": "40px",
-            color: "#000000",
-            textDecorationLine: "underline",
-          }}
-          onClick={() => goToRules()}
+          style={{color: "#B59978"}}
+          onClick={() => goToFriend()}
         >
-          Rules
+          Friends
         </div>
-        <Button
-          style={{
-            "margin-left": "40px",
-            "background-color": "#FFFFFF",
-            "margin-bottom": "5px",
-            border: "2px solid #000000",
-          }}
-          onClick={() => logout()}
+        <div
+          className="header instruction"
+          style={{color: "#C18A2D"}}
+          onClick={() => goToProfile()}
         >
-          Log out
-        </Button>
+          Profile
+        </div>
+        <div
+          className="header instruction"
+          style={{color: "#E0B406"}}
+          onClick={() => goToLobby()}
+        >
+          Lobby
+        </div>
       </div>
     </div>
   );

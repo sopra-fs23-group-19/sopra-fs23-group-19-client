@@ -123,7 +123,7 @@ const Notification = () => {
 
   //get all pending friend notifications
   const fetchFriends = async()=>{
-    const response = await api().get(`/notification/friends/${userId}`);
+    const response = await api().get(`/notification/friend/pending/${userId}`);
     setAllFriendsNotice(response.data);
   }
 

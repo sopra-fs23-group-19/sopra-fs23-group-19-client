@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { api, handleError } from "helpers/api";
+import { api, handleError, handleNotLogInError } from "helpers/api";
 // import User from "models/User";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats1.png";
 import hidePwdIcon from "styles/images/svg/hide-password.svg";
 import showPwdIcon from "styles/images/svg/show-password.svg";
-
 
 /*
 It is possible to add multiple components inside a single file,
@@ -43,6 +42,7 @@ const Login = (props) => {
   const [password, setPassword] = useState(null);
   const [username, setUsername] = useState(null);
   const [isShowPwd, setIsShowPwd] = useState(false);
+  const [notification, setNotification] = useState("");
 
   const doLogin = async () => {
     try {
@@ -61,9 +61,21 @@ const Login = (props) => {
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/welcome`);
     } catch (error) {
-      alert(`Something went wrong during the login: \n${handleError(error)}`);
+      // alert(`Something went wrong during the login: \n${handleError(error)}`);
+      // setNotification(handleError(error));
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        setNotification("You have entered wrong username or password.");
+      }
     }
   };
+
+  // useEffect(() => {
+  //   getImage();
+  // }, [notification]);
 
   const goToRegister = async () => {
     try {
@@ -85,7 +97,10 @@ const Login = (props) => {
           className="password input"
           type={isShowPwd ? "text" : "password"}
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setNotification("");
+          }}
           // onChange={(e) => setPwd(e.target.value)}
         />
         <img
@@ -134,7 +149,10 @@ const Login = (props) => {
           <FormField
             label="Username"
             value={username}
-            onChange={(un) => setUsername(un)}
+            onChange={(un) => {
+              setUsername(un);
+              setNotification("");
+            }}
           />
           {/* <FormField
             label="Password"
@@ -152,6 +170,7 @@ const Login = (props) => {
             </Button>
             {/* <Button onClick={() => doTest()}>Test</Button> */}
           </div>
+          <label style={{ color: "red" }}>{notification}</label>
           <div className="login button-container">
             <div style={{ "margin-right": "40px" }}>
               Do not have an account?

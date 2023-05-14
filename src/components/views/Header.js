@@ -5,6 +5,7 @@ import { Button } from "components/ui/Button";
 import cats from "styles/images/cats3.png";
 import { api, handleError, handleNotLogInError } from "helpers/api";
 import { useHistory } from "react-router-dom";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 // import useSound from "use-sound";
 // import btClick from "styles/sounds/click_button.mp3";
 /**
@@ -18,7 +19,9 @@ import { useHistory } from "react-router-dom";
 
 const Header = (props) => {
   const history = useHistory();
-
+  const notify = (message) => {
+    toast.error(message);
+  };
   // on click rules button, redirect to the rules page
   const goToRules = async () => {
     try {
@@ -71,7 +74,15 @@ const Header = (props) => {
     try {
       await api().post(`/users/logout/${aValue}`);
     } catch (error) {
-      handleNotLogInError(history, error, "logout");
+      // handleNotLogInError(history, error, "logout");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       localStorage.removeItem("token");
       localStorage.removeItem("id");
       localStorage.removeItem("username");
@@ -92,14 +103,19 @@ const Header = (props) => {
     <div className="header container">
       <div className="header title-container">
         <div className="header title-content">Drawing & Guessing</div>
-        <div className="header title-content" style={{textAlign:"right"}}>
-          <img src={cats} alt="" style={{width:"270px",height:"35px"}}/>
+        <div className="header title-content" style={{ textAlign: "right" }}>
+          <img src={cats} alt="" style={{ width: "270px", height: "35px" }} />
         </div>
       </div>
       <div className="header instruction-container">
         <div className="header instrunction">
           <Button
-            style={{"background-color": "#FFFFFF", border: "2px solid #000000", "min-width":"100px", "font-family": "Josefin Sans"}}
+            style={{
+              "background-color": "#FFFFFF",
+              border: "2px solid #000000",
+              "min-width": "100px",
+              "font-family": "Josefin Sans",
+            }}
             onClick={() => logout()}
           >
             Log out
@@ -107,40 +123,50 @@ const Header = (props) => {
         </div>
         <div
           className="header instruction"
-          style={{color: "#000000"}}
+          style={{ color: "#000000" }}
           onClick={() => goToRules()}
         >
           Rules
         </div>
         <div
           className="header instruction"
-          style={{color: "#83692C"}}
+          style={{ color: "#83692C" }}
           onClick={() => goToNotification()}
         >
           Notification
         </div>
         <div
           className="header instruction"
-          style={{color: "#B59978"}}
+          style={{ color: "#B59978" }}
           onClick={() => goToFriend()}
         >
           Friends
         </div>
         <div
           className="header instruction"
-          style={{color: "#C18A2D"}}
+          style={{ color: "#C18A2D" }}
           onClick={() => goToProfile()}
         >
           Profile
         </div>
         <div
           className="header instruction"
-          style={{color: "#E0B406"}}
+          style={{ color: "#E0B406" }}
           onClick={() => goToLobby()}
         >
           Lobby
         </div>
       </div>
+
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
     </div>
   );
 };

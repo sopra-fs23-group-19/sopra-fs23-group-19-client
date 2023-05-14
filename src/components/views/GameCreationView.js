@@ -1,5 +1,5 @@
 import React from "react";
-import { api, handleNotLogInError } from "helpers/api";
+import { api, handleError } from "helpers/api";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
@@ -12,6 +12,8 @@ import { useState } from "react";
 import cat_left from "styles/images/cat_left.png";
 import cat_brown from "styles/images/cat_brown.png";
 import "styles/views/GameCreationView.scss";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+
 const FormField = (props) => {
   return (
     <div className="GameCreationView field">
@@ -45,6 +47,9 @@ const GameCreationView = () => {
     setSelected(btn);
     setMode(btn);
   };
+  const notify = (message) => {
+    toast.error(message);
+  };
   //create game:
   //call API to create a room
   //
@@ -60,7 +65,15 @@ const GameCreationView = () => {
       const roomId = response.data.id;
       history.push(`/waiting/${roomId}`);
     } catch (error) {
-      handleNotLogInError(history, error, "creating game room", true);
+      // handleNotLogInError(history, error, "creating game room", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
     // history.push(`/waiting/`);
   };
@@ -126,9 +139,22 @@ const GameCreationView = () => {
   return (
     <div>
       <Header />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <div className="GameCreationView content-container">
         <div className="GameCreationView pic">
-          <img src={cats} alt="welcome background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="welcome background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
       </div>
       <div>{gameSettingForm()}</div>

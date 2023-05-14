@@ -41,6 +41,7 @@ const Register = (props) => {
   const [password, setPassword] = useState(null);
   const [username, setUsername] = useState(null);
   const [isShowPwd, setIsShowPwd] = useState(false);
+  const [notification, setNotification] = useState("");
 
   const doRegister = async () => {
     try {
@@ -56,9 +57,19 @@ const Register = (props) => {
       // Login successfully worked --> navigate to the route /game in the GameRouter
       history.push(`/welcome`);
     } catch (error) {
-      alert(
-        `Something went wrong during the register: \n${handleError(error)}`
-      );
+      // alert(
+      //   `Something went wrong during the register: \n${handleError(error)}`
+      // );
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else if (error_str["status"] == 409) {
+        setNotification(
+          "There exists a user with the username you have entered. Please enter another one."
+        );
+      } else {
+        setNotification("You have entered wrong username or password.");
+      }
     }
   };
   const autoLoginAfterRegister = async (credentials) => {
@@ -93,7 +104,10 @@ const Register = (props) => {
           className="password input"
           type={isShowPwd ? "text" : "password"}
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setNotification("");
+          }}
           // onChange={(e) => setPwd(e.target.value)}
         />
         <img
@@ -137,7 +151,10 @@ const Register = (props) => {
           <FormField
             label="Username"
             value={username}
-            onChange={(un) => setUsername(un)}
+            onChange={(un) => {
+              setUsername(un);
+              setNotification("");
+            }}
           />
           {/* <FormField
             label="Password"
@@ -154,6 +171,7 @@ const Register = (props) => {
               Register
             </Button>
           </div>
+          <label style={{ color: "red" }}>{notification}</label>
           <div className="login button-container">
             <div style={{ "margin-right": "40px" }}>
               Already have an account?

@@ -5,7 +5,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import { api, handleNotLogInError } from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
 import Emoji from "components/ui/Emoji";
 import cat_bye from "styles/images/gif/cat.gif";
@@ -14,7 +14,7 @@ import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
-
+import { Bounce, ToastContainer, toast } from "react-toastify";
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
   // console.log("gameId is");
@@ -29,6 +29,9 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   const [score3, setScore3] = useState("");
   const [score4, setScore4] = useState("");
   const { width, height } = useWindowSize();
+  const notify = (message) => {
+    toast.error(message);
+  };
 
   function handleQuit() {
     playOn();
@@ -65,12 +68,20 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         setScore2(response1[1].currentGameScore);
       }
     } catch (error) {
-      handleNotLogInError(history, error, "fetching ranking information");
-      history.push("/lobby"); // redirect back to lobby
+      // handleNotLogInError(history, error, "fetching ranking information");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
+      // history.push("/lobby"); // redirect back to lobby
     }
   };
   useEffect(() => {
-    fetchRankInfo();
+    fetchRankInfo().then(() => {});
   }, [playerNum]);
   //ranking component
   //need to sort the score later
@@ -176,6 +187,15 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   return (
     <div>
       <HeaderInGame />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <Confetti numberOfPieces={150} width={width} height={height} />
       <div className="guessing content-container">
         <div className="guessing pic">

@@ -17,6 +17,7 @@ import Welcome from "components/views/Welcome";
 import { LobbyGuard } from "components/routing/routeProtectors/LobbyGuard";
 import Notification from "components/views/Notification";
 import { FriendGuard } from "components/routing/routeProtectors/FriendGuard";
+import Maintenance from "components/views/Maintenance";
 /**
  * Main router of your application.
  * In the following class, different routes are rendered. In our case, there is a Login Route with matches the path "/login"
@@ -75,6 +76,9 @@ const AppRouter = () => {
         </Route>
         <Route exact path="/notification">
           <Notification />
+        </Route>
+        <Route exact path="/information">
+          <Maintenance />
         </Route>
         <Route exact path="/profile/:id">
           <ProfileGuard>

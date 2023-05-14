@@ -11,9 +11,12 @@ const Timer = ({ start, stage, sendTimeInfo }) => {
     const nowTime = +new Date();
     let times = 60 - parseInt(`${(nowTime - start) / 1000}`);
     // setS(parseInt(`${times%60}`));
-    // if (stage === "drawing") {
-    // times = 120 - parseInt(`${(nowTime - start) / 1000}`);
-    // }
+    if (stage === "turn_ranking") {
+      times = 10 - parseInt(`${(nowTime - start) / 1000}`);
+    }
+    if (stage === "select_word") {
+      times = 20 - parseInt(`${(nowTime - start) / 1000}`);
+    }
     setSeconds(times);
     if (times > 0 && times % 2 == 0) {
       sendTimeInfo(times);

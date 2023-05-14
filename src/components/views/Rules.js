@@ -3,7 +3,9 @@ import "styles/views/Header.scss";
 import "styles/views/Rules.scss";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
-
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 /*
 It is possible to add multiple components inside a single file,
 however be sure not to clutter your files with an endless amount!
@@ -17,13 +19,25 @@ const Rules = (props) => {
       <Header />
       <div className="rules content-container">
         <div className="rules pic-container">
-          <img src={cats} alt="background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
+
         <div className="rules container">
           <div className="rules form">
-            <div className="rules title">Description:</div>
+            <div className="rules title">Description</div>
+            <div className="rules divider-custom">
+              <div className="rules divider-custom-line"></div>
+              <div className="rules divider-custom-icon">
+                <FontAwesomeIcon icon={faStar} />
+              </div>
+              <div className="rules divider-custom-line"></div>
+            </div>
             <div className="rules content">
-              This is a social drawing application where players take turns 
+              This is a social drawing application where players take turns
               drawing a picture of a given word, and other players compete to
               guess the word from the drawing.
             </div>
@@ -34,15 +48,15 @@ const Rules = (props) => {
               2. The drawing player chooses a word from three words given. Then
               he/she has 60s to draw a picture describing that word.
               <br />
-              3. The painting is shown to all guessing players. After the drawing
-              stage completes, all guessing players have another 60s to submit
-              answers guessing the word for once only.
+              3. The painting is shown to all guessing players. After the
+              drawing stage completes, all guessing players have another 60s to
+              submit answers guessing the word for once only.
               <br />
-              4. After each round, the guessing players will get one point if they
-              answer it correctly, otherwise they will not get any point.
+              4. After each round, the guessing players will get one point if
+              they answer it correctly, otherwise they will not get any point.
               <br />
-              5. The game ends if all the players have done the drawing once. And
-              it will show the final point of each player.
+              5. The game ends if all the players have done the drawing once.
+              And it will show the final point of each player.
             </div>
           </div>
         </div>

@@ -11,11 +11,12 @@ import DrawingBoard from "./DrawingBoard";
 import { useHistory, useLocation } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
-import { api, handleNotLogInError } from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 import { useInterval } from "helpers/hooks";
 import HeaderInGame from "components/views/HeaderInGame";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 const DrawingStage = ({
   gameId,
@@ -78,7 +79,9 @@ const DrawingStage = ({
     playOn();
     handleSubmitPainting(painting);
   }
-
+  const notify = (message) => {
+    toast.error(message);
+  };
   //fetch game Turn information
   const fetchTurnInfo = async () => {
     try {
@@ -123,23 +126,31 @@ const DrawingStage = ({
       //       error
       //     )}`
       //   );
-      handleNotLogInError(
-        history,
-        error,
-        "fetching turn information in drawing phase"
-      );
+      // handleNotLogInError(
+      //   history,
+      //   error,
+      //   "fetching turn information in drawing phase"
+      // );
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       setIsUpdating(false);
       history.push("/lobby"); // redirect back to lobby
     }
   };
 
   useEffect(() => {
-    fetchTurnInfo();
+    fetchTurnInfo().then(() => {});
   }, [playerNum]);
 
   useInterval(
     async () => {
-      fetchTurnInfo();
+      fetchTurnInfo().then(() => {});
     },
     isUpdating && role == "guessingPlayer" ? 1000 : null
     // status == "PLAYING" ? null : 1000
@@ -281,6 +292,15 @@ const DrawingStage = ({
   return (
     <div>
       <HeaderInGame />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <div className="guessing content-container">
         <div className="guessing pic">
           <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>

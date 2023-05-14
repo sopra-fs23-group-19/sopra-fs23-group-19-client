@@ -13,11 +13,12 @@ import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
-import { api, handleNotLogInError } from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import HeaderInGame from "components/views/HeaderInGame";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 const FormField = (props) => {
   return (
@@ -81,6 +82,9 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     // console.log(timeValue);
     setTime(timeValue);
   };
+  const notify = (message) => {
+    toast.error(message);
+  };
 
   useEffect(() => {
     if (time == 0) {
@@ -133,17 +137,25 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         setRole("guessingPlayer");
       }
     } catch (error) {
-      handleNotLogInError(
-        history,
-        error,
-        "fetching game turn in guessing phase"
-      );
+      // handleNotLogInError(
+      //   history,
+      //   error,
+      //   "fetching game turn in guessing phase"
+      // );
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       history.push("/lobby"); // redirect back to lobby
     }
   };
 
   useEffect(() => {
-    fetchTurnInfo();
+    fetchTurnInfo().then(() => {});
   }, [playerNum]);
 
   const answerBox = (
@@ -273,6 +285,15 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   return (
     <div>
       <HeaderInGame />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <div className="guessing content-container">
         <div className="guessing pic">
           <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>

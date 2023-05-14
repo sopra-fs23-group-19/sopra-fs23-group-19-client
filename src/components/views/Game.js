@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import BaseContainer from "components/ui/BaseContainer";
 import { Spinner } from "components/ui/Spinner";
 import { withRouter } from "react-router-dom";
-import { api, handleNotLogInError } from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 import DrawingStage from "components/views/DrawingStage";
 import Ranking from "components/views/Ranking";
 import GameLoading from "components/views/GameLoading";
@@ -14,6 +14,7 @@ import { useHistory, useParams, useLocation } from "react-router-dom";
 import { useInterval } from "helpers/hooks";
 import { Link } from "react-router-dom";
 import gameBackground from "styles/images/empty-room.jpg";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 const Game = () => {
   // use react-router-dom's hook to access the history
   const history = useHistory();
@@ -40,6 +41,9 @@ const Game = () => {
   // const leave = () => {
   //   history.push("/lobby");
   // };
+  const notify = (message) => {
+    toast.error(message);
+  };
 
   const handleChooseWord = async (word) => {
     // console.log("handle choose Word");
@@ -52,10 +56,15 @@ const Game = () => {
     try {
       await api().put(`/gameRounds/words`, requestBody);
     } catch (error) {
-      // alert(
-      //   `Something went wrong during choosing one word: \n${handleError(error)}`
-      // );
-      handleNotLogInError(history, error, "handle choose words", true);
+      // handleNotLogInError(history, error, "handle choose words", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
 
     // setTurnStatus("PAINTING");
@@ -68,12 +77,15 @@ const Game = () => {
     try {
       await api().get(`/gameRounds/rankConfirmation/${turnId}/${curUserId}`);
     } catch (error) {
-      // alert(
-      //   `Something went wrong during submitting Painting: \n${handleError(
-      //     error
-      //   )}`
-      // );
-      handleNotLogInError(history, error, "confirm ranking", true);
+      // handleNotLogInError(history, error, "confirm ranking", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
 
@@ -87,12 +99,15 @@ const Game = () => {
     try {
       await api().post(`/gameRounds/finalDrawings`, requestBody);
     } catch (error) {
-      // alert(
-      //   `Something went wrong during submitting Painting: \n${handleError(
-      //     error
-      //   )}`
-      // );
-      handleNotLogInError(history, error, "handle submitting Painting", true);
+      // handleNotLogInError(history, error, "handle submitting Painting", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
 
@@ -107,10 +122,15 @@ const Game = () => {
     try {
       await api().put(`/gameRounds/answers/${turnId}`, requestBody);
     } catch (error) {
-      // alert(
-      //   `Something went wrong during submitting Answer: \n${handleError(error)}`
-      // );
-      handleNotLogInError(history, error, "handle submitting answer", true);
+      // handleNotLogInError(history, error, "handle submitting answer", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
 
@@ -124,7 +144,16 @@ const Game = () => {
       try {
         await api().put(`/gameRounds/drawings`, requestBody);
       } catch (error) {
-        handleNotLogInError(history, error, "handle updating Painting", true);
+        // handleNotLogInError(history, error, "handle updating Painting", true);
+        const error_str = handleError(error);
+        console.log(error_str);
+        if (error_str["message"].match(/Network Error/)) {
+          history.push(`/information`);
+        } else {
+          // setNotification(error_str["message"]);
+          notify(error_str["message"]);
+        }
+
         setIsUpdatingPainting(false);
       }
     }
@@ -153,7 +182,16 @@ const Game = () => {
 
       setTurnStatus(response.currentTurnStatus);
     } catch (error) {
-      handleNotLogInError(history, error, "get game");
+      // handleNotLogInError(history, error, "get game");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
+
       setIsUpdating(false);
       // handleGameError();
       history.push("/lobby");
@@ -166,7 +204,15 @@ const Game = () => {
     try {
       await api().put(`/games/ending/${gameId}`);
     } catch (error) {
-      handleNotLogInError(history, error, "leaving game", true);
+      // handleNotLogInError(history, error, "leaving game", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
     localStorage.removeItem("gameId");
     localStorage.removeItem("intialTurnId");
@@ -296,6 +342,15 @@ const Game = () => {
       >
         <img src={gameBackground} alt="" />
       </div>
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       {switchPages()}
     </BaseContainer>
   );

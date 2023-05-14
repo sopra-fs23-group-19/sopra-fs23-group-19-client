@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { api, handleNotLogInError } from "helpers/api";
+import { api, handleError } from "helpers/api";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
@@ -10,36 +10,63 @@ import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import { useInterval } from "helpers/hooks";
-
+import { Bounce, ToastContainer, toast } from "react-toastify";
 const Friends = ({ message }) => {
   const history = useHistory();
-
+  const notify = (message) => {
+    toast.error(message);
+  };
   // accept add friend
   const acceptFriend = async (messageId) => {
     const requestBody = JSON.stringify({
-      action: "AGREE"
+      action: "AGREE",
     });
     try {
       await api().post(`/friends/${messageId}`, requestBody);
     } catch (error) {
-      handleNotLogInError(history, error, "accept friend", true);
+      // handleNotLogInError(history, error, "accept friend", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
 
   // reject add friend
   const rejectFriend = async (messageId) => {
     const requestBody = JSON.stringify({
-      action: "REJECT"
+      action: "REJECT",
     });
     try {
       await api().post(`/friends/${messageId}`, requestBody);
     } catch (error) {
-      handleNotLogInError(history, error, "reject friend", true);
+      // handleNotLogInError(history, error, "reject friend", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
 
   return (
-    <div className="notification notice-container" >
+    <div className="notification notice-container">
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <div className="notification content-container"
       style={{marginLeft:"10%"}}>
         {message.useridFrom}
@@ -61,50 +88,88 @@ const Friends = ({ message }) => {
 };
 
 const Rooms = ({ message }) => {
-    const history = useHistory();
-    const userId = localStorage.getItem("id");
-
-    // if accept invite to a game, go to the waiting page
-    const goToWaiting = async (roomId) => {
-      const requestBody = JSON.stringify({
-        roomId: roomId,
-        userId: userId,
-      });
-      try {
-        await api().put(`/rooms/join`, requestBody);
-      } catch (error) {
-        handleNotLogInError(history, error, "joining the room", true);
+  const history = useHistory();
+  const userId = localStorage.getItem("id");
+  const notify = (message) => {
+    toast.error(message);
+  };
+  // if accept invite to a game, go to the waiting page
+  const goToWaiting = async (roomId) => {
+    const requestBody = JSON.stringify({
+      roomId: roomId,
+      userId: userId,
+    });
+    try {
+      await api().put(`/rooms/join`, requestBody);
+    } catch (error) {
+      // handleNotLogInError(history, error, "joining the room", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
       }
-      history.push(`/waiting/${roomId}`);
-    };
+    }
+    history.push(`/waiting/${roomId}`);
+  };
 
-    // accept game invite
-    const acceptRoom = async (messageId) => {
-      const requestBody = JSON.stringify({
-        action: "AGREE"
-      });
-      try {
-        const response = await api().post(`/notification/game/${messageId}`, requestBody);
-        goToWaiting(response.data.roomId);
-      } catch (error) {
-        handleNotLogInError(history, error, "accepting game invite", true);
+  // accept game invite
+  const acceptRoom = async (messageId) => {
+    const requestBody = JSON.stringify({
+      action: "AGREE",
+    });
+    try {
+      const response = await api().post(
+        `/notification/game/${messageId}`,
+        requestBody
+      );
+      goToWaiting(response.data.roomId);
+    } catch (error) {
+      // handleNotLogInError(history, error, "accepting game invite", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
       }
-    };
+    }
+  };
 
-    // reject game invite
-    const rejectRoom = async (messageId) => {
-      const requestBody = JSON.stringify({
-        action: "REJECT"
-      });
-      try {
-        await api().post(`/notification/game/${messageId}`, requestBody);
-      } catch (error) {
-        handleNotLogInError(history, error, "rejecting game invite", true);
+  // reject game invite
+  const rejectRoom = async (messageId) => {
+    const requestBody = JSON.stringify({
+      action: "REJECT",
+    });
+    try {
+      await api().post(`/notification/game/${messageId}`, requestBody);
+    } catch (error) {
+      // handleNotLogInError(history, error, "rejecting game invite", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
       }
-    };
+    }
+  };
 
-    return (
-      <div className="notification notice-container">
+  return (
+    <div className="notification notice-container">
+        <ToastContainer
+          toastClassName="toast-style"
+          position="top-center"
+          transition={Bounce}
+          autoClose={5000}
+          closeButton={false}
+          hideProgressBar={true}
+          draggable={false}
+        />
         <div className="notification content-container"
         style={{marginLeft:"10%"}}>
           {message.roomId}
@@ -132,39 +197,60 @@ const Notification = () => {
   let pendingFriendNotice = [];
   const [gamesNotice, setGamesNotice] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
-
+  const notify = (message) => {
+    toast.error(message);
+  };
   //get all pending friend notifications
-  const fetchFriends = async()=>{
-    const response = await api().get(`/notification/friend/pending/${userId}`);
-    setAllFriendsNotice(response.data);
-    // console.log(response.data)
-  }
+  const fetchFriends = async () => {
+    try {
+      const response = await api().get(
+        `/notification/friend/pending/${userId}`
+      );
+      setAllFriendsNotice(response.data);
+    } catch (error) {
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
+    }
+  };
 
   useEffect(() => {
     fetchFriends();
   }, []);
 
-  useInterval(
-    async () => {
-      fetchFriends();
-    },3000
-  );
+  useInterval(async () => {
+    fetchFriends();
+  }, 3000);
 
   // get all game invites notifications
-  const fetchGames = async()=>{
-    const response = await api().get(`/notification/game/pending/${userId}`);
-    setGamesNotice(response.data);
-  }
+  const fetchGames = async () => {
+    try {
+      const response = await api().get(`/notification/game/pending/${userId}`);
+      setGamesNotice(response.data);
+    } catch (error) {
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
+    }
+  };
 
   useEffect(() => {
     fetchGames();
   }, []);
 
-  useInterval(
-    async () => {
-      fetchGames();
-    },3000
-  );
+  useInterval(async () => {
+    fetchGames();
+  }, 3000);
 
   let friendsContent = <Spinner />;
   if (allFriendsNotice) {
@@ -201,13 +287,11 @@ const Notification = () => {
         <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
         top: "150px", left: "180px", width:"40%", textAlign:"center"}}>
         Friends invite
-      </h2>
+        </h2>
         <div className="notification container"
-        style={{marginLeft:"10%"}}>
+         style={{marginLeft:"10%"}}>
           <div className="notification notice-container">
-            <div className="notification title-container">
-              User Id
-            </div>
+            <div className="notification title-container">User Id</div>
             <div className="notification title-container">Username</div>
           </div>
           <div className="notification line"></div>
@@ -270,9 +354,23 @@ const Notification = () => {
     // <BaseContainer>
     <>
       <Header />
-      <div className="lobby pic">
-          <img src={cats} alt="lobby background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
-      </div>
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
+      <div className="profile content-container">
+      <div className="profile pic">
+          <img
+            src={cats}
+            alt="welcome background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
+        </div>
 
       <div className="notification main-container">
       {/* <div className="notification left-container">
@@ -290,6 +388,7 @@ const Notification = () => {
       </h2> */}
       {roomsContent}
       {/* </div> */}
+    </div>
     </div>
     </>
   );

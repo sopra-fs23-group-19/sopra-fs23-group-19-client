@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { api, handleNotLogInError } from "helpers/api";
+import { api, handleError } from "helpers/api";
 import "styles/views/Profile.scss";
 import User from "models/User";
 import { useParams } from "react-router-dom";
@@ -56,6 +56,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isShowPwd, setIsShowPwd] = useState(false);
   const visitIdStr = useParams();
+  const [notification, setNotification] = useState("");
   // console.log("visitIdStr");
   // console.log(visitIdStr);
   const visitId = parseInt(visitIdStr["id"]);
@@ -70,7 +71,16 @@ const Profile = () => {
         // const userProfile1 = new User(response);
         setUserProfile(userProfile1);
       } catch (error) {
-        handleNotLogInError(history, error, "fetching profile", true);
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          history.push(`/information`);
+        } else if (error_str["status"] == 409) {
+          setNotification(
+            "There exists a user with the username you have entered. Please enter another one."
+          );
+        } else {
+          setNotification(error_str["message"]);
+        }
       }
     };
     fetchProfile1();
@@ -106,7 +116,17 @@ const Profile = () => {
       // alert(
       //   `Something went wrong during updating profile: \n${handleError(error)}`
       // );
-      handleNotLogInError(history, error, "updating profile", true);
+      // handleNotLogInError(history, error, "updating profile", true);
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else if (error_str["status"] == 409) {
+        setNotification(
+          "There exists a user with the username you have entered. Please enter another one."
+        );
+      } else {
+        setNotification(error_str["message"]);
+      }
     }
     history.push(`/profile/${visitId}`);
     setIsEditing(false);
@@ -117,12 +137,14 @@ const Profile = () => {
     setIsEditing(false);
     setUsername("");
     setPassword("");
+    setNotification("");
   };
 
   const handleEdit = () => {
     setIsEditing(true);
     setUsername("");
     setPassword("");
+    setNotification("");
   };
 
   const ShowAndHidePassword = () => {
@@ -133,7 +155,10 @@ const Profile = () => {
           className="password input"
           type={isShowPwd ? "text" : "password"}
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setNotification("");
+          }}
           // onChange={(e) => setPwd(e.target.value)}
         />
         <img
@@ -173,6 +198,7 @@ const Profile = () => {
           <label className="profile label">
             {"Total Score: " + userProfile.totalScore}
           </label>
+          <label style={{ color: "red" }}>{notification}</label>
           <div className="profile button-container">
             <img className="profile img_cat_left" src={cat_left} />
 
@@ -214,6 +240,7 @@ const Profile = () => {
           <label className="profile label">
             {"Total Score: " + userProfile.totalScore}
           </label>
+          <label style={{ color: "red" }}>{notification}</label>
           <div className="profile button-container">
             <img className="profile img_cat_left" src={cat_left} />
 
@@ -243,10 +270,13 @@ const Profile = () => {
           <FormField
             label="Username"
             value={username}
-            onChange={(un) => setUsername(un)}
+            onChange={(un) => {
+              setUsername(un);
+              setNotification("");
+            }}
           />
           {ShowAndHidePassword()}
-
+          <label style={{ color: "red" }}>{notification}</label>
           {/* <button */}
           <div className="profile button-container">
             <img className="profile img_cat_left" src={cat_left} alt="" />
@@ -281,11 +311,17 @@ const Profile = () => {
       <Header />
       <div className="profile content-container">
         <div className="profile pic">
-          <img src={cats} alt="welcome background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="welcome background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {!userProfile ? (
           <Spinner />
-        ) : ( <div>{editable ? Profile() : guestProfile()}</div>)}
+        ) : (
+          <div>{editable ? Profile() : guestProfile()}</div>
+        )}
       </div>
     </div>
   );

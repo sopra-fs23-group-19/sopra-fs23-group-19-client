@@ -12,12 +12,14 @@ import DrawingBoard from "./DrawingBoard";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
-import { api, handleNotLogInError } from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
   //   let startDrawing;
   const history = useHistory();
+  const startGuessing = +new Date();
   const curUserId = localStorage.getItem("id");
   const [currentUsername, setCurrentUsername] = useState("");
   //get the room and user information
@@ -27,15 +29,17 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [word2, setWord2] = useState(""); //
   //   const [playerNum, setPlayerNum] = useState(2);
   const [playernum, setPlayernum] = useState(null);
-
   const [role, setRole] = useState("");
-
+  const [time, setTime] = useState(20);
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
   const [username4, setUsername4] = useState("");
   //   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
   // console.log(turnId);
+  const notify = (message) => {
+    toast.error(message);
+  };
   const fetchWord = async () => {
     try {
       const response0 = await api().get(`/gameRounds/words/${turnId}`);
@@ -51,10 +55,30 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     } catch (error) {
       //   alert(`Something went wrong during get words: \n${handleError(error)}`);
       //   history.push("/lobby"); // redirect back to lobby
-      handleNotLogInError(history, error, "fetching words for drawing Player");
+      // handleNotLogInError(history, error, "fetching words for drawing Player");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       history.push("/lobby"); // redirect back to lobby
     }
   };
+
+  const sendTimeInfo = (timeValue) => {
+    // the callback. Use a better name
+    // console.log(timeValue);
+    setTime(timeValue);
+  };
+  useEffect(() => {
+    if (time == 0) {
+      handleChooseWord(word0);
+    }
+  }, [time]);
+
   const fetchTurnInfo = async () => {
     try {
       const response0 = await api().get(`/gameRounds/information/${turnId}`);
@@ -72,11 +96,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       );
       const thisPlayer = allPlayers.filter((item) => item.id == curUserId);
       setCurrentUsername(thisPlayer[0].username);
-      //   console.log(updatedPlayer);
-      // console.log("player usernames in select word");
-      //   setPlayerNum(updatedPlayer.length + 1);
-      //   console.log(playerNum);
-      //   console.log(typeof playerNum);
+
       if (playernum == 4) {
         // setUsername1(response1.players[0].username);
         setUsername1(response1.drawingPlayerName);
@@ -100,17 +120,19 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setRole("guessingPlayer");
       }
     } catch (error) {
-      //   alert(
-      //     `Something went wrong during get game Turn information: \n${handleError(
-      //       error
-      //     )}`
-      //   );
-      //   history.push("/lobby"); // redirect back to lobby
-      handleNotLogInError(
-        history,
-        error,
-        "fetching Turn info in word selecting phase"
-      );
+      // handleNotLogInError(
+      //   history,
+      //   error,
+      //   "fetching Turn info in word selecting phase"
+      // );
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       history.push("/lobby"); // redirect back to lobby
     }
   };
@@ -278,6 +300,15 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   return (
     <BaseContainer>
       <HeaderInGame />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       {/* <Header /> */}
       <div
         className="guessing pic"
@@ -328,7 +359,11 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             {" "}
             It's your turn to paint. Choose one word first!
           </h2>
-
+          <Timer
+            start={startGuessing}
+            stage="select_word"
+            sendTimeInfo={sendTimeInfo}
+          />
           {displayWords}
         </div>
       ) : (

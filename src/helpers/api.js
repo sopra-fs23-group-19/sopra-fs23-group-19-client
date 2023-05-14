@@ -26,58 +26,109 @@ const handleNotLogInError = (
   statusName,
   stayOnPage = false
 ) => {
-  alert(
-    `Oops! Something went wrong while ${statusName}: \n${handleError(error)}`
-  );
+  // alert(
+  //   `Oops! Something went wrong while ${statusName}: \n${handleError(error)}`
+  // );
   //specifically for Not Log In, force the page return to /login.
-  if (error.response.data.status == 401 && stayOnPage == false) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("username");
-    localStorage.removeItem("gameId");
-    localStorage.removeItem("intialTurnId");
-    history.push("/login");
+  const response = error.response;
+  if (response && !!`${response.status}`.match(/^[4|5]\d{2}$/)) {
+    if (error.response.data.status == 401 && stayOnPage == false) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      localStorage.removeItem("username");
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
+      history.push("/login");
+    }
+    //internal server error
+    if (error.response.data.status == 500 && stayOnPage == false) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      localStorage.removeItem("username");
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
+      history.push("/login");
+    }
   }
-  //internal server error
-  if (error.response.data.status == 500 && stayOnPage == false) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("username");
-    localStorage.removeItem("gameId");
-    localStorage.removeItem("intialTurnId");
+  if (error.message.match(/Network Error/)) {
     history.push("/login");
   }
 };
-
 const handleError = (error) => {
   const response = error.response;
-
+  let info = {};
   // catch 4xx and 5xx status codes
   if (response && !!`${response.status}`.match(/^[4|5]\d{2}$/)) {
-    let info = `\nrequest to: ${response.request.responseURL}`;
-
     if (response.data.status) {
-      info += `\nstatus code: ${response.data.status}`;
-      info += `\nerror: ${response.data.error}`;
-      info += `\nerror message: ${response.data.message}`;
+      info = {
+        status: response.data.status,
+        message: response.data.message,
+      };
     } else {
-      info += `\nstatus code: ${response.status}`;
-      info += `\nerror message:\n${response.data}`;
+      info = {
+        status: response.status,
+        message: response.data,
+      };
     }
 
-    console.log(
-      "The request was made and answered but was unsuccessful.",
-      error.response
-    );
+    // let info = `\nrequest to: ${response.request.responseURL}`;
+
+    // if (response.data.status) {
+    //   info += `\nstatus code: ${response.data.status}`;
+    //   info += `\nerror: ${response.data.error}`;
+    //   info += `\nerror message: ${response.data.message}`;
+    // } else {
+    //   info += `\nstatus code: ${response.status}`;
+    //   info += `\nerror message:\n${response.data}`;
+    // }
+
+    // console.log(
+    //   "The request was made and answered but was unsuccessful.",
+    //   error.response
+    // );
     return info;
   } else {
     if (error.message.match(/Network Error/)) {
-      alert("The server cannot be reached.\nDid you start it?");
+      // alert("The server cannot be reached.\nDid you start it?");
+      info = {
+        status: "",
+        message: error.message,
+      };
     }
-
     console.log("Something else happened.", error);
-    return error.message;
+    return info;
   }
 };
+
+// const handleError = (error) => {
+//   const response = error.response;
+
+//   // catch 4xx and 5xx status codes
+//   if (response && !!`${response.status}`.match(/^[4|5]\d{2}$/)) {
+//     let info = `\nrequest to: ${response.request.responseURL}`;
+
+//     if (response.data.status) {
+//       info += `\nstatus code: ${response.data.status}`;
+//       info += `\nerror: ${response.data.error}`;
+//       info += `\nerror message: ${response.data.message}`;
+//     } else {
+//       info += `\nstatus code: ${response.status}`;
+//       info += `\nerror message:\n${response.data}`;
+//     }
+
+//     console.log(
+//       "The request was made and answered but was unsuccessful.",
+//       error.response
+//     );
+//     return info;
+//   } else {
+//     if (error.message.match(/Network Error/)) {
+//       alert("The server cannot be reached.\nDid you start it?");
+//     }
+
+//     console.log("Something else happened.", error);
+//     return error.message;
+//   }
+// };
 
 export { api, handleError, handleNotLogInError };

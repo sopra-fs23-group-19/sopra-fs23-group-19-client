@@ -30,7 +30,7 @@ const Friends = ({ friend }) => {
   const history = useHistory();
   return (
     <div className="friend friend-container">
-      <div className="friend content" >
+      <div className="friend content" style={{width:"50%"}} >
         {friend.id}
       </div>
       <div className="friend content" 
@@ -38,7 +38,7 @@ const Friends = ({ friend }) => {
         const requestUrl = "/profile/" + friend.id;
         history.push(requestUrl);
        }}
-       style={{"text-decoration-line": "underline"}}>
+       style={{"text-decoration-line": "underline", width:"50%"}}>
         {friend.username}
       </div>
     </div>
@@ -79,10 +79,16 @@ const SearchFriend = ({ searchfriend }) => {
       {/* <div className="friend content">
         {room.numberOfPlayers + "/" + room.roomSeats}
       </div> */}
+      <div className="friend content">
       <Button onClick={() => createFriendNotification(searchfriend.id)}
         disabled={disable}
       >ADD
       </Button>
+      </div>
+      {/* <Button onClick={() => createFriendNotification(searchfriend.id)}
+        disabled={disable}
+      >ADD
+      </Button> */}
     </div>
   );
 };
@@ -161,12 +167,8 @@ const Friend = () => {
           style={{ left: "190px", top: "550px", width: "80%", background: "rgba(181, 153, 120, 0.5)"}}
         >
           <div className="friend friend-container" style={{ width: "100%" }}>
-            <div className="friend title" style={{ "margin-left": "20%" }}>
-              Id
-            </div>
-            <div className="friend title" style={{ "margin-left": "5%" }}>
-              Name
-            </div>
+            <div className="friend title">Id</div>
+            <div className="friend title">Name</div>
           </div>
 
           <div className="friend line" style={{ width: "100%" }}></div>

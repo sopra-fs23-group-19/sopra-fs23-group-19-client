@@ -271,27 +271,12 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         <div className="guessing pic">
           <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
         </div>
-        {/* <div className="game pic" style={{ opacity: "60%", left: "0px", top: "85px" }}>
-          <img src={gameBackground} alt="" />
-        </div> */}
         {playernum == 4 ? (
         <div>
           <div className="guessing players-container">
             {player1}
             <div className="guessing guessing-container">{player2}{player3}{player4}</div>
           </div>
-          {/* <div style={{ left: "40px", top: "170px", position: "absolute" }}>
-            {player1}
-          </div>
-          <div className="guessing players-container">
-            {player2}
-          </div>
-          <div style={{ left: "1100px", top: "170px", position: "absolute" }}>
-            {player3}
-          </div>
-          <div style={{ left: "1300px", top: "170px", position: "absolute" }}>
-            {player4}
-          </div> */}
         </div>
         ) : (<></>
         )}
@@ -310,7 +295,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         <div>
           <h2
             style={{
-              left: "250px",
+              left: "30%",
               top: "180px",
               position: "absolute",
               "font-family": "Nunito",
@@ -328,7 +313,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         <div>
           <h2
             style={{
-              left: "250px",
+              left: "30%",
               top: "180px",
               position: "absolute",
               "font-family": "Nunito",

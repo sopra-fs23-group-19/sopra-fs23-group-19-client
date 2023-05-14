@@ -1,33 +1,50 @@
 @import "styles/theme";
 
 .notification {
+  &.c-container {
+    margin-top: 2em;
+    margin-left: 5%;
+    width: 90%;
+    position: relative;
+    min-width: 50em;
+    display: flex;
+    flex-direction: row;
+  }
+  &.pic {
+    position: absolute;
+    right: 5%;
+    margin-top: 50px;
+    min-width: 500px;
+  }
   &.main-container {
     position:relative;
     display:flex;
-    width: 100%;
+    width: 90%;
     height: 100%;
     min-height: 50em;
     top: 10%;
     flex-wrap: wrap;
-    // background: rgb(255, 255, 255);
   }
   &.left-container{
-    flex: 1 1 45%;
+    // flex: 1 1 45%;
+    width: 50%;
+    position: relative;
     min-width: 50px;
-    // background-color: red;
   }
     &.right-container{
-    flex: 2 1 45%;
+    // flex: 2 1 45%;
     min-width: 50px;
-    margin-left: 0%;
-    // background-color: yellow;
+    position: relative;
+    width: 50%;
   }
   
   &.container {
     margin-top: 2em;
     flex-direction: column;
     // position: absolute;
-    width: 80%;
+    width: 90%;
+    min-width: 25em;
+    border-radius: $borderRadius;
     background: rgba(181, 153, 120, 0.5);
   }
   &.button-container {
@@ -38,20 +55,13 @@
     width: 15%;
     text-align: center;
   }
-  &.pic {
-    position: absolute;
-    width: 580px;
-    height: 430px;
-    left: 240px;
-    top: 160px;
-  }
   &.friends-list {
     list-style: none;
     padding-left: 0;
   }
   &.notice-container {
     margin: 0.5em 0;
-    width: 80%;
+    width: 100%;
     padding: 10px;
     border-radius: $borderRadius;
     display: flex;

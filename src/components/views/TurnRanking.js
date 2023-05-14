@@ -133,7 +133,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     <div id="rankFour">
       <div
         className="guessing score-list"
-        style={{ left: "550px", top: "250px", position: "absolute" }}
       >
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
@@ -174,7 +173,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     <div id="rankTwo">
       <div
         className="guessing score-list"
-        style={{ left: "550px", top: "250px", position: "absolute" }}
       >
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
@@ -202,14 +200,14 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         <Emoji symbol="🥳" className="rank li" />
         <h2
           style={{
-            left: "640px",
-            top: "80px",
+            left: "40%",
+            top: "0px",
             position: "absolute",
-            width: "700px",
+            width: "20%",
+            textAlign:"center",
             "font-family": "Nunito",
             "font-size": "30px",
-            color: "black",
-            width: "300px",
+            color: "black"
           }}
         >
           You win!
@@ -218,30 +216,32 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       </div>
     ) : (
       <div>
-        <Emoji symbol="🙁" className="rank li" />
         <h2
           style={{
-            left: "640px",
-            top: "80px",
+            left: "40%",
+            top: "0px",
             position: "absolute",
-            width: "700px",
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
-            width: "300px",
+            width: "20%",
+            textAlign:"center"
           }}
         >
           Wrong answer
         </h2>
-        <img className="rank gif" src={losegame} />
+        <Emoji symbol="🙁" className="rank li"/>
+        <img className="rank gif" src={losegame}/>
       </div>
     );
   const waitTnfo = (
     <div
       style={{
-        width: "32em",
-        left: "540px",
-        top: "500px",
+        width: "40%",
+        "minWidth":"30em",
+        "textAlign":"center",
+        left: "30%",
+        top: "600px",
         position: "absolute",
       }}
     >
@@ -264,13 +264,16 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const content = (
     <div
       style={{
-        left: "650px",
-        top: "170px",
+        left: "30%",
+        right: "30%",
+        textAlign:"center",
+        top: "240px",
         position: "absolute",
         "font-family": "Nunito",
         "font-size": "20px",
         color: "black",
-        width: "200px",
+        width: "30%",
+        "minWidth":"10em"
       }}
     >
       <div>{"Correct word: " + targetWord}</div>
@@ -278,65 +281,44 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     </div>
   );
   return (
-    <BaseContainer>
+    <div>
       <HeaderInGame />
-      <div
-        className="guessing pic"
-        style={{ opacity: "40%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
-      </div>
-      {role == "guessingPlayer" ? (
-        title
-      ) : (
+      <div className="guessing content-container">
+        <div className="guessing pic">
+          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        {role == "guessingPlayer" ? (
+          title
+        ) : (
         <div>
           <h2
             style={{
-              left: "680px",
-              top: "80px",
-              position: "absolute",
-              width: "700px",
-              "font-family": "Nunito",
-              "font-size": "30px",
-              color: "black",
-              width: "300px",
-            }}
+              "textAlign":"center",left: "40%", top: "0px", position: "absolute", width: "20%",
+              "font-family": "Nunito", "font-size": "30px", color: "black"}}
           >
             Turn End!
           </h2>
           <div
             style={{
-              left: "560px",
-              top: "150px",
-              position: "absolute",
-              "font-family": "Nunito",
-              "font-size": "20px",
-              color: "black",
-              width: "500px",
-            }}
+              "textAlign":"center", left: "30%", top: "80px", position: "absolute",
+              "font-family": "Nunito", "font-size": "20px", color: "black", width: "40%"}}
           >
             Scores obtained by guessing players in this turn:
           </div>
           <Emoji symbol="📢" className="rank li" />
         </div>
-      )}
-      {isDisabled ? waitTnfo : <></>}
-      {role == "guessingPlayer" ? content : <></>}
-      {playerNum == 4 ? (
-        <div>{rankingWhenFourPlayers}</div>
-      ) : (
-        <div>{rankingWhenTwoPlayers}</div>
-      )}
-      <div
-        className="guessing button-container"
+        )}
+        <div className="guessing button-container"
         style={{
-          left: "550px",
+          left: "40%",
+          right:"40%",
           top: "580px",
           position: "absolute",
-          width: "480px",
+          width: "20%",
+          "minWidth":"15em",
           height: "50px",
         }}
-      >
+        >
         <Button
           disabled={isDisabled}
           onClick={() => {
@@ -347,8 +329,18 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         >
           Continue
         </Button>
+        </div>
       </div>
-    </BaseContainer>
+      
+      {isDisabled ? waitTnfo : <></>}
+      {role == "guessingPlayer" ? content : <></>}
+      {playerNum == 4 ? (
+        <div>{rankingWhenFourPlayers}</div>
+      ) : (
+        <div>{rankingWhenTwoPlayers}</div>
+      )}
+      
+    </div>
   );
 };
 export default TurnRanking;

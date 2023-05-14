@@ -40,20 +40,16 @@ const Friends = ({ message }) => {
 
   return (
     <div className="notification notice-container" >
-      <div className="notification content-container"
-      style={{marginLeft:"10%"}}>
+      <div className="notification content-container">
         {message.useridFrom}
       </div>
-      <div className="notification content-container"
-      style={{marginLeft:"40%"}}>
+      <div className="notification content-container">
         {message.usernameFrom}
       </div>
-      <div className="notification button-container"
-      style={{marginLeft:"20%"}}>
+      <div className="notification button-container">
         <Button onClick={() => acceptFriend(message.messageId)}>Accept</Button>
       </div>
-      <div className="notification button-container"
-      style={{marginLeft:"10%"}}>
+      <div className="notification button-container">
         <Button onClick={() => rejectFriend(message.messageId)}>Reject</Button>
       </div>
     </div>
@@ -105,20 +101,16 @@ const Rooms = ({ message }) => {
 
     return (
       <div className="notification notice-container">
-        <div className="notification content-container"
-        style={{marginLeft:"10%"}}>
+        <div className="notification content-container">
           {message.roomId}
         </div>
-        <div className="notification content-container"
-        style={{marginLeft:"40%"}}>
+        <div className="notification content-container">
           {message.roomName}
         </div>
-        <div className="notification button-container"
-        style={{marginLeft:"15%"}}>
+        <div className="notification button-container">
           <Button onClick={() => acceptRoom(message.messageId)}>Accept</Button>
         </div>
-        <div className="notification button-container"
-        style={{marginLeft:"5%"}}>
+        <div className="notification button-container">
           <Button onClick={() => rejectRoom(message.messageId)}>Reject</Button>
         </div>
       </div>
@@ -171,27 +163,25 @@ const Notification = () => {
     friendsContent = (
       <div className="notification left-container">
         <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        top: "150px", left: "180px", width:"40%", textAlign:"center"}}>
-        Friends invite
-      </h2>
-        <div className="notification container" 
-        style={{marginLeft:"10%"}}>
+        width:"10em", position: "relative",textAlign:"center"}}>
+          Friends invite
+        </h2>
+        <div className="notification container" >
           <div className="notification notice-container">
             <div className="notification title-container">
               User Id
             </div>
-            <div className="notification title-container"
-            style={{marginLeft:"10%"}}>
+            <div className="notification title-container">
               Username
             </div>
             <div className="notification button-container"></div>
           </div>
           <div className="notification line"></div>
-          <ul className="notification friends-list">
+          <div className="notification friends-list">
             {allFriendsNotice.map((friend) => (
               <Friends message={friend} key={friend.messageId} />
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     );
@@ -199,11 +189,10 @@ const Notification = () => {
     friendsContent = (
         <div className="notification left-container">
         <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        top: "150px", left: "180px", width:"40%", textAlign:"center"}}>
+        width:"10em", position: "relative",textAlign:"center"}}>
         Friends invite
       </h2>
-        <div className="notification container"
-        style={{marginLeft:"10%"}}>
+        <div className="notification container">
           <div className="notification notice-container">
             <div className="notification title-container">
               User Id
@@ -221,37 +210,35 @@ const Notification = () => {
     roomsContent = (
       <div className="notification right-container">
         <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        top: "150px", left: "880px",width:"40%", textAlign:"center"}}>
+        width:"10em", position: "relative",textAlign:"center"}}>
         Games invite
       </h2>
-        <div className="notification container" 
-        style={{marginLeft:"10%"}}>
+        <div className="notification container" >
           <div className="notification notice-container">
             <div className="notification title-container">
               Room Id
             </div>
-            <div className="notification title-container"
-            style={{marginLeft:"10%"}}>
+            <div className="notification title-container">
               RoomName
             </div>
           </div>
           <div className="notification line"></div>
-          <ul className="notification friends-list">
+          <div className="notification friends-list">
             {gamesNotice.map((room) => (
               <Rooms message={room} key={room.messageId} />
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     );
   } else {
     roomsContent = (
-        <div className="notification right-container">
-        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000", width:"40%", textAlign:"center"}}>
-        Games invite
-      </h2>
-        <div className="notification container" 
-        style={{marginLeft:"10%"}}>
+      <div className="notification right-container">
+        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
+         width:"10em", position: "relative",textAlign:"center"}}>
+          Games invite
+        </h2>
+        <div className="notification container" >
           <div className="notification notice-container">
             <div className="notification title-container">
               Room Id
@@ -267,31 +254,16 @@ const Notification = () => {
   }
 
   return (
-    // <BaseContainer>
-    <>
+    <div>
       <Header />
-      <div className="lobby pic">
-          <img src={cats} alt="lobby background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+      <div className="notification c-container">
+        <div className="notification pic">
+          <img src={cats} alt="notification background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        {friendsContent}
+        {roomsContent}
       </div>
-
-      <div className="notification main-container">
-      {/* <div className="notification left-container">
-      <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        top: "150px", left: "180px", width:"40%", textAlign:"center"}}>
-        Friends invite
-      </h2> */}
-      {friendsContent}
-      {/* </div> */}
-
-      {/* <div className="notification right-container">
-      <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        top: "150px", left: "880px",width:"40%", textAlign:"center"}}>
-        Games invite
-      </h2> */}
-      {roomsContent}
-      {/* </div> */}
     </div>
-    </>
   );
 };
 

@@ -31,7 +31,7 @@ function Option(props) {
       <label style={{color:"black"}}>
         Size:
         <select value={selectedLineSize} onChange={handleLineSizeChange}
-        style={{"width":"10%",}}>
+        style={{"width":"50%",}}>
           {lineSizeOptions.map((option) => (
             <option key={option} value={option}>
               {option}

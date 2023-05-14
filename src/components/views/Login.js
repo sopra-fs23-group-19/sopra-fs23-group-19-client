@@ -104,7 +104,8 @@ const Login = (props) => {
   // };
 
   return (
-    <BaseContainer>
+    <div className="login main-container">
+      <div className="login pic-container">
       <div className="login pic">
         <img src={cats} alt="" />
       </div>
@@ -127,6 +128,7 @@ const Login = (props) => {
           <span>n</span>
           <span>g</span>
         </div>
+      </div>
       </div>
 
       <div className="login container">
@@ -165,7 +167,7 @@ const Login = (props) => {
           </div>
         </div>
       </div>
-    </BaseContainer>
+    </div>
   );
 };
 

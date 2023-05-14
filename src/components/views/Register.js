@@ -108,7 +108,8 @@ const Register = (props) => {
   };
 
   return (
-    <BaseContainer>
+    <div className="login main-container">
+      <div className="login pic-container">
       <div className="login pic">
         <img src={cats} alt="" />
       </div>
@@ -131,6 +132,7 @@ const Register = (props) => {
           <span>n</span>
           <span>g</span>
         </div>
+      </div>
       </div>
       <div className="login container">
         <div className="login form">
@@ -167,7 +169,7 @@ const Register = (props) => {
           </div>
         </div>
       </div>
-    </BaseContainer>
+    </div>
   );
 };
 

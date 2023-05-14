@@ -125,7 +125,7 @@ const Rooms = ({ message }) => {
         `/notification/game/${messageId}`,
         requestBody
       );
-      goToWaiting(response.data.roomId);
+      goToWaiting(response.data.roomId).then(() => {});
     } catch (error) {
       // handleNotLogInError(history, error, "accepting game invite", true);
       const error_str = handleError(error);
@@ -220,11 +220,11 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, []);
 
   useInterval(async () => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, 3000);
 
   // get all game invites notifications
@@ -245,11 +245,11 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchGames();
+    fetchGames().then(() => {});
   }, []);
 
   useInterval(async () => {
-    fetchGames();
+    fetchGames().then(() => {});
   }, 3000);
 
   let friendsContent = <Spinner />;

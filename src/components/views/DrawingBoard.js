@@ -187,21 +187,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     // setCursorStyle("url('https://icons.iconarchive.com/icons/bootstrap/bootstrap/16/Bootstrap-eraser-fill-icon.png'),auto")
   }
 
-  function lineBold() {
-    // lineWidth = lineWidth + 1;
-    setLineWidth(lineWidth + 1);
-  }
-
-  function lineThinner() {
-    if (lineWidth <= 1) {
-      // lineWidth = lineWidth;
-      setLineWidth(lineWidth);
-    } else {
-      // lineWidth = lineWidth - 1;
-      setLineWidth(lineWidth - 1);
-    }
-  }
-
   function handleFontSizeChange(size){
     setLineWidth(size);
   }

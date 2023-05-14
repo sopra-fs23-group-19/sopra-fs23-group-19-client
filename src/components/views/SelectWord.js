@@ -138,11 +138,11 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   };
 
   useEffect(() => {
-    fetchTurnInfo();
+    fetchTurnInfo().then(() => {});
   }, [playernum]);
 
   useEffect(() => {
-    fetchWord();
+    fetchWord().then(() => {});
   }, []);
 
   // useEffect(() => {

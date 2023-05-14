@@ -60,7 +60,7 @@ const Rooms = ({ room }) => {
       <div className="lobby content">
         <Button
           onClick={() => {
-            goToWaiting(room.id);
+            goToWaiting(room.id).then(() => {});
           }}
           style={{
             "background-color": "#FFFFFF",
@@ -106,13 +106,13 @@ const Lobby = () => {
   };
 
   useEffect(() => {
-    fetchRooms();
+    fetchRooms().then(() => {});
   }, []);
 
   // fetch rooms every 3 seconds
   useInterval(
     async () => {
-      fetchRooms();
+      fetchRooms().then(() => {});
     },
     isUpdating ? 3000 : null
   );

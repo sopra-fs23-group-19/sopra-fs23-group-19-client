@@ -83,7 +83,7 @@ const Profile = () => {
         }
       }
     };
-    fetchProfile1();
+    fetchProfile1().then(() => {});
   }, [
     visitId,
     isEditing,

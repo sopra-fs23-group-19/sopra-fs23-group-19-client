@@ -235,11 +235,11 @@ const Game = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData().then(() => {});
   }, []);
   useInterval(
     async () => {
-      fetchData();
+      fetchData().then(() => {});
     },
     isUpdating ? 1000 : null
   );

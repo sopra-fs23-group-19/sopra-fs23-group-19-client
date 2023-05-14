@@ -146,12 +146,12 @@ const DrawingStage = ({
   };
 
   useEffect(() => {
-    fetchTurnInfo();
+    fetchTurnInfo().then(() => {});
   }, [playerNum]);
 
   useInterval(
     async () => {
-      fetchTurnInfo();
+      fetchTurnInfo().then(() => {});
     },
     isUpdating && role == "guessingPlayer" ? 1000 : null
     // status == "PLAYING" ? null : 1000

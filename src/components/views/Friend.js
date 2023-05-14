@@ -143,10 +143,10 @@ const Friend = () => {
   // }
 
   useEffect(() => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, []);
   useInterval(async () => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, 3000);
   // useEffect(() => {
   //   fetchSearchUsername();
@@ -159,7 +159,6 @@ const Friend = () => {
       username: username,
     });
     try {
-      console.log(username);
       const response = await api().post(`/users/searchFriends`, requestBody);
       setSearchedFriend(response.data);
     } catch (error) {
@@ -194,9 +193,7 @@ const Friend = () => {
 
           <div className="friend line" style={{ width: "100%" }}></div>
           <ul className="friend friend-list" style={{width:"100%"}}>
-            {searchedFriend.map((searchfriend) => (
-              <SearchFriend searchfriend={searchfriend} key={searchfriend.id} />
-            ))}
+              <SearchFriend searchfriend={searchedFriend} key={searchedFriend.id} />
           </ul>
         </div>
       </div>

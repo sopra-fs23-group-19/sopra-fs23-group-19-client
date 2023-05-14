@@ -164,7 +164,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   };
 
   useEffect(() => {
-    fetchTurnInfo();
+    fetchTurnInfo().then(() => {});
   }, [playerNum]);
 
   const answerBox = (

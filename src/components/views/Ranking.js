@@ -81,7 +81,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     }
   };
   useEffect(() => {
-    fetchRankInfo();
+    fetchRankInfo().then(() => {});
   }, [playerNum]);
   //ranking component
   //need to sort the score later
@@ -178,7 +178,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           "font-family": "Nunito",
           "font-size": "30px",
           color: "black",
-          width: "300px",
+          // width: "300px",
         }}
       >
         Game end!

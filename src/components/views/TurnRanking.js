@@ -3,6 +3,7 @@ import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
+import Timer from "components/views/Timer";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleNotLogInError } from "../../helpers/api";
@@ -15,12 +16,11 @@ import wingame from "styles/images/gif/cat_happy.gif";
 import losegame from "styles/images/gif/cat_unhappy.gif";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
-// import winSound from "styles/sounds/win.mp3";
-// import loseSound from "styles/sounds/not_correct.mp3";
 
 const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
   const history = useHistory();
+  const startGuessing = +new Date();
   //get the username and score
   const curUserId = localStorage.getItem("id");
   const [username1, setUsername1] = useState("");
@@ -35,16 +35,30 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
   const [role, setRole] = useState("");
   const [playerNum, setPlayerNum] = useState(2);
+  const [imageData, setImageData] = useState("");
+  const [time, setTime] = useState(10);
+  const [correctAnswer, setCorrectAnswer] = useState(10);
   const fetchTurnScore = async () => {
     try {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
       const response = response0.data;
-      const updatedPlayer = response.filter((item) => item.id == curUserId);
+      console.log(response);
+      var allPlayers = response.rankedList;
+      setDrawingPlayerId(response.drawingPlayerId);
+      const updatedPlayer = allPlayers.filter((item) => item.id == curUserId);
       setUserScore(parseInt(updatedPlayer[0].currentScore));
-      const updatedPlayer1 = response.filter(
+      const updatedPlayer1 = allPlayers.filter(
         (item) => item.id != drawingPlayerId
       );
-      setPlayerNum(response.length);
+      setPlayerNum(allPlayers.length);
+      setImageData(response.image);
+      setTargetWord(response.targetWord);
+      if (parseInt(curUserId) == parseInt(drawingPlayerId)) {
+        setRole("drawingPlayer");
+      } else if (parseInt(curUserId) != parseInt(drawingPlayerId)) {
+        setRole("guessingPlayer");
+      }
+      setCorrectAnswer(response.correctAnswers);
       if (playerNum == 4) {
         setUsername1(updatedPlayer1[0].username);
         setUsername2(updatedPlayer1[1].username);
@@ -72,52 +86,55 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       history.push("/lobby"); // redirect back to lobby
     }
   };
-  // useEffect(() => {
-  //   //let ignore = true;
-  //   if(username1=="" || username2==""){
-  //     fetchTurnScore();
-  //   }
-  //   // return() => {
-  //   //   ignore = false;
-  //   // }
-  // }, [playerNum]);
-  //fetch game Turn information
-  const fetchTurnInfo = async () => {
-    try {
-      const response0 = await api().get(`/gameRounds/information/${turnId}`);
-      const response1 = response0.data;
-      if (parseInt(curUserId) == parseInt(response1.drawingPlayerId)) {
-        setRole("drawingPlayer");
-      } else if (parseInt(curUserId) != parseInt(response1.drawingPlayerId)) {
-        setRole("guessingPlayer");
-      }
-      setDrawingPlayerId(response1.drawingPlayerId);
-      setTargetWord(response1.targetWord);
-    } catch (error) {
-      handleNotLogInError(
-        history,
-        error,
-        "fetching turn information in drawing phase"
-      );
-      history.push("/lobby"); // redirect back to lobby
-    }
+  function getImage() {
+    const myCanvas = document.getElementById("showingBoard");
+    const myContext = myCanvas.getContext("2d");
+    const img = new Image();
+    // console.log("why");
+    img.src = imageData;
+    img.onload = () => {
+      myContext.drawImage(img, 0, 0, 200, 240);
+    };
+  }
+  useEffect(() => {
+    getImage();
+  }, [imageData]);
+
+  const sendTimeInfo = (timeValue) => {
+    // the callback. Use a better name
+    // console.log(timeValue);
+    setTime(timeValue);
   };
-  // useEffect(() => {
-  //   fetchTurnScore();
-  //   fetchTurnInfo();
-  // }, [
-  //   playerNum,
-  //   turnId,
-  //   username1,
-  //   username2,
-  //   username3,
-  //   score1,
-  //   score2,
-  //   score3,
-  // ]);
+
+  useEffect(() => {
+    if (time == 0) {
+      handleConfirmRanking();
+      setIsDisabled(true);
+    }
+  }, [time]);
+
+  // const fetchTurnInfo = async () => {
+  //   try {
+  //     const response0 = await api().get(`/gameRounds/information/${turnId}`);
+  //     const response1 = response0.data;
+  //     if (parseInt(curUserId) == parseInt(response1.drawingPlayerId)) {
+  //       setRole("drawingPlayer");
+  //     } else if (parseInt(curUserId) != parseInt(response1.drawingPlayerId)) {
+  //       setRole("guessingPlayer");
+  //     }
+  //     setTargetWord(response1.targetWord);
+  //   } catch (error) {
+  //     handleNotLogInError(
+  //       history,
+  //       error,
+  //       "fetching turn information in drawing phase"
+  //     );
+  //     history.push("/lobby"); // redirect back to lobby
+  //   }
+  // };
+
   useEffect(() => {
     fetchTurnScore();
-    fetchTurnInfo();
   }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
 
   const handleClick = () => {
@@ -248,7 +265,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       <div className="rank spinner">
         <SpinnerBouncing />
       </div>
-      <div
+      {/* <div
         style={{
           "font-family": "Nunito",
           "font-size": "20px",
@@ -256,7 +273,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         }}
       >
         {"Please wait a while, others are deciding to continue!"}
-      </div>
+      </div> */}
     </div>
   );
 
@@ -275,6 +292,22 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     >
       <div>{"Correct word: " + targetWord}</div>
       <div>{"Your score: + " + userScore}</div>
+    </div>
+  );
+  const content_drawing = (
+    <div
+      style={{
+        left: "650px",
+        top: "170px",
+        position: "absolute",
+        "font-family": "Nunito",
+        "font-size": "20px",
+        color: "black",
+        width: "200px",
+      }}
+    >
+      <div>{"Correct word: " + targetWord}</div>
+      <div>{correctAnswer + " players correctly answered!"}</div>
     </div>
   );
   return (
@@ -347,6 +380,19 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         >
           Continue
         </Button>
+        <Timer
+          start={startGuessing}
+          stage="turn_ranking"
+          sendTimeInfo={sendTimeInfo}
+        />
+      </div>
+      <div style={{ left: "100px", top: "200px", position: "absolute" }}>
+        <canvas
+          id="showingBoard"
+          width="200px"
+          height="240px"
+          style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF" }}
+        ></canvas>
       </div>
     </BaseContainer>
   );

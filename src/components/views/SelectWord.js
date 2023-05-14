@@ -14,10 +14,12 @@ import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
 import { api, handleNotLogInError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
+
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
   //   let startDrawing;
   const history = useHistory();
+  const startGuessing = +new Date();
   const curUserId = localStorage.getItem("id");
   const [currentUsername, setCurrentUsername] = useState("");
   //get the room and user information
@@ -27,9 +29,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [word2, setWord2] = useState(""); //
   //   const [playerNum, setPlayerNum] = useState(2);
   const [playernum, setPlayernum] = useState(null);
-
   const [role, setRole] = useState("");
-
+  const [time, setTime] = useState(20);
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
@@ -55,6 +56,18 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       history.push("/lobby"); // redirect back to lobby
     }
   };
+
+  const sendTimeInfo = (timeValue) => {
+    // the callback. Use a better name
+    // console.log(timeValue);
+    setTime(timeValue);
+  };
+  useEffect(() => {
+    if (time == 0) {
+      handleChooseWord(word0);
+    }
+  }, [time]);
+
   const fetchTurnInfo = async () => {
     try {
       const response0 = await api().get(`/gameRounds/information/${turnId}`);
@@ -72,11 +85,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       );
       const thisPlayer = allPlayers.filter((item) => item.id == curUserId);
       setCurrentUsername(thisPlayer[0].username);
-      //   console.log(updatedPlayer);
-      // console.log("player usernames in select word");
-      //   setPlayerNum(updatedPlayer.length + 1);
-      //   console.log(playerNum);
-      //   console.log(typeof playerNum);
+
       if (playernum == 4) {
         // setUsername1(response1.players[0].username);
         setUsername1(response1.drawingPlayerName);
@@ -328,7 +337,11 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             {" "}
             It's your turn to paint. Choose one word first!
           </h2>
-
+          <Timer
+            start={startGuessing}
+            stage="select_word"
+            sendTimeInfo={sendTimeInfo}
+          />
           {displayWords}
         </div>
       ) : (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import { api, handleNotLogInError } from "helpers/api";
+import { api, handleError } from "helpers/api";
 import "styles/views/WaitingView.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
@@ -14,6 +14,8 @@ import WaitRoom from "models/WaitRoom";
 import HeaderInGame from "components/views/HeaderInGame";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Player = ({ user }) => (
   <div className="player container">
@@ -25,35 +27,49 @@ Player.propTypes = {
   user: PropTypes.object,
 };
 
-const Friends = ({ userId, roomId, friend}) => {
+const Friends = ({ userId, roomId, friend }) => {
   const history = useHistory();
-
+  const [notification, setNotification] = useState("");
   // invite friend to game
   const inviteFriend = async () => {
     const requestBody = JSON.stringify({
       useridFrom: userId,
       useridTo: friend.id,
-      roomId: roomId
+      roomId: roomId,
     });
     try {
       await api().post(`/notification/game`, requestBody);
       console.log("send game invitation successfully");
     } catch (error) {
-      handleNotLogInError(history, error, "invite friend to game", true);
+      // handleNotLogInError(history, error, "invite friend to game", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        setNotification(error_str["message"]);
+      }
     }
   };
 
   return (
     <div className="waitingArea notice-container">
-      <div className="waitingArea text-container">
-        {friend.id}
-      </div>
+      <div className="waitingArea text-container">{friend.id}</div>
       <div className="waitingArea text-container">{friend.username}</div>
       <div className="waitingArea text-container">{friend.status}</div>
       <div className="waitingArea button-container2">
-        <Button onClick={() => inviteFriend()}
-        style={{"background-color": "#FFFFFF", border: "2px solid #000000", "min-width":"100px", "font-family": "Josefin Sans"}}
-        >Invite</Button>
+        <Button
+          onClick={() => inviteFriend()}
+          style={{
+            "background-color": "#FFFFFF",
+            border: "2px solid #000000",
+            "min-width": "100px",
+            "font-family": "Josefin Sans",
+          }}
+        >
+          Invite
+        </Button>
+        <label style={{ color: "red" }}>{notification}</label>
       </div>
     </div>
   );
@@ -75,8 +91,12 @@ const WaitingView = () => {
   const [startGameId, setStartGameId] = useState(roomId);
   const [StartTurnId, setStartTurnId] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true);
-  const [playOn] = useSound(btClick);  const [friends, setFriends] = useState(null);
+  const [playOn] = useSound(btClick);
+  const [friends, setFriends] = useState(null);
 
+  const notify = (message) => {
+    toast.error(message);
+  };
   const fetchRoomInfo = async () => {
     try {
       const response = await api().get(`/rooms/${roomId}`);
@@ -112,7 +132,15 @@ const WaitingView = () => {
         }
       }
     } catch (error) {
-      handleNotLogInError(history, error, "fetching waiting Area");
+      // handleNotLogInError(history, error, "fetching waiting Area");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       setIsUpdating(false);
       history.push("/lobby"); // redirect back to lobby
     }
@@ -139,7 +167,15 @@ const WaitingView = () => {
       await api().put("/rooms/leave", requestBody); //leave waiting area
       history.push("/lobby");
     } catch (error) {
-      handleNotLogInError(history, error, "leave waiting area");
+      // handleNotLogInError(history, error, "leave waiting area");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
   const startGame = async () => {
@@ -147,17 +183,33 @@ const WaitingView = () => {
     try {
       await api().post(`/games/waitingArea/${roomId}`);
     } catch (error) {
-      handleNotLogInError(history, error, "start game");
+      // handleNotLogInError(history, error, "start game");
       // history.push("/lobby"); // redirect back to lobby
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
 
-  const fetchFriends = async ()=>{
-    try{
+  const fetchFriends = async () => {
+    try {
       const response = await api().get(`/users/returnFriends/${curUserId}`);
       setFriends(response.data);
-    }catch (error) {
-      handleNotLogInError(history, error, "get all friends");
+    } catch (error) {
+      // handleNotLogInError(history, error, "get all friends");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
 
@@ -170,17 +222,23 @@ const WaitingView = () => {
   if (friends) {
     friendsContent = (
       <div>
-        <div className="waitingArea container2" style={{position: "relative", left: "0px", top:"0px"}}>
+        <div
+          className="waitingArea container2"
+          style={{ position: "relative", left: "0px", top: "0px" }}
+        >
           <div className="waitingArea notice-container">
-            <div className="waitingArea title-container">
-              Friend Id
-            </div>
+            <div className="waitingArea title-container">Friend Id</div>
             <div className="waitingArea title-container">Username</div>
             <div className="waitingArea title-container">Status</div>
           </div>
           <div className="waitingArea line"></div>
           {friends.map((friend) => (
-              <Friends userId={curUserId} roomId={roomId} friend={friend} key={friend.id} />
+            <Friends
+              userId={curUserId}
+              roomId={roomId}
+              friend={friend}
+              key={friend.id}
+            />
           ))}
           {/* <ul className="waitingArea friends-list">
             {friends.map((friend) => (
@@ -192,12 +250,13 @@ const WaitingView = () => {
     );
   } else {
     friendsContent = (
-        <div>
-        <div className="waitingArea container2" style={{position: "relative", left: "0px", top:"0px"}}>
+      <div>
+        <div
+          className="waitingArea container2"
+          style={{ position: "relative", left: "0px", top: "0px" }}
+        >
           <div className="waitingArea notice-container">
-            <div className="waitingArea title-container">
-              Friend Id
-            </div>
+            <div className="waitingArea title-container">Friend Id</div>
             <div className="waitingArea title-container">Username</div>
             <div className="waitingArea title-container">Status</div>
           </div>
@@ -251,7 +310,10 @@ const WaitingView = () => {
         )
       ) : (
         <div>
-          <div className="waitingArea button-container" style={{width:"30em", "marginLeft":"70px"}}>
+          <div
+            className="waitingArea button-container"
+            style={{ width: "30em", marginLeft: "70px" }}
+          >
             <Button
               width="100%"
               className="waitingArea button_style1"
@@ -260,7 +322,9 @@ const WaitingView = () => {
               Leave
             </Button>
           </div>
-          <h2 style={{color:"black", "marginLeft":"100px"}}>Invite friends to join this game!</h2>
+          <h2 style={{ color: "black", marginLeft: "100px" }}>
+            Invite friends to join this game!
+          </h2>
           {friendsContent}
         </div>
       );
@@ -290,9 +354,22 @@ const WaitingView = () => {
   return (
     <div>
       <HeaderInGame />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <div className="waitingArea content-container">
         <div className="waitingArea pic">
-          <img src={cats} alt="waiting background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="waiting background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {/* <div className="waitingArea background-pic">
           <img src={waitingbackground} alt="" style={{opacity: "50%"}}/>

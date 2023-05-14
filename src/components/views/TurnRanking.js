@@ -6,7 +6,7 @@ import "styles/views/Guessing.scss";
 import Timer from "components/views/Timer";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import { api, handleNotLogInError } from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 // import Emoji from "a11y-react-emoji";
 import Emoji from "components/ui/Emoji";
 import HeaderInGame from "components/views/HeaderInGame";
@@ -16,7 +16,7 @@ import wingame from "styles/images/gif/cat_happy.gif";
 import losegame from "styles/images/gif/cat_unhappy.gif";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
-
+import { Bounce, ToastContainer, toast } from "react-toastify";
 const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
   const history = useHistory();
@@ -77,15 +77,22 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         // setScore2(response[1].currentScore);
       }
     } catch (error) {
-      //   alert(
-      //     `Something went wrong during getting turn ranking information: \n${handleError(
-      //       error
-      //     )}`
-      //   );
-      handleNotLogInError(history, error, "fetching turn ranking information");
+      // handleNotLogInError(history, error, "fetching turn ranking information");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       history.push("/lobby"); // redirect back to lobby
     }
   };
+  const notify = (message) => {
+    toast.error(message);
+  };
+
   function getImage() {
     const myCanvas = document.getElementById("showingBoard");
     const myContext = myCanvas.getContext("2d");
@@ -313,6 +320,15 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   return (
     <BaseContainer>
       <HeaderInGame />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <div
         className="guessing pic"
         style={{ opacity: "40%", left: "1000px", top: "280px" }}

@@ -12,9 +12,9 @@ import DrawingBoard from "./DrawingBoard";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
-import { api, handleNotLogInError } from "../../helpers/api";
+import { api, handleError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
-
+import { Bounce, ToastContainer, toast } from "react-toastify";
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
   //   let startDrawing;
@@ -37,6 +37,9 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [username4, setUsername4] = useState("");
   //   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
   // console.log(turnId);
+  const notify = (message) => {
+    toast.error(message);
+  };
   const fetchWord = async () => {
     try {
       const response0 = await api().get(`/gameRounds/words/${turnId}`);
@@ -52,7 +55,15 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     } catch (error) {
       //   alert(`Something went wrong during get words: \n${handleError(error)}`);
       //   history.push("/lobby"); // redirect back to lobby
-      handleNotLogInError(history, error, "fetching words for drawing Player");
+      // handleNotLogInError(history, error, "fetching words for drawing Player");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       history.push("/lobby"); // redirect back to lobby
     }
   };
@@ -109,17 +120,19 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setRole("guessingPlayer");
       }
     } catch (error) {
-      //   alert(
-      //     `Something went wrong during get game Turn information: \n${handleError(
-      //       error
-      //     )}`
-      //   );
-      //   history.push("/lobby"); // redirect back to lobby
-      handleNotLogInError(
-        history,
-        error,
-        "fetching Turn info in word selecting phase"
-      );
+      // handleNotLogInError(
+      //   history,
+      //   error,
+      //   "fetching Turn info in word selecting phase"
+      // );
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
       history.push("/lobby"); // redirect back to lobby
     }
   };
@@ -287,6 +300,15 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   return (
     <BaseContainer>
       <HeaderInGame />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       {/* <Header /> */}
       <div
         className="guessing pic"

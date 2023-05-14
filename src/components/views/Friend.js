@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { api, handleNotLogInError } from "helpers/api";
+import { api, handleError } from "helpers/api";
 import { useHistory, useParams } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
@@ -11,6 +11,7 @@ import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import cat_left from "styles/images/cat_left.png";
 import { useInterval } from "helpers/hooks";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 const FormField = (props) => {
   return (
@@ -30,16 +31,14 @@ const Friends = ({ friend }) => {
   const history = useHistory();
   return (
     <div className="friend friend-container">
-      <div className="friend content" >
-        {friend.id}
-      </div>
-      <div className="friend content" >
-        {friend.username}
-      </div>
+      <div className="friend content">{friend.id}</div>
+      <div className="friend content">{friend.username}</div>
     </div>
   );
 };
-
+const notify = (message) => {
+  toast.error(message);
+};
 const SearchFriend = ({ searchfriend }) => {
   const id = localStorage.getItem("id");
   let disable = false;
@@ -59,7 +58,14 @@ const SearchFriend = ({ searchfriend }) => {
         }
       }
     } catch (error) {
-      handleNotLogInError(history, error, "add friend", true);
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
   return (
@@ -74,9 +80,11 @@ const SearchFriend = ({ searchfriend }) => {
       {/* <div className="friend content">
         {room.numberOfPlayers + "/" + room.roomSeats}
       </div> */}
-      <Button onClick={() => createFriendNotification(searchfriend.id)}
+      <Button
+        onClick={() => createFriendNotification(searchfriend.id)}
         disabled={disable}
-      >ADD
+      >
+        ADD
       </Button>
     </div>
   );
@@ -101,11 +109,16 @@ const Friend = () => {
     try {
       const response = await api().get(`/users/returnFriends/${id}`);
       setFriends(response.data);
-      console.log(friends)
+      console.log(friends);
     } catch (error) {
-      handleNotLogInError(history, error, "getting friends' information");
-      // setIsUpdating(false);
-      // history.push("/login");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
   // const fetchSearchUsername = async() => {
@@ -123,11 +136,9 @@ const Friend = () => {
   useEffect(() => {
     fetchFriends();
   }, []);
-  useInterval(
-    async () => {
-      fetchFriends();
-    },3000
-  );
+  useInterval(async () => {
+    fetchFriends();
+  }, 3000);
   // useEffect(() => {
   //   fetchSearchUsername();
   // }, []);
@@ -143,7 +154,15 @@ const Friend = () => {
       const response = await api().post(`/users/searchFriends`, requestBody);
       setSearchedFriend(response.data);
     } catch (error) {
-      handleNotLogInError(history, error, "Search a user by username ");
+      // handleNotLogInError(history, error, "Search a user by username ");
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        // setNotification(error_str["message"]);
+        notify(error_str["message"]);
+      }
     }
   };
 
@@ -244,6 +263,15 @@ const Friend = () => {
   return (
     <BaseContainer>
       <Header />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <div
         className="lobby pic"
         style={{ opacity: "20%", left: "1000px", top: "280px" }}

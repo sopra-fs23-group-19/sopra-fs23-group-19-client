@@ -30,11 +30,11 @@ const Friends = ({ friend }) => {
   const history = useHistory();
   return (
     <div className="friend friend-container">
-      <div className="friend content" style={{ "margin-left": "80px" }}>
+      <div className="friend content" >
         {friend.id}
       </div>
-      <div className="friend content" style={{ "margin-left": "80px" }}>
-        {friend.friendName}
+      <div className="friend content" >
+        {friend.username}
       </div>
     </div>
   );
@@ -101,7 +101,7 @@ const Friend = () => {
     try {
       const response = await api().get(`/users/returnFriends/${id}`);
       setFriends(response.data);
-      console.log(friends);
+      console.log(friends)
     } catch (error) {
       handleNotLogInError(history, error, "getting friends' information");
       // setIsUpdating(false);
@@ -123,6 +123,11 @@ const Friend = () => {
   useEffect(() => {
     fetchFriends();
   }, []);
+  useInterval(
+    async () => {
+      fetchFriends();
+    },3000
+  );
   // useEffect(() => {
   //   fetchSearchUsername();
   // }, []);
@@ -207,7 +212,7 @@ const Friend = () => {
           <div className="friend line"></div>
           <ul className="friend friend-list">
             {friends.map((friend) => (
-              <Friend friend={friend} key={friend.id} />
+              <Friends friend={friend} key={friend.id} />
             ))}
           </ul>
         </div>

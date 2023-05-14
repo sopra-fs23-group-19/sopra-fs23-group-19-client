@@ -124,16 +124,15 @@ const GameCreationView = () => {
   };
 
   return (
-    <BaseContainer>
+    <div>
       <Header />
-      <div
-        className="GameCreationView pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
+      <div className="GameCreationView content-container">
+        <div className="GameCreationView pic">
+          <img src={cats} alt="welcome background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
       </div>
       <div>{gameSettingForm()}</div>
-    </BaseContainer>
+    </div>
   );
 };
 export default GameCreationView;

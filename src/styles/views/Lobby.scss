@@ -1,88 +1,82 @@
 @import "styles/theme";
 
 .lobby {
-  &.container {
+  &.content-container {
     margin-top: 2em;
-    flex-direction: column;
-    position: absolute;
-    left: 400px;
-    top: 300px;
-    width: 50em;
-    background: rgba(181, 153, 120, 0.5);
-  }
-  &.button-container {
-    justify-content: center;
-    position: absolute;
-    left: 900px;
-    top: 200px;
-    width: 50em;
-  }
-  &.button-container1 {
-    justify-content: center;
-    position: absolute;
-    left: 900px;
-    top: 260px;
-    width: 50em;
+    margin-left: 5%;
+    width: 90%;
+    position: relative;
+    min-width: 50em;
   }
   &.pic {
     position: absolute;
-    width: 580px;
-    height: 430px;
-    left: 240px;
-    top: 160px;
+    right: 5%;
+    margin-top: 50px;
+    min-width: 500px;
   }
-  &.room-list {
-    list-style: none;
-    padding-left: 0;
-  }
-  &.room-item {
+  &.text-and-button{
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
+    margin-top: 1em;
+    margin-left: 5%;
+    margin-right: 30px;
+    width: flex;
+    @include center;
   }
-  & p,
-  h2 {
-    margin: 0.5em 0;
+  &.text {
+    font-family: "Josefin Sans";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+  }
+  &.container {
+    margin-top: 1em;
+    flex-direction: column;
+    display: flex;
+    margin: 0 auto;
+    width: 50em;
+    @include center;
+    background: rgba(181, 153, 120, 0.5);
+    border-radius: 0.75em;
   }
   &.room-container {
     margin: 0.5em 0;
-    width: 50em;
-    padding: 10px;
-    border-radius: $borderRadius;
+    width: 100%;
     display: flex;
     align-items: center;
-    left: 0px;
-    top: 0px;
     position: relative;
-    //background: rgba(181, 153, 120, 0.5);
-  }
-  &.line {
-    position: relative;
-    width: 50em;
-    height: 0px;
-    left: 0px;
-    top: 0px;
-    border: 3px solid #ad9a66;
-  }
-  &.content {
-    font-family: "Nunito";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    color: #000000;
-    align-items: center;
-    justify-content: center;
-    width: 25%;
   }
   &.title {
-    font-family: "Nunito";
+    font-family: "Josefin Sans";
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
     color: #000000;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    width: 25%;
+  }
+  &.line {
+    position: relative;
+    width: 100%;
+    border: 3px solid #ad9a66;
+  }
+  &.room-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  &.content {
+    font-family: "Josefin Sans";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    color: #000000;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     width: 25%;
   }
 }

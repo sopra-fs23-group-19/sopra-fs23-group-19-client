@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
 import "styles/views/Lobby.scss";
-import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
@@ -13,8 +12,11 @@ import { useInterval } from "helpers/hooks";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 
+// define the format of rooms in the table
 const Rooms = ({ room }) => {
   const history = useHistory();
+
+  // function to get to the waiting page
   const goToWaiting = async (id) => {
     const requestBody = JSON.stringify({
       roomId: id,
@@ -27,23 +29,21 @@ const Rooms = ({ room }) => {
     }
     history.push(`/waiting/${id}`);
   };
+
+  // return the list of room id, name and number of players
   return (
     <div className="lobby room-container">
-      <div className="lobby content" style={{ "margin-left": "80px" }}>
-        {room.id}
-      </div>
+      <div className="lobby content">{room.id}</div>
       <div className="lobby content">{room.roomName}</div>
-      {/* <div className="lobby players">{room.players}</div> */}
+      <div className="lobby content">{room.numberOfPlayers + "/" + room.roomSeats}</div>
       <div className="lobby content">
-        {room.numberOfPlayers + "/" + room.roomSeats}
+        <Button
+          onClick={() => {goToWaiting(room.id);}} 
+          style={{"background-color": "#FFFFFF",border: "2px solid #000000", "font-family": "Josefin Sans"}}
+        >
+          JOIN
+        </Button>
       </div>
-      <Button
-        onClick={() => {
-          goToWaiting(room.id);
-        }}
-      >
-        JOIN
-      </Button>
     </div>
   );
 };
@@ -56,20 +56,23 @@ const Lobby = () => {
   const history = useHistory();
   const [rooms, setRooms] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
+
+  // fetch the rooms info from back end
   const fetchRooms = async () => {
     try {
       const response = await api().get("/rooms");
       setRooms(response.data);
-      // console.log(rooms);
     } catch (error) {
       handleNotLogInError(history, error, "getting lobby");
       setIsUpdating(false);
-      // history.push("/login");
     }
   };
+
   useEffect(() => {
     fetchRooms();
   }, []);
+
+  // fetch rooms every 3 seconds
   useInterval(
     async () => {
       fetchRooms();
@@ -77,57 +80,47 @@ const Lobby = () => {
     isUpdating ? 3000 : null
   );
 
+  // define the format of the table
   let content = <Spinner />;
   if (rooms) {
     content = (
       <div>
         <div className="lobby container">
           <div className="lobby room-container">
-            <div className="lobby title" style={{ "margin-left": "80px" }}>
-              Room Id
-            </div>
+            <div className="lobby title">Room Id</div>
             <div className="lobby title">Room Name</div>
             <div className="lobby title">Players</div>
           </div>
-
           <div className="lobby line"></div>
-          <ul className="lobby room-list">
-            {rooms.map((room) => (
-              <Rooms room={room} key={room.id} />
-            ))}
-          </ul>
+          {rooms.map((room) => (
+            <Rooms room={room} key={room.id} />
+          ))}
         </div>
       </div>
     );
   } else {
     content = (
       <div>
-        {/* <div className="lobby room-list"> */}
         <div className="lobby container">
           <div className="lobby room-container">
-            <div className="lobby title" style={{ "margin-left": "80px" }}>
-              id
-            </div>
-            <div className="lobby title">name</div>
-            <div className="lobby title">players</div>
+            <div className="lobby title">Room Id</div>
+            <div className="lobby title">Room Name</div>
+            <div className="lobby title">Players</div>
           </div>
           <div className="lobby line"></div>
-
-          <div
-            className="lobby line"
-            style={{ border: "2px solid #ad9a66" }}
-          ></div>
         </div>
       </div>
     );
   }
+
+  // function to get to game creation page
   const goTocreateGameView = () => {
     playOn();
     history.push("/gameCreation");
   };
-
   const [playOn] = useSound(btClick);
 
+  // function to return to a game
   const goToGame = () => {
     playOn();
     const currentGameId = localStorage.getItem("gameId");
@@ -137,55 +130,40 @@ const Lobby = () => {
       state: { turnId: currentTurnId },
     });
   };
+
   return (
-    <BaseContainer>
+    <div>
       <Header />
-      <div
-        className="lobby pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
-      </div>
-      <h2
-        style={{
-          left: "420px",
-          top: "180px",
-          color: "black",
-          position: "absolute",
-          width: "50em",
-        }}
-      >
-        Want to create a new game? Click here:
-      </h2>
-      <div className="lobby button-container">
-        <Button
-          style={{
-            "background-color": "#FFFFFF",
-            border: "2px solid #000000",
-          }}
-          onClick={() => goTocreateGameView()}
-        >
-          Create a new room
-        </Button>
-      </div>
-      {localStorage.getItem("gameId") != null ? (
-        <div className="lobby button-container1">
+      <div className="lobby content-container">
+        <div className="lobby pic">
+          <img src={cats} alt="lobby background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        <div className="lobby text-and-button" >
+          <div className="lobby text" style={{left: "20%"}}>
+            Want to create a new game? Click here:
+          </div>
+          <div className="lobby text">
+            <Button
+              style={{"background-color": "#FFFFFF",border: "2px solid #000000"}}
+              onClick={() => goTocreateGameView()}
+            >
+              Create a new room
+            </Button>
+          </div>
+        </div>
+        {localStorage.getItem("gameId") != null ? (
+        <div className="lobby text" style={{left:"510px",position:"relative"}}>
           <Button
-            style={{
-              "background-color": "#FFFFFF",
-              border: "2px solid #000000",
-            }}
+            style={{"background-color": "#FFFFFF",border: "2px solid #000000"}}
             onClick={() => goToGame()}
           >
             Go back to your game
           </Button>
         </div>
-      ) : (
-        <></>
-      )}
-
-      {content}
-    </BaseContainer>
+        ) : (<></>)}
+        {content}
+      </div>
+    </div>
   );
 };
 

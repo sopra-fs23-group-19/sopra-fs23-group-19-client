@@ -13,7 +13,6 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Button } from "components/ui/Button";
-// import { useInterval } from "helpers/hooks";
 
 const FormField = (props) => {
   return (
@@ -168,11 +167,11 @@ const Profile = () => {
             disabled={true}
           />
           <label className="profile label">
-            {"Best Score:" + userProfile.bestScore}
+            {"Best Score: " + userProfile.bestScore}
           </label>
           <label className="profile label">{}</label>
           <label className="profile label">
-            {"Total Score:" + userProfile.totalScore}
+            {"Total Score: " + userProfile.totalScore}
           </label>
           <div className="profile button-container">
             <img className="profile img_cat_left" src={cat_left} />
@@ -209,11 +208,11 @@ const Profile = () => {
             disabled={true}
           />
           <label className="profile label">
-            {"Best Score:" + userProfile.bestScore}
+            {"Best Score: " + userProfile.bestScore}
           </label>
           <label className="profile label">{}</label>
           <label className="profile label">
-            {"Total Score:" + userProfile.totalScore}
+            {"Total Score: " + userProfile.totalScore}
           </label>
           <div className="profile button-container">
             <img className="profile img_cat_left" src={cat_left} />
@@ -278,24 +277,17 @@ const Profile = () => {
   };
 
   return (
-    <BaseContainer>
+    <div>
       <Header />
-      {/* <h1>{count}</h1> */}
-      <div
-        className="lobby pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
-      </div>
-      {!userProfile ? (
-        <Spinner />
-      ) : (
-        <div>
-          <div>{editable ? Profile() : guestProfile()}</div>
-          {/* <div>{editable ? guestProfile() : Profile()}</div> */}
+      <div className="profile content-container">
+        <div className="profile pic">
+          <img src={cats} alt="welcome background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
         </div>
-      )}
-    </BaseContainer>
+        {!userProfile ? (
+          <Spinner />
+        ) : ( <div>{editable ? Profile() : guestProfile()}</div>)}
+      </div>
+    </div>
   );
 };
 export default Profile;

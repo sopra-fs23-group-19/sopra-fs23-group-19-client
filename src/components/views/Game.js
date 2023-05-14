@@ -289,15 +289,9 @@ const Game = () => {
   };
 
   return (
-    <BaseContainer className="game container">
-      <div
-        className="lobby pic"
-        style={{ opacity: "60%", left: "0px", top: "85px" }}
-      >
-        <img src={gameBackground} alt="" />
-      </div>
+    <div>
       {switchPages()}
-    </BaseContainer>
+    </div>
   );
   // return <BaseContainer className="game container">{content}</BaseContainer>;
 };

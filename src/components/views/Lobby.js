@@ -142,7 +142,7 @@ const Lobby = () => {
           <div className="lobby text" style={{left: "20%"}}>
             Want to create a new game? Click here:
           </div>
-          <div className="lobby text">
+          <div className="lobby text" >
             <Button
               style={{"background-color": "#FFFFFF",border: "2px solid #000000"}}
               onClick={() => goTocreateGameView()}
@@ -152,7 +152,7 @@ const Lobby = () => {
           </div>
         </div>
         {localStorage.getItem("gameId") != null ? (
-        <div className="lobby text" style={{left:"510px",position:"relative"}}>
+        <div className="lobby text" style={{textAlign:"center"}}>
           <Button
             style={{"background-color": "#FFFFFF",border: "2px solid #000000"}}
             onClick={() => goToGame()}

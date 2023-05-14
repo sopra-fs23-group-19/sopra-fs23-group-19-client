@@ -5,7 +5,6 @@ import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
-import Header from "components/views/Header";
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
 import DrawingBoard from "./DrawingBoard";
@@ -147,13 +146,13 @@ const DrawingStage = ({
   );
 
   const style1 = {
-    "font-family": "Nunito",
+    "font-family": "Josefin Sans",
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
   };
   const style2 = {
-    "font-family": "Nunito",
+    "font-family": "Josefin Sans",
     "font-size": "20px",
     color: "black",
   };
@@ -278,13 +277,12 @@ const DrawingStage = ({
   };
 
   return (
-    <BaseContainer>
+    <div>
       <HeaderInGame />
-      <div
-        className="guessing pic"
-        style={{ opacity: "40%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
+      <div className="guessing content-container">
+        <div className="guessing pic">
+          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
       </div>
       {playerNum == 4 ? (
         <div>
@@ -343,7 +341,7 @@ const DrawingStage = ({
       ) : (
         <></>
       )}
-    </BaseContainer>
+    </div>
   );
 };
 export default DrawingStage;

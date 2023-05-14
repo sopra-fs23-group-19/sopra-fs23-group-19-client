@@ -8,6 +8,19 @@
  */
 
 .game {
+  &.content-container {
+    margin-top: 2em;
+    margin-left: 5%;
+    width: 90%;
+    position: relative;
+    min-width: 50em;
+  }
+  &.pic {
+    position: absolute;
+    right: 5%;
+    margin-top: 50px;
+    min-width: 500px;
+  }
   &.container {
     background: $background;
     padding: 1.5em;

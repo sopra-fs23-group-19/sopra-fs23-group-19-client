@@ -147,7 +147,7 @@ const Profile = () => {
     );
   };
   const goToFriends = () => {
-    history.push(`/friends`);
+    history.push(`/friend`);
   };
 
   const guestProfile = () => {

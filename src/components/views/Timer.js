@@ -17,6 +17,9 @@ const Timer = ({ start, stage, sendTimeInfo }) => {
     if (stage === "select_word") {
       times = 20 - parseInt(`${(nowTime - start) / 1000}`);
     }
+    if (stage === "maintenance") {
+      times = 20 - parseInt(`${(nowTime - start) / 1000}`);
+    }
     setSeconds(times);
     if (times > 0 && times % 2 == 0) {
       sendTimeInfo(times);

@@ -17,6 +17,8 @@ import losegame from "styles/images/gif/cat_unhappy.gif";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
+
 const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
   const history = useHistory();
@@ -326,6 +328,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   return (
     <div>
       <HeaderInGame />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

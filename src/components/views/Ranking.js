@@ -89,9 +89,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   //need to sort the score later
   const rankingWhenFourPlayers = (
     <div>
-      <div
-        className="guessing score-list"
-      >
+      <div className="guessing score-list">
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
             Username
@@ -137,9 +135,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
 
   const rankingWhenTwoPlayers = (
     <div>
-      <div
-        className="guessing score-list"
-      >
+      <div className="guessing score-list">
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
             Username
@@ -175,10 +171,10 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           top: "0px",
           position: "absolute",
           width: "20%",
-          textAlign:"center",
+          textAlign: "center",
           "font-family": "Nunito",
           "font-size": "30px",
-          color: "black"
+          color: "black",
         }}
       >
         Game end!
@@ -202,29 +198,34 @@ const Ranking = ({ gameId, handleQuitGame }) => {
       <Confetti numberOfPieces={150} width={width} height={height} />
       <div className="guessing content-container">
         <div className="guessing pic">
-          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="game background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {title}
-        <div className="guessing button-container"
-        style={{
-          left: "40%",
-          right:"40%",
-          top: "580px",
-          position: "absolute",
-          width: "20%",
-          "minWidth":"15em",
-          height: "50px",
-        }}
-        >
-        <Button
-          onClick={() => {
-            handleQuit();
+        <div
+          className="guessing button-container"
+          style={{
+            left: "40%",
+            right: "40%",
+            top: "580px",
+            position: "absolute",
+            width: "20%",
+            minWidth: "15em",
+            height: "50px",
           }}
-          width="100%"
-          style={{ "margin-top": "5px", border: "2px solid #000000" }}
         >
-          QUIT GAME
-        </Button>
+          <Button
+            onClick={() => {
+              handleQuit();
+            }}
+            width="100%"
+            style={{ "margin-top": "5px", border: "2px solid #000000" }}
+          >
+            QUIT GAME
+          </Button>
         </div>
       </div>
       {/* <div>{ranking}</div> */}
@@ -233,27 +234,6 @@ const Ranking = ({ gameId, handleQuitGame }) => {
       ) : (
         <div>{rankingWhenTwoPlayers}</div>
       )}
-      {/* <div
-        className="guessing button-container"
-        style={{
-          left: "500px",
-          top: "580px",
-          position: "absolute",
-          width: "480px",
-          height: "50px",
-        }}
-      >
-        <Button
-          onClick={() => {
-            handleQuit();
-            // history.push("/lobby");
-          }}
-          width="100%"
-          style={{ "margin-top": "5px", border: "2px solid #000000" }}
-        >
-          QUIT GAME
-        </Button>
-      </div> */}
     </div>
   );
 };

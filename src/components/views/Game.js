@@ -20,10 +20,12 @@ const Game = () => {
   const history = useHistory();
   const location = useLocation();
   const { gameId } = useParams();
-  console.log(typeof gameId);
   // const gameId = useParams().id;
 
-  const InitialTurnId = location.state.turnId;
+  // const InitialTurnId =
+  //   location.state.turnId || localStorage.getItem("intialTurnId");
+  const InitialTurnId = localStorage.getItem("intialTurnId");
+
   const curUserId = localStorage.getItem("id");
   // define a state variable (using the state hook).
   // if this variable changes, the component will re-render, but the variable will
@@ -159,6 +161,40 @@ const Game = () => {
     }
   };
 
+  const onBackButtonEvent = (e) => {
+    e.preventDefault();
+    window.history.pushState(null, null, window.location.pathname);
+
+    // if (!finishStatus) {
+    //   if (window.confirm("Do you want to leave game?")) {
+    //     // setfinishStatus(true);
+    //     //  logic when user leaves game
+    //     handleQuitGame();
+    //   } else {
+    //     window.history.pushState(null, null, window.location.pathname);
+    //     setfinishStatus(false);
+    //   }
+    // }
+  };
+  useEffect(() => {
+    window.history.pushState(null, null, window.location.pathname);
+    window.addEventListener("popstate", onBackButtonEvent);
+    return () => {
+      window.removeEventListener("popstate", onBackButtonEvent);
+    };
+  }, []);
+
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
+
   const fetchData = async () => {
     try {
       const response0 = await api().get(`/rooms/${gameId}`);
@@ -167,17 +203,16 @@ const Game = () => {
       // // Get the returned users and update the state.
 
       const response = response0.data;
-
       setGameStatus(response.status);
-      // console.log("game status");
+      console.log(response);
       // console.log(response.status);
       if (response.currentTurnId) {
         setTurnId(response.currentTurnId);
         localStorage.setItem("intialTurnId", response.currentTurnId);
       } else if (!response.currentTurnId) {
         setTurnId(response.currentTurnId);
-        localStorage.removeItem("intialTurnId");
-        localStorage.removeItem("gameId");
+        // localStorage.removeItem("intialTurnId");
+        // localStorage.removeItem("gameId");
       }
 
       setTurnStatus(response.currentTurnStatus);
@@ -200,7 +235,6 @@ const Game = () => {
 
   const handleQuitGame = async () => {
     // console.log("handle quit game");
-
     try {
       await api().put(`/games/ending/${gameId}`);
     } catch (error) {
@@ -312,7 +346,26 @@ const Game = () => {
     //     </div>
     //   );
     // }
-    else if (gameStatus == "END") {
+    // else if (gameStatus == "END")
+    // else if (gameStatus == "END_GAME" && playerNum == 0) {
+    //   localStorage.removeItem("gameId");
+    //   localStorage.removeItem("intialTurnId");
+    //   content = (
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         justifyContent: "center",
+    //         alignItems: "center",
+    //         height: "20vh",
+    //       }}
+    //     >
+    //       <Link to="/lobby">Game has ended! Back to the lobby...</Link>
+    //     </div>
+    //   );
+    // }
+    else {
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
       content = (
         <div
           style={{
@@ -327,9 +380,10 @@ const Game = () => {
           </Link>
         </div>
       );
-    } else {
-      content = <GameLoading />;
     }
+    //  else {
+    //   content = <GameLoading />;
+    // }
 
     return content;
   };

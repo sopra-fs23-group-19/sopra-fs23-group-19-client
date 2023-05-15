@@ -16,6 +16,7 @@ import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BgmPlayer from "components/ui/BgmPlayer"
 
 const Player = ({ user }) => (
   <div className="player container">
@@ -354,6 +355,7 @@ const WaitingView = () => {
   return (
     <div>
       <HeaderInGame />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

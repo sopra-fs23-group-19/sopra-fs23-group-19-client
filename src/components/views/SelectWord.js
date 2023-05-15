@@ -13,6 +13,8 @@ import { api, handleError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import gameBackground from "styles/images/empty-room.jpg";
+import BgmPlayer from "components/ui/BgmPlayer"
+
 
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
@@ -290,6 +292,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   return (
     <div>
       <HeaderInGame />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

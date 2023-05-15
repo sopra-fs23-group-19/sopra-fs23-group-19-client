@@ -19,6 +19,7 @@ import HeaderInGame from "components/views/HeaderInGame";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
 
 const FormField = (props) => {
   return (
@@ -285,6 +286,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   return (
     <div>
       <HeaderInGame />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

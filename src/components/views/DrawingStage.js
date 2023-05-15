@@ -5,7 +5,6 @@ import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
-import Header from "components/views/Header";
 import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
 import DrawingBoard from "./DrawingBoard";
@@ -146,25 +145,25 @@ const DrawingStage = ({
   };
 
   useEffect(() => {
-    fetchTurnInfo();
+    fetchTurnInfo().then(() => {});
   }, [playerNum]);
 
   useInterval(
     async () => {
-      fetchTurnInfo();
+      fetchTurnInfo().then(() => {});
     },
     isUpdating && role == "guessingPlayer" ? 1000 : null
     // status == "PLAYING" ? null : 1000
   );
 
   const style1 = {
-    "font-family": "Nunito",
+    "font-family": "Josefin Sans",
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
   };
   const style2 = {
-    "font-family": "Nunito",
+    "font-family": "Josefin Sans",
     "font-size": "20px",
     color: "black",
   };
@@ -241,7 +240,7 @@ const DrawingStage = ({
       <div
         style={{
           left: "350px",
-          top: "100px",
+          top: "120px",
           position: "absolute",
           "font-family": "Nunito",
           "font-size": "30px",
@@ -265,7 +264,7 @@ const DrawingStage = ({
         <div
           style={{
             left: "200px",
-            top: "120px",
+            top: "180px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "30px",
@@ -273,9 +272,11 @@ const DrawingStage = ({
             width: "700px",
           }}
         >
-          Drawing stage. {username1} is painting!
+          Drawing stage. 
+          <br></br>
+          {username1} is painting!
         </div>
-        <div style={{ left: "200px", top: "200px", position: "absolute" }}>
+        <div style={{ left: "80px", top: "300px", position: "absolute" }}>
           <canvas
             id="showingBoard"
             width="500px"
@@ -289,7 +290,7 @@ const DrawingStage = ({
   };
 
   return (
-    <BaseContainer>
+    <div>
       <HeaderInGame />
       <ToastContainer
         toastClassName="toast-style"
@@ -300,53 +301,37 @@ const DrawingStage = ({
         hideProgressBar={true}
         draggable={false}
       />
-      <div
-        className="guessing pic"
-        style={{ opacity: "40%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
+      <div className="guessing content-container">
+        <div className="guessing pic">
+          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        {playerNum == 4 ? (
+        <div>
+          <div className="guessing players-container">
+            {player1}
+            <div className="guessing guessing-container">{player2}{player3}{player4}</div>
+          </div>
+        </div>
+        ) : (<></>
+        )}
+        {
+        <div>
+          <div className="guessing players-container">
+            {player1}
+            <div className="guessing guessing-container">{player2}</div>
+          </div>
+        </div>
+        }
       </div>
-      {playerNum == 4 ? (
-        <div>
-          <div style={{ left: "40px", top: "170px", position: "absolute" }}>
-            {player1}
-          </div>
-          <div style={{ left: "900px", top: "170px", position: "absolute" }}>
-            {player2}
-          </div>
-          <div style={{ left: "1100px", top: "170px", position: "absolute" }}>
-            {player3}
-          </div>
-          <div style={{ left: "1300px", top: "170px", position: "absolute" }}>
-            {player4}
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div style={{ left: "40px", top: "170px", position: "absolute" }}>
-            {player1}
-          </div>
-          <div style={{ left: "900px", top: "170px", position: "absolute" }}>
-            {player2}
-          </div>
-        </div>
-      )}
-
       {role === "drawingPlayer"
         ? drawingPlayerContent()
         : guessingPlayerContent()}
       {startDrawing && role === "drawingPlayer" ? (
         <div>
           <div
-            style={{
-              left: "50px",
-              top: "100px",
-              position: "absolute",
-              "font-family": "Nunito",
-              "font-size": "20px",
-              color: "black",
-              border: "2px solid #000000",
-              "background-color": "rgba(181, 153, 120, 0.5)",
+            style={{ left: "200px", top: "120px", position: "absolute",
+              "font-family": "Nunito", "font-size": "20px", color: "black",
+              border: "2px solid #000000", "background-color": "rgba(181, 153, 120, 0.5)",
             }}
           >
             chosen word: <br />
@@ -363,7 +348,7 @@ const DrawingStage = ({
       ) : (
         <></>
       )}
-    </BaseContainer>
+    </div>
   );
 };
 export default DrawingStage;

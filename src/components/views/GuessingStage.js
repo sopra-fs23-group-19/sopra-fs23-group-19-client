@@ -30,16 +30,6 @@ const FormField = (props) => {
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
       />
-      {/* <div className='guessing button-container'>
-            <Button
-                disabled={props.role=="drawingPlayer"}
-                onClick={() => {
-                    history.push('/ranking');
-                }}
-            >
-                Submit
-            </Button>
-        </div> */}
     </div>
   );
 };
@@ -111,6 +101,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     handleSubmitAnswer(answer);
     setIsDisabled(true);
   };
+
   const fetchTurnInfo = async () => {
     try {
       const response0 = await api().get(`/gameRounds/information/${turnId}`);
@@ -164,7 +155,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   };
 
   useEffect(() => {
-    fetchTurnInfo();
+    fetchTurnInfo().then(() => {});
   }, [playerNum]);
 
   const answerBox = (
@@ -267,30 +258,15 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     );
 
   const waitTnfo = (
-    // <h3
-    //   style={{
-    //     left: "700px",
-    //     top: "100px",
-    //     position: "absolute",
-    //     "font-family": "Nunito",
-    //     "font-size": "30px",
-    //     color: "black",
-    //     width: "200px",
-    //   }}
-    // >
-    //   Please wait a while!
-    // </h3>
     <div
       style={{
-        width: "32em",
-        left: "900px",
-        top: "500px",
+        width: "13em",
+        left: "45%",
+        top: "1em",
         position: "absolute",
+        flexDirection: "column"
       }}
     >
-      <div>
-        <SpinnerBouncing />
-      </div>
       <div
         style={{
           "font-family": "Nunito",
@@ -300,11 +276,14 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       >
         {"Please wait a while"}
       </div>
+      <div>
+        <SpinnerBouncing />
+      </div>
     </div>
   );
 
   return (
-    <BaseContainer>
+    <div>
       <HeaderInGame />
       <ToastContainer
         toastClassName="toast-style"
@@ -315,42 +294,49 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         hideProgressBar={true}
         draggable={false}
       />
-      <div
-        className="lobby pic"
-        style={{ opacity: "40%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
-      </div>
-      {playerNum == 4 ? (
+      <div className="guessing content-container">
+        <div className="guessing pic">
+          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        {playerNum == 4 ? (
         <div>
-          <div style={{ left: "40px", top: "170px", position: "absolute" }}>
+          <div className="guessing players-container">
             {player1}
-          </div>
-          <div style={{ left: "900px", top: "170px", position: "absolute" }}>
-            {player2}
-          </div>
-          <div style={{ left: "1100px", top: "170px", position: "absolute" }}>
-            {player3}
-          </div>
-          <div style={{ left: "1300px", top: "170px", position: "absolute" }}>
-            {player4}
+            <div className="guessing guessing-container">{player2}{player3}{player4}</div>
           </div>
         </div>
-      ) : (
+        ) : (<></>
+        )}
+        {
         <div>
-          <div style={{ left: "40px", top: "170px", position: "absolute" }}>
+          <div className="guessing players-container">
             {player1}
-          </div>
-          <div style={{ left: "900px", top: "170px", position: "absolute" }}>
-            {player2}
+            <div className="guessing guessing-container">{player2}</div>
           </div>
         </div>
-      )}
-      {startGuessing ? (
+        }
+        {(startGuessing && role === "guessingPlayer") ? (
+          <div className="guessing box-container">
+            {answerBox}
+            <div className='guessing button-container' style={{right: "45%", top:"120px", position: "absolute"}}>
+            <Button
+              // disabled={role === "drawingPlayer"}
+              disabled={isDisabled}
+              onClick={() => {
+                handleClick();
+              }}
+            >
+              Submit
+            </Button>
+            </div>
+          </div>
+        ) : (<></>)}
+
+        {startGuessing ? (
         <div
           style={{
-            left: "350px",
-            top: "100px",
+            left: "15%",
+            top: "20px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "30px",
@@ -364,40 +350,20 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             sendTimeInfo={sendTimeInfo}
           />
         </div>
-      ) : (
-        <></>
-      )}
-      {startGuessing && role === "guessingPlayer" ? (
-        <div>
-          {answerBox}
-          <div
-            className="guessing button-container"
-            style={{ left: "1150px", top: "440px", position: "absolute" }}
-          >
-            <Button
-              // disabled={role === "drawingPlayer"}
-              disabled={isDisabled}
-              onClick={() => {
-                handleClick();
-              }}
-            >
-              Submit
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
-      {isDisabled ? waitTnfo : <></>}
-      <div style={{ left: "200px", top: "200px", position: "absolute" }}>
+        ) : (<></>)}
+        <div style={{ left: "0px", top: "150px", position: "absolute" }}>
         <canvas
           id="showingBoard"
           width="500px"
           height="600px"
-          style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF" }}
+          style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF"}}
         ></canvas>
+        </div>
       </div>
-    </BaseContainer>
+      
+      
+      {isDisabled ? waitTnfo : <></>}
+    </div>
   );
 };
 export default GuessingStage;

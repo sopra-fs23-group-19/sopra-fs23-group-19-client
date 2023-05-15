@@ -187,21 +187,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     // setCursorStyle("url('https://icons.iconarchive.com/icons/bootstrap/bootstrap/16/Bootstrap-eraser-fill-icon.png'),auto")
   }
 
-  function lineBold() {
-    // lineWidth = lineWidth + 1;
-    setLineWidth(lineWidth + 1);
-  }
-
-  function lineThinner() {
-    if (lineWidth <= 1) {
-      // lineWidth = lineWidth;
-      setLineWidth(lineWidth);
-    } else {
-      // lineWidth = lineWidth - 1;
-      setLineWidth(lineWidth - 1);
-    }
-  }
-
   function handleFontSizeChange(size){
     setLineWidth(size);
   }
@@ -227,7 +212,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
             id="showingBoard"
             width="500px"
             height="600px"
-            style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF" }}
+            style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF", "left":"80px", top:"300px",position:"absolute"}}
             // ref={setConvasRef}
           ></canvas>
         )}
@@ -277,6 +262,9 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
               style={{ backgroundColor: "#000000" }}
               onClick={() => blackPen()}
             ></div>
+            <div style={{"marginLeft":"1em"}}>
+            <Option defaultLineSize="5" onLineSizeChange={handleFontSizeChange}></Option>
+            </div>
           </>
         ) : (
           <></>
@@ -332,10 +320,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
             >
               -
             </Button> */}
-            <div style={{marginLeft:"30px"}}>
-            <Option defaultLineSize="5" onLineSizeChange={handleFontSizeChange}>
-            </Option>
-            </div>
           </>
         ) : (
           <></>

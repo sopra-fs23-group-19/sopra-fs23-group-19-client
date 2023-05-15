@@ -81,7 +81,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     }
   };
   useEffect(() => {
-    fetchRankInfo();
+    fetchRankInfo().then(() => {});
   }, [playerNum]);
   //ranking component
   //need to sort the score later
@@ -89,7 +89,6 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     <div>
       <div
         className="guessing score-list"
-        style={{ left: "500px", top: "220px", position: "absolute" }}
       >
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
@@ -138,7 +137,6 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     <div>
       <div
         className="guessing score-list"
-        style={{ left: "500px", top: "220px", position: "absolute" }}
       >
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
@@ -171,14 +169,14 @@ const Ranking = ({ gameId, handleQuitGame }) => {
       <Emoji symbol="👏" className="rank li" />
       <h2
         style={{
-          left: "640px",
-          top: "80px",
+          left: "40%",
+          top: "0px",
           position: "absolute",
-          width: "700px",
+          width: "20%",
+          textAlign:"center",
           "font-family": "Nunito",
           "font-size": "30px",
-          color: "black",
-          width: "300px",
+          color: "black"
         }}
       >
         Game end!
@@ -187,7 +185,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     </div>
   );
   return (
-    <BaseContainer>
+    <div>
       <HeaderInGame />
       <ToastContainer
         toastClassName="toast-style"
@@ -199,21 +197,40 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         draggable={false}
       />
       <Confetti numberOfPieces={150} width={width} height={height} />
-
-      <div
-        className="guessing pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
-      >
-        {/* <img src={cats} alt="" /> */}
+      <div className="guessing content-container">
+        <div className="guessing pic">
+          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        {title}
+        <div className="guessing button-container"
+        style={{
+          left: "40%",
+          right:"40%",
+          top: "580px",
+          position: "absolute",
+          width: "20%",
+          "minWidth":"15em",
+          height: "50px",
+        }}
+        >
+        <Button
+          onClick={() => {
+            handleQuit();
+          }}
+          width="100%"
+          style={{ "margin-top": "5px", border: "2px solid #000000" }}
+        >
+          QUIT GAME
+        </Button>
+        </div>
       </div>
-      {title}
       {/* <div>{ranking}</div> */}
       {playerNum == 4 ? (
         <div>{rankingWhenFourPlayers}</div>
       ) : (
         <div>{rankingWhenTwoPlayers}</div>
       )}
-      <div
+      {/* <div
         className="guessing button-container"
         style={{
           left: "500px",
@@ -233,8 +250,8 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         >
           QUIT GAME
         </Button>
-      </div>
-    </BaseContainer>
+      </div> */}
+    </div>
   );
 };
 export default Ranking;

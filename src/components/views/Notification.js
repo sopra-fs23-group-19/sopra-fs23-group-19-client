@@ -11,6 +11,8 @@ import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import { useInterval } from "helpers/hooks";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
+
 const Friends = ({ message }) => {
   const history = useHistory();
   const notify = (message) => {
@@ -67,7 +69,9 @@ const Friends = ({ message }) => {
         hideProgressBar={true}
         draggable={false}
       />
-      <div className="notification content-container">{message.useridFrom}</div>
+      <div className="notification content-container">
+        {message.useridFrom}
+      </div>
       <div className="notification content-container">
         {message.usernameFrom}
       </div>
@@ -119,7 +123,7 @@ const Rooms = ({ message }) => {
         `/notification/game/${messageId}`,
         requestBody
       );
-      goToWaiting(response.data.roomId);
+      goToWaiting(response.data.roomId).then(() => {});
     } catch (error) {
       // handleNotLogInError(history, error, "accepting game invite", true);
       const error_str = handleError(error);
@@ -155,25 +159,29 @@ const Rooms = ({ message }) => {
 
   return (
     <div className="notification notice-container">
-      <ToastContainer
-        toastClassName="toast-style"
-        position="top-center"
-        transition={Bounce}
-        autoClose={5000}
-        closeButton={false}
-        hideProgressBar={true}
-        draggable={false}
-      />
-      <div className="notification content-container">{message.roomId}</div>
-      <div className="notification content-container">{message.roomName}</div>
-      <div className="notification button-container">
-        <Button onClick={() => acceptRoom(message.messageId)}>Accept</Button>
+        <ToastContainer
+          toastClassName="toast-style"
+          position="top-center"
+          transition={Bounce}
+          autoClose={5000}
+          closeButton={false}
+          hideProgressBar={true}
+          draggable={false}
+        />
+        <div className="notification content-container">
+          {message.roomId}
+        </div>
+        <div className="notification content-container">
+          {message.roomName}
+        </div>
+        <div className="notification button-container">
+          <Button onClick={() => acceptRoom(message.messageId)}>Accept</Button>
+        </div>
+        <div className="notification button-container">
+          <Button onClick={() => rejectRoom(message.messageId)}>Reject</Button>
+        </div>
       </div>
-      <div className="notification button-container">
-        <Button onClick={() => rejectRoom(message.messageId)}>Reject</Button>
-      </div>
-    </div>
-  );
+    );
 };
 
 const Notification = () => {
@@ -206,11 +214,11 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, []);
 
   useInterval(async () => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, 3000);
 
   // get all game invites notifications
@@ -231,35 +239,47 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchGames();
+    fetchGames().then(() => {});
   }, []);
 
   useInterval(async () => {
-    fetchGames();
+    fetchGames().then(() => {});
   }, 3000);
 
   let friendsContent = <Spinner />;
   if (allFriendsNotice) {
     friendsContent = (
-      <div>
-        <div className="notification container">
+      <div className="notification left-container">
+        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
+        width:"10em", position: "relative",textAlign:"center"}}>
+          Friends invite
+        </h2>
+        <div className="notification container" >
           <div className="notification notice-container">
-            <div className="notification title-container">User Id</div>
-            <div className="notification title-container">Username</div>
+            <div className="notification title-container">
+              User Id
+            </div>
+            <div className="notification title-container">
+              Username
+            </div>
             <div className="notification button-container"></div>
           </div>
           <div className="notification line"></div>
-          <ul className="notification friends-list">
+          <div className="notification friends-list">
             {allFriendsNotice.map((friend) => (
               <Friends message={friend} key={friend.messageId} />
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     );
   } else {
     friendsContent = (
-      <div>
+        <div className="notification left-container">
+        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
+        width:"10em", position: "relative",textAlign:"center"}}>
+        Friends invite
+      </h2>
         <div className="notification container">
           <div className="notification notice-container">
             <div className="notification title-container">User Id</div>
@@ -274,34 +294,44 @@ const Notification = () => {
   let roomsContent = <Spinner />;
   if (gamesNotice) {
     roomsContent = (
-      <div>
-        <div
-          className="notification container"
-          style={{ position: "absolute", left: "850px" }}
-        >
+      <div className="notification right-container">
+        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
+        width:"10em", position: "relative",textAlign:"center"}}>
+        Games invite
+      </h2>
+        <div className="notification container" >
           <div className="notification notice-container">
-            <div className="notification title-container">Room Id</div>
-            <div className="notification title-container">Room Name</div>
+            <div className="notification title-container">
+              Room Id
+            </div>
+            <div className="notification title-container">
+              RoomName
+            </div>
           </div>
           <div className="notification line"></div>
-          <ul className="notification friends-list">
+          <div className="notification friends-list">
             {gamesNotice.map((room) => (
               <Rooms message={room} key={room.messageId} />
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     );
   } else {
     roomsContent = (
-      <div>
-        <div
-          className="notification container"
-          style={{ position: "absolute", left: "850px" }}
-        >
+      <div className="notification right-container">
+        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
+         width:"10em", position: "relative",textAlign:"center"}}>
+          Games invite
+        </h2>
+        <div className="notification container" >
           <div className="notification notice-container">
-            <div className="notification title-container">Room Id</div>
-            <div className="notification title-container">Room Name</div>
+            <div className="notification title-container">
+              Room Id
+            </div>
+            <div className="notification title-container">
+              Room Name
+            </div>
           </div>
           <div className="notification line"></div>
         </div>
@@ -310,8 +340,9 @@ const Notification = () => {
   }
 
   return (
-    <BaseContainer>
+    <div>
       <Header />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -321,41 +352,14 @@ const Notification = () => {
         hideProgressBar={true}
         draggable={false}
       />
-      <div
-        className="notification pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
+      <div className="notification c-container">
+        <div className="notification pic">
+          <img src={cats} alt="notification background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        {friendsContent}
+        {roomsContent}
       </div>
-      <h2
-        style={{
-          "font-family": "Nunito",
-          "font-size": "24px",
-          color: "#000000",
-          top: "150px",
-          left: "180px",
-          position: "absolute",
-          width: "20em",
-        }}
-      >
-        Friends invite
-      </h2>
-      {friendsContent}
-      <h2
-        style={{
-          "font-family": "Nunito",
-          "font-size": "24px",
-          color: "#000000",
-          top: "150px",
-          left: "880px",
-          position: "absolute",
-          width: "20em",
-        }}
-      >
-        Games invite
-      </h2>
-      {roomsContent}
-    </BaseContainer>
+    </div>
   );
 };
 

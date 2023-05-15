@@ -5,16 +5,15 @@ import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
-import Header from "components/views/Header";
-import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
-import DrawingBoard from "./DrawingBoard";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { Spinner } from "components/ui/Spinner";
 import { api, handleError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import gameBackground from "styles/images/empty-room.jpg";
+
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
   //   let startDrawing;
@@ -138,22 +137,17 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   };
 
   useEffect(() => {
-    fetchTurnInfo();
+    fetchTurnInfo().then(() => {});
   }, [playernum]);
 
   useEffect(() => {
-    fetchWord();
+    fetchWord().then(() => {});
   }, []);
-
-  // useEffect(() => {
-  //   fetchTurnScore();
-  // }, [score1]);
 
   const displayWords = (
     <div>
       <div>
         <Button
-          // need to connect to backend later
           onClick={() => {
             handleChooseWord(word0);
           }}
@@ -169,16 +163,14 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             "background-color": "rgba(181, 153, 120, 0.5)",
           }}
         >
-          {/* apple */}
           {word0}
         </Button>
       </div>
       <div>
         <Button
           onClick={() => {
-            // setWord(word1);
             handleChooseWord(word1);
-          }} //need to connect to backend later
+          }}
           style={{
             left: "50px",
             top: "370px",
@@ -196,9 +188,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       </div>
       <div>
         <Button
-          //onClick={() => goToDrawing()} need to connect to backend later
           onClick={() => {
-            // setWord(word2);
             handleChooseWord(word2);
           }}
           style={{
@@ -298,7 +288,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     );
 
   return (
-    <BaseContainer>
+    <div>
       <HeaderInGame />
       <ToastContainer
         toastClassName="toast-style"
@@ -309,55 +299,44 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         hideProgressBar={true}
         draggable={false}
       />
-      {/* <Header /> */}
-      <div
-        className="guessing pic"
-        style={{ opacity: "40%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
+      <div className="guessing content-container">
+        <div className="guessing pic">
+          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+        </div>
+        {playernum == 4 ? (
+        <div>
+          <div className="guessing players-container">
+            {player1}
+            <div className="guessing guessing-container">{player2}{player3}{player4}</div>
+          </div>
+        </div>
+        ) : (<></>
+        )}
+        {
+        <div>
+          <div className="guessing players-container">
+            {player1}
+            <div className="guessing guessing-container">{player2}</div>
+          </div>
+        </div>
+        }
       </div>
 
-      {playernum == 4 ? (
-        <div>
-          <div style={{ left: "40px", top: "170px", position: "absolute" }}>
-            {player1}
-          </div>
-          <div style={{ left: "900px", top: "170px", position: "absolute" }}>
-            {player2}
-          </div>
-          <div style={{ left: "1100px", top: "170px", position: "absolute" }}>
-            {player3}
-          </div>
-          <div style={{ left: "1300px", top: "170px", position: "absolute" }}>
-            {player4}
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
-      {
-        <div>
-          <div style={{ left: "40px", top: "170px", position: "absolute" }}>
-            {player1}
-          </div>
-          <div style={{ left: "900px", top: "170px", position: "absolute" }}>
-            {player2}
-          </div>
-        </div>
-      }
+      
       {role == "drawingPlayer" ? (
         <div>
           <h2
             style={{
-              left: "250px",
+              left: "30%",
               top: "180px",
               position: "absolute",
               "font-family": "Nunito",
               color: "black",
             }}
           >
-            {" "}
-            It's your turn to paint. Choose one word first!
+            It's your turn to paint. 
+            <br></br>
+            Choose one word first!
           </h2>
           <Timer
             start={startGuessing}
@@ -370,19 +349,18 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         <div>
           <h2
             style={{
-              left: "250px",
+              left: "30%",
               top: "180px",
               position: "absolute",
               "font-family": "Nunito",
               color: "black",
             }}
           >
-            {/* {" "} */}
             {username1} is choosing a word!
           </h2>
         </div>
       )}
-    </BaseContainer>
+    </div>
   );
 };
 export default SelectWord;

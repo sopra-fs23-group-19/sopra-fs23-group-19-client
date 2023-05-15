@@ -235,11 +235,11 @@ const Game = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData().then(() => {});
   }, []);
   useInterval(
     async () => {
-      fetchData();
+      fetchData().then(() => {});
     },
     isUpdating ? 1000 : null
   );
@@ -335,13 +335,13 @@ const Game = () => {
   };
 
   return (
-    <BaseContainer className="game container">
-      <div
+    <div className="game container">
+      {/* <div
         className="lobby pic"
         style={{ opacity: "60%", left: "0px", top: "85px" }}
       >
         <img src={gameBackground} alt="" />
-      </div>
+      </div> */}
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -352,7 +352,7 @@ const Game = () => {
         draggable={false}
       />
       {switchPages()}
-    </BaseContainer>
+    </div>
   );
   // return <BaseContainer className="game container">{content}</BaseContainer>;
 };

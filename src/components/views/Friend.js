@@ -12,6 +12,7 @@ import { Spinner } from "components/ui/Spinner";
 import cat_left from "styles/images/cat_left.png";
 import { useInterval } from "helpers/hooks";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
 
 const FormField = (props) => {
   return (
@@ -31,8 +32,17 @@ const Friends = ({ friend }) => {
   const history = useHistory();
   return (
     <div className="friend friend-container">
-      <div className="friend content">{friend.id}</div>
-      <div className="friend content">{friend.username}</div>
+      <div className="friend content" style={{width:"50%"}} >
+        {friend.id}
+      </div>
+      <div className="friend content" 
+      onClick={() => {
+        const requestUrl = "/profile/" + friend.id;
+        history.push(requestUrl);
+       }}
+       style={{"text-decoration-line": "underline", width:"50%"}}>
+        {friend.username}
+      </div>
     </div>
   );
 };
@@ -69,23 +79,28 @@ const SearchFriend = ({ searchfriend }) => {
     }
   };
   return (
-    <div className="friend friend-container" style={{ width: "35em" }}>
-      <div className="friend content" style={{ "margin-left": "80px" }}>
+    <div className="friend friend-container" style={{ width: "100%" }}>
+      <div className="friend content">
         {searchfriend.id}
       </div>
-      <div className="friend content" style={{ "margin-left": "80px" }}>
+      <div className="friend content">
         {searchfriend.username}
       </div>
       {/* <div className="lobby players">{room.players}</div> */}
       {/* <div className="friend content">
         {room.numberOfPlayers + "/" + room.roomSeats}
       </div> */}
-      <Button
-        onClick={() => createFriendNotification(searchfriend.id)}
+      <div className="friend content">
+      <Button onClick={() => createFriendNotification(searchfriend.id)}
         disabled={disable}
       >
         ADD
       </Button>
+      </div>
+      {/* <Button onClick={() => createFriendNotification(searchfriend.id)}
+        disabled={disable}
+      >ADD
+      </Button> */}
     </div>
   );
 };
@@ -134,10 +149,10 @@ const Friend = () => {
   // }
 
   useEffect(() => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, []);
   useInterval(async () => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, 3000);
   // useEffect(() => {
   //   fetchSearchUsername();
@@ -150,7 +165,6 @@ const Friend = () => {
       username: username,
     });
     try {
-      console.log(username);
       const response = await api().post(`/users/searchFriends`, requestBody);
       setSearchedFriend(response.data);
     } catch (error) {
@@ -172,63 +186,58 @@ const Friend = () => {
       <div>
         <div
           className="friend container"
-          style={{ left: "190px", top: "550px", width: "35em" }}
+          style={{ left: "190px", top: "550px", width: "80%", background: "rgba(181, 153, 120, 0.5)"}}
         >
-          <div className="friend friend-container" style={{ width: "35em" }}>
-            <div className="friend title" style={{ "margin-left": "80px" }}>
-              Id
-            </div>
-            <div className="friend title" style={{ "margin-left": "80px" }}>
-              Name
-            </div>
+          <div className="friend friend-container" style={{ width: "100%" }}>
+            <div className="friend title">Id</div>
+            <div className="friend title">Name</div>
           </div>
 
-          <div className="friend line" style={{ width: "35em" }}></div>
-          <ul className="friend friend-list">
-            {searchedFriend.map((searchfriend) => (
-              <SearchFriend searchfriend={searchfriend} key={searchfriend.id} />
-            ))}
+          <div className="friend line" style={{ width: "100%" }}></div>
+          <ul className="friend friend-list" style={{width:"100%"}}>
+              <SearchFriend searchfriend={searchedFriend} key={searchedFriend.id} />
           </ul>
         </div>
       </div>
     );
   } else {
     searchContent = (
-      <div>
-        <div
-          className="friend container"
-          style={{ left: "190px", top: "550px", width: "35em" }}
-        >
-          <div className="friend friend-container" style={{ width: "35em" }}>
-            <div className="friend title" style={{ "margin-left": "80px" }}>
-              Id
-            </div>
-            <div className="friend title" style={{ "margin-left": "80px" }}>
-              Name
-            </div>
-          </div>
+      // <div>
+      //   <div
+      //     className="friend container"
+      //     style={{ left: "190px", top: "550px", width: "35em" }}
+      //   >
+      //     <div className="friend friend-container" style={{ width: "35em" }}>
+      //       <div className="friend title" style={{ "margin-left": "80px" }}>
+      //         Id
+      //       </div>
+      //       <div className="friend title" style={{ "margin-left": "80px" }}>
+      //         Name
+      //       </div>
+      //     </div>
 
-          <div className="friend line" style={{ width: "35em" }}></div>
-        </div>
-      </div>
+      //     <div className="friend line" style={{ width: "35em" }}></div>
+      //   </div>
+      // </div>
+      <></>
     );
   }
 
   let content = <Spinner />;
   if (friends) {
     content = (
-      <div>
-        <div className="friend container">
-          <div className="friend friend-container">
-            <div className="friend title" style={{ "margin-left": "80px" }}>
+      <div className="friend right-container">
+        <div className="friend container" style={{width:"80%",flexDirection:"column","marginLeft":"0%"}}>
+          <div className="friend friend-container" style={{width:"100%"}}>
+            <div className="friend title" style={{ "margin-left": "15%" }}>
               Friend Id
             </div>
-            <div className="friend title" style={{ "margin-left": "80px" }}>
+            <div className="friend title" style={{ "margin-left": "10%" }}>
               Friend Name
             </div>
           </div>
 
-          <div className="friend line"></div>
+          <div className="friend line" style={{width:"100%"}}></div>
           <ul className="friend friend-list">
             {friends.map((friend) => (
               <Friends friend={friend} key={friend.id} />
@@ -239,17 +248,18 @@ const Friend = () => {
     );
   } else {
     content = (
-      <div>
-        <div className="friend container">
-          <div className="friend friend-container">
-            <div className="friend title" style={{ "margin-left": "80px" }}>
+      <div className="friend right-container">
+        <div className="friend container" 
+        style={{width:"80%", left: "190px", top: "550px", height:"70%","marginLeft":"0%"}}>
+          <div className="friend friend-container" style={{width:"100%"}}>
+            <div className="friend title" style={{ "margin-left": "15%" }}>
               Friend id
             </div>
-            <div className="friend title" style={{ "margin-left": "80px" }}>
+            <div className="friend title" style={{ "margin-left": "10%" }}>
               Friend name
             </div>
           </div>
-          <div className="friend line"></div>
+          <div className="friend line" style={{width:"100%"}}></div>
 
           <div
             className="friend line"
@@ -261,8 +271,10 @@ const Friend = () => {
   }
 
   return (
-    <BaseContainer>
+    // <BaseContainer>
+    <>
       <Header />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -272,13 +284,18 @@ const Friend = () => {
         hideProgressBar={true}
         draggable={false}
       />
-      <div
-        className="lobby pic"
-        style={{ opacity: "20%", left: "1000px", top: "280px" }}
-      >
-        <img src={cats} alt="" />
-      </div>
-      <div className="friend form-container">
+      <div className="profile content-container">
+      <div className="profile pic">
+          <img
+            src={cats}
+            alt="welcome background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
+        </div>
+
+      <div className="friend main-container">
+       <div className="friend left-container">
+        <div className="friend form-container">
         <div className="friend form">
           <FormField
             label="Find a new friend by username"
@@ -297,10 +314,16 @@ const Friend = () => {
             <img className="friend img_cat_right" src={cat_left} />
           </div>
         </div>
-      </div>
+        </div>
       {searchContent}
-      {content}
-    </BaseContainer>
+      </div>
+      <div className="friend right-container">
+        {content}
+      </div>
+      </div>
+      </div>
+    </>
+    // </BaseContainer>
   );
 };
 

@@ -147,12 +147,12 @@ const WaitingView = () => {
   };
 
   useEffect(() => {
-    fetchRoomInfo();
+    fetchRoomInfo().then(() => {});
   }, []);
 
   useInterval(
     async () => {
-      fetchRoomInfo();
+      fetchRoomInfo().then(() => {});
     },
     isUpdating ? 1000 : null
   );
@@ -214,7 +214,7 @@ const WaitingView = () => {
   };
 
   useEffect(() => {
-    fetchFriends();
+    fetchFriends().then(() => {});
   }, []);
 
   // display friends information

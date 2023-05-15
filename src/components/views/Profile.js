@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Button } from "components/ui/Button";
+import BgmPlayer from "components/ui/BgmPlayer"
 
 const FormField = (props) => {
   return (
@@ -309,6 +310,7 @@ const Profile = () => {
   return (
     <div>
       <Header />
+      <BgmPlayer/>
       <div className="profile content-container">
         <div className="profile pic">
           <img

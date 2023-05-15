@@ -6,6 +6,7 @@ import Header from "components/views/Header";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import BgmPlayer from "components/ui/BgmPlayer"
 /*
 It is possible to add multiple components inside a single file,
 however be sure not to clutter your files with an endless amount!
@@ -17,6 +18,7 @@ const Rules = (props) => {
   return (
     <div>
       <Header />
+      <BgmPlayer/>
       <div className="rules content-container">
         <div className="rules pic-container">
           <img

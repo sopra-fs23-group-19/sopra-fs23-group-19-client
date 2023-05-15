@@ -11,6 +11,8 @@ import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import { useInterval } from "helpers/hooks";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
+
 const Friends = ({ message }) => {
   const history = useHistory();
   const notify = (message) => {
@@ -340,6 +342,7 @@ const Notification = () => {
   return (
     <div>
       <Header />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

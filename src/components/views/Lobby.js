@@ -12,6 +12,7 @@ import { useInterval } from "helpers/hooks";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
 // define the format of rooms in the table
 const Rooms = ({ room }) => {
   const history = useHistory();
@@ -180,6 +181,7 @@ const Lobby = () => {
         hideProgressBar={true}
         draggable={false}
       />
+      <BgmPlayer/>
       <div className="lobby content-container">
         <div className="lobby pic">
           <img

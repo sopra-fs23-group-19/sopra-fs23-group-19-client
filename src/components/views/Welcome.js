@@ -11,6 +11,7 @@ import { useState } from "react";
 import { Button } from "components/ui/Button";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
+import BgmPlayer from "components/ui/BgmPlayer"
 /*
 It is possible to add multiple components inside a single file,
 however be sure not to clutter your files with an endless amount!
@@ -52,6 +53,7 @@ const Welcome = (props) => {
   return (
     <div>
       <Header />
+      <BgmPlayer/>
       <div className="welcome content-container">
         <div className="welcome pic">
           <img src={cats} alt="welcome background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>

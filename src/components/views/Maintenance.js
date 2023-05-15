@@ -1,7 +1,44 @@
 import "styles/views/Login.scss";
 import cats from "styles/images/cats1.png";
 import BaseContainer from "components/ui/BaseContainer";
+import Timer from "components/views/Timer";
+import { useState, useRef, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 const Maintenance = () => {
+  const history = useHistory();
+  const countDownTimer = useRef();
+
+  const [seconds, setSeconds] = useState(null);
+  const startGuessing = +new Date();
+  useEffect(() => {
+    if (seconds == 0) {
+      history.push("/login");
+    }
+  }, [seconds]);
+
+  const countDown = () => {
+    const nowTime = +new Date();
+    let times = 20 - parseInt(`${(nowTime - startGuessing) / 1000}`);
+    setSeconds(times);
+
+    if (times <= 0) {
+      clearTimeout(countDownTimer.current);
+    } else {
+      countDownTimer.current = setTimeout(() => {
+        countDown();
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    if (startGuessing) {
+      countDown();
+    }
+    return () => {
+      clearTimeout(countDownTimer.current);
+    };
+  }, []);
+
   return (
     <BaseContainer>
       <div className="login pic">

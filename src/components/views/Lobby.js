@@ -12,7 +12,7 @@ import { useInterval } from "helpers/hooks";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 // define the format of rooms in the table
 const Rooms = ({ room }) => {
   const history = useHistory();
@@ -27,6 +27,7 @@ const Rooms = ({ room }) => {
     });
     try {
       await api().put(`/rooms/join`, requestBody);
+      history.push(`/waiting/${id}`);
     } catch (error) {
       // handleNotLogInError(history, error, "joining the room", true);
       const error_str = handleError(error);
@@ -38,7 +39,6 @@ const Rooms = ({ room }) => {
         notify(error_str["message"]);
       }
     }
-    history.push(`/waiting/${id}`);
   };
 
   // return the list of room id, name and number of players
@@ -181,7 +181,7 @@ const Lobby = () => {
         hideProgressBar={true}
         draggable={false}
       />
-      <BgmPlayer/>
+      <BgmPlayer />
       <div className="lobby content-container">
         <div className="lobby pic">
           <img
@@ -194,7 +194,7 @@ const Lobby = () => {
           <div className="lobby text" style={{ left: "20%" }}>
             Want to create a new game? Click here:
           </div>
-          <div className="lobby text" >
+          <div className="lobby text">
             <Button
               style={{
                 "background-color": "#FFFFFF",
@@ -207,15 +207,20 @@ const Lobby = () => {
           </div>
         </div>
         {localStorage.getItem("gameId") != null ? (
-        <div className="lobby text" style={{textAlign:"center"}}>
-          <Button
-            style={{"background-color": "#FFFFFF",border: "2px solid #000000"}}
-            onClick={() => goToGame()}
-          >
-            Go back to your game
-          </Button>
-        </div>
-        ) : (<></>)}
+          <div className="lobby text" style={{ textAlign: "center" }}>
+            <Button
+              style={{
+                "background-color": "#FFFFFF",
+                border: "2px solid #000000",
+              }}
+              onClick={() => goToGame()}
+            >
+              Go back to your game
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
         {content}
       </div>
     </div>

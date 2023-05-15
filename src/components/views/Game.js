@@ -34,7 +34,6 @@ const Game = () => {
   // more information can be found under https://reactjs.org/docs/hooks-state.html
   // const [drawingPlayerId, setDrawingPlayerId] = useState(null);
   const [gameStatus, setGameStatus] = useState(true);
-  const [playerNum, setPlayerNum] = useState(2);
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true);
@@ -204,10 +203,6 @@ const Game = () => {
       // // Get the returned users and update the state.
 
       const response = response0.data;
-
-      setPlayerNum(response.players.length);
-      console.log("playerNum");
-      console.log(playerNum);
       setGameStatus(response.status);
       console.log(response);
       // console.log(response.status);
@@ -330,7 +325,7 @@ const Game = () => {
       } else {
         content = <GameLoading />;
       }
-    } else if (gameStatus == "END_GAME" && playerNum > 0) {
+    } else if (gameStatus == "END_GAME") {
       // console.log(gameId);
       // console.log(gameStatus);
 
@@ -352,22 +347,23 @@ const Game = () => {
     //   );
     // }
     // else if (gameStatus == "END")
-    else if (gameStatus == "END_GAME" && playerNum == 0) {
-      localStorage.removeItem("gameId");
-      localStorage.removeItem("intialTurnId");
-      content = (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "20vh",
-          }}
-        >
-          <Link to="/lobby">Game has ended! Back to the lobby...</Link>
-        </div>
-      );
-    } else {
+    // else if (gameStatus == "END_GAME" && playerNum == 0) {
+    //   localStorage.removeItem("gameId");
+    //   localStorage.removeItem("intialTurnId");
+    //   content = (
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         justifyContent: "center",
+    //         alignItems: "center",
+    //         height: "20vh",
+    //       }}
+    //     >
+    //       <Link to="/lobby">Game has ended! Back to the lobby...</Link>
+    //     </div>
+    //   );
+    // }
+    else {
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
       content = (

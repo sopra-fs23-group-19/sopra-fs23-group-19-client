@@ -156,8 +156,8 @@ const GameCreationView = () => {
             style={{ width: "447px", height: "559px", opacity: "20%" }}
           />
         </div>
+        <div>{gameSettingForm()}</div>
       </div>
-      <div>{gameSettingForm()}</div>
     </div>
   );
 };

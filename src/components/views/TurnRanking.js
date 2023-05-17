@@ -15,6 +15,7 @@ import losegame from "styles/images/gif/cat_unhappy.gif";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
 
 const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
@@ -35,11 +36,12 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [targetWord, setTargetWord] = useState("");
   const [userScore, setUserScore] = useState(0);
   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
-  const [drawingPlayer, setDrawingPlayer] = useState(null);
+  const [drawingPlayerName, setDrawingPlayerName] = useState("");
+  const [drawingPlayerScore, setDrawingPlayerScore] = useState(0);
   const [role, setRole] = useState("");
   const [playerNum, setPlayerNum] = useState(2);
   const [imageData, setImageData] = useState("");
-  const [time, setTime] = useState(60);
+  const [time, setTime] = useState(10);
   const [correctAnswer, setCorrectAnswer] = useState(10);
 
   const fetchTurnScore = async () => {
@@ -47,12 +49,14 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
       const response = response0.data;
       console.log(response);
-      var allPlayers = response.rankedList;
+      const allPlayers = response.rankedList;
       setDrawingPlayerId(response.drawingPlayerId);
+      setDrawingPlayerName(response.drawingPlayerName);
       const curUser = allPlayers.filter((item) => item.id == curUserId);
       const guessingPlayers = allPlayers.filter((item) => item.id != drawingPlayerId);
-      setDrawingPlayer(allPlayers.filter((item) => item.id == drawingPlayerId));
-      setUserScore(parseInt(curUser.currentScore));
+      const drawingPlayer = allPlayers.filter((item) => item.id == drawingPlayerId);
+      setDrawingPlayerScore(parseInt(drawingPlayer[0].currentScore));
+      setUserScore(parseInt(curUser[0].currentScore));
       setPlayerNum(allPlayers.length);
       setImageData(response.image);
       setTargetWord(response.targetWord);
@@ -61,6 +65,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       } else if (parseInt(curUserId) != parseInt(drawingPlayerId)) {
         setRole("guessingPlayer");
       }
+      console.log(curUser);
       setCorrectAnswer(response.correctAnswers);
       if (playerNum == 4) {
         setUsername1(guessingPlayers[0].username);
@@ -95,7 +100,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     const myCanvas = document.getElementById("showingBoard");
     const myContext = myCanvas.getContext("2d");
     const img = new Image();
-    // console.log("why");
     img.src = imageData;
     img.onload = () => {
       myContext.drawImage(img, 0, 0, 200, 240);
@@ -215,99 +219,75 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     role == "guessingPlayer" ? (
     (parseInt(userScore) > 0) ? (
       <div>
-        <Emoji symbol="🥳" className="rank li" />
-        <h2
-          style={{
-            left: "40%",
-            top: "0px",
-            position: "absolute",
-            width: "20%",
-            textAlign:"center",
-            "font-family": "Nunito",
-            "font-size": "30px",
-            color: "black"
-          }}
-        >
+        <div className="guessing title1">
+          <Emoji symbol="🥳" className="guessing li"/>
           You win!
-        </h2>
-        <img className="rank gif" src={wingame} />
-        <div
-          style={{
-              "textAlign":"center", left: "30%", top: "80px", position: "absolute",
-              "font-family": "Nunito", "font-size": "20px", color: "black", width: "40%"}}
-          >
-            Drawing player {drawingPlayer.username} get {drawingPlayer.currentScore} points in this turn
-            Scores obtained by guessing players in this turn:
+          <img className="rank gif" src={wingame} />
         </div>
       </div>
     ) : (
       <div>
-        <h2
-          style={{
-            left: "40%",
-            top: "0px",
-            position: "absolute",
-            "font-family": "Nunito",
-            "font-size": "30px",
-            color: "black",
-            width: "20%",
-            textAlign:"center"
-          }}
-        >
+        <div className="guessing title1">
+          <Emoji symbol="🙁" className="guessing li"/>
           Wrong answer
-        </h2>
-        <Emoji symbol="🙁" className="rank li"/>
-        <img className="rank gif" src={losegame}/>
-        <div
-          style={{
-              "textAlign":"center", left: "30%", top: "80px", position: "absolute",
-              "font-family": "Nunito", "font-size": "20px", color: "black", width: "40%"}}
-          >
-            Drawing player {drawingPlayer.username} get {drawingPlayer.currentScore} points in this turn
-            Scores obtained by guessing players in this turn:
+          <img className="rank gif" src={losegame}/>
         </div>
       </div>
     )):(
       <div>
-          <h2
-            style={{
-              "textAlign":"center",left: "40%", top: "0px", position: "absolute", width: "20%",
-              "font-family": "Nunito", "font-size": "30px", color: "black"}}
-          >
-            Turn End!
-          </h2>
-          <div
-            style={{
-              "textAlign":"center", left: "30%", top: "80px", position: "absolute",
-              "font-family": "Nunito", "font-size": "20px", color: "black", width: "40%"}}
-          >
-            You get {userScore} points in this turn
-            Scores obtained by guessing players in this turn:
-          </div>
-          <Emoji symbol="📢" className="rank li" />
+        <div className="guessing title1">
+          <Emoji symbol="📢" className="guessing li"/>
+          Turn End!
         </div>
+      </div>
     );
+
+  const before_rank = (
+      (role=="guessingPlayer")?(
+        <div
+          style={{
+              "textAlign":"center", left: "10%", top: "0px", position: "relative",
+              "font-family": "Nunito", "font-size": "20px", color: "black", width: "80%"}}
+          >
+            Drawing player {drawingPlayerName} got {drawingPlayerScore} points.
+            <br></br>
+            {(playerNum==2)?("Score obtained by the guessing player in this turn:"
+            ):("Scores obtained by guessing players in this turn:")}
+        </div>
+      ):(
+        <div
+            style={{
+              "textAlign":"center", left: "10%", top: "0px", position: "relative",
+              "font-family": "Nunito", "font-size": "20px", color: "black", width: "80%"}}
+          >
+            You got {userScore} points in this turn
+            <br></br>
+            {(playerNum==2)?("Score obtained by the guessing player in this turn:"
+            ):("Scores obtained by guessing players in this turn:")}
+        </div>
+      )
+  );
   
   const waitTnfo = (
     <div
       style={{
-        width: "40%",
+        width: "60%",
         "minWidth":"30em",
         "textAlign":"center",
-        left: "30%",
-        top: "600px",
-        position: "absolute",
+        left: "20%",
+        top: "50px",
+        position: "relative",
       }}
     >
       <div className="rank spinner">
         <SpinnerBouncing />
       </div>
-      <Timer
+      {/* <Timer
           start={startGuessing}
           stage="turn_ranking"
           sendTimeInfo={sendTimeInfo}
-      />
-      {/* <div
+      /> */}
+      <div
         style={{
           "font-family": "Nunito",
           "font-size": "20px",
@@ -315,7 +295,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         }}
       >
         {"Please wait a while, others are deciding to continue!"}
-      </div> */}
+      </div>
     </div>
   );
 
@@ -323,15 +303,14 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const content = (
     <div
       style={{
-        left: "30%",
-        right: "30%",
+        left: "20%",
         textAlign:"center",
-        top: "240px",
+        top: "0px",
         position: "absolute",
         "font-family": "Nunito",
         "font-size": "20px",
         color: "black",
-        width: "30%",
+        width: "60%",
         "minWidth":"10em"
       }}
     >
@@ -342,26 +321,28 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const content_drawing = (
     <div
       style={{
-        left: "30%",
-        right: "30%",
+        left: "20%",
         textAlign:"center",
-        top: "240px",
+        top: "0px",
         position: "absolute",
         "font-family": "Nunito",
         "font-size": "20px",
         color: "black",
-        width: "30%",
+        width: "60%",
         "minWidth":"10em"
       }}
     >
       <div>{"Correct word: " + targetWord}</div>
-      <div>{correctAnswer + " players correctly answered!"}</div>
+      {(correctAnswer==1 || correctAnswer==0)?(
+        <div>{correctAnswer + " player correctly answered!"}</div>
+      ):(<div>{correctAnswer + " players correctly answered!"}</div>)}
     </div>
   );
 
   return (
     <div>
       <HeaderInGame />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -376,37 +357,28 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
           <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
         </div>
         {title}
-        {/* {role == "guessingPlayer" ? (
-          title
-        ) : (
-        <div>
-          <h2
-            style={{
-              "textAlign":"center",left: "40%", top: "0px", position: "absolute", width: "20%",
-              "font-family": "Nunito", "font-size": "30px", color: "black"}}
-          >
-            Turn End!
-          </h2>
-          <div
-            style={{
-              "textAlign":"center", left: "30%", top: "80px", position: "absolute",
-              "font-family": "Nunito", "font-size": "20px", color: "black", width: "40%"}}
-          >
-            Scores obtained by guessing players in this turn:
+        <div className="rank image-table-container">
+          <div className="rank left-container">
+          {role == "guessingPlayer" ? content : content_drawing}
+          <div className="rank image-container">
+            <canvas id="showingBoard" width="200px" height="240px"
+            style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF"}}
+            ></canvas>
           </div>
-          <Emoji symbol="📢" className="rank li" />
+          </div>
+          <div className="rank right-container">
+            {before_rank}
+            {playerNum == 4 ? (
+              <div>{rankingWhenFourPlayers}</div>
+            ) : (
+              <div>{rankingWhenTwoPlayers}</div>
+            )}
+          </div>
         </div>
-        )} */}
         <div className="guessing button-container"
         style={{
-          left: "40%",
-          right:"40%",
-          top: "580px",
-          position: "absolute",
-          width: "20%",
-          "minWidth":"15em",
-          height: "50px",
-        }}
+          left: "40%", top: "80px", position: "relative",
+          width: "20%", "minWidth":"15em", height: "50px"}}
         >
         <Button
           disabled={isDisabled}
@@ -418,29 +390,16 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         >
           Continue
         </Button>
+        </div>
+        <div className="rank timer-container">
         <Timer
           start={startGuessing}
           stage="turn_ranking"
           sendTimeInfo={sendTimeInfo}
         />
-      </div>
-      <div style={{ left: "2em", top: "200px", position: "absolute" }}>
-        <canvas
-          id="showingBoard"
-          width="200px"
-          height="240px"
-          style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF" }}
-        ></canvas>
         </div>
+        {isDisabled ? waitTnfo : <></>}
       </div>
-      
-      {isDisabled ? waitTnfo : <></>}
-      {role == "guessingPlayer" ? content : content_drawing}
-      {playerNum == 4 ? (
-        <div>{rankingWhenFourPlayers}</div>
-      ) : (
-        <div>{rankingWhenTwoPlayers}</div>
-      )}
       
     </div>
   );

@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { useInterval } from "helpers/hooks";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import cats from "styles/images/cats3.png";
 import { api, handleError, handleNotLogInError } from "helpers/api";
-import { useHistory } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 // import useSound from "use-sound";
 // import btClick from "styles/sounds/click_button.mp3";
@@ -19,6 +20,7 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 
 const Header = (props) => {
   const history = useHistory();
+  const [newMessage, setNewMessage] = useState(false);
   const notify = (message) => {
     toast.error(message);
   };
@@ -67,6 +69,36 @@ const Header = (props) => {
   const goToNotification = () => {
     history.push(`/notification`);
   };
+
+  const new_notice = async () => {
+    var aValue = localStorage.getItem("id");
+    try {
+      const responseFriend = await api().get(`/notification/friend/pending/${aValue}`);
+      const responseGame = await api().get(`/notification/game/pending/${aValue}`);
+      const newFriend = responseFriend.data;
+      const newGame = responseGame.data;
+      if(newFriend.data || newGame.data){setNewMessage(true);}
+    } catch (error) {
+      const error_str = handleError(error);
+      console.log(error_str);
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        notify(error_str["message"]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    new_notice().then(() => {});
+  }, []);
+
+  useInterval(
+    async () => {
+      new_notice().then(() => {});
+    },
+    3000
+  );
 
   // on click the logout button, logout and clear local storage
   const logout = async () => {
@@ -128,6 +160,7 @@ const Header = (props) => {
         >
           Rules
         </div>
+        {newMessage?(<div className="header circle"></div>):(<></>)}
         <div
           className="header instruction"
           style={{ color: "#83692C" }}
@@ -135,6 +168,13 @@ const Header = (props) => {
         >
           Notification
         </div>
+        {/* <div
+          className="header instruction"
+          style={{ color: "#83692C" }}
+          onClick={() => goToNotification()}
+        >
+          Notification
+        </div> */}
         <div
           className="header instruction"
           style={{ color: "#B59978" }}

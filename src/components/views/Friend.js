@@ -12,6 +12,7 @@ import { Spinner } from "components/ui/Spinner";
 import cat_left from "styles/images/cat_left.png";
 import { useInterval } from "helpers/hooks";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
 
 const FormField = (props) => {
   return (
@@ -273,6 +274,7 @@ const Friend = () => {
     // <BaseContainer>
     <>
       <Header />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

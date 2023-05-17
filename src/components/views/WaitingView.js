@@ -16,6 +16,7 @@ import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BgmPlayer from "components/ui/BgmPlayer"
 
 const Player = ({ user }) => (
   <div className="player container">
@@ -212,6 +213,17 @@ const WaitingView = () => {
       }
     }
   };
+  const onBackButtonEvent = (e) => {
+    e.preventDefault();
+    window.history.pushState(null, null, window.location.pathname);
+  };
+  useEffect(() => {
+    window.history.pushState(null, null, window.location.pathname);
+    window.addEventListener("popstate", onBackButtonEvent);
+    return () => {
+      window.removeEventListener("popstate", onBackButtonEvent);
+    };
+  }, []);
 
   useEffect(() => {
     fetchFriends().then(() => {});
@@ -354,6 +366,7 @@ const WaitingView = () => {
   return (
     <div>
       <HeaderInGame />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

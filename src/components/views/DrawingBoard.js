@@ -9,10 +9,9 @@ import Option from "components/ui/Option";
 
 const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
   const history = useHistory();
-  const setConvasRef = useOnDraw(onDraw);
+  const canvasRef = useRef(null);
   const [lineColor, setLineColor] = useState(null);
   const [lineWidth, setLineWidth] = useState(null);
- 
 
   useEffect(() => {
     let ignore = false;
@@ -48,43 +47,115 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
     }
   }, [time]);
 
-  function onDraw(canvasObject, point, previousPoint) {
-    drawLine(previousPoint, point, canvasObject, lineColor, lineWidth);
-    // drawCircle(previousPoint, point, canvasObject, lineColor, lineWidth);
-  }
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext('2d');
+
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function draw(e) {
+      e.preventDefault();
+
+      if(!isDrawing) return;
+
+      let offsetX; 
+      let offsetY;
+
+      if(e.type === "touchmove"){
+        const rect = canvas.getBoundingClientRect();
+        offsetX = e.touches[0].clientX - rect.left;
+        offsetY = e.touches[0].clientY - rect.top;
+      } else{
+        offsetX = e.offsetX;
+        offsetY = e.offsetY;
+      }
+
+      context.strokeStyle = lineColor;
+      context.lineWidth = lineWidth;
+      context.lineCap = 'round';
+
+      context.beginPath();
+      context.moveTo(lastX,lastY);
+      context.lineTo(offsetX, offsetY);
+      context.stroke();
+
+      if(lastX==offsetX && lastY==offsetY){
+        context.fillStyle = lineColor;
+        context.beginPath();
+        context.arc(offsetX, offsetY, lineWidth / 2, 0, 2 * Math.PI);
+        context.fill();
+      }
+
+      [lastX, lastY] =[offsetX, offsetY]
+
+    }
+
+    canvas.addEventListener('mousedown', (e) =>{
+      isDrawing = true;
+      [lastX, lastY] =[e.offsetX, e.offsetY]
+    })
+
+    canvas.addEventListener('mousemove', draw);
+
+    canvas.addEventListener('mouseup', () =>isDrawing = false);
+
+    canvas.addEventListener('mouseout', () =>isDrawing = false);
+    
+    //touchable
+    canvas.addEventListener('touchstart', (e) =>{
+      isDrawing = true;
+      const rect = canvas.getBoundingClientRect();
+      [lastX, lastY] =[e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top]
+    })
+
+    // canvas.addEventListener('touchmove', (e) =>{
+    //   if(!isDrawing) return;
+    //   const touch = e.touches[0];
+    //   const offsetX = touch.pageX - canvas.offsetLeft;
+    //   const offsetY = touch.pageY - canvas.offsetTop;
+
+    //   context.beginPath();
+    //   context.moveTo(lastX, lastY);
+    //   context.lineTo(offsetX, offsetY);
+    //   context.stroke();
+
+    //   [lastX, lastY] = [offsetX, offsetY];
+
+    //   e.preventDefault();
+
+    // });
+    canvas.addEventListener('touchmove', draw);
+
+    canvas.addEventListener('touchend', ()=> isDrawing = false);
+
+    return () => {
+      canvas.removeEventListener('mousedown', ()=>{});
+      canvas.removeEventListener('mousemove', draw);
+      canvas.removeEventListener('mouseup', ()=>{});
+      canvas.removeEventListener('mouseout', ()=>{});
+      canvas.removeEventListener('touchstart', ()=>{});
+      canvas.removeEventListener('touchmove', draw);
+      canvas.removeEventListener('touchend', ()=>{});
+    }
+  },[lineColor, lineWidth]);
+
+  // function onDraw(canvasObject, point, previousPoint) {
+  //   drawLine(previousPoint, point, canvasObject, lineColor, lineWidth);
+  //   // drawCircle(previousPoint, point, canvasObject, lineColor, lineWidth);
+  // }
 
   // function drawLine(start, end, canvasObject, color, width) {
   //   start = start ?? end;
   //   canvasObject.beginPath();
   //   canvasObject.lineWidth = width;
-  //   canvasObject.strokeStyle = color;
-  //   canvasObject.fillStyle = color;
+  //   canvasObject.strokeStyle = color; // set the strokeStyle to the passed color
   //   canvasObject.moveTo(start.x, start.y);
   //   canvasObject.lineTo(end.x, end.y);
   //   canvasObject.stroke();
-
   // }
-  function drawLine(start, end, canvasObject, color, width) {
-    start = start ?? end;
-    canvasObject.beginPath();
-    canvasObject.lineWidth = width;
-    canvasObject.strokeStyle = color; // set the strokeStyle to the passed color
-    canvasObject.moveTo(start.x, start.y);
-    canvasObject.lineTo(end.x, end.y);
-    canvasObject.stroke();
-  }
 
-  // function drawCircle(start, end, canvasObject, color, width) {
-  //   start = start ?? end;
-
-  //   canvasObject.fillStyle = lineColor;
-  //   canvasObject.beginPath();
-  //   canvasObject.arc(start.x, start.y, width * 0.35, 0, width * Math.PI);
-  //   canvasObject.strokeStyle = color;
-  //   canvasObject.stroke();
-  //   canvasObject.fillStyle = color
-  //   canvasObject.fill();
-  // }
 
 
   function download(selector) {
@@ -117,52 +188,41 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
   }
 
   function redPen() {
-    // lineColor = "#FF0000";
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#FF0000");
     resetColorButton();
     document.querySelector("#red").style.transform = "translateY(-5px)";
-    // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
   }
 
   function orangePen() {
-    // lineColor = "#FF7B00";
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#FF7B00");
     resetColorButton();
     document.querySelector("#orange").style.transform = "translateY(-5px)";
-    // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
   }
 
   function yellowPen() {
-    // lineColor = "#FFFF00";
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#FFFF00");
     resetColorButton();
     document.querySelector("#yellow").style.transform = "translateY(-5px)";
-    // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
   function greenPen() {
-    // lineColor = "#00FF00";
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#00FF00");
     resetColorButton();
     document.querySelector("#green").style.transform = "translateY(-5px)";
-    // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
   function bluePen() {
-    // lineColor = "#0000FF";
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#0000FF");
     resetColorButton();
     document.querySelector("#blue").style.transform = "translateY(-5px)";
-    // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto")
   }
 
   function purplePen() {
-    // lineColor = "#FF00FF";
     document.querySelector("#board").style.cursor = "pointer";
     setLineColor("#FF00FF");
     resetColorButton();
@@ -170,21 +230,16 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
   }
 
   function blackPen() {
-    // lineColor = "#000000";
     document.querySelector("#board").style.cursor = "pointer";
-    // console.log(lineColor);
     setLineColor("#000000");
     resetColorButton();
     document.querySelector("#black").style.transform = "translateY(-5px)";
   }
 
   function eraser() {
-    // lineColor = "#FFFFFF";
     document.querySelector("#board").style.cursor = "crosshair";
-    // console.log(lineColor);
     setLineColor("#FFFFFF");
     resetColorButton();
-    // setCursorStyle("url('https://icons.iconarchive.com/icons/bootstrap/bootstrap/16/Bootstrap-eraser-fill-icon.png'),auto")
   }
 
   function handleFontSizeChange(size){
@@ -205,7 +260,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
               backgroundColor: "#FFFFFF",
               // cursor: "pointer"
             }}
-            ref={setConvasRef}
+            ref={canvasRef}
           ></canvas>
         ) : (
           <canvas
@@ -329,88 +384,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
   );
 };
 
-function useOnDraw(onDraw) {
-  const canvasRef = useRef(null);
-
-  const isDrawingRef = useRef(false);
-
-  const mouseMoveListenerRef = useRef(null);
-  const mouseDownListenerRef = useRef(null);
-  const mouseUpListenerRef = useRef(null);
-
-  const previousPointRef = useRef(null);
-
-  useEffect(() => {
-    return () => {
-      if (mouseMoveListenerRef.current) {
-        window.removeEventListener("mousemove", mouseMoveListenerRef.current);
-      }
-      if (mouseUpListenerRef.current) {
-        window.removeEventListener("mouseup", mouseUpListenerRef.current);
-      }
-    };
-  }, []);
-
-  function setConvasRef(ref) {
-    if (!ref) return;
-    if (mouseMoveListenerRef.current) {
-      canvasRef.current.removeEventListener(
-        "mousedown",
-        mouseMoveListenerRef.current
-      );
-    }
-    canvasRef.current = ref;
-    initMouseMoveListener();
-    initMouseDownListener();
-    initMouseUpListener();
-  }
-
-  function initMouseMoveListener() {
-    const mouseMoveListener = (e) => {
-      if (isDrawingRef.current) {
-        // console.log({ x: e.clientX, y: e.clientY });
-        const point = computePointInCanvas(e.clientX, e.clientY);
-        // console.log(point); //receive the point in the board
-        const canvasObject = canvasRef.current.getContext("2d");
-        if (onDraw) {
-          onDraw(canvasObject, point, previousPointRef.current);
-        }
-        previousPointRef.current = point;
-      }
-    };
-    mouseMoveListenerRef.current = mouseMoveListener;
-    window.addEventListener("mousemove", mouseMoveListener); //relative to the top/left of the window
-  }
-
-  function initMouseDownListener() {
-    if (!canvasRef.current) return;
-    const mouseDownListener = () => {
-      isDrawingRef.current = true;
-    };
-    mouseDownListenerRef.current = mouseDownListener;
-    window.addEventListener("mousedown", mouseDownListener);
-  }
-
-  function initMouseUpListener() {
-    const mouseUpListener = () => {
-      isDrawingRef.current = false;
-      previousPointRef.current = null;
-    };
-    mouseUpListenerRef.current = mouseUpListener;
-    window.addEventListener("mouseup", mouseUpListener);
-  }
-
-  function computePointInCanvas(clientX, clientY) {
-    if (canvasRef.current) {
-      const boundingRect = canvasRef.current.getBoundingClientRect();
-      return {
-        x: clientX - boundingRect.left,
-        y: clientY - boundingRect.top,
-      };
-    }
-  }
-  return setConvasRef;
-}
 
 DrawingBoard.propTypes = {
   height: PropTypes.string,

@@ -13,6 +13,7 @@ import cat_left from "styles/images/cat_left.png";
 import cat_brown from "styles/images/cat_brown.png";
 import "styles/views/GameCreationView.scss";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import BgmPlayer from "components/ui/BgmPlayer"
 
 const FormField = (props) => {
   return (
@@ -139,6 +140,7 @@ const GameCreationView = () => {
   return (
     <div>
       <Header />
+      <BgmPlayer/>
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

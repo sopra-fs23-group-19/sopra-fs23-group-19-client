@@ -103,6 +103,29 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     setIsDisabled(true);
   };
 
+  useEffect(() => {
+    let ignore = true;
+    if(ignore){
+      const downloadButton = document.querySelector("#download");
+        if(role=="drawingPlayer"){
+          downloadButton.disabled = false;
+        }else{
+          downloadButton.disabled = true;
+        }
+    }
+  },[role])
+
+  function download(selector) {
+    const canvas = document.querySelector(selector);
+    const img = document.createElement("a");
+
+    img.href = canvas.toDataURL();
+    img.download = "your drawing";
+
+    const event = new MouseEvent("click");
+    img.dispatchEvent(event);
+  }
+
   const fetchTurnInfo = async () => {
     try {
       const response0 = await api().get(`/gameRounds/information/${turnId}`);
@@ -360,6 +383,14 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
           height="600px"
           style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF"}}
         ></canvas>
+          <Button
+            onClick={() => download("#showingBoard")}
+            style={{ border: "2px solid #000000" }}
+            id="download"
+          >
+              download
+            </Button>
+
         </div>
       </div>
       

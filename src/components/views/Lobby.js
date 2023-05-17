@@ -181,7 +181,7 @@ const Lobby = () => {
         hideProgressBar={true}
         draggable={false}
       />
-      <BgmPlayer />
+      <BgmPlayer/>
       <div className="lobby content-container">
         <div className="lobby pic">
           <img

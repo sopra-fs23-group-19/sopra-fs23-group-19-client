@@ -15,6 +15,7 @@ import BgmPlayer from "components/ui/BgmPlayer"
 
 const Friends = ({ message }) => {
   const history = useHistory();
+  const [isDisabled, setIsDisabled] = useState(false);
   const notify = (message) => {
     toast.error(message);
   };
@@ -25,6 +26,7 @@ const Friends = ({ message }) => {
     });
     try {
       await api().post(`/friends/${messageId}`, requestBody);
+      setIsDisabled(true);
     } catch (error) {
       // handleNotLogInError(history, error, "accept friend", true);
       const error_str = handleError(error);
@@ -45,6 +47,7 @@ const Friends = ({ message }) => {
     });
     try {
       await api().post(`/friends/${messageId}`, requestBody);
+      setIsDisabled(true);
     } catch (error) {
       // handleNotLogInError(history, error, "reject friend", true);
       const error_str = handleError(error);
@@ -76,10 +79,14 @@ const Friends = ({ message }) => {
         {message.usernameFrom}
       </div>
       <div className="notification button-container">
-        <Button onClick={() => acceptFriend(message.messageId)}>Accept</Button>
+        <Button onClick={() => acceptFriend(message.messageId)}
+        disabled={isDisabled}
+        >Accept</Button>
       </div>
       <div className="notification button-container">
-        <Button onClick={() => rejectFriend(message.messageId)}>Reject</Button>
+        <Button onClick={() => rejectFriend(message.messageId)}
+        disabled={isDisabled}
+        >Reject</Button>
       </div>
     </div>
   );
@@ -87,6 +94,7 @@ const Friends = ({ message }) => {
 
 const Rooms = ({ message }) => {
   const history = useHistory();
+  const [isDisabled, setIsDisabled] = useState(false);
   const userId = localStorage.getItem("id");
   const notify = (message) => {
     toast.error(message);
@@ -123,6 +131,7 @@ const Rooms = ({ message }) => {
         `/notification/game/${messageId}`,
         requestBody
       );
+      setIsDisabled(true);
       goToWaiting(response.data.roomId).then(() => {});
     } catch (error) {
       // handleNotLogInError(history, error, "accepting game invite", true);
@@ -144,6 +153,7 @@ const Rooms = ({ message }) => {
     });
     try {
       await api().post(`/notification/game/${messageId}`, requestBody);
+      setIsDisabled(true);
     } catch (error) {
       // handleNotLogInError(history, error, "rejecting game invite", true);
       const error_str = handleError(error);
@@ -175,10 +185,14 @@ const Rooms = ({ message }) => {
           {message.roomName}
         </div>
         <div className="notification button-container">
-          <Button onClick={() => acceptRoom(message.messageId)}>Accept</Button>
+          <Button onClick={() => acceptRoom(message.messageId)}
+          disabled={isDisabled}
+          >Accept</Button>
         </div>
         <div className="notification button-container">
-          <Button onClick={() => rejectRoom(message.messageId)}>Reject</Button>
+          <Button onClick={() => rejectRoom(message.messageId)}
+          disabled={isDisabled}
+          >Reject</Button>
         </div>
       </div>
     );

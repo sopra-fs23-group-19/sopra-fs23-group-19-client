@@ -154,8 +154,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             handleChooseWord(word0);
           }}
           style={{
-            left: "50px",
-            top: "320px",
+            left: "30px",
+            top: "150px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -174,8 +174,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             handleChooseWord(word1);
           }}
           style={{
-            left: "50px",
-            top: "370px",
+            left: "30px",
+            top: "200px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -194,8 +194,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             handleChooseWord(word2);
           }}
           style={{
-            left: "50px",
-            top: "420px",
+            left: "30px",
+            top: "250px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -323,15 +323,12 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           </div>
         </div>
         }
-      </div>
-
-      
-      {role == "drawingPlayer" ? (
+              {role == "drawingPlayer" ? (
         <div>
           <h2
             style={{
               left: "30%",
-              top: "180px",
+              top: "10px",
               position: "absolute",
               "font-family": "Nunito",
               color: "black",
@@ -341,11 +338,13 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             <br></br>
             Choose one word first!
           </h2>
+          <div style={{left:"30%", top:"100px", position:"absolute", "fontFamily": "Nunito", "fontSize": "20px"}}>
           <Timer
             start={startGuessing}
             stage="select_word"
             sendTimeInfo={sendTimeInfo}
           />
+          </div>
           {displayWords}
         </div>
       ) : (
@@ -353,7 +352,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           <h2
             style={{
               left: "30%",
-              top: "180px",
+              top: "10px",
               position: "absolute",
               "font-family": "Nunito",
               color: "black",
@@ -363,6 +362,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           </h2>
         </div>
       )}
+      </div>
     </div>
   );
 };

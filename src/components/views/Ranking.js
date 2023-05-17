@@ -15,7 +15,7 @@ import useWindowSize from "react-use/lib/useWindowSize";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
@@ -89,7 +89,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   //need to sort the score later
   const rankingWhenFourPlayers = (
     <div>
-      <div className="guessing score-list">
+      <div className="guessing rank-list">
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
             Username
@@ -135,7 +135,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
 
   const rankingWhenTwoPlayers = (
     <div>
-      <div className="guessing score-list">
+      <div className="guessing rank-list">
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
             Username
@@ -163,23 +163,10 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     </div>
   );
   const title = (
-    <div>
-      <Emoji symbol="👏" className="rank li" />
-      <h2
-        style={{
-          left: "40%",
-          top: "0px",
-          position: "absolute",
-          width: "20%",
-          textAlign: "center",
-          "font-family": "Nunito",
-          "font-size": "30px",
-          color: "black",
-        }}
-      >
+    <div className="guessing title1">
+        <Emoji symbol="🥳" className="guessing li"/>
         Game end!
-      </h2>
-      <img className="rank gif1" src={cat_bye} />
+        <img className="rank gif1" src={cat_bye} />
     </div>
   );
   return (
@@ -205,15 +192,17 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           />
         </div>
         {title}
+        {playerNum == 4 ? (
+        <div>{rankingWhenFourPlayers}</div>
+        ) : (
+        <div>{rankingWhenTwoPlayers}</div>
+        )}
         <div
           className="guessing button-container"
           style={{
-            left: "40%",
-            right: "40%",
-            top: "580px",
+            top: "60px",
+            left:"45%",
             position: "absolute",
-            width: "20%",
-            minWidth: "15em",
             height: "50px",
           }}
         >
@@ -228,12 +217,6 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           </Button>
         </div>
       </div>
-      {/* <div>{ranking}</div> */}
-      {playerNum == 4 ? (
-        <div>{rankingWhenFourPlayers}</div>
-      ) : (
-        <div>{rankingWhenTwoPlayers}</div>
-      )}
     </div>
   );
 };

@@ -80,6 +80,7 @@
     display: flex;
     justify-content: center;
     width: fit-content;
+    @include center;
     // margin-top: 2em;
   }
   &.container {
@@ -115,12 +116,23 @@
   &.score-list {
     list-style: none;
     padding-left: 0;
-    position: absolute;
-    left:30%;
-    right: 30%;
+    position: relative;
+    left:5%;
+    width: 90%;
+    min-width: 20em;
+    max-width: 50em;
+    top:0px;
+    background: rgba(181, 153, 120, 0.5);
+  }
+  &.rank-list {
+    list-style: none;
+    padding-left: 0;
+    position: relative;
+    margin: auto;
     width: 40%;
-    min-width: 30em;
-    top:300px;
+    min-width: 20em;
+    max-width: 50em;
+    top:120px;
     background: rgba(181, 153, 120, 0.5);
   }
   &.score-container{
@@ -129,6 +141,7 @@
     padding: 10px;
     border-radius: $borderRadius;
     display: flex;
+    flex-direction: row;
     align-items: center;
     left: 0px;
     top:0px;
@@ -163,5 +176,18 @@
     color: #000000;
     align-items: center;
     text-align: center;
+  }
+  &.title1{
+    width: 100%;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    align-items: center;
+    text-align: center;
+  }
+  &.li {
+    position: relative;
   }
 }

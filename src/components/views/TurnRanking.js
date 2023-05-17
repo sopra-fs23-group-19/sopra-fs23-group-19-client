@@ -243,7 +243,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         <div
           style={{
               "textAlign":"center", left: "10%", top: "0px", position: "relative",
-              "font-family": "Nunito", "font-size": "20px", color: "black", width: "80%"}}
+              "font-family": "Nunito", "font-size": "20px", color: "black", width: "80%", "wordWrap":"break-word"}}
           >
             Drawing player {drawingPlayerName} got {drawingPlayerScore} points.
             <br></br>

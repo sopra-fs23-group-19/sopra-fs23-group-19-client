@@ -232,10 +232,10 @@ const Friend = () => {
       <div className="friend right-container">
         <div className="friend container" style={{width:"80%",flexDirection:"column","marginLeft":"0%"}}>
           <div className="friend friend-container" style={{width:"100%"}}>
-            <div className="friend title" style={{ "margin-left": "15%" }}>
+            <div className="friend title" style={{ "width": "50%" }}>
               Friend Id
             </div>
-            <div className="friend title" style={{ "margin-left": "10%" }}>
+            <div className="friend title" style={{ "width": "50%" }}>
               Friend Name
             </div>
           </div>

@@ -155,7 +155,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           }}
           style={{
             left: "30px",
-            top: "150px",
+            top: "200px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -175,7 +175,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           }}
           style={{
             left: "30px",
-            top: "200px",
+            top: "250px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -195,7 +195,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           }}
           style={{
             left: "30px",
-            top: "250px",
+            top: "300px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -216,11 +216,13 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
+    "wordWrap":"break-word"
   };
   const style2 = {
     "font-family": "Nunito",
     "font-size": "20px",
     color: "black",
+    "wordWrap":"break-word"
   };
 
   //display cat and username
@@ -351,9 +353,11 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             style={{
               left: "30%",
               top: "10px",
+              width:"400px",
               position: "absolute",
               "font-family": "Nunito",
               color: "black",
+              "wordWrap":"break-word"
             }}
           >
             {username1} is choosing a word!

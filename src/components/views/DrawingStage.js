@@ -162,11 +162,13 @@ const DrawingStage = ({
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
+    "wordWrap":"break-word"
   };
   const style2 = {
     "font-family": "Josefin Sans",
     "font-size": "20px",
     color: "black",
+    "wordWrap":"break-word"
   };
 
   //display cat and username
@@ -270,7 +272,8 @@ const DrawingStage = ({
             "font-family": "Nunito",
             "font-size": "30px",
             color: "black",
-            width: "700px",
+            width: "400px",
+            "wordWrap":"break-word"
           }}
         >
           Drawing stage. 

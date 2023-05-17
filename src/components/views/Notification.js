@@ -81,11 +81,13 @@ const Friends = ({ message }) => {
       <div className="notification button-container">
         <Button onClick={() => acceptFriend(message.messageId)}
         disabled={isDisabled}
+        style={{"wordWrap":"break-word"}}
         >Accept</Button>
       </div>
       <div className="notification button-container">
         <Button onClick={() => rejectFriend(message.messageId)}
         disabled={isDisabled}
+        style={{"wordWrap":"break-word"}}
         >Reject</Button>
       </div>
     </div>
@@ -187,11 +189,13 @@ const Rooms = ({ message }) => {
         <div className="notification button-container">
           <Button onClick={() => acceptRoom(message.messageId)}
           disabled={isDisabled}
+          style={{"wordWrap":"break-word"}}
           >Accept</Button>
         </div>
         <div className="notification button-container">
           <Button onClick={() => rejectRoom(message.messageId)}
           disabled={isDisabled}
+          style={{"wordWrap":"break-word"}}
           >Reject</Button>
         </div>
       </div>

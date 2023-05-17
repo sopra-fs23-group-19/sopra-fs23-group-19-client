@@ -208,11 +208,13 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
+    "wordWrap":"break-word"
   };
   const style2 = {
     "font-family": "Nunito",
     "font-size": "20px",
     color: "black",
+    "wordWrap":"break-word"
   };
 
   //display cat and username

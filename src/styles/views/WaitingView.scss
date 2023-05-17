@@ -138,6 +138,7 @@
     justify-content: center;
     text-align: center;
     width: 25%;
+    word-wrap: break-word;
   }
   &.title-container {
     font-family: "Josefin Sans";
@@ -193,6 +194,8 @@
     font-weight: 500;
     color: black;
     margin: 0 auto;
+    width: 100%;
+    word-wrap: break-word;
   }
   &.id {
     margin-left: auto;

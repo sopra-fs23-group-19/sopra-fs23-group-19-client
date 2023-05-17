@@ -26,19 +26,17 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
-  const [username4, setUsername4] = useState("");
 
   const [score1, setScore1] = useState("");
   const [score2, setScore2] = useState("");
   const [score3, setScore3] = useState("");
-  const [score4, setScore4] = useState("");
 
   const [targetWord, setTargetWord] = useState("");
   const [userScore, setUserScore] = useState(0);
   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
   const [drawingPlayerName, setDrawingPlayerName] = useState("");
   const [drawingPlayerScore, setDrawingPlayerScore] = useState(0);
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("drawingPlayer");
   const [playerNum, setPlayerNum] = useState(2);
   const [imageData, setImageData] = useState("");
   const [time, setTime] = useState(10);
@@ -49,23 +47,21 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
       const response = response0.data;
       console.log(response);
-      const allPlayers = response.rankedList;
-      setDrawingPlayerId(response.drawingPlayerId);
+      const guessingPlayers = response.rankedList;
+      setDrawingPlayerId(response.drawingPlayerId.toString());
       setDrawingPlayerName(response.drawingPlayerName);
-      const curUser = allPlayers.filter((item) => item.id == curUserId);
-      const guessingPlayers = allPlayers.filter((item) => item.id != drawingPlayerId);
-      const drawingPlayer = allPlayers.filter((item) => item.id == drawingPlayerId);
-      setDrawingPlayerScore(parseInt(drawingPlayer[0].currentScore));
-      setUserScore(parseInt(curUser[0].currentScore));
-      setPlayerNum(allPlayers.length);
+      setDrawingPlayerScore(response.drawingPlayerScore);
+      setPlayerNum(guessingPlayers.length +1);
       setImageData(response.image);
       setTargetWord(response.targetWord);
-      if (parseInt(curUserId) == parseInt(drawingPlayerId)) {
+      if (parseInt(curUserId) == parseInt(response.drawingPlayerId)) {
         setRole("drawingPlayer");
-      } else if (parseInt(curUserId) != parseInt(drawingPlayerId)) {
+      } else{
         setRole("guessingPlayer");
+        const curUser = guessingPlayers.filter((item) => item.id == curUserId);
+        setUserScore(curUser[0].currentScore);
       }
-      console.log(curUser);
+
       setCorrectAnswer(response.correctAnswers);
       if (playerNum == 4) {
         setUsername1(guessingPlayers[0].username);
@@ -260,7 +256,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
               "textAlign":"center", left: "10%", top: "0px", position: "relative",
               "font-family": "Nunito", "font-size": "20px", color: "black", width: "80%"}}
           >
-            You got {userScore} points in this turn
+            You got {drawingPlayerScore} points in this turn
             <br></br>
             {(playerNum==2)?("Score obtained by the guessing player in this turn:"
             ):("Scores obtained by guessing players in this turn:")}
@@ -275,7 +271,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         "minWidth":"30em",
         "textAlign":"center",
         left: "20%",
-        top: "50px",
+        top: "70px",
         position: "relative",
       }}
     >

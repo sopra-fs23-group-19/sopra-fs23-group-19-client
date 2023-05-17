@@ -51,7 +51,7 @@ const notify = (message) => {
 };
 const SearchFriend = ({ searchfriend }) => {
   const id = localStorage.getItem("id");
-  let disable = false;
+  const [isDisabled, setIsDisabled] = useState(false);
   const history = useHistory();
   const createFriendNotification = async (useridTo) => {
     const requestBody = JSON.stringify({
@@ -59,14 +59,12 @@ const SearchFriend = ({ searchfriend }) => {
       useridTo: useridTo,
     });
     try {
-      if (id == useridTo) {
-        disable = true;
-      } else {
-        const response = await api().post(`/notification/friend`, requestBody);
-        if (response.data.messageId) {
-          disable = true;
-        }
-      }
+      // if(id==useridTo){
+      //   setIsDisabled(true);
+      // }else{
+      //   await api().post(`/notification/friend`, requestBody);
+      // }
+      await api().post(`/notification/friend`, requestBody);
     } catch (error) {
       const error_str = handleError(error);
       console.log(error_str);
@@ -78,6 +76,11 @@ const SearchFriend = ({ searchfriend }) => {
       }
     }
   };
+  const handleClick = (useridTo) => {
+    createFriendNotification(useridTo);
+    setIsDisabled(true);
+  };
+
   return (
     <div className="friend friend-container" style={{ width: "100%" }}>
       <div className="friend content">
@@ -91,8 +94,8 @@ const SearchFriend = ({ searchfriend }) => {
         {room.numberOfPlayers + "/" + room.roomSeats}
       </div> */}
       <div className="friend content">
-      <Button onClick={() => createFriendNotification(searchfriend.id)}
-        disabled={disable}
+      <Button onClick={() => handleClick(searchfriend.id)}
+      disabled={isDisabled || searchfriend.id==id}
       >
         ADD
       </Button>

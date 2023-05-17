@@ -30,6 +30,7 @@ Player.propTypes = {
 
 const Friends = ({ userId, roomId, friend }) => {
   const history = useHistory();
+  const [isDisabled, setIsDisabled] = useState(false);
   const [notification, setNotification] = useState("");
   // invite friend to game
   const inviteFriend = async () => {
@@ -40,7 +41,8 @@ const Friends = ({ userId, roomId, friend }) => {
     });
     try {
       await api().post(`/notification/game`, requestBody);
-      console.log("send game invitation successfully");
+      setIsDisabled(true);
+      // console.log("send game invitation successfully");
     } catch (error) {
       // handleNotLogInError(history, error, "invite friend to game", true);
       const error_str = handleError(error);
@@ -67,6 +69,7 @@ const Friends = ({ userId, roomId, friend }) => {
             "min-width": "100px",
             "font-family": "Josefin Sans",
           }}
+          disabled={isDisabled}
         >
           Invite
         </Button>

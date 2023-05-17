@@ -21,6 +21,8 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 const Header = (props) => {
   const history = useHistory();
   const [newMessage, setNewMessage] = useState(false);
+  const [newFriend, setNewFriend] = useState(null);
+  const [newGame, setNewGame] = useState(null);
   const notify = (message) => {
     toast.error(message);
   };
@@ -75,9 +77,11 @@ const Header = (props) => {
     try {
       const responseFriend = await api().get(`/notification/friend/pending/${aValue}`);
       const responseGame = await api().get(`/notification/game/pending/${aValue}`);
-      const newFriend = responseFriend.data;
-      const newGame = responseGame.data;
-      if(newFriend.data || newGame.data){setNewMessage(true);}
+      setNewFriend(responseFriend.data);
+      setNewGame(responseGame.data);
+      if(responseFriend.data.length != 0 || responseGame.data.length != 0){
+        setNewMessage(true);
+      }else{setNewMessage(false);}
     } catch (error) {
       const error_str = handleError(error);
       console.log(error_str);
@@ -196,6 +200,7 @@ const Header = (props) => {
         >
           Lobby
         </div>
+        <h3>{newMessage}</h3>
       </div>
 
       <ToastContainer

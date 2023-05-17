@@ -330,16 +330,14 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             <div className="guessing guessing-container">{player2}{player3}{player4}</div>
           </div>
         </div>
-        ) : (<></>
-        )}
-        {
+        ) : (
         <div>
           <div className="guessing players-container">
             {player1}
             <div className="guessing guessing-container">{player2}</div>
           </div>
         </div>
-        }
+        )}
         {(startGuessing && role === "guessingPlayer") ? (
           <div className="guessing box-container">
             {answerBox}

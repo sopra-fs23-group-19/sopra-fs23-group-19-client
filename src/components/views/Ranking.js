@@ -15,7 +15,7 @@ import useWindowSize from "react-use/lib/useWindowSize";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();

@@ -36,11 +36,11 @@ const Friends = ({ friend }) => {
         {friend.id}
       </div>
       <div className="friend content" 
+      style={{"text-decoration-line": "underline", width:"50%"}}
       onClick={() => {
         const requestUrl = "/profile/" + friend.id;
         history.push(requestUrl);
-       }}
-       style={{"text-decoration-line": "underline", width:"50%"}}>
+      }}>
         {friend.username}
       </div>
     </div>

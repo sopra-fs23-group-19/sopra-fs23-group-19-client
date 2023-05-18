@@ -221,7 +221,7 @@ const Lobby = () => {
           </div>
         </div>
         {localStorage.getItem("gameId") != null ? (
-          <div className="lobby text" style={{ textAlign: "center" }}>
+          <div className="lobby text" style={{ textAlign: "center" , position:"relative"}}>
             <Button
               style={{
                 "background-color": "#FFFFFF",

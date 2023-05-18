@@ -244,47 +244,32 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       </div>
     );
 
-  const before_rank =
-    role == "guessingPlayer" ? (
-      <div
-        style={{
-          textAlign: "center",
-          left: "10%",
-          top: "0px",
-          position: "relative",
-          "font-family": "Nunito",
-          "font-size": "20px",
-          color: "black",
-          width: "80%",
-        }}
-      >
-        Drawing player {drawingPlayerName} got {drawingPlayerScore} points.
-        <br></br>
-        {playerNum == 2
-          ? "Score obtained by the guessing player in this turn:"
-          : "Scores obtained by guessing players in this turn:"}
-      </div>
-    ) : (
-      <div
-        style={{
-          textAlign: "center",
-          left: "10%",
-          top: "0px",
-          position: "relative",
-          "font-family": "Nunito",
-          "font-size": "20px",
-          color: "black",
-          width: "80%",
-        }}
-      >
-        You got {drawingPlayerScore} points in this turn
-        <br></br>
-        {playerNum == 2
-          ? "Score obtained by the guessing player in this turn:"
-          : "Scores obtained by guessing players in this turn:"}
-      </div>
-    );
-
+  const before_rank = (
+      (role=="guessingPlayer")?(
+        <div
+          style={{
+              "textAlign":"center", left: "10%", top: "0px", position: "relative",
+              "font-family": "Nunito", "font-size": "20px", color: "black", width: "80%", "wordWrap":"break-word"}}
+          >
+            Drawing player {drawingPlayerName} got {drawingPlayerScore} points.
+            <br></br>
+            {(playerNum==2)?("Score obtained by the guessing player in this turn:"
+            ):("Scores obtained by guessing players in this turn:")}
+        </div>
+      ):(
+        <div
+            style={{
+              "textAlign":"center", left: "10%", top: "0px", position: "relative",
+              "font-family": "Nunito", "font-size": "20px", color: "black", width: "80%"}}
+          >
+            You got {drawingPlayerScore} points in this turn
+            <br></br>
+            {(playerNum==2)?("Score obtained by the guessing player in this turn:"
+            ):("Scores obtained by guessing players in this turn:")}
+        </div>
+      )
+  );
+  
   const waitTnfo = (
     <div
       style={{

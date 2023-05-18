@@ -163,7 +163,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           }}
           style={{
             left: "30px",
-            top: "150px",
+            top: "200px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -183,7 +183,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           }}
           style={{
             left: "30px",
-            top: "200px",
+            top: "250px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -203,7 +203,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           }}
           style={{
             left: "30px",
-            top: "250px",
+            top: "300px",
             position: "absolute",
             "font-family": "Nunito",
             "font-size": "20px",
@@ -224,11 +224,13 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
+    "wordWrap":"break-word"
   };
   const style2 = {
     "font-family": "Nunito",
     "font-size": "20px",
     color: "black",
+    "wordWrap":"break-word"
   };
 
   //display cat and username
@@ -338,52 +340,46 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           </div>
         )}
         {role == "drawingPlayer" ? (
-          <div>
-            <h2
-              style={{
-                left: "30%",
-                top: "10px",
-                position: "absolute",
-                "font-family": "Nunito",
-                color: "black",
-              }}
-            >
-              It's your turn to paint.
-              <br></br>
-              Choose one word first!
-            </h2>
-            <div
-              style={{
-                left: "30%",
-                top: "100px",
-                position: "absolute",
-                fontFamily: "Nunito",
-                fontSize: "20px",
-              }}
-            >
-              <Timer
-                start={startGuessing}
-                stage="select_word"
-                sendTimeInfo={sendTimeInfo}
-              />
-            </div>
-            {displayWords}
+        <div>
+          <h2
+            style={{
+              left: "30%",
+              top: "10px",
+              position: "absolute",
+              "font-family": "Nunito",
+              color: "black",
+            }}
+          >
+            It's your turn to paint. 
+            <br></br>
+            Choose one word first!
+          </h2>
+          <div style={{left:"30%", top:"100px", position:"absolute", "fontFamily": "Nunito", "fontSize": "20px"}}>
+          <Timer
+            start={startGuessing}
+            stage="select_word"
+            sendTimeInfo={sendTimeInfo}
+          />
           </div>
-        ) : (
-          <div>
-            <h2
-              style={{
-                left: "30%",
-                top: "10px",
-                position: "absolute",
-                "font-family": "Nunito",
-                color: "black",
-              }}
-            >
-              {username1} is choosing a word!
-            </h2>
-          </div>
-        )}
+          {displayWords}
+        </div>
+      ) : (
+        <div>
+          <h2
+            style={{
+              left: "30%",
+              top: "10px",
+              width:"400px",
+              position: "absolute",
+              "font-family": "Nunito",
+              color: "black",
+              "wordWrap":"break-word"
+            }}
+          >
+            {username1} is choosing a word!
+          </h2>
+        </div>
+      )}
       </div>
     </div>
   );

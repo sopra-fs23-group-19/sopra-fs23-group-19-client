@@ -87,20 +87,16 @@ const Friends = ({ message }) => {
         {message.usernameFrom}
       </div>
       <div className="notification button-container">
-        <Button
-          onClick={() => acceptFriend(message.messageId)}
-          disabled={isDisabled}
-        >
-          Accept
-        </Button>
+        <Button onClick={() => acceptFriend(message.messageId)}
+        disabled={isDisabled}
+        style={{"wordWrap":"break-word"}}
+        >Accept</Button>
       </div>
       <div className="notification button-container">
-        <Button
-          onClick={() => rejectFriend(message.messageId)}
-          disabled={isDisabled}
-        >
-          Reject
-        </Button>
+        <Button onClick={() => rejectFriend(message.messageId)}
+        disabled={isDisabled}
+        style={{"wordWrap":"break-word"}}
+        >Reject</Button>
       </div>
     </div>
   );
@@ -213,20 +209,17 @@ const Rooms = ({ message }) => {
         <Button
           onClick={() => acceptRoom(message.messageId)}
           disabled={isDisabled}
-        >
-          Accept
-        </Button>
-      </div>
-      <div className="notification button-container">
-        <Button
-          onClick={() => rejectRoom(message.messageId)}
+          style={{"wordWrap":"break-word"}}
+          >Accept</Button>
+        </div>
+        <div className="notification button-container">
+          <Button onClick={() => rejectRoom(message.messageId)}
           disabled={isDisabled}
-        >
-          Reject
-        </Button>
+          style={{"wordWrap":"break-word"}}
+          >Reject</Button>
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 const Notification = () => {

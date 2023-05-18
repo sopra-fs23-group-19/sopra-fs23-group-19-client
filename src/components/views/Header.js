@@ -73,6 +73,10 @@ const Header = (props) => {
     history.push(`/notification`);
   };
 
+  const goToLeaderboard = () => {
+    history.push(`/leaderboard`);
+  };
+
   const new_notice = async () => {
     var aValue = localStorage.getItem("id");
     try {
@@ -204,6 +208,13 @@ const Header = (props) => {
           onClick={() => goToProfile()}
         >
           Profile
+        </div>
+        <div
+          className="header instruction"
+          style={{ color: "#dac107" }}
+          onClick={() => goToLeaderboard()}
+        >
+          Leaderboard
         </div>
         <div
           className="header instruction"

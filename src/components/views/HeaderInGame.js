@@ -20,7 +20,7 @@ const HeaderInGame = (props) => {
           <img src={cats} alt="" style={{width:"270px",height:"35px"}}/>
         </div>
       </div>
-      <div className="header instruction-container">
+      <div className="header instruction-container" style={{"wordWrap":"break-word", width:"90%"}}>
         {localStorage.getItem("username") ? (
           <div className="header title-content" style={{"fontSize":"20px", textAlign:"right"}}>
             {"welcome, " + localStorage.getItem("username")}

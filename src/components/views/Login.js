@@ -67,6 +67,11 @@ const Login = (props) => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         setNotification("You have entered wrong username or password.");

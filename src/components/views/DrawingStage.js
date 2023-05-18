@@ -17,7 +17,7 @@ import HeaderInGame from "components/views/HeaderInGame";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const DrawingStage = ({
   gameId,
@@ -106,7 +106,6 @@ const DrawingStage = ({
       setCurrentUsername(thisPlayer[0].username);
 
       if (playerNum == 4) {
-        // setUsername1(response1.players[0].username);
         setUsername1(response1.drawingPlayerName);
 
         setUsername2(updatedPlayer[0].username);
@@ -118,30 +117,21 @@ const DrawingStage = ({
         setUsername1(response1.drawingPlayerName);
         setUsername2(updatedPlayer[0].username);
       }
-
-      // console.log("fetch turn info");
-      //   setRole("drawingPlayer");
     } catch (error) {
-      //   alert(
-      //     `Something went wrong during get game Turn information: \n${handleError(
-      //       error
-      //     )}`
-      //   );
-      // handleNotLogInError(
-      //   history,
-      //   error,
-      //   "fetching turn information in drawing phase"
-      // );
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
+        setIsUpdating(false);
       }
-      setIsUpdating(false);
-      history.push("/lobby"); // redirect back to lobby
+      history.push("/lobby");
     }
   };
 
@@ -154,7 +144,6 @@ const DrawingStage = ({
       fetchTurnInfo().then(() => {});
     },
     isUpdating && role == "guessingPlayer" ? 1000 : null
-    // status == "PLAYING" ? null : 1000
   );
 
   const style1 = {
@@ -273,7 +262,7 @@ const DrawingStage = ({
             width: "700px",
           }}
         >
-          Drawing stage. 
+          Drawing stage.
           <br></br>
           {username1} is painting!
         </div>
@@ -293,7 +282,7 @@ const DrawingStage = ({
   return (
     <div>
       <HeaderInGame />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -305,22 +294,30 @@ const DrawingStage = ({
       />
       <div className="guessing content-container">
         <div className="guessing pic">
-          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="game background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {playerNum == 4 ? (
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}{player3}{player4}</div>
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">
+                {player2}
+                {player3}
+                {player4}
+              </div>
+            </div>
           </div>
-        </div>
         ) : (
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}</div>
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">{player2}</div>
+            </div>
           </div>
-        </div>
         )}
       </div>
       {role === "drawingPlayer"
@@ -329,9 +326,15 @@ const DrawingStage = ({
       {startDrawing && role === "drawingPlayer" ? (
         <div>
           <div
-            style={{ left: "200px", top: "120px", position: "absolute",
-              "font-family": "Nunito", "font-size": "20px", color: "black",
-              border: "2px solid #000000", "background-color": "rgba(181, 153, 120, 0.5)",
+            style={{
+              left: "200px",
+              top: "120px",
+              position: "absolute",
+              "font-family": "Nunito",
+              "font-size": "20px",
+              color: "black",
+              border: "2px solid #000000",
+              "background-color": "rgba(181, 153, 120, 0.5)",
             }}
           >
             chosen word: <br />

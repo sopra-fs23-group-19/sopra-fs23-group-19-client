@@ -13,8 +13,7 @@ import { api, handleError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import gameBackground from "styles/images/empty-room.jpg";
-import BgmPlayer from "components/ui/BgmPlayer"
-
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
@@ -60,6 +59,11 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         // setNotification(error_str["message"]);
@@ -129,9 +133,13 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       history.push("/lobby"); // redirect back to lobby
@@ -292,7 +300,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   return (
     <div>
       <HeaderInGame />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -304,62 +312,78 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       />
       <div className="guessing content-container">
         <div className="guessing pic">
-          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="game background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {playernum == 4 ? (
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}{player3}{player4}</div>
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">
+                {player2}
+                {player3}
+                {player4}
+              </div>
+            </div>
           </div>
-        </div>
         ) : (
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}</div>
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">{player2}</div>
+            </div>
           </div>
-        </div>
         )}
         {role == "drawingPlayer" ? (
-        <div>
-          <h2
-            style={{
-              left: "30%",
-              top: "10px",
-              position: "absolute",
-              "font-family": "Nunito",
-              color: "black",
-            }}
-          >
-            It's your turn to paint. 
-            <br></br>
-            Choose one word first!
-          </h2>
-          <div style={{left:"30%", top:"100px", position:"absolute", "fontFamily": "Nunito", "fontSize": "20px"}}>
-          <Timer
-            start={startGuessing}
-            stage="select_word"
-            sendTimeInfo={sendTimeInfo}
-          />
+          <div>
+            <h2
+              style={{
+                left: "30%",
+                top: "10px",
+                position: "absolute",
+                "font-family": "Nunito",
+                color: "black",
+              }}
+            >
+              It's your turn to paint.
+              <br></br>
+              Choose one word first!
+            </h2>
+            <div
+              style={{
+                left: "30%",
+                top: "100px",
+                position: "absolute",
+                fontFamily: "Nunito",
+                fontSize: "20px",
+              }}
+            >
+              <Timer
+                start={startGuessing}
+                stage="select_word"
+                sendTimeInfo={sendTimeInfo}
+              />
+            </div>
+            {displayWords}
           </div>
-          {displayWords}
-        </div>
-      ) : (
-        <div>
-          <h2
-            style={{
-              left: "30%",
-              top: "10px",
-              position: "absolute",
-              "font-family": "Nunito",
-              color: "black",
-            }}
-          >
-            {username1} is choosing a word!
-          </h2>
-        </div>
-      )}
+        ) : (
+          <div>
+            <h2
+              style={{
+                left: "30%",
+                top: "10px",
+                position: "absolute",
+                "font-family": "Nunito",
+                color: "black",
+              }}
+            >
+              {username1} is choosing a word!
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );

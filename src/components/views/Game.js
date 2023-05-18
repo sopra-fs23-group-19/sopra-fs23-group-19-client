@@ -59,17 +59,8 @@ const Game = () => {
       await api().put(`/gameRounds/words`, requestBody);
     } catch (error) {
       // handleNotLogInError(history, error, "handle choose words", true);
-      const error_str = handleError(error);
-      console.log(error_str);
-      if (error_str["message"].match(/Network Error/)) {
-        history.push(`/information`);
-      } else {
-        // setNotification(error_str["message"]);
-        notify(error_str["message"]);
-      }
+      handleGameError(error);
     }
-
-    // setTurnStatus("PAINTING");
   };
 
   const handleConfirmRanking = async () => {
@@ -79,15 +70,7 @@ const Game = () => {
     try {
       await api().get(`/gameRounds/rankConfirmation/${turnId}/${curUserId}`);
     } catch (error) {
-      // handleNotLogInError(history, error, "confirm ranking", true);
-      const error_str = handleError(error);
-      console.log(error_str);
-      if (error_str["message"].match(/Network Error/)) {
-        history.push(`/information`);
-      } else {
-        // setNotification(error_str["message"]);
-        notify(error_str["message"]);
-      }
+      handleGameError(error);
     }
   };
 
@@ -97,19 +80,10 @@ const Game = () => {
       id: turnId,
       image: painting,
     });
-    // console.log(requestBody);
     try {
       await api().post(`/gameRounds/finalDrawings`, requestBody);
     } catch (error) {
-      // handleNotLogInError(history, error, "handle submitting Painting", true);
-      const error_str = handleError(error);
-      console.log(error_str);
-      if (error_str["message"].match(/Network Error/)) {
-        history.push(`/information`);
-      } else {
-        // setNotification(error_str["message"]);
-        notify(error_str["message"]);
-      }
+      handleGameError(error);
     }
   };
 
@@ -124,15 +98,7 @@ const Game = () => {
     try {
       await api().put(`/gameRounds/answers/${turnId}`, requestBody);
     } catch (error) {
-      // handleNotLogInError(history, error, "handle submitting answer", true);
-      const error_str = handleError(error);
-      console.log(error_str);
-      if (error_str["message"].match(/Network Error/)) {
-        history.push(`/information`);
-      } else {
-        // setNotification(error_str["message"]);
-        notify(error_str["message"]);
-      }
+      handleGameError(error);
     }
   };
 
@@ -146,15 +112,7 @@ const Game = () => {
       try {
         await api().put(`/gameRounds/drawings`, requestBody);
       } catch (error) {
-        // handleNotLogInError(history, error, "handle updating Painting", true);
-        const error_str = handleError(error);
-        console.log(error_str);
-        if (error_str["message"].match(/Network Error/)) {
-          history.push(`/information`);
-        } else {
-          // setNotification(error_str["message"]);
-          notify(error_str["message"]);
-        }
+        handleGameError(error);
 
         setIsUpdatingPainting(false);
       }
@@ -164,17 +122,6 @@ const Game = () => {
   const onBackButtonEvent = (e) => {
     e.preventDefault();
     window.history.pushState(null, null, window.location.pathname);
-
-    // if (!finishStatus) {
-    //   if (window.confirm("Do you want to leave game?")) {
-    //     // setfinishStatus(true);
-    //     //  logic when user leaves game
-    //     handleQuitGame();
-    //   } else {
-    //     window.history.pushState(null, null, window.location.pathname);
-    //     setfinishStatus(false);
-    //   }
-    // }
   };
   useEffect(() => {
     window.history.pushState(null, null, window.location.pathname);
@@ -211,24 +158,13 @@ const Game = () => {
         localStorage.setItem("intialTurnId", response.currentTurnId);
       } else if (!response.currentTurnId) {
         setTurnId(response.currentTurnId);
-        // localStorage.removeItem("intialTurnId");
-        // localStorage.removeItem("gameId");
       }
 
       setTurnStatus(response.currentTurnStatus);
     } catch (error) {
-      // handleNotLogInError(history, error, "get game");
-      const error_str = handleError(error);
-      console.log(error_str);
-      if (error_str["message"].match(/Network Error/)) {
-        history.push(`/information`);
-      } else {
-        // setNotification(error_str["message"]);
-        notify(error_str["message"]);
-      }
+      handleGameError(error);
 
       setIsUpdating(false);
-      // handleGameError();
       history.push("/lobby");
     }
   };
@@ -238,34 +174,27 @@ const Game = () => {
     try {
       await api().put(`/games/ending/${gameId}`);
     } catch (error) {
-      // handleNotLogInError(history, error, "leaving game", true);
-      const error_str = handleError(error);
-      console.log(error_str);
-      if (error_str["message"].match(/Network Error/)) {
-        history.push(`/information`);
-      } else {
-        // setNotification(error_str["message"]);
-        notify(error_str["message"]);
-      }
+      handleGameError(error);
     }
     localStorage.removeItem("gameId");
     localStorage.removeItem("intialTurnId");
     history.push("/lobby");
   };
-  //force quit game
-  const handleGameError = async () => {
-    // console.log("handle game error");
-
-    try {
-      await api().put(`/games/ending/${gameId}`);
-    } catch (error) {
+  //handle error
+  const handleGameError = (error) => {
+    const error_str = handleError(error);
+    console.log(error_str);
+    if (error_str["message"].match(/Network Error/)) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      localStorage.removeItem("username");
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
-      history.push("/lobby");
+      history.push(`/information`);
+    } else {
+      // setNotification(error_str["message"]);
+      notify(error_str["message"]);
     }
-    localStorage.removeItem("gameId");
-    localStorage.removeItem("intialTurnId");
-    history.push("/lobby");
   };
 
   useEffect(() => {
@@ -330,40 +259,7 @@ const Game = () => {
       // console.log(gameStatus);
 
       content = <Ranking gameId={gameId} handleQuitGame={handleQuitGame} />;
-    }
-    // else if (gameStatus == "END_GAME" && turnId == null) {
-
-    //   content = (
-    //     <div
-    //       style={{
-    //         display: "flex",
-    //         justifyContent: "center",
-    //         alignItems: "center",
-    //         height: "20vh",
-    //       }}
-    //     >
-    //       <Link to="/lobby">Game end! Back to the lobby...</Link>
-    //     </div>
-    //   );
-    // }
-    // else if (gameStatus == "END")
-    // else if (gameStatus == "END_GAME" && playerNum == 0) {
-    //   localStorage.removeItem("gameId");
-    //   localStorage.removeItem("intialTurnId");
-    //   content = (
-    //     <div
-    //       style={{
-    //         display: "flex",
-    //         justifyContent: "center",
-    //         alignItems: "center",
-    //         height: "20vh",
-    //       }}
-    //     >
-    //       <Link to="/lobby">Game has ended! Back to the lobby...</Link>
-    //     </div>
-    //   );
-    // }
-    else {
+    } else {
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
       content = (

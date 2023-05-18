@@ -22,6 +22,7 @@ const FormField = (props) => {
       <input
         className="login input"
         placeholder="enter here.."
+        maxLength="30"
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
         disabled={props.disabled}
@@ -62,6 +63,11 @@ const Register = (props) => {
       // );
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else if (error_str["status"] == 409) {
         setNotification(
@@ -104,6 +110,7 @@ const Register = (props) => {
           className="password input"
           type={isShowPwd ? "text" : "password"}
           value={password}
+          maxLength="30"
           onChange={(e) => {
             setPassword(e.target.value);
             setNotification("");
@@ -124,29 +131,29 @@ const Register = (props) => {
   return (
     <div className="login main-container">
       <div className="login pic-container">
-      <div className="login pic">
-        <img src={cats} alt="" />
-      </div>
-      <div className="login title">
-        <div class="login writing-letters">
-          <span>D</span>
-          <span>r</span>
-          <span>a</span>
-          <span>w</span>
-          <span>i</span>
-          <span>n</span>
-          <span>g</span>
-          <span>&</span>
-          <span>G</span>
-          <span>u</span>
-          <span>e</span>
-          <span>s</span>
-          <span>s</span>
-          <span>i</span>
-          <span>n</span>
-          <span>g</span>
+        <div className="login pic">
+          <img src={cats} alt="" />
         </div>
-      </div>
+        <div className="login title">
+          <div class="login writing-letters">
+            <span>D</span>
+            <span>r</span>
+            <span>a</span>
+            <span>w</span>
+            <span>i</span>
+            <span>n</span>
+            <span>g</span>
+            <span>&</span>
+            <span>G</span>
+            <span>u</span>
+            <span>e</span>
+            <span>s</span>
+            <span>s</span>
+            <span>i</span>
+            <span>n</span>
+            <span>g</span>
+          </div>
+        </div>
       </div>
       <div className="login container">
         <div className="login form">

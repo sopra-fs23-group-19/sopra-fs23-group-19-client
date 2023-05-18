@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useInterval } from "helpers/hooks";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
 import { Button } from "components/ui/Button";
 import cats from "styles/images/cats3.png";
 import { api, handleError, handleNotLogInError } from "helpers/api";
-import { useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 // import useSound from "use-sound";
 // import btClick from "styles/sounds/click_button.mp3";
@@ -23,6 +23,7 @@ const Header = (props) => {
   const [newMessage, setNewMessage] = useState(false);
   const [newFriend, setNewFriend] = useState(null);
   const [newGame, setNewGame] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(true);
   const notify = (message) => {
     toast.error(message);
   };
@@ -79,20 +80,32 @@ const Header = (props) => {
   const new_notice = async () => {
     var aValue = localStorage.getItem("id");
     try {
-      const responseFriend = await api().get(`/notification/friend/pending/${aValue}`);
-      const responseGame = await api().get(`/notification/game/pending/${aValue}`);
+      const responseFriend = await api().get(
+        `/notification/friend/pending/${aValue}`
+      );
+      const responseGame = await api().get(
+        `/notification/game/pending/${aValue}`
+      );
       setNewFriend(responseFriend.data);
       setNewGame(responseGame.data);
-      if(responseFriend.data.length != 0 || responseGame.data.length != 0){
+      if (responseFriend.data.length != 0 || responseGame.data.length != 0) {
         setNewMessage(true);
-      }else{setNewMessage(false);}
+      } else {
+        setNewMessage(false);
+      }
     } catch (error) {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        notify(error_str["message"]);
+        // notify(error_str["message"]);
+        setIsUpdating(false);
       }
     }
   };
@@ -105,37 +118,36 @@ const Header = (props) => {
     async () => {
       new_notice().then(() => {});
     },
-    3000
+    isUpdating ? 3000 : null
   );
+  // 3000);
 
   // on click the logout button, logout and clear local storage
   const logout = async () => {
     var aValue = localStorage.getItem("id");
     try {
       await api().post(`/users/logout/${aValue}`);
-    } catch (error) {
-      // handleNotLogInError(history, error, "logout");
-      const error_str = handleError(error);
-      console.log(error_str);
-      if (error_str["message"].match(/Network Error/)) {
-        history.push(`/information`);
-      } else {
-        // setNotification(error_str["message"]);
-        notify(error_str["message"]);
-      }
       localStorage.removeItem("token");
       localStorage.removeItem("id");
       localStorage.removeItem("username");
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
       history.push("/login");
+    } catch (error) {
+      const error_str = handleError(error);
+      console.log(error_str);
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      localStorage.removeItem("username");
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        notify(error_str["message"]);
+        history.push("/login");
+      }
     }
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("username");
-    localStorage.removeItem("gameId");
-    localStorage.removeItem("intialTurnId");
-    history.push("/login");
   };
 
   // display the header
@@ -168,7 +180,7 @@ const Header = (props) => {
         >
           Rules
         </div>
-        {newMessage?(<div className="header circle"></div>):(<></>)}
+        {newMessage ? <div className="header circle"></div> : <></>}
         <div
           className="header instruction"
           style={{ color: "#83692C" }}
@@ -185,7 +197,7 @@ const Header = (props) => {
         </div> */}
         <div
           className="header instruction"
-          style={{ color: "#B59978" }}
+          style={{ color: "#BE7D2D" }}
           onClick={() => goToFriend()}
         >
           Friends

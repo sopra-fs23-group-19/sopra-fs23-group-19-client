@@ -16,7 +16,7 @@ import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const Player = ({ user }) => (
   <div className="player container">
@@ -48,6 +48,11 @@ const Friends = ({ userId, roomId, friend }) => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         setNotification(error_str["message"]);
@@ -82,7 +87,7 @@ const Friends = ({ userId, roomId, friend }) => {
 const WaitingView = () => {
   const { roomId } = useParams();
   console.log(roomId);
-
+  localStorage.setItem("gameId", roomId);
   const [playerCount, setPlayerCount] = useState(1); //current number of players
   const [roomSeats, setRoomSeats] = useState(2); //default 2 persons?
   const [ownerId, setOwnerId] = useState(null);
@@ -122,9 +127,13 @@ const WaitingView = () => {
       }
 
       if (status == "END") {
+        localStorage.removeItem("gameId");
+        notify("The room owner ended this game!");
         history.push("/lobby");
       }
       if (status == "END_GAME") {
+        localStorage.removeItem("gameId");
+        notify("The game is already ended!");
         history.push("/lobby");
       }
       if (status == "PLAYING") {
@@ -140,13 +149,18 @@ const WaitingView = () => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       setIsUpdating(false);
-      history.push("/lobby"); // redirect back to lobby
+      // history.push("/lobby"); // redirect back to lobby
     }
   };
 
@@ -169,12 +183,19 @@ const WaitingView = () => {
         userId: curUserId,
       });
       await api().put("/rooms/leave", requestBody); //leave waiting area
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
       history.push("/lobby");
     } catch (error) {
       // handleNotLogInError(history, error, "leave waiting area");
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         // setNotification(error_str["message"]);
@@ -192,6 +213,11 @@ const WaitingView = () => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         // setNotification(error_str["message"]);
@@ -209,6 +235,11 @@ const WaitingView = () => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         // setNotification(error_str["message"]);
@@ -369,7 +400,7 @@ const WaitingView = () => {
   return (
     <div>
       <HeaderInGame />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

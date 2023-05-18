@@ -13,13 +13,14 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Button } from "components/ui/Button";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const FormField = (props) => {
   return (
     <div className="profile field">
       <label className="profile label">{props.label}</label>
       <input
+        maxLength="30"
         className="profile input"
         // className={props.className}
         // type={props.type}
@@ -74,6 +75,11 @@ const Profile = () => {
       } catch (error) {
         const error_str = handleError(error);
         if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
           history.push(`/information`);
         } else if (error_str["status"] == 409) {
           setNotification(
@@ -120,6 +126,11 @@ const Profile = () => {
       // handleNotLogInError(history, error, "updating profile", true);
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else if (error_str["status"] == 409) {
         setNotification(
@@ -153,6 +164,7 @@ const Profile = () => {
       <div className="password wrapper">
         <label className="profile label">{"Password"}</label>
         <input
+          maxLength="30"
           className="password input"
           type={isShowPwd ? "text" : "password"}
           value={password}
@@ -310,7 +322,7 @@ const Profile = () => {
   return (
     <div>
       <Header />
-      <BgmPlayer/>
+      <BgmPlayer />
       <div className="profile content-container">
         <div className="profile pic">
           <img

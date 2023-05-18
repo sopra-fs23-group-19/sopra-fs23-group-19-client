@@ -53,9 +53,9 @@ const AppRouter = () => {
           </RegisterGuard>
         </Route>
         <Route exact path={`/welcome`}>
-          {/* <LobbyGuard> */}
-          <Welcome />
-          {/* </LobbyGuard> */}
+          <LobbyGuard>
+            <Welcome />
+          </LobbyGuard>
         </Route>
         <Route path={`/waiting/:roomId`}>
           <LobbyGuard>
@@ -76,10 +76,14 @@ const AppRouter = () => {
           <Rules />
         </Route>
         <Route exact path="/leaderboard">
-          <Leaderboard />
+          <LobbyGuard>
+            <Leaderboard />
+          </LobbyGuard>
         </Route>
         <Route exact path="/notification">
-          <Notification />
+          <LobbyGuard>
+            <Notification />
+          </LobbyGuard>
         </Route>
         <Route exact path="/information">
           <Maintenance />
@@ -92,7 +96,7 @@ const AppRouter = () => {
         <Route exact path="/">
           <Redirect to="/login" />
         </Route>
-        <Route exact path="/gameCreation">
+        <Route exact path="/create">
           <LobbyGuard>
             <GameCreationView />
           </LobbyGuard>

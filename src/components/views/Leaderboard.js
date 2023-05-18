@@ -18,22 +18,27 @@ import BgmPlayer from "components/ui/BgmPlayer";
 // define the format of rooms in the table
 
 const Scores = ({ user }) => {
-    const history = useHistory();
-    return (
-      <div className="leaderboard score-container">
-        <div className="leaderboard content" style={{"textDecorationLine": "underline", width:"50%"}}
-        onClick={() => {
-            const requestUrl = "/profile/" + user.id;
-            history.push(requestUrl);
-        }}>
-          {user.username}
-        </div>
-        <div className="leaderboard content" 
-        style={{width:"50%"}}>
-          {user.totalScore}
-        </div>
+  const history = useHistory();
+  return (
+    <div className="leaderboard score-container">
+      <div
+        className="leaderboard content"
+        style={{
+          fontFamily: '"Joti One", cursive',
+          width: "50%",
+        }}
+        // onClick={() => {
+        //   const requestUrl = "/profile/" + user.id;
+        //   history.push(requestUrl);
+        // }}
+      >
+        {user.username}
       </div>
-    );
+      <div className="leaderboard content" style={{ width: "50%" }}>
+        {user.totalScore}
+      </div>
+    </div>
+  );
 };
 
 const Leaderboard = () => {
@@ -50,14 +55,14 @@ const Leaderboard = () => {
     try {
       const response = await api().get("/leaderboard");
       setUsers(response.data);
-    //   const data = response.data.filter((item) => item.id == curUserId)
+      //   const data = response.data.filter((item) => item.id == curUserId)
       const num = response.data.length;
-      if(num==1){
+      if (num == 1) {
         setTop1(response.data[0].username);
-      }else if(num==2){
+      } else if (num == 2) {
         setTop1(response.data[0].username);
         setTop2(response.data[1].username);
-      }else{
+      } else {
         setTop1(response.data[0].username);
         setTop2(response.data[1].username);
         setTop3(response.data[2].username);
@@ -66,6 +71,11 @@ const Leaderboard = () => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         notify(error_str["message"]);
@@ -86,48 +96,72 @@ const Leaderboard = () => {
   let content = <Spinner />;
   if (users) {
     content = (
-        <div className="leaderboard container">
-          <div className="leaderboard score-container" style={{width:"100%"}}>
-            <div className="leaderboard title">Username</div>
-            <div className="leaderboard title">Total score</div>
-          </div>
-          <div className="leaderboard line"></div>
-          <div className="leaderboard score-list">
-            {users.map((user) => (
-              <Scores user={user} key={user.id} />
-            ))}
-          </div>
+      <div className="leaderboard container">
+        <div className="leaderboard score-container" style={{ width: "100%" }}>
+          <div className="leaderboard title">Username</div>
+          <div className="leaderboard title">Total score</div>
         </div>
+        <div className="leaderboard line"></div>
+        <div className="leaderboard score-list">
+          {users.map((user) => (
+            <Scores user={user} key={user.id} />
+          ))}
+        </div>
+      </div>
     );
   } else {
     content = (
-        <div className="leaderboard container">
-          <div className="leaderboard score-container" style={{width:"100%"}}>
-            <div className="leaderboard title">Username</div>
-            <div className="leaderboard title">Total score</div>
-          </div>
-          <div className="leaderboard line"></div>
+      <div className="leaderboard container">
+        <div className="leaderboard score-container" style={{ width: "100%" }}>
+          <div className="leaderboard title">Username</div>
+          <div className="leaderboard title">Total score</div>
         </div>
+        <div className="leaderboard line"></div>
+      </div>
     );
   }
 
-  const podium = (top1,top2,top3) => (
+  const podium = (top1, top2, top3) => (
     <div className="leaderboard cats-container">
-        <div className="leaderboard cat1">
-            <div className="leaderboard text">{top2}</div>
-            <img src={catSilver} alt="2nd 1" style={{"marginLeft":"auto", "marginRight":"auto"}}/>
-            <img src={catSilver} alt="2nd 2" style={{"marginLeft":"auto", "marginRight":"auto"}}/>
-        </div>
-        <div className="leaderboard cat1">
-            <div className="leaderboard text">{top1}</div>
-            <img src={catGold} alt="1st 1" style={{"marginLeft":"auto", "marginRight":"auto"}}/>
-            <img src={catGold} alt="1st 2" style={{"marginLeft":"auto", "marginRight":"auto"}}/>
-            <img src={catGold} alt="1st 3" style={{"marginLeft":"auto", "marginRight":"auto"}}/>
-        </div>
-        <div className="leaderboard cat1">
-            <div className="leaderboard text">{top3}</div>
-            <img src={catCopper} alt="3rd 1" style={{"marginLeft":"auto", "marginRight":"auto"}}/>
-        </div>
+      <div className="leaderboard cat1">
+        <div className="leaderboard text">{top2}</div>
+        <img
+          src={catSilver}
+          alt="2nd 1"
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        />
+        <img
+          src={catSilver}
+          alt="2nd 2"
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        />
+      </div>
+      <div className="leaderboard cat1">
+        <div className="leaderboard text">{top1}</div>
+        <img
+          src={catGold}
+          alt="1st 1"
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        />
+        <img
+          src={catGold}
+          alt="1st 2"
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        />
+        <img
+          src={catGold}
+          alt="1st 3"
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        />
+      </div>
+      <div className="leaderboard cat1">
+        <div className="leaderboard text">{top3}</div>
+        <img
+          src={catCopper}
+          alt="3rd 1"
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        />
+      </div>
     </div>
   );
 
@@ -155,15 +189,15 @@ const Leaderboard = () => {
         </div>
         {content}
         <div className="leaderboard button-container">
-            <Button
-              style={{
-                "background-color": "#FFFFFF",
-                border: "2px solid #000000",
-              }}
-              onClick={() => handleClick()}
-            >
-              Refresh the page
-            </Button>
+          <Button
+            style={{
+              "background-color": "#FFFFFF",
+              border: "2px solid #000000",
+            }}
+            onClick={() => handleClick()}
+          >
+            Refresh this page
+          </Button>
         </div>
       </div>
     </div>

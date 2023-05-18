@@ -164,7 +164,7 @@ const Lobby = () => {
   // function to get to game creation page
   const goTocreateGameView = () => {
     playOn();
-    history.push("/gameCreation");
+    history.push("/create");
   };
   const [playOn] = useSound(btClick);
 
@@ -221,7 +221,10 @@ const Lobby = () => {
           </div>
         </div>
         {localStorage.getItem("gameId") != null ? (
-          <div className="lobby text" style={{ textAlign: "center" , position:"relative"}}>
+          <div
+            className="lobby text"
+            style={{ textAlign: "center", position: "relative" }}
+          >
             <Button
               style={{
                 "background-color": "#FFFFFF",

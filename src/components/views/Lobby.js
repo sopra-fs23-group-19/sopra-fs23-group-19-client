@@ -39,6 +39,14 @@ const Rooms = ({ room }) => {
         localStorage.removeItem("gameId");
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        history.push(`/login`);
       } else {
         // setNotification(error_str["message"]);
         notify(error_str["message"]);
@@ -108,6 +116,12 @@ const Lobby = () => {
         localStorage.removeItem("gameId");
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify("Please register or log in with correct credentials.");
+        history.push(`/login`);
       } else {
         // setNotification(error_str["message"]);
         notify(error_str["message"]);

@@ -42,7 +42,7 @@
     display: flex;
     flex-direction: row;
   }
-  &.left-container{
+  &.left-container {
     left: 10%;
     width: 40%;
     position: relative;
@@ -51,26 +51,73 @@
     flex-direction: column;
     @include center;
   }
-  &.right-container{
+  &.right-container {
     min-width: 50px;
     position: relative;
     width: 40%;
     left: 10%;
-    top:2em;
+    top: 2em;
   }
-  &.image-container{
+  &.image-container {
     width: 100%;
     height: 240px;
     max-width: 30em;
     position: relative;
-    top:100px;
+    top: 100px;
     @include center;
   }
-  &.timer-container{
-    left:20%;
+  &.timer-container {
+    left: 20%;
     width: 60%;
     position: relative;
-    top:80px;
+    top: 80px;
     @include center;
+  }
+  &.coin-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &.coin-icon {
+    width: 10%;
+    margin-left: 5%;
+  }
+  &.coin-header {
+    color: #000000;
+    vertical-align: 0px;
+    line-height: 0px;
+    width: 10%;
+  }
+  &.displayWrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+  &.functionName {
+    color: #000000;
+    font-family: "Josefin Sans";
+    font-size: 15px;
+  }
+  &.stepContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border: 1px solid gray;
+    border-radius: 20px;
+    background-color: #b59978;
+    padding: 2px;
+    width: 90%;
+    height: flex;
+    transition: transform 0.2s;
+  }
+  &.functionNameWrapper {
+    display: flex;
+    justify-content: center;
+    font-family: "Josefin Sans";
   }
 }

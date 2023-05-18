@@ -21,7 +21,6 @@ const Game = () => {
   const location = useLocation();
   const { gameId } = useParams();
   // const gameId = useParams().id;
-
   // const InitialTurnId =
   //   location.state.turnId || localStorage.getItem("intialTurnId");
   const InitialTurnId = localStorage.getItem("intialTurnId");
@@ -148,7 +147,7 @@ const Game = () => {
       // // delays continuous execution of an async operation for 1 second.
 
       // // Get the returned users and update the state.
-
+      localStorage.setItem("gameId", gameId);
       const response = response0.data;
       setGameStatus(response.status);
       console.log(response);

@@ -33,6 +33,11 @@ const Rooms = ({ room }) => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         // setNotification(error_str["message"]);
@@ -97,6 +102,11 @@ const Lobby = () => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         // setNotification(error_str["message"]);
@@ -163,10 +173,14 @@ const Lobby = () => {
     playOn();
     const currentGameId = localStorage.getItem("gameId");
     const currentTurnId = localStorage.getItem("intialTurnId");
-    history.push({
-      pathname: `/game/${currentGameId}`,
-      state: { turnId: currentTurnId },
-    });
+    if (!currentTurnId) {
+      history.push(`/waiting/${currentGameId}`);
+    } else {
+      history.push({
+        pathname: `/game/${currentGameId}`,
+        state: { turnId: currentTurnId },
+      });
+    }
   };
 
   return (

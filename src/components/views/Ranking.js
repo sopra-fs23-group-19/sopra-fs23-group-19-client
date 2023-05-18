@@ -74,12 +74,17 @@ const Ranking = ({ gameId, handleQuitGame }) => {
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
-      // history.push("/lobby"); // redirect back to lobby
+      history.push("/lobby"); // redirect back to lobby
     }
   };
   useEffect(() => {
@@ -164,15 +169,15 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   );
   const title = (
     <div className="guessing title1">
-        <Emoji symbol="🥳" className="guessing li"/>
-        Game end!
-        <img className="rank gif1" src={cat_bye} />
+      <Emoji symbol="🥳" className="guessing li" />
+      Game end!
+      <img className="rank gif1" src={cat_bye} />
     </div>
   );
   return (
     <div>
       <HeaderInGame />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -193,15 +198,15 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         {title}
         {playerNum == 4 ? (
-        <div>{rankingWhenFourPlayers}</div>
+          <div>{rankingWhenFourPlayers}</div>
         ) : (
-        <div>{rankingWhenTwoPlayers}</div>
+          <div>{rankingWhenTwoPlayers}</div>
         )}
         <div
           className="guessing button-container"
           style={{
             top: "60px",
-            left:"45%",
+            left: "45%",
             position: "absolute",
             height: "50px",
           }}

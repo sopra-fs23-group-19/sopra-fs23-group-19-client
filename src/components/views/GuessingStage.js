@@ -162,17 +162,16 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         setRole("guessingPlayer");
       }
     } catch (error) {
-      // handleNotLogInError(
-      //   history,
-      //   error,
-      //   "fetching game turn in guessing phase"
-      // );
       const error_str = handleError(error);
       console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       history.push("/lobby"); // redirect back to lobby

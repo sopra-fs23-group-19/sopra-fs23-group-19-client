@@ -75,6 +75,11 @@ const Profile = () => {
       } catch (error) {
         const error_str = handleError(error);
         if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
           history.push(`/information`);
         } else if (error_str["status"] == 409) {
           setNotification(
@@ -121,6 +126,11 @@ const Profile = () => {
       // handleNotLogInError(history, error, "updating profile", true);
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else if (error_str["status"] == 409) {
         setNotification(

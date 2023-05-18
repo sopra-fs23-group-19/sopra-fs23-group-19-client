@@ -13,7 +13,7 @@ import cat_left from "styles/images/cat_left.png";
 import cat_brown from "styles/images/cat_brown.png";
 import "styles/views/GameCreationView.scss";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const FormField = (props) => {
   return (
@@ -23,6 +23,7 @@ const FormField = (props) => {
         className="GameCreationView input"
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
+        maxLength="30"
       />
     </div>
   );
@@ -140,7 +141,7 @@ const GameCreationView = () => {
   return (
     <div>
       <Header />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

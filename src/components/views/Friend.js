@@ -12,7 +12,7 @@ import { Spinner } from "components/ui/Spinner";
 import cat_left from "styles/images/cat_left.png";
 import { useInterval } from "helpers/hooks";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const FormField = (props) => {
   return (
@@ -23,6 +23,7 @@ const FormField = (props) => {
         placeholder="enter here.."
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
+        maxLength="30"
       />
     </div>
   );
@@ -32,15 +33,17 @@ const Friends = ({ friend }) => {
   const history = useHistory();
   return (
     <div className="friend friend-container">
-      <div className="friend content" style={{width:"50%"}} >
+      <div className="friend content" style={{ width: "50%" }}>
         {friend.id}
       </div>
-      <div className="friend content" 
-      style={{"text-decoration-line": "underline", width:"50%"}}
-      onClick={() => {
-        const requestUrl = "/profile/" + friend.id;
-        history.push(requestUrl);
-      }}>
+      <div
+        className="friend content"
+        style={{ "text-decoration-line": "underline", width: "50%" }}
+        onClick={() => {
+          const requestUrl = "/profile/" + friend.id;
+          history.push(requestUrl);
+        }}
+      >
         {friend.username}
       </div>
     </div>
@@ -83,22 +86,19 @@ const SearchFriend = ({ searchfriend }) => {
 
   return (
     <div className="friend friend-container" style={{ width: "100%" }}>
-      <div className="friend content">
-        {searchfriend.id}
-      </div>
-      <div className="friend content">
-        {searchfriend.username}
-      </div>
+      <div className="friend content">{searchfriend.id}</div>
+      <div className="friend content">{searchfriend.username}</div>
       {/* <div className="lobby players">{room.players}</div> */}
       {/* <div className="friend content">
         {room.numberOfPlayers + "/" + room.roomSeats}
       </div> */}
       <div className="friend content">
-      <Button onClick={() => handleClick(searchfriend.id)}
-      disabled={isDisabled || searchfriend.id==id}
-      >
-        ADD
-      </Button>
+        <Button
+          onClick={() => handleClick(searchfriend.id)}
+          disabled={isDisabled || searchfriend.id == id}
+        >
+          ADD
+        </Button>
       </div>
       {/* <Button onClick={() => createFriendNotification(searchfriend.id)}
         disabled={disable}
@@ -189,7 +189,12 @@ const Friend = () => {
       <div>
         <div
           className="friend container"
-          style={{ left: "190px", top: "550px", width: "80%", background: "rgba(181, 153, 120, 0.5)"}}
+          style={{
+            left: "190px",
+            top: "550px",
+            width: "80%",
+            background: "rgba(181, 153, 120, 0.5)",
+          }}
         >
           <div className="friend friend-container" style={{ width: "100%" }}>
             <div className="friend title">Id</div>
@@ -197,8 +202,11 @@ const Friend = () => {
           </div>
 
           <div className="friend line" style={{ width: "100%" }}></div>
-          <ul className="friend friend-list" style={{width:"100%"}}>
-              <SearchFriend searchfriend={searchedFriend} key={searchedFriend.id} />
+          <ul className="friend friend-list" style={{ width: "100%" }}>
+            <SearchFriend
+              searchfriend={searchedFriend}
+              key={searchedFriend.id}
+            />
           </ul>
         </div>
       </div>
@@ -230,8 +238,11 @@ const Friend = () => {
   if (friends) {
     content = (
       <div className="friend right-container">
-        <div className="friend container" style={{width:"80%",flexDirection:"column","marginLeft":"0%"}}>
-          <div className="friend friend-container" style={{width:"100%"}}>
+        <div
+          className="friend container"
+          style={{ width: "80%", flexDirection: "column", marginLeft: "0%" }}
+        >
+          <div className="friend friend-container" style={{ width: "100%" }}>
             <div className="friend title" style={{ "margin-left": "15%" }}>
               Friend Id
             </div>
@@ -240,7 +251,7 @@ const Friend = () => {
             </div>
           </div>
 
-          <div className="friend line" style={{width:"100%"}}></div>
+          <div className="friend line" style={{ width: "100%" }}></div>
           <ul className="friend friend-list">
             {friends.map((friend) => (
               <Friends friend={friend} key={friend.id} />
@@ -252,9 +263,17 @@ const Friend = () => {
   } else {
     content = (
       <div className="friend right-container">
-        <div className="friend container" 
-        style={{width:"80%", left: "190px", top: "550px", height:"70%","marginLeft":"0%"}}>
-          <div className="friend friend-container" style={{width:"100%"}}>
+        <div
+          className="friend container"
+          style={{
+            width: "80%",
+            left: "190px",
+            top: "550px",
+            height: "70%",
+            marginLeft: "0%",
+          }}
+        >
+          <div className="friend friend-container" style={{ width: "100%" }}>
             <div className="friend title" style={{ "margin-left": "15%" }}>
               Friend id
             </div>
@@ -262,7 +281,7 @@ const Friend = () => {
               Friend name
             </div>
           </div>
-          <div className="friend line" style={{width:"100%"}}></div>
+          <div className="friend line" style={{ width: "100%" }}></div>
 
           <div
             className="friend line"
@@ -277,7 +296,7 @@ const Friend = () => {
     // <BaseContainer>
     <>
       <Header />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -288,7 +307,7 @@ const Friend = () => {
         draggable={false}
       />
       <div className="profile content-container">
-      <div className="profile pic">
+        <div className="profile pic">
           <img
             src={cats}
             alt="welcome background cats"
@@ -296,34 +315,32 @@ const Friend = () => {
           />
         </div>
 
-      <div className="friend main-container">
-       <div className="friend left-container">
-        <div className="friend form-container">
-        <div className="friend form">
-          <FormField
-            label="Find a new friend by username"
-            value={username}
-            onChange={(un) => setUsername(un)}
-          />
-          <div className="friend button-container">
-            <img className="friend img_cat_left" src={cat_left} />
+        <div className="friend main-container">
+          <div className="friend left-container">
+            <div className="friend form-container">
+              <div className="friend form">
+                <FormField
+                  label="Find a new friend by username"
+                  value={username}
+                  onChange={(un) => setUsername(un)}
+                />
+                <div className="friend button-container">
+                  <img className="friend img_cat_left" src={cat_left} />
 
-            <Button
-              onClick={() => SearchByUsername()}
-              className="friend button_style1"
-            >
-              search
-            </Button>
-            <img className="friend img_cat_right" src={cat_left} />
+                  <Button
+                    onClick={() => SearchByUsername()}
+                    className="friend button_style1"
+                  >
+                    search
+                  </Button>
+                  <img className="friend img_cat_right" src={cat_left} />
+                </div>
+              </div>
+            </div>
+            {searchContent}
           </div>
+          <div className="friend right-container">{content}</div>
         </div>
-        </div>
-      {searchContent}
-      </div>
-      <div className="friend right-container">
-        {content}
-      </div>
-      </div>
       </div>
     </>
     // </BaseContainer>

@@ -13,13 +13,14 @@ import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Button } from "components/ui/Button";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const FormField = (props) => {
   return (
     <div className="profile field">
       <label className="profile label">{props.label}</label>
       <input
+        maxLength="30"
         className="profile input"
         // className={props.className}
         // type={props.type}
@@ -153,6 +154,7 @@ const Profile = () => {
       <div className="password wrapper">
         <label className="profile label">{"Password"}</label>
         <input
+          maxLength="30"
           className="password input"
           type={isShowPwd ? "text" : "password"}
           value={password}
@@ -310,7 +312,7 @@ const Profile = () => {
   return (
     <div>
       <Header />
-      <BgmPlayer/>
+      <BgmPlayer />
       <div className="profile content-container">
         <div className="profile pic">
           <img

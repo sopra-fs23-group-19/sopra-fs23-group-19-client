@@ -19,7 +19,7 @@ import HeaderInGame from "components/views/HeaderInGame";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const FormField = (props) => {
   return (
@@ -30,6 +30,7 @@ const FormField = (props) => {
         placeholder="enter here.."
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
+        maxLength="30"
       />
     </div>
   );
@@ -105,15 +106,15 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
 
   useEffect(() => {
     let ignore = true;
-    if(ignore){
+    if (ignore) {
       const downloadButton = document.querySelector("#download");
-        if(role=="drawingPlayer"){
-          downloadButton.disabled = false;
-        }else{
-          downloadButton.disabled = true;
-        }
+      if (role == "drawingPlayer") {
+        downloadButton.disabled = false;
+      } else {
+        downloadButton.disabled = true;
+      }
     }
-  },[role])
+  }, [role]);
 
   function download(selector) {
     const canvas = document.querySelector(selector);
@@ -288,7 +289,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         left: "45%",
         top: "1em",
         position: "absolute",
-        flexDirection: "column"
+        flexDirection: "column",
       }}
     >
       <div
@@ -309,7 +310,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   return (
     <div>
       <HeaderInGame />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -321,78 +322,91 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       />
       <div className="guessing content-container">
         <div className="guessing pic">
-          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="game background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {playerNum == 4 ? (
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}{player3}{player4}</div>
-          </div>
-        </div>
-        ) : (
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}</div>
-          </div>
-        </div>
-        )}
-        {(startGuessing && role === "guessingPlayer") ? (
-          <div className="guessing box-container">
-            {answerBox}
-            <div className='guessing button-container' style={{right: "45%", top:"120px", position: "absolute"}}>
-            <Button
-              // disabled={role === "drawingPlayer"}
-              disabled={isDisabled}
-              onClick={() => {
-                handleClick();
-              }}
-            >
-              Submit
-            </Button>
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">
+                {player2}
+                {player3}
+                {player4}
+              </div>
             </div>
           </div>
-        ) : (<></>)}
+        ) : (
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">{player2}</div>
+            </div>
+          </div>
+        )}
+        {startGuessing && role === "guessingPlayer" ? (
+          <div className="guessing box-container">
+            {answerBox}
+            <div
+              className="guessing button-container"
+              style={{ right: "45%", top: "120px", position: "absolute" }}
+            >
+              <Button
+                // disabled={role === "drawingPlayer"}
+                disabled={isDisabled}
+                onClick={() => {
+                  handleClick();
+                }}
+              >
+                Submit
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
 
         {startGuessing ? (
-        <div
-          style={{
-            left: "15%",
-            top: "20px",
-            position: "absolute",
-            "font-family": "Nunito",
-            "font-size": "30px",
-            color: "black",
-          }}
-        >
-          Guessing stage
-          <Timer
-            start={startGuessing}
-            stage="guessing"
-            sendTimeInfo={sendTimeInfo}
-          />
-          <Button
-            onClick={() => download("#showingBoard")}
-            style={{ border: "2px solid #000000", "marginLeft":"20px"}}
-            id="download"
+          <div
+            style={{
+              left: "15%",
+              top: "20px",
+              position: "absolute",
+              "font-family": "Nunito",
+              "font-size": "30px",
+              color: "black",
+            }}
           >
+            Guessing stage
+            <Timer
+              start={startGuessing}
+              stage="guessing"
+              sendTimeInfo={sendTimeInfo}
+            />
+            <Button
+              onClick={() => download("#showingBoard")}
+              style={{ border: "2px solid #000000", marginLeft: "20px" }}
+              id="download"
+            >
               download
-          </Button>
-        </div>
-        ) : (<></>)}
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
         <div style={{ left: "0px", top: "150px", position: "absolute" }}>
-        <canvas
-          id="showingBoard"
-          width="500px"
-          height="600px"
-          style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF"}}
-        ></canvas>
-
+          <canvas
+            id="showingBoard"
+            width="500px"
+            height="600px"
+            style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF" }}
+          ></canvas>
         </div>
       </div>
-      
-      
+
       {isDisabled ? waitTnfo : <></>}
     </div>
   );

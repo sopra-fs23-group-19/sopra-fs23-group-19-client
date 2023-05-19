@@ -12,7 +12,7 @@ const Timer = ({ start, stage, sendTimeInfo }) => {
     let times = 60 - parseInt(`${(nowTime - start) / 1000}`);
     // setS(parseInt(`${times%60}`));
     if (stage === "turn_ranking") {
-      times = 10 - parseInt(`${(nowTime - start) / 1000}`);
+      times = 10000 - parseInt(`${(nowTime - start) / 1000}`);
     }
     if (stage === "select_word") {
       times = 20 - parseInt(`${(nowTime - start) / 1000}`);

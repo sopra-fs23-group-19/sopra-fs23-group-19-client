@@ -1,6 +1,19 @@
 @import "styles/theme";
 
 .rank {
+  &.body {
+    margin: 0;
+    padding: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    font-family: $fontDefault;
+    // background-image: url('../images/empty-room.jpg');
+    background-image: linear-gradient(135deg, $accent3 10%, $accent3 100%);
+    background-size: cover;
+    min-width: 55em;
+    min-height:55em;
+    background-position: center;
+  }
   &.label {
     color: black;
     margin-bottom: 12px;
@@ -98,7 +111,7 @@
   &.functionName {
     color: #000000;
     font-family: "Josefin Sans";
-    font-size: 15px;
+    font-size: 20px;
   }
   &.stepContainer {
     display: flex;
@@ -107,11 +120,15 @@
     margin: 0px;
     margin-top: 0px;
     margin-bottom: 0px;
-    border: 1px solid gray;
+    // border: 1px solid gray;
     border-radius: 20px;
-    background-color: #b59978;
+    // background-color: #b59978;
     padding: 2px;
+    position: relative;
+    left:5%;
     width: 90%;
+    min-width: 20em;
+    max-width: 50em;
     height: flex;
     transition: transform 0.2s;
   }

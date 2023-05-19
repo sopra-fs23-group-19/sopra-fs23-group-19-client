@@ -198,7 +198,7 @@ const Lobby = () => {
   };
 
   return (
-    <div>
+    <div className="lobby body">
       <Header />
       <ToastContainer
         toastClassName="toast-style"

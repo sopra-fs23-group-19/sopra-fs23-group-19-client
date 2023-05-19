@@ -283,7 +283,7 @@ const DrawingStage = ({
   };
 
   return (
-    <div>
+    <div className="guessing body">
       <HeaderInGame />
       <BgmPlayer />
       <ToastContainer

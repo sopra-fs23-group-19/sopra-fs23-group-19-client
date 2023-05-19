@@ -309,7 +309,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   );
 
   return (
-    <div>
+    <div className="guessing body">
       <HeaderInGame />
       <BgmPlayer />
       <ToastContainer
@@ -353,9 +353,10 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             {answerBox}
             <div
               className="guessing button-container"
-              style={{ right: "45%", top: "120px", position: "absolute" }}
+              style={{ right: "45%", top: "120px", position: "absolute"}}
             >
               <Button
+                style={{backgroundColor:"rgba(25,25,112,0.2)"}}
                 // disabled={role === "drawingPlayer"}
                 disabled={isDisabled}
                 onClick={() => {

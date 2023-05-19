@@ -1,6 +1,19 @@
 @import 'styles/theme';
 
 .guessing {
+  &.body {
+    margin: 0;
+    padding: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    font-family: $fontDefault;
+    // background-image: url('../images/empty-room.jpg');
+    background-image: linear-gradient(135deg, $accent3 10%, $accent3 100%);
+    background-size: cover;
+    min-width: 55em;
+    min-height:60em;
+    background-position: center;
+  }
   &.content-container {
     margin-top: 2em;
     margin-left: 5%;
@@ -48,7 +61,8 @@
     padding-left: 37px;
     padding-right: 37px;
     border-radius: 0.75em;
-    background-color: rgba(181, 153, 120, 0.5);
+    // background-color: rgba(181, 153, 120, 0.5);
+    background-color: $accent2;
     box-shadow: $dropShadow;
   }
   &.field {
@@ -122,7 +136,9 @@
     min-width: 20em;
     max-width: 50em;
     top:0px;
-    background: rgba(181, 153, 120, 0.5);
+    // background: rgba(181, 153, 120, 0.5);
+    background: $accent2;
+    border-radius: $borderRadius;
   }
   &.rank-list {
     list-style: none;
@@ -133,7 +149,9 @@
     min-width: 20em;
     max-width: 50em;
     top:120px;
-    background: rgba(181, 153, 120, 0.5);
+    // background: rgba(181, 153, 120, 0.5);
+    background: $accent2;
+    border-radius: $borderRadius;
   }
   &.score-container{
     margin: 0.5em 0;

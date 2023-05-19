@@ -125,29 +125,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     }
   }, [time]);
 
-  // const fetchTurnInfo = async () => {
-  //   try {
-  //     const response0 = await api().get(`/gameRounds/information/${turnId}`);
-  //     const response1 = response0.data;
-  //     if (parseInt(curUserId) == parseInt(response1.drawingPlayerId)) {
-  //       setRole("drawingPlayer");
-  //     } else if (parseInt(curUserId) != parseInt(response1.drawingPlayerId)) {
-  //       setRole("guessingPlayer");
-  //     }
-  //     setTargetWord(response1.targetWord);
-  //   } catch (error) {
-  //     handleNotLogInError(
-  //       history,
-  //       error,
-  //       "fetching turn information in drawing phase"
-  //     );
-  //     history.push("/lobby"); // redirect back to lobby
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchTurnScore();
-  // }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
   useEffect(() => {
     fetchTurnScore();
   }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
@@ -158,65 +135,47 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   };
 
   const [playOn] = useSound(btClick);
-  // const [playWin] = useSound(winSound);
-  // const [playLose] = useSound(loseSound);
 
   let rankingWhenFourPlayers = (
     <div id="rankFour">
-      <div className="guessing score-list">
+      <div className="guessing score-list" style={{backgroundColor:"rgba(193, 210, 240, 0.6)"}}>
         <div className="guessing score-container">
-          <div className="guessing rank-title" style={{}}>
+          <div className="guessing rank-title">
             Username
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        {/* <div className="guessing line"></div> */}
+        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
         </div>
-        {/* <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div> */}
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
           <div className="guessing content">{score2}</div>
         </div>
-        {/* <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div> */}
         <div className="guessing score-container">
           <div className="guessing content">{username3}</div>
           <div className="guessing content">{score3}</div>
         </div>
-        {/* <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div> */}
       </div>
     </div>
   );
 
   let rankingWhenTwoPlayers = (
     <div id="rankTwo">
-      <div className="guessing score-list">
+      <div className="guessing score-list" style={{backgroundColor:"rgba(193, 210, 240, 0.6)"}}>
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
             Username
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line"></div>
+        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
         </div>
-        <div
-          className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
-        ></div>
       </div>
     </div>
   );
@@ -261,13 +220,14 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
           <div>
             <h3 className="rank functionName">Role: Drawing</h3>
           </div>
-          <div className="guessing score-list">
+          <div className="guessing score-list" style={{backgroundColor:"rgba(193, 210, 240, 0.6)"}}>
             <div className="guessing score-container">
-              <div className="guessing rank-title" style={{}}>
+              <div className="guessing rank-title">
                 Username
               </div>
               <div className="guessing rank-title">Score</div>
             </div>
+            <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
             <div className="guessing score-container">
               <div className="guessing content">{drawingPlayerName}</div>
               <div className="guessing content">{drawingPlayerScore}</div>
@@ -278,39 +238,39 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       <div className="rank stepContainer">
         <div className="rank functionNameWrapper">
           <h3 className="rank functionName">Role: Guessing</h3>
+          {playerNum == 4 ? (
+            <div>{rankingWhenFourPlayers}</div>
+          ) : (
+            <div>{rankingWhenTwoPlayers}</div>
+          )}
         </div>
-        {playerNum == 4 ? (
-          <div>{rankingWhenFourPlayers}</div>
-        ) : (
-          <div>{rankingWhenTwoPlayers}</div>
-        )}
       </div>
     </div>
   );
 
-  const before_rank = (
-    <div
-      style={{
-        textAlign: "center",
-        left: "10%",
-        top: "0px",
-        position: "relative",
-        "font-family": "Nunito",
-        "font-size": "20px",
-        color: "black",
-        width: "80%",
-        wordWrap: "break-word",
-      }}
-    >
-      Scores obtained this turn 🎉
-      <br></br>
-      Drawing player {drawingPlayerName} got {drawingPlayerScore} points.
-      <br></br>
-      {playerNum == 2
-        ? "Score obtained by the guessing player in this turn:"
-        : "Scores obtained by guessing players in this turn:"}
-    </div>
-  );
+  // const before_rank = (
+  //   <div
+  //     style={{
+  //       textAlign: "center",
+  //       left: "10%",
+  //       top: "0px",
+  //       position: "relative",
+  //       "font-family": "Nunito",
+  //       "font-size": "20px",
+  //       color: "black",
+  //       width: "80%",
+  //       wordWrap: "break-word",
+  //     }}
+  //   >
+  //     Scores obtained this turn 🎉
+  //     <br></br>
+  //     Drawing player {drawingPlayerName} got {drawingPlayerScore} points.
+  //     <br></br>
+  //     {playerNum == 2
+  //       ? "Score obtained by the guessing player in this turn:"
+  //       : "Scores obtained by guessing players in this turn:"}
+  //   </div>
+  // );
 
   const waitTnfo = (
     <div
@@ -338,7 +298,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     </div>
   );
 
-  //the score need to change later
   const content = (
     <div
       style={{
@@ -354,7 +313,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       }}
     >
       <div>{"Correct word: " + targetWord}</div>
-      {/* <div>{"Your score: + " + userScore}</div> */}
       <div className="rank coin-container">
         <label> Your score:</label>
         <img src={coinPic} className="rank coin-icon" alt="Coin picture" />
@@ -391,7 +349,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   );
 
   return (
-    <div>
+    <div className="rank body">
       <HeaderInGame />
       <BgmPlayer />
       <ToastContainer
@@ -412,7 +370,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
           />
         </div>
         {title}
-        <div className="rank image-table-container">
+        <div className="rank image-table-container" >
           <div className="rank left-container">
             {role == "guessingPlayer" ? content : content_drawing}
             <div className="rank image-container">
@@ -446,7 +404,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
               handleClick();
             }}
             width="100%"
-            style={{ "margin-top": "5px", border: "2px solid #000000" }}
+            style={{ "margin-top": "5px", border: "2px solid #000000", backgroundColor:"rgba(193, 210, 240, 0.6)"}}
           >
             Continue
           </Button>

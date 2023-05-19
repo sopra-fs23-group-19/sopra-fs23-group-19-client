@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import cats from "styles/images/cats2.png";
-import Header from "components/views/Header";
-import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
@@ -101,14 +99,14 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line"></div>
+        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
@@ -116,7 +114,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username3}</div>
@@ -124,7 +122,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username4}</div>
@@ -132,7 +130,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
       </div>
     </div>
@@ -147,14 +145,14 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line"></div>
+        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
@@ -162,7 +160,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
       </div>
     </div>
@@ -175,7 +173,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     </div>
   );
   return (
-    <div>
+    <div className="guessing body">
       <HeaderInGame />
       <BgmPlayer />
       <ToastContainer
@@ -216,7 +214,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
               handleQuit();
             }}
             width="100%"
-            style={{ "margin-top": "5px", border: "2px solid #000000" }}
+            style={{ "margin-top": "5px", border: "2px solid #000000", backgroundColor:"rgba(193, 210, 240, 0.6)"}}
           >
             QUIT GAME
           </Button>

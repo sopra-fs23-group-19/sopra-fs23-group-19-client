@@ -134,6 +134,13 @@ const Profile = () => {
         localStorage.removeItem("gameId");
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 409 &&
+        error_str["message"].includes("Password")
+      ) {
+        setNotification(
+          "Password is the same as before, please enter a different one."
+        );
       } else if (error_str["status"] == 409) {
         setNotification(
           "There exists a user with the username you have entered. Please enter another one."

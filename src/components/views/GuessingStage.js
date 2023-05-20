@@ -55,7 +55,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
   const [username4, setUsername4] = useState("");
-  
+
   const [playerNum, setPlayerNum] = useState(2);
   const [imageData, setImageData] = useState("");
   const [role, setRole] = useState("");
@@ -98,11 +98,12 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     let ignore = true;
     if (ignore) {
       const downloadButton = document.querySelector("#download");
-      if (role == "drawingPlayer") {
-        downloadButton.disabled = false;
-      } else {
-        downloadButton.disabled = true;
-      }
+      downloadButton.disabled = false;
+      // if (role == "drawingPlayer") {
+      //   downloadButton.disabled = false;
+      // } else {
+      //   downloadButton.disabled = true;
+      // }
     }
   }, [role]);
 
@@ -167,7 +168,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   };
 
   useEffect(() => {
-    fetchTurnInfo().catch((error)=>{
+    fetchTurnInfo().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -177,7 +178,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       }
-    })
+    });
   }, [playerNum]);
 
   const answerBox = (
@@ -205,13 +206,13 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
-    "wordWrap":"break-word"
+    wordWrap: "break-word",
   };
   const style2 = {
     "font-family": "Nunito",
     "font-size": "20px",
     color: "black",
-    "wordWrap":"break-word"
+    wordWrap: "break-word",
   };
 
   //display cat and username
@@ -350,10 +351,10 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             {answerBox}
             <div
               className="guessing button-container"
-              style={{ right: "45%", top: "120px", position: "absolute"}}
+              style={{ right: "45%", top: "120px", position: "absolute" }}
             >
               <Button
-                style={{backgroundColor:"rgba(25,25,112,0.2)"}}
+                style={{ backgroundColor: "rgba(25,25,112,0.2)" }}
                 disabled={isDisabled}
                 onClick={() => {
                   handleClick();
@@ -386,7 +387,11 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             />
             <Button
               onClick={() => download("#showingBoard")}
-              style={{ border: "2px solid #000000", marginLeft: "20px", backgroundColor: "rgba(193, 210, 240, 0.6)" }}
+              style={{
+                border: "2px solid #000000",
+                marginLeft: "20px",
+                backgroundColor: "rgba(193, 210, 240, 0.6)",
+              }}
               id="download"
             >
               download

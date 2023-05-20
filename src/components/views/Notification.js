@@ -86,7 +86,7 @@ const Friends = ({ message }) => {
           disabled={isDisabled}
           style={{ wordWrap: "break-word" }}
         >
-          Accept
+          agree
         </Button>
       </div>
       <div className="notification button-container">
@@ -95,7 +95,7 @@ const Friends = ({ message }) => {
           disabled={isDisabled}
           style={{ wordWrap: "break-word" }}
         >
-          Reject
+          reject
         </Button>
       </div>
     </div>
@@ -362,7 +362,7 @@ const Notification = () => {
       <div className="notification left-container">
         <h2
           style={{
-            "font-family": "Nunito",
+            "fontFamily": "Josefin Sans, sans-serif",
             "font-size": "24px",
             color: "#000000",
             width: "10em",
@@ -392,7 +392,7 @@ const Notification = () => {
       <div className="notification left-container">
         <h2
           style={{
-            "font-family": "Nunito",
+            "fontFamily": "Josefin Sans, sans-serif",
             "font-size": "24px",
             color: "#000000",
             width: "10em",
@@ -419,7 +419,7 @@ const Notification = () => {
       <div className="notification right-container">
         <h2
           style={{
-            "font-family": "Nunito",
+            "fontFamily": "Josefin Sans, sans-serif",
             "font-size": "24px",
             color: "#000000",
             width: "10em",
@@ -448,7 +448,7 @@ const Notification = () => {
       <div className="notification right-container">
         <h2
           style={{
-            "font-family": "Nunito",
+            "fontFamily": "Josefin Sans, sans-serif",
             "font-size": "24px",
             color: "#000000",
             width: "10em",

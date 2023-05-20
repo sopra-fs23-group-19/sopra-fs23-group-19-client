@@ -7,7 +7,6 @@ import BaseContainer from "components/ui/BaseContainer";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 import cats from "styles/images/cats2.png";
 import waitingbackground from "styles/images/waitingRoom.jpg";
-// import Header from "components/views/Header";
 import PropTypes from "prop-types";
 import { useInterval } from "helpers/hooks";
 import WaitRoom from "models/WaitRoom";
@@ -32,6 +31,7 @@ const Friends = ({ userId, roomId, friend }) => {
   const history = useHistory();
   const [isDisabled, setIsDisabled] = useState(false);
   const [notification, setNotification] = useState("");
+
   // invite friend to game
   const inviteFriend = async () => {
     const requestBody = JSON.stringify({
@@ -42,11 +42,9 @@ const Friends = ({ userId, roomId, friend }) => {
     try {
       await api().post(`/notification/game`, requestBody);
       setIsDisabled(true);
-      // console.log("send game invitation successfully");
     } catch (error) {
-      // handleNotLogInError(history, error, "invite friend to game", true);
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -86,7 +84,7 @@ const Friends = ({ userId, roomId, friend }) => {
 
 const WaitingView = () => {
   const { roomId } = useParams();
-  console.log(roomId);
+
   localStorage.setItem("gameId", roomId);
   const [playerCount, setPlayerCount] = useState(1); //current number of players
   const [roomSeats, setRoomSeats] = useState(2); //default 2 persons?
@@ -121,7 +119,6 @@ const WaitingView = () => {
 
       const turnId0 = response.data.currentTurnId;
       setStartGameId(roomId);
-      // console.log(gameId0);
       if (turnId0 != null) {
         setStartTurnId(turnId0);
       }
@@ -138,16 +135,14 @@ const WaitingView = () => {
       }
       if (status == "PLAYING") {
         if (StartTurnId != null) {
-          // await new Promise((resolve) => setTimeout(resolve, 1000));
           localStorage.setItem("gameId", startGameId);
           localStorage.setItem("intialTurnId", StartTurnId);
           goToGame(startGameId, StartTurnId);
         }
       }
     } catch (error) {
-      // handleNotLogInError(history, error, "fetching waiting Area");
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -156,11 +151,9 @@ const WaitingView = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       setIsUpdating(false);
-      // history.push("/lobby"); // redirect back to lobby
     }
   };
 
@@ -187,9 +180,8 @@ const WaitingView = () => {
       localStorage.removeItem("intialTurnId");
       history.push("/lobby");
     } catch (error) {
-      // handleNotLogInError(history, error, "leave waiting area");
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -198,7 +190,6 @@ const WaitingView = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -208,10 +199,8 @@ const WaitingView = () => {
     try {
       await api().post(`/games/waitingArea/${roomId}`);
     } catch (error) {
-      // handleNotLogInError(history, error, "start game");
-      // history.push("/lobby"); // redirect back to lobby
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -220,7 +209,6 @@ const WaitingView = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -231,9 +219,8 @@ const WaitingView = () => {
       const response = await api().get(`/users/returnFriends/${curUserId}`);
       setFriends(response.data);
     } catch (error) {
-      // handleNotLogInError(history, error, "get all friends");
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -242,7 +229,6 @@ const WaitingView = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -286,11 +272,6 @@ const WaitingView = () => {
               key={friend.id}
             />
           ))}
-          {/* <ul className="waitingArea friends-list">
-            {friends.map((friend) => (
-              <Friends userId={curUserId} roomId={roomId} friend={friend} key={friend.id} />
-            ))}
-          </ul> */}
         </div>
       </div>
     );
@@ -329,17 +310,14 @@ const WaitingView = () => {
       pathname: `/game/${id}`,
       state: { turnId: turnId0 },
     });
-    // history.push(`/game/${id}`);
   };
 
   let content = <SpinnerBouncing />;
   let userChoiceArea = <SpinnerBouncing />;
-  //   const playerInfoBoard = <SpinnerBouncing />;
   if (roomName !== "") {
     userChoiceArea =
       playerCount === roomSeats ? (
         parseInt(localStorage.getItem("id")) === parseInt(ownerId) ? (
-          // parseInt(curUserId) === parseInt(ownerId) ? (
           <div className="waitingArea button-container">
             <Button
               width="100%"
@@ -418,21 +396,8 @@ const WaitingView = () => {
             style={{ width: "447px", height: "559px", opacity: "20%" }}
           />
         </div>
-        {/* <div className="waitingArea background-pic">
-          <img src={waitingbackground} alt="" style={{opacity: "50%"}}/>
-        </div> */}
         {content}
       </div>
-      {/* <div
-        className="lobby pic"
-        style={{
-          opacity: "50%",
-          left: "100px",
-          top: "90px",
-        }}
-      >
-        <img src={waitingbackground} alt="" />
-      </div> */}
     </div>
   );
 };

@@ -330,20 +330,20 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
           <>
             <Button
               onClick={() => download("#board")}
-              style={{ border: "2px solid #000000" }}
+              style={{ border: "2px solid #000000", backgroundColor: "rgba(193, 210, 240, 0.6)" }}
             >
               download
             </Button>
             <Button
               onClick={() => clear()}
-              style={{ border: "2px solid #000000", "margin-left": "15px" }}
+              style={{ border: "2px solid #000000", "margin-left": "15px", backgroundColor: "rgba(193, 210, 240, 0.6)" }}
             >
               clear
             </Button>
             <Button
               onClick={() => eraser()}
               // onClick={() => lineColor="#FFFFFF" }
-              style={{ border: "2px solid #000000", "margin-left": "15px" }}
+              style={{ border: "2px solid #000000", "margin-left": "15px", backgroundColor: "rgba(193, 210, 240, 0.6)" }}
             >
               eraser
             </Button>
@@ -351,7 +351,7 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
               onClick={() => {
                 handleDoSubmit(document.getElementById("board").toDataURL());
               }}
-              style={{ border: "2px solid #000000", "margin-left": "15px" }}
+              style={{ border: "2px solid #000000", "margin-left": "15px", backgroundColor: "rgba(193, 210, 240, 0.6)" }}
             >
               submit
             </Button>

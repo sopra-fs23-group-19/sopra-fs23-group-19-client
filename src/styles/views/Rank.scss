@@ -7,7 +7,6 @@
     min-width: 100vw;
     min-height: 100vh;
     font-family: $fontDefault;
-    // background-image: url('../images/empty-room.jpg');
     background-image: linear-gradient(135deg, $accent3 10%, $accent3 100%);
     background-size: cover;
     min-width: 55em;
@@ -17,7 +16,7 @@
   &.label {
     color: black;
     margin-bottom: 12px;
-    font-family: "Nunito";
+    font-family: "Nunito", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -110,7 +109,7 @@
   }
   &.functionName {
     color: #000000;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-size: 20px;
   }
   &.stepContainer {
@@ -120,9 +119,7 @@
     margin: 0px;
     margin-top: 0px;
     margin-bottom: 0px;
-    // border: 1px solid gray;
     border-radius: 20px;
-    // background-color: #b59978;
     padding: 2px;
     position: relative;
     left:5%;
@@ -135,6 +132,6 @@
   &.functionNameWrapper {
     display: flex;
     justify-content: center;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
   }
 }

@@ -16,22 +16,14 @@ import gameBackground from "styles/images/empty-room.jpg";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "styles/views/Lobby.scss";
 import "styles/index.scss";
+
 const Game = () => {
-  // use react-router-dom's hook to access the history
   const history = useHistory();
   const { gameId } = useParams();
-  // const gameId = useParams().id;
-  // const InitialTurnId =
-  //   location.state.turnId || localStorage.getItem("intialTurnId");
   const InitialTurnId = localStorage.getItem("intialTurnId");
 
   const curUserId = localStorage.getItem("id");
-  // define a state variable (using the state hook).
-  // if this variable changes, the component will re-render, but the variable will
-  // keep its value throughout render cycles.
-  // a component can have as many state variables as you like.
-  // more information can be found under https://reactjs.org/docs/hooks-state.html
-  // const [drawingPlayerId, setDrawingPlayerId] = useState(null);
+
   const [gameStatus, setGameStatus] = useState(true);
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
@@ -62,7 +54,6 @@ const Game = () => {
   };
 
   const handleSubmitPainting = async (painting) => {
-    console.log("handle submit painting");
     const requestBody = JSON.stringify({
       id: turnId,
       image: painting,
@@ -75,7 +66,6 @@ const Game = () => {
   };
 
   const handleSubmitAnswer = async (word) => {
-    console.log("handle submit answer");
     const requestBody = JSON.stringify({
       id: Number(curUserId),
       guessingWord: word,
@@ -130,12 +120,10 @@ const Game = () => {
   const fetchData = async () => {
     try {
       const response0 = await api().get(`/rooms/${gameId}`);
-      // delays continuous execution of an async operation for 1 second.
-      // Get the returned users and update the state.
       localStorage.setItem("gameId", gameId);
       const response = response0.data;
       setGameStatus(response.status);
-      console.log(response);
+
       if (response.currentTurnId) {
         setTurnId(response.currentTurnId);
         localStorage.setItem("intialTurnId", response.currentTurnId);
@@ -164,7 +152,7 @@ const Game = () => {
   };
   const handleGameError = (error) => {
     const error_str = handleError(error);
-    console.log(error_str);
+    
     if (error_str["message"].match(/Network Error/)) {
       localStorage.removeItem("token");
       localStorage.removeItem("id");
@@ -254,12 +242,6 @@ const Game = () => {
   return (
     <div className="game body">
     <div className="game container">
-      {/* <div
-        className="lobby pic"
-        style={{ opacity: "60%", left: "0px", top: "85px" }}
-      >
-        <img src={gameBackground} alt="" />
-      </div> */}
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"

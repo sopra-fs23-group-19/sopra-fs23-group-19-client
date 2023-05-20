@@ -7,14 +7,8 @@ import cats from "styles/images/cats3.png";
 import { api, handleError, handleNotLogInError } from "helpers/api";
 import { useHistory } from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-// import useSound from "use-sound";
-// import btClick from "styles/sounds/click_button.mp3";
+
 /**
- * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
- * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
- * They are reusable pieces, and think about each piece in isolation.
- * Functional components have to return always something. However, they don't need a "render()" method.
- * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
 
@@ -73,6 +67,7 @@ const Header = (props) => {
     history.push(`/notification`);
   };
 
+  // on click the leaderboard button, redirect to the leaderboard page
   const goToLeaderboard = () => {
     history.push(`/leaderboard`);
   };
@@ -95,7 +90,6 @@ const Header = (props) => {
       }
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -104,23 +98,42 @@ const Header = (props) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // notify(error_str["message"]);
         setIsUpdating(false);
       }
     }
   };
 
   useEffect(() => {
-    new_notice().then(() => {});
+    new_notice().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    })
   }, []);
 
   useInterval(
     async () => {
-      new_notice().then(() => {});
+      new_notice().catch((error)=>{
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      })
     },
     isUpdating ? 3000 : null
   );
-  // 3000);
+
 
   // on click the logout button, logout and clear local storage
   const logout = async () => {
@@ -135,7 +148,7 @@ const Header = (props) => {
       history.push("/login");
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
+      
       localStorage.removeItem("token");
       localStorage.removeItem("id");
       localStorage.removeItem("username");
@@ -188,13 +201,6 @@ const Header = (props) => {
         >
           Notification
         </div>
-        {/* <div
-          className="header instruction"
-          style={{ color: "#83692C" }}
-          onClick={() => goToNotification()}
-        >
-          Notification
-        </div> */}
         <div
           className="header instruction"
           style={{ color: "#BE7D2D" }}
@@ -243,7 +249,4 @@ Header.propTypes = {
   height: PropTypes.string,
 };
 
-/**
- * Don't forget to export your component!
- */
 export default Header;

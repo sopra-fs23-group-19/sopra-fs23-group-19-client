@@ -62,15 +62,9 @@ const SearchFriend = ({ searchfriend }) => {
       useridTo: useridTo,
     });
     try {
-      // if(id==useridTo){
-      //   setIsDisabled(true);
-      // }else{
-      //   await api().post(`/notification/friend`, requestBody);
-      // }
       await api().post(`/notification/friend`, requestBody);
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -79,7 +73,6 @@ const SearchFriend = ({ searchfriend }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -93,10 +86,6 @@ const SearchFriend = ({ searchfriend }) => {
     <div className="friend friend-container" style={{ width: "100%" }}>
       <div className="friend content">{searchfriend.id}</div>
       <div className="friend content">{searchfriend.username}</div>
-      {/* <div className="lobby players">{room.players}</div> */}
-      {/* <div className="friend content">
-        {room.numberOfPlayers + "/" + room.roomSeats}
-      </div> */}
       <div className="friend content">
         <Button
           onClick={() => handleClick(searchfriend.id)}
@@ -105,10 +94,6 @@ const SearchFriend = ({ searchfriend }) => {
           ADD
         </Button>
       </div>
-      {/* <Button onClick={() => createFriendNotification(searchfriend.id)}
-        disabled={disable}
-      >ADD
-      </Button> */}
     </div>
   );
 };
@@ -127,15 +112,13 @@ const Friend = () => {
   const [username, setUsername] = useState(null);
 
   const id = localStorage.getItem("id");
-  // const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
+
   const fetchFriends = async () => {
     try {
       const response = await api().get(`/users/returnFriends/${id}`);
       setFriends(response.data);
-      console.log(friends);
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -144,22 +127,10 @@ const Friend = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
   };
-  // const fetchSearchUsername = async() => {
-  //   try {
-  //     // const response = await api().get("/rooms");
-  //     // setRooms(response.data);
-  //     // console.log(rooms);
-  //   } catch (error) {
-  //     handleNotLogInError(history, error, "getting user by username");
-  //     // setIsUpdating(false);
-  //     // history.push("/login");
-  //   }
-  // }
 
   useEffect(() => {
     fetchFriends().then(() => {});
@@ -176,9 +147,7 @@ const Friend = () => {
       const response = await api().post(`/users/searchFriends`, requestBody);
       setSearchedFriend(response.data);
     } catch (error) {
-      // handleNotLogInError(history, error, "Search a user by username ");
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -187,7 +156,6 @@ const Friend = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -223,23 +191,6 @@ const Friend = () => {
     );
   } else {
     searchContent = (
-      // <div>
-      //   <div
-      //     className="friend container"
-      //     style={{ left: "190px", top: "550px", width: "35em" }}
-      //   >
-      //     <div className="friend friend-container" style={{ width: "35em" }}>
-      //       <div className="friend title" style={{ "margin-left": "80px" }}>
-      //         Id
-      //       </div>
-      //       <div className="friend title" style={{ "margin-left": "80px" }}>
-      //         Name
-      //       </div>
-      //     </div>
-
-      //     <div className="friend line" style={{ width: "35em" }}></div>
-      //   </div>
-      // </div>
       <></>
     );
   }

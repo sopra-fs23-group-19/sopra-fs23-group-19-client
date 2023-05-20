@@ -22,9 +22,6 @@ const FormField = (props) => {
       <input
         maxLength="30"
         className="profile input"
-        // className={props.className}
-        // type={props.type}
-        // className={props.className}
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
         disabled={props.disabled}
@@ -34,8 +31,6 @@ const FormField = (props) => {
 };
 
 FormField.propTypes = {
-  // className: PropTypes.string,
-  // type: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
@@ -51,7 +46,6 @@ const Profile = () => {
     bestScore: "",
     totalScore: "",
   });
-  // const [count, setCount] = useState(0);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -59,10 +53,8 @@ const Profile = () => {
   const [isShowPwd, setIsShowPwd] = useState(false);
   const visitIdStr = useParams();
   const [notification, setNotification] = useState("");
-  // console.log("visitIdStr");
-  // console.log(visitIdStr);
+
   const visitId = parseInt(visitIdStr["id"]);
-  // console.log(visitId);
   const editable = localStorage.getItem("id") === visitIdStr["id"];
 
   useEffect(() => {
@@ -70,7 +62,6 @@ const Profile = () => {
       try {
         const response = await api().get(`/users/${visitId}`);
         const userProfile1 = new User(response.data);
-        // const userProfile1 = new User(response);
         setUserProfile(userProfile1);
       } catch (error) {
         const error_str = handleError(error);
@@ -100,30 +91,20 @@ const Profile = () => {
     userProfile.totalScore,
     userProfile.id,
   ]);
-  // }, []);
 
   const handleUpdateProfile = async () => {
-    // console.log("handle update");
     const newUsername = username || "";
     const newPassword = password || ""; // if didn't update password
 
-    // console.log(newUsername);
-    // console.log(newPassword);
     const requestBody = JSON.stringify({
       id: visitId,
       username: newUsername,
       password: newPassword,
     });
-    // console.log(requestBody);
     try {
-      // console.log(visitId);
       await api().put(`/users/${visitId}`, requestBody);
       localStorage.setItem("username", newUsername);
     } catch (error) {
-      // alert(
-      //   `Something went wrong during updating profile: \n${handleError(error)}`
-      // );
-      // handleNotLogInError(history, error, "updating profile", true);
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -172,12 +153,10 @@ const Profile = () => {
             setPassword(e.target.value);
             setNotification("");
           }}
-          // onChange={(e) => setPwd(e.target.value)}
         />
         <img
           className="password icon"
           alt=""
-          // title={isShowPwd ? "Hide password" : "Show password"}
           src={isShowPwd ? showPwdIcon : hidePwdIcon}
           onClick={() => setIsShowPwd((prevState) => !prevState)}
         />
@@ -189,7 +168,6 @@ const Profile = () => {
   };
 
   const guestProfile = () => {
-    // console.log("guest profile");
     const content = (
       <div className="profile container">
         <div className="profile form">
@@ -200,7 +178,6 @@ const Profile = () => {
           />
           <FormField
             label="Status"
-            // value={userProfile.status === true ? "ONLINE" : "OFFLINE"}
             value={userProfile.status}
             disabled={true}
           />
@@ -231,7 +208,6 @@ const Profile = () => {
   };
 
   const ownProfile = () => {
-    // console.log("own profile");
     const content = (
       <div className="profile container">
         <div className="profile form">
@@ -242,7 +218,6 @@ const Profile = () => {
           />
           <FormField
             label="Status"
-            // value={userProfile.status === true ? "ONLINE" : "OFFLINE"}
             value={userProfile.status}
             disabled={true}
           />
@@ -276,7 +251,6 @@ const Profile = () => {
   };
 
   const ownProfileEdit = () => {
-    // console.log("own edit profile");
     return (
       <div className="profile container">
         <div className="profile form">
@@ -290,25 +264,20 @@ const Profile = () => {
           />
           {ShowAndHidePassword()}
           <label style={{ color: "red" }}>{notification}</label>
-          {/* <button */}
           <div className="profile button-container">
             <img className="profile img_cat_left" src={cat_left} alt="" />
             <div>
               <Button
-                // disabled={!username || !password}
                 onClick={() => handleUpdateProfile()}
                 className="profile button_style1"
               >
                 Update
-                {/* </button> */}
               </Button>
               <Button
-                // disabled={!username || !password}
                 onClick={() => cancelEdit()}
                 className="profile button_style1"
               >
                 Back
-                {/* </button> */}
               </Button>
             </div>
 
@@ -340,4 +309,5 @@ const Profile = () => {
     </div>
   );
 };
+
 export default Profile;

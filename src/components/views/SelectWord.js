@@ -16,18 +16,17 @@ import gameBackground from "styles/images/empty-room.jpg";
 import BgmPlayer from "components/ui/BgmPlayer";
 
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
-  //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
-  //   let startDrawing;
+
   const history = useHistory();
   const startGuessing = +new Date();
   const curUserId = localStorage.getItem("id");
   const [currentUsername, setCurrentUsername] = useState("");
+
   //get the room and user information
-  //   const [word, setWord] = useState(""); //the chosen word
   const [word0, setWord0] = useState(""); //
   const [word1, setWord1] = useState(""); //
   const [word2, setWord2] = useState(""); //
-  //   const [playerNum, setPlayerNum] = useState(2);
+ 
   const [playernum, setPlayernum] = useState(null);
   const [role, setRole] = useState("");
   const [time, setTime] = useState(20);
@@ -35,8 +34,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
   const [username4, setUsername4] = useState("");
-  //   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
-  // console.log(turnId);
+
   const notify = (message) => {
     toast.error(message);
   };
@@ -44,8 +42,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     try {
       const response0 = await api().get(`/gameRounds/words/${turnId}`);
       const response = response0.data;
-      // const response = ["apple", "bike", "pencil"];
-      // console.log(response);
       if (response.length == 3) {
         //correct response
         setWord0(response[0]);
@@ -53,11 +49,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setWord2(response[2]);
       }
     } catch (error) {
-      //   alert(`Something went wrong during get words: \n${handleError(error)}`);
-      //   history.push("/lobby"); // redirect back to lobby
-      // handleNotLogInError(history, error, "fetching words for drawing Player");
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -66,7 +59,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       history.push("/lobby"); // redirect back to lobby
@@ -74,8 +66,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   };
 
   const sendTimeInfo = (timeValue) => {
-    // the callback. Use a better name
-    // console.log(timeValue);
     setTime(timeValue);
   };
   useEffect(() => {
@@ -89,11 +79,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       const response0 = await api().get(`/gameRounds/information/${turnId}`);
 
       const response1 = response0.data;
-      // console.log(response1.players);
-      // console.log(typeof response1.players);
-      // console.log(response1.players.length);
+
       var temp = response1.players.length;
-      //   console.log(temp);
       setPlayernum(temp);
       var allPlayers = response1.players;
       const updatedPlayer = allPlayers.filter(
@@ -103,15 +90,11 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       setCurrentUsername(thisPlayer[0].username);
 
       if (playernum == 4) {
-        // setUsername1(response1.players[0].username);
         setUsername1(response1.drawingPlayerName);
 
         setUsername2(updatedPlayer[0].username);
         setUsername3(updatedPlayer[1].username);
         setUsername4(updatedPlayer[2].username);
-        // console.log(username2);
-        // console.log(username3);
-        // console.log(username4);
       }
 
       if (playernum == 2) {
@@ -125,13 +108,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setRole("guessingPlayer");
       }
     } catch (error) {
-      // handleNotLogInError(
-      //   history,
-      //   error,
-      //   "fetching Turn info in word selecting phase"
-      // );
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");

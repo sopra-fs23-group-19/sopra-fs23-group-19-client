@@ -5,7 +5,6 @@ import Timer from "components/views/Timer";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import { api, handleError } from "../../helpers/api";
-// import Emoji from "a11y-react-emoji";
 import Emoji from "components/ui/Emoji";
 import HeaderInGame from "components/views/HeaderInGame";
 import "styles/views/Rank.scss";
@@ -23,6 +22,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
   const history = useHistory();
   const startGuessing = +new Date();
+
   //get the username and score
   const curUserId = localStorage.getItem("id");
   const [username1, setUsername1] = useState("");
@@ -47,7 +47,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     try {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
       const response = response0.data;
-      console.log(response);
+
       const guessingPlayers = response.rankedList;
       setDrawingPlayerId(response.drawingPlayerId.toString());
       setDrawingPlayerName(response.drawingPlayerName);
@@ -78,9 +78,8 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         setScore1(guessingPlayers[0].currentScore);
       }
     } catch (error) {
-      // handleNotLogInError(history, error, "fetching turn ranking information");
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -89,7 +88,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       history.push("/lobby"); // redirect back to lobby
@@ -113,8 +111,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   }, [imageData]);
 
   const sendTimeInfo = (timeValue) => {
-    // the callback. Use a better name
-    // console.log(timeValue);
     setTime(timeValue);
   };
 
@@ -247,30 +243,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       </div>
     </div>
   );
-
-  // const before_rank = (
-  //   <div
-  //     style={{
-  //       textAlign: "center",
-  //       left: "10%",
-  //       top: "0px",
-  //       position: "relative",
-  //       "font-family": "Nunito",
-  //       "font-size": "20px",
-  //       color: "black",
-  //       width: "80%",
-  //       wordWrap: "break-word",
-  //     }}
-  //   >
-  //     Scores obtained this turn 🎉
-  //     <br></br>
-  //     Drawing player {drawingPlayerName} got {drawingPlayerScore} points.
-  //     <br></br>
-  //     {playerNum == 2
-  //       ? "Score obtained by the guessing player in this turn:"
-  //       : "Scores obtained by guessing players in this turn:"}
-  //   </div>
-  // );
 
   const waitTnfo = (
     <div

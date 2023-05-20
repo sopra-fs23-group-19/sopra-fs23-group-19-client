@@ -50,11 +50,9 @@ const DrawingStage = ({
   const [imageData, setImageData] = useState("");
   const sendTimeInfo = (timeValue) => {
     // the callback. Use a better name
-    // console.log(timeValue);
     setTime(timeValue);
   };
   function handleUpdate(painting) {
-    // console.log(painting);
     handleUpdatePainting(painting);
   }
   const [playOn] = useSound(btClick);
@@ -62,7 +60,6 @@ const DrawingStage = ({
     const myCanvas = document.getElementById("showingBoard");
     const myContext = myCanvas.getContext("2d");
     const img = new Image();
-    // console.log("why");
     if (imageData) {
       img.src = imageData;
 
@@ -83,6 +80,7 @@ const DrawingStage = ({
   const notify = (message) => {
     toast.error(message);
   };
+
   //fetch game Turn information
   const fetchTurnInfo = async () => {
     try {
@@ -97,7 +95,7 @@ const DrawingStage = ({
       setPlayerNum(response1.players.length);
       setWord(response1.targetWord);
       setImageData(response1.image);
-      //   console.log(word);
+  
       var allPlayers = response1.players;
       const updatedPlayer = allPlayers.filter(
         (item) => item.id != response1.drawingPlayerId
@@ -119,7 +117,7 @@ const DrawingStage = ({
       }
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
+     
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -227,7 +225,6 @@ const DrawingStage = ({
     );
 
   const drawingPlayerContent = () => {
-    // console.log("drawing player content");
     const content = (
       <div
         style={{
@@ -250,7 +247,6 @@ const DrawingStage = ({
     return content;
   };
   const guessingPlayerContent = () => {
-    // console.log("guessing player content");
     const content = (
       <div>
         <div

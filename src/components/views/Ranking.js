@@ -17,8 +17,7 @@ import BgmPlayer from "components/ui/BgmPlayer";
 
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
-  // console.log("gameId is");
-  // console.log(gameId);
+  
   //get the username and score
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
@@ -44,11 +43,9 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     try {
       const response0 = await api().get(`/games/ranks/${gameId}`);
       const response1 = response0.data;
-      console.log(response1);
       setPlayerNum(response1.length);
 
       if (playerNum == 4 && response1[0].username != null) {
-        // setUsername1(response1.players[0].username);
         setUsername1(response1[0].username);
 
         setUsername2(response1[1].username);
@@ -68,9 +65,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         setScore2(response1[1].currentGameScore);
       }
     } catch (error) {
-      // handleNotLogInError(history, error, "fetching ranking information");
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -79,7 +74,6 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       history.push("/lobby"); // redirect back to lobby
@@ -88,6 +82,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   useEffect(() => {
     fetchRankInfo().then(() => {});
   }, [playerNum]);
+
   //ranking component
   //need to sort the score later
   const rankingWhenFourPlayers = (
@@ -223,4 +218,5 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     </div>
   );
 };
+
 export default Ranking;

@@ -7,11 +7,6 @@
     width: 90%;
     position: relative;
     min-width: 50em;
-    // background: rgb(165, 194, 198);
-    // background-repeat: no-repeat;
-    // background-attachment: fixed;
-    // background-size: cover;
-    // border: "1px solid red";
   }
   &.pic {
     position: absolute;
@@ -29,7 +24,7 @@
     @include center;
   }
   &.text {
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -38,9 +33,11 @@
   }
   &.container {
     margin-top: 1em;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
     flex-direction: column;
     display: flex;
-    margin: 0 auto;
     width: 50em;
     @include center;
     background: rgba(181, 153, 120, 0.5);
@@ -54,7 +51,7 @@
     position: relative;
   }
   &.title {
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -74,7 +71,7 @@
     padding-left: 0;
   }
   &.content {
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 18px;

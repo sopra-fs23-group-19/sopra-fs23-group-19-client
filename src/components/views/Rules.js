@@ -3,16 +3,10 @@ import "styles/views/Header.scss";
 import "styles/views/Rules.scss";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import BgmPlayer from "components/ui/BgmPlayer"
-/*
-It is possible to add multiple components inside a single file,
-however be sure not to clutter your files with an endless amount!
-As a rule of thumb, use one file per component and only add small,
-specific components that belong to the main one in the same file.
- */
+
 
 const Rules = (props) => {
   return (
@@ -95,8 +89,5 @@ const Rules = (props) => {
   );
 };
 
-/**
- * You can get access to the history object's properties via the withRouter.
- * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
- */
+
 export default Rules;

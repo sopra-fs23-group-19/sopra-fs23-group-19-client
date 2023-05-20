@@ -13,6 +13,7 @@ import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import BgmPlayer from "components/ui/BgmPlayer";
+
 // define the format of rooms in the table
 const Rooms = ({ room }) => {
   const history = useHistory();
@@ -29,9 +30,8 @@ const Rooms = ({ room }) => {
       await api().put(`/rooms/join`, requestBody);
       history.push(`/waiting/${id}`);
     } catch (error) {
-      // handleNotLogInError(history, error, "joining the room", true);
       const error_str = handleError(error);
-      console.log(error_str);
+      
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -48,7 +48,6 @@ const Rooms = ({ room }) => {
         );
         history.push(`/login`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -100,15 +99,14 @@ const Lobby = () => {
   const notify = (message) => {
     toast.error(message);
   };
+
   // fetch the rooms info from back end
   const fetchRooms = async () => {
     try {
       const response = await api().get("/rooms");
       setRooms(response.data);
     } catch (error) {
-      // handleNotLogInError(history, error, "getting lobby");
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -123,7 +121,6 @@ const Lobby = () => {
         notify("Please register or log in with correct credentials.");
         history.push(`/login`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       setIsUpdating(false);
@@ -134,7 +131,7 @@ const Lobby = () => {
     fetchRooms().then(() => {});
   }, []);
 
-  // fetch rooms every 3 seconds
+  // fetch rooms every 3 seconds 
   useInterval(
     async () => {
       fetchRooms().then(() => {});
@@ -258,8 +255,4 @@ const Lobby = () => {
   );
 };
 
-/**
- * You can get access to the history object's properties via the withRouter.
- * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
- */
 export default Lobby;

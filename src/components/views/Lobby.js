@@ -73,7 +73,17 @@ const Rooms = ({ room }) => {
       <div className="lobby content">
         <Button
           onClick={() => {
-            goToWaiting(room.id).then(() => {});
+            goToWaiting(room.id).catch((error)=>{
+              const error_str = handleError(error);
+              if (error_str["message"].match(/Network Error/)) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("id");
+                localStorage.removeItem("username");
+                localStorage.removeItem("gameId");
+                localStorage.removeItem("intialTurnId");
+                history.push(`/information`);
+              }
+            });
           }}
           style={{
             "background-color": "#FFFFFF",
@@ -128,13 +138,33 @@ const Lobby = () => {
   };
 
   useEffect(() => {
-    fetchRooms().then(() => {});
+    fetchRooms().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
 
   // fetch rooms every 3 seconds 
   useInterval(
     async () => {
-      fetchRooms().then(() => {});
+      fetchRooms().catch((error)=>{
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     },
     isUpdating ? 3000 : null
   );

@@ -122,7 +122,17 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   }, [time]);
 
   useEffect(() => {
-    fetchTurnScore();
+    fetchTurnScore().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
   const handleClick = () => {
     playOn();

@@ -166,11 +166,31 @@ const Game = () => {
   };
 
   useEffect(() => {
-    fetchData().then(() => {});
+    fetchData().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
   useInterval(
     async () => {
-      fetchData().then(() => {});
+      fetchData().catch((error)=>{
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     },
     isUpdating ? 1000 : null
   );

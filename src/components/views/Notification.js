@@ -139,7 +139,17 @@ const Rooms = ({ message }) => {
         requestBody
       );
       setIsDisabled(true);
-      goToWaiting(response.data.roomId).then(() => { });
+      goToWaiting(response.data.roomId).catch((error)=>{
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     } catch (error) {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
@@ -245,12 +255,32 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchFriends().then(() => { });
+    fetchFriends().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    })
   }, []);
 
   useInterval(
     async () => {
-      fetchFriends().then(() => { });
+      fetchFriends().catch((error)=>{
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     },
     isUpdatingFriend ? 3000 : null
   );
@@ -277,12 +307,32 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchGames().then(() => { });
+    fetchGames().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
 
   useInterval(
     async () => {
-      fetchGames().then(() => { });
+      fetchGames().catch((error)=>{
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     },
     isUpdating ? 3000 : null
   );

@@ -80,7 +80,17 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     }
   };
   useEffect(() => {
-    fetchRankInfo().then(() => {});
+    fetchRankInfo().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, [playerNum]);
 
   //ranking component

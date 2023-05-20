@@ -78,7 +78,17 @@ const SearchFriend = ({ searchfriend }) => {
     }
   };
   const handleClick = (useridTo) => {
-    createFriendNotification(useridTo);
+    createFriendNotification(useridTo).catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
     setIsDisabled(true);
   };
 
@@ -133,10 +143,30 @@ const Friend = () => {
   };
 
   useEffect(() => {
-    fetchFriends().then(() => {});
+    fetchFriends().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
   useInterval(async () => {
-    fetchFriends().then(() => {});
+    fetchFriends().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, 3000);
 
   const SearchByUsername = async () => {

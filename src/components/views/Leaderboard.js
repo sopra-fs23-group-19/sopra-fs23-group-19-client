@@ -78,12 +78,32 @@ const Leaderboard = () => {
   };
 
   const handleClick = () => {
-    fetchUsers();
+    fetchUsers().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
     window.location.reload();
   };
 
   useEffect(() => {
-    fetchUsers().then(() => {});
+    fetchUsers().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
 
   // define the format of the table

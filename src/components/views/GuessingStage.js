@@ -167,7 +167,17 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   };
 
   useEffect(() => {
-    fetchTurnInfo().then(() => {});
+    fetchTurnInfo().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    })
   }, [playerNum]);
 
   const answerBox = (

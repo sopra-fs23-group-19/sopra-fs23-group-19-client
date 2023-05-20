@@ -27,9 +27,7 @@ const DrawingStage = ({
 }) => {
   const curUserId = localStorage.getItem("id");
   const startDrawing = +new Date();
-  //   const location = useLocation();
-  // const startDrawing = location.state.startDrawing;
-  //   const word = location.state.word;
+
   const history = useHistory();
 
   //get the room and user information
@@ -134,12 +132,32 @@ const DrawingStage = ({
   };
 
   useEffect(() => {
-    fetchTurnInfo().then(() => {});
+    fetchTurnInfo().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, [playerNum]);
 
   useInterval(
     async () => {
-      fetchTurnInfo().then(() => {});
+      fetchTurnInfo().catch((error)=>{
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     },
     isUpdating && role == "guessingPlayer" ? 1000 : null
   );

@@ -63,7 +63,7 @@ const Leaderboard = () => {
       }
     } catch (error) {
       const error_str = handleError(error);
-      
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -71,6 +71,14 @@ const Leaderboard = () => {
         localStorage.removeItem("gameId");
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        history.push(`/login`);
       } else {
         notify(error_str["message"]);
       }
@@ -78,7 +86,7 @@ const Leaderboard = () => {
   };
 
   const handleClick = () => {
-    fetchUsers().catch((error)=>{
+    fetchUsers().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -93,7 +101,7 @@ const Leaderboard = () => {
   };
 
   useEffect(() => {
-    fetchUsers().catch((error)=>{
+    fetchUsers().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");

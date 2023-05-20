@@ -78,7 +78,7 @@ const SearchFriend = ({ searchfriend }) => {
     }
   };
   const handleClick = (useridTo) => {
-    createFriendNotification(useridTo).catch((error)=>{
+    createFriendNotification(useridTo).catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -136,6 +136,14 @@ const Friend = () => {
         localStorage.removeItem("gameId");
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        history.push(`/login`);
       } else {
         notify(error_str["message"]);
       }
@@ -143,7 +151,7 @@ const Friend = () => {
   };
 
   useEffect(() => {
-    fetchFriends().catch((error)=>{
+    fetchFriends().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -156,7 +164,7 @@ const Friend = () => {
     });
   }, []);
   useInterval(async () => {
-    fetchFriends().catch((error)=>{
+    fetchFriends().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -220,21 +228,22 @@ const Friend = () => {
       </div>
     );
   } else {
-    searchContent = (
-      <></>
-    );
+    searchContent = <></>;
   }
 
   let content = <Spinner />;
   if (friends) {
     content = (
       <div className="friend right-container">
-        <div className="friend container" style={{width:"80%",flexDirection:"column","marginLeft":"0%"}}>
-          <div className="friend friend-container" style={{width:"100%"}}>
-            <div className="friend title" style={{ "width": "50%" }}>
+        <div
+          className="friend container"
+          style={{ width: "80%", flexDirection: "column", marginLeft: "0%" }}
+        >
+          <div className="friend friend-container" style={{ width: "100%" }}>
+            <div className="friend title" style={{ width: "50%" }}>
               Friend Id
             </div>
-            <div className="friend title" style={{ "width": "50%" }}>
+            <div className="friend title" style={{ width: "50%" }}>
               Friend Name
             </div>
           </div>

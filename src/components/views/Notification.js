@@ -33,13 +33,13 @@ const Friends = ({ message }) => {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
         localStorage.removeItem("username");
-        localStorage.removeItem("gameId");F
+        localStorage.removeItem("gameId");
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
         notify(error_str["message"]);
       }
-    }F
+    }
   };
 
   // reject add friend

@@ -67,7 +67,7 @@ const GameCreationView = () => {
       history.push(`/waiting/${roomId}`);
     } catch (error) {
       const error_str = handleError(error);
-    
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -82,7 +82,7 @@ const GameCreationView = () => {
         notify(
           "Please register a new account or log in with correct credentials."
         );
-        history.push(`/login`);
+        localStorage.removeItem("token");
       } else {
         notify(error_str["message"]);
       }

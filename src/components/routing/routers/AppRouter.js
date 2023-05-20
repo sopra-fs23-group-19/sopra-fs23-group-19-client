@@ -5,6 +5,9 @@ import { LoginGuard } from "components/routing/routeProtectors/LoginGuard";
 import { RegisterGuard } from "components/routing/routeProtectors/RegisterGuard";
 import Login from "components/views/Login";
 import { ProfileGuard } from "components/routing/routeProtectors/ProfileGuard";
+import { NotificationGuard } from "components/routing/routeProtectors/NotificationGuard";
+import { WaitingViewGuard } from "components/routing/routeProtectors/WaitingViewGuard";
+import { LeaderboardGuard } from "components/routing/routeProtectors/LeaderboardGuard";
 import Register from "components/views/Register";
 import Lobby from "components/views/Lobby";
 import Rules from "components/views/Rules";
@@ -32,11 +35,6 @@ const AppRouter = () => {
   return (
     <BrowserRouter>
       <Switch>
-        {/* <Route path="/game">
-          <GameGuard>
-            <GameRouter base="/game" />
-          </GameGuard>
-        </Route> */}
         <Route exact path="/game/:gameId">
           <GameGuard>
             <Game />
@@ -58,9 +56,9 @@ const AppRouter = () => {
           </LobbyGuard>
         </Route>
         <Route path={`/waiting/:roomId`}>
-          <LobbyGuard>
+          <WaitingViewGuard>
             <WaitingView />
-          </LobbyGuard>
+          </WaitingViewGuard>
         </Route>
         <Route exact path="/lobby">
           <LobbyGuard>
@@ -76,14 +74,14 @@ const AppRouter = () => {
           <Rules />
         </Route>
         <Route exact path="/leaderboard">
-          <LobbyGuard>
+          <LeaderboardGuard>
             <Leaderboard />
-          </LobbyGuard>
+          </LeaderboardGuard>
         </Route>
         <Route exact path="/notification">
-          <LobbyGuard>
+          <NotificationGuard>
             <Notification />
-          </LobbyGuard>
+          </NotificationGuard>
         </Route>
         <Route exact path="/information">
           <Maintenance />

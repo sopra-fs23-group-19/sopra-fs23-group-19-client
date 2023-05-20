@@ -84,7 +84,7 @@ const Profile = () => {
           notify(
             "Please register a new account or log in with correct credentials."
           );
-          history.push(`/login`);
+          localStorage.removeItem("token");
         } else {
           setNotification(error_str["message"]);
         }

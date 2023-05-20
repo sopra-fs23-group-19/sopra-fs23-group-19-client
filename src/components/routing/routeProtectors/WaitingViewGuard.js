@@ -12,13 +12,9 @@ import PropTypes from "prop-types";
  */
 export const WaitingViewGuard = (props) => {
   if (localStorage.getItem("token")) {
-    if (
-      localStorage.getItem("gameId") 
-    ) {
-      return props.children;
-    }
-    return <Redirect to="/lobby" />;
+    return props.children;
   }
+  // if user is not logged in, redirects to the login
   return <Redirect to="/login" />;
 };
 

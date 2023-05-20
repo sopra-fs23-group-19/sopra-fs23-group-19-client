@@ -52,6 +52,8 @@
     width: 15%;
     text-align: center;
     word-wrap: break-word;
+    font-family: "Josefin Sans", sans-serif;
+    margin-right: 1em;
   }
   &.friends-list {
     list-style: none;
@@ -76,7 +78,7 @@
     border: 3px solid #ad9a66;
   }
   &.content-container {
-    font-family: "Nunito", sans-serif;
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 18px;
@@ -88,7 +90,7 @@
     word-wrap: break-word;
   }
   &.title-container {
-    font-family: "Nunito", sans-serif;
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;

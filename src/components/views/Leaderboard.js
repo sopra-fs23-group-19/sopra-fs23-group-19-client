@@ -97,7 +97,7 @@ const Leaderboard = () => {
         history.push(`/information`);
       }
     });
-    window.location.reload();
+    history.push(`/leaderboard`);
   };
 
   useEffect(() => {

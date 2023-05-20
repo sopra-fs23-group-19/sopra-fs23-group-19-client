@@ -31,7 +31,7 @@ const Rooms = ({ room }) => {
       history.push(`/waiting/${id}`);
     } catch (error) {
       const error_str = handleError(error);
-      
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -46,7 +46,7 @@ const Rooms = ({ room }) => {
         notify(
           "Please register a new account or log in with correct credentials."
         );
-        history.push(`/login`);
+        localStorage.removeItem("token");
       } else {
         notify(error_str["message"]);
       }
@@ -73,7 +73,7 @@ const Rooms = ({ room }) => {
       <div className="lobby content">
         <Button
           onClick={() => {
-            goToWaiting(room.id).catch((error)=>{
+            goToWaiting(room.id).catch((error) => {
               const error_str = handleError(error);
               if (error_str["message"].match(/Network Error/)) {
                 localStorage.removeItem("token");
@@ -128,8 +128,10 @@ const Lobby = () => {
         error_str["status"] == 401 &&
         error_str["message"].includes("log in with correct credentials")
       ) {
-        notify("Please register or log in with correct credentials.");
-        history.push(`/login`);
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        localStorage.removeItem("token");
       } else {
         notify(error_str["message"]);
       }
@@ -138,7 +140,7 @@ const Lobby = () => {
   };
 
   useEffect(() => {
-    fetchRooms().catch((error)=>{
+    fetchRooms().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -151,10 +153,10 @@ const Lobby = () => {
     });
   }, []);
 
-  // fetch rooms every 3 seconds 
+  // fetch rooms every 3 seconds
   useInterval(
     async () => {
-      fetchRooms().catch((error)=>{
+      fetchRooms().catch((error) => {
         const error_str = handleError(error);
         if (error_str["message"].match(/Network Error/)) {
           localStorage.removeItem("token");

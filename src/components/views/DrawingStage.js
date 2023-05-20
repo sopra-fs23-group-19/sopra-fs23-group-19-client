@@ -5,12 +5,9 @@ import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
-import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
 import DrawingBoard from "./DrawingBoard";
 import { useHistory, useLocation } from "react-router-dom";
-import { Button } from "components/ui/Button";
-import { Spinner } from "components/ui/Spinner";
 import { api, handleError } from "../../helpers/api";
 import { useInterval } from "helpers/hooks";
 import HeaderInGame from "components/views/HeaderInGame";
@@ -93,7 +90,7 @@ const DrawingStage = ({
       setPlayerNum(response1.players.length);
       setWord(response1.targetWord);
       setImageData(response1.image);
-  
+
       var allPlayers = response1.players;
       const updatedPlayer = allPlayers.filter(
         (item) => item.id != response1.drawingPlayerId
@@ -115,7 +112,7 @@ const DrawingStage = ({
       }
     } catch (error) {
       const error_str = handleError(error);
-     
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -132,7 +129,7 @@ const DrawingStage = ({
   };
 
   useEffect(() => {
-    fetchTurnInfo().catch((error)=>{
+    fetchTurnInfo().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -147,7 +144,7 @@ const DrawingStage = ({
 
   useInterval(
     async () => {
-      fetchTurnInfo().catch((error)=>{
+      fetchTurnInfo().catch((error) => {
         const error_str = handleError(error);
         if (error_str["message"].match(/Network Error/)) {
           localStorage.removeItem("token");
@@ -167,13 +164,13 @@ const DrawingStage = ({
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
-    "wordWrap":"break-word"
+    wordWrap: "break-word",
   };
   const style2 = {
     "font-family": "Josefin Sans",
     "font-size": "20px",
     color: "black",
-    "wordWrap":"break-word"
+    wordWrap: "break-word",
   };
 
   //display cat and username
@@ -276,7 +273,7 @@ const DrawingStage = ({
             "font-size": "30px",
             color: "black",
             width: "400px",
-            "wordWrap":"break-word"
+            wordWrap: "break-word",
           }}
         >
           Drawing stage.

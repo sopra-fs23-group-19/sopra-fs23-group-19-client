@@ -81,16 +81,22 @@ const Friends = ({ message }) => {
         {message.usernameFrom}
       </div>
       <div className="notification button-container">
-        <Button onClick={() => acceptFriend(message.messageId)}
+        <Button
+          onClick={() => acceptFriend(message.messageId)}
           disabled={isDisabled}
-          style={{ "wordWrap": "break-word" }}
-        >Accept</Button>
+          style={{ wordWrap: "break-word" }}
+        >
+          Accept
+        </Button>
       </div>
       <div className="notification button-container">
-        <Button onClick={() => rejectFriend(message.messageId)}
+        <Button
+          onClick={() => rejectFriend(message.messageId)}
           disabled={isDisabled}
-          style={{ "wordWrap": "break-word" }}
-        >Reject</Button>
+          style={{ wordWrap: "break-word" }}
+        >
+          Reject
+        </Button>
       </div>
     </div>
   );
@@ -113,7 +119,7 @@ const Rooms = ({ message }) => {
       await api().put(`/rooms/join`, requestBody);
     } catch (error) {
       const error_str = handleError(error);
-      
+
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -139,7 +145,7 @@ const Rooms = ({ message }) => {
         requestBody
       );
       setIsDisabled(true);
-      goToWaiting(response.data.roomId).catch((error)=>{
+      goToWaiting(response.data.roomId).catch((error) => {
         const error_str = handleError(error);
         if (error_str["message"].match(/Network Error/)) {
           localStorage.removeItem("token");
@@ -205,14 +211,19 @@ const Rooms = ({ message }) => {
         <Button
           onClick={() => acceptRoom(message.messageId)}
           disabled={isDisabled}
-          style={{ "wordWrap": "break-word" }}
-        >Accept</Button>
+          style={{ wordWrap: "break-word" }}
+        >
+          Accept
+        </Button>
       </div>
       <div className="notification button-container">
-        <Button onClick={() => rejectRoom(message.messageId)}
+        <Button
+          onClick={() => rejectRoom(message.messageId)}
           disabled={isDisabled}
-          style={{ "wordWrap": "break-word" }}
-        >Reject</Button>
+          style={{ wordWrap: "break-word" }}
+        >
+          Reject
+        </Button>
       </div>
     </div>
   );
@@ -230,7 +241,7 @@ const Notification = () => {
   const notify = (message) => {
     toast.error(message);
   };
-  
+
   //get all pending friend notifications
   const fetchFriends = async () => {
     try {
@@ -247,6 +258,14 @@ const Notification = () => {
         localStorage.removeItem("gameId");
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        history.push(`/login`);
       } else {
         notify(error_str["message"]);
       }
@@ -255,7 +274,7 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchFriends().catch((error)=>{
+    fetchFriends().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -265,12 +284,12 @@ const Notification = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       }
-    })
+    });
   }, []);
 
   useInterval(
     async () => {
-      fetchFriends().catch((error)=>{
+      fetchFriends().catch((error) => {
         const error_str = handleError(error);
         if (error_str["message"].match(/Network Error/)) {
           localStorage.removeItem("token");
@@ -307,7 +326,7 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchGames().catch((error)=>{
+    fetchGames().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -322,7 +341,7 @@ const Notification = () => {
 
   useInterval(
     async () => {
-      fetchGames().catch((error)=>{
+      fetchGames().catch((error) => {
         const error_str = handleError(error);
         if (error_str["message"].match(/Network Error/)) {
           localStorage.removeItem("token");

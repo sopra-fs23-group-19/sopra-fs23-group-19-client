@@ -14,6 +14,7 @@ import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Button } from "components/ui/Button";
 import BgmPlayer from "components/ui/BgmPlayer";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 const FormField = (props) => {
   return (
@@ -76,12 +77,20 @@ const Profile = () => {
           setNotification(
             "There exists a user with the username you have entered. Please enter another one."
           );
+        } else if (
+          error_str["status"] == 401 &&
+          error_str["message"].includes("log in with correct credentials")
+        ) {
+          notify(
+            "Please register a new account or log in with correct credentials."
+          );
+          history.push(`/login`);
         } else {
           setNotification(error_str["message"]);
         }
       }
     };
-    fetchProfile1().catch((error)=>{
+    fetchProfile1().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -101,7 +110,9 @@ const Profile = () => {
     userProfile.totalScore,
     userProfile.id,
   ]);
-
+  const notify = (message) => {
+    toast.error(message);
+  };
   const handleUpdateProfile = async () => {
     const newUsername = username || "";
     const newPassword = password || ""; // if didn't update password
@@ -302,6 +313,15 @@ const Profile = () => {
     <div>
       <Header />
       <BgmPlayer />
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
       <div className="profile content-container">
         <div className="profile pic">
           <img

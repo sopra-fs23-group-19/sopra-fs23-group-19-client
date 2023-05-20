@@ -7,15 +7,6 @@ import catPaint from "styles/images/gif/cat_paint.gif";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 
-// const Background = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   background: #fbe8c8;
-//   position: fixed;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
 
 const ModalWrapper = styled.div`
   width: 560px;
@@ -81,11 +72,7 @@ export const Modal = ({ showModal, setShowModal }) => {
   });
 
   const [playOn] = useSound(btClick);
-  //   const closeModal = (e) => {
-  //     if (modalRef.current === e.target) {
-  //       setShowModal(false);
-  //     }
-  //   };
+
 
   const keyPress = useCallback(
     (e) => {

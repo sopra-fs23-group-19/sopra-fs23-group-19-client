@@ -54,7 +54,6 @@ const GameCreationView = () => {
   };
   //create game:
   //call API to create a room
-  //
   const proceedToWait = async () => {
     const requestBody = JSON.stringify({
       roomName: roomName,
@@ -67,9 +66,8 @@ const GameCreationView = () => {
       const roomId = response.data.id;
       history.push(`/waiting/${roomId}`);
     } catch (error) {
-      // handleNotLogInError(history, error, "creating game room", true);
       const error_str = handleError(error);
-      console.log(error_str);
+    
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -86,7 +84,6 @@ const GameCreationView = () => {
         );
         history.push(`/login`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -110,16 +107,13 @@ const GameCreationView = () => {
           <div className="GameCreationView button-container">
             <Button
               onClick={() => changeColor(2)}
-              // className="GameCreationView button_style2"
               className={selected === 2 ? "selected" : "notSelected"}
             >
               2 Players
             </Button>
 
             <Button
-              // onClick={() => setMode(4)}
               onClick={() => changeColor(4)}
-              // className="GameCreationView button_style2"
               className={selected === 4 ? "selected" : "notSelected"}
             >
               4 Players

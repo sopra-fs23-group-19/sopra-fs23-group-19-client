@@ -43,36 +43,28 @@ FormField.propTypes = {
 };
 
 const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
-  //const [startGuessing, setStartGuessing]=useState(1); //to test the timer, set to 1
   const history = useHistory();
   const curUserId = localStorage.getItem("id");
   const [currentUsername, setCurrentUsername] = useState("");
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
-  //   const location = useLocation();
-  //   const url = location.state.url;
-  //   const url = location.state.url; ///use base64 image here
-  //   const startGuessing = location.state.startGuessing;
   const startGuessing = +new Date();
+
   //get the room and user information
-  //   const role = "guessingPlayer";
   const [answer, setAnswer] = useState(""); //the answer player guesses
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
   const [username4, setUsername4] = useState("");
-  // const [score1, setScore1] = useState("");
-  // const [score2, setScore2] = useState("");
-  // const [score3, setScore3] = useState("");
-  // const [score4, setScore4] = useState("");
+  
   const [playerNum, setPlayerNum] = useState(2);
   const [imageData, setImageData] = useState("");
   const [role, setRole] = useState("");
   const [time, setTime] = useState(60);
+
   function getImage() {
     const myCanvas = document.getElementById("showingBoard");
     const myContext = myCanvas.getContext("2d");
     const img = new Image();
-    // console.log("why");
     img.src = imageData;
     img.onload = () => {
       myContext.drawImage(img, 0, 0);
@@ -80,8 +72,6 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   }
   const [playOn] = useSound(btClick);
   const sendTimeInfo = (timeValue) => {
-    // the callback. Use a better name
-    // console.log(timeValue);
     setTime(timeValue);
   };
   const notify = (message) => {
@@ -142,7 +132,6 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       setCurrentUsername(thisPlayer[0].username);
 
       if (playerNum == 4) {
-        // setUsername1(response1.players[0].username);
         setUsername1(response1.drawingPlayerName);
 
         setUsername2(updatedPlayer[0].username);
@@ -163,7 +152,6 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
       }
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -197,7 +185,6 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     </div>
   );
   useEffect(() => {
-    // if (props.start)
     if (time <= 0) {
       handleSubmitAnswer(answer);
     }
@@ -309,7 +296,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
   );
 
   return (
-    <div>
+    <div className="guessing body">
       <HeaderInGame />
       <BgmPlayer />
       <ToastContainer
@@ -353,10 +340,10 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             {answerBox}
             <div
               className="guessing button-container"
-              style={{ right: "45%", top: "120px", position: "absolute" }}
+              style={{ right: "45%", top: "120px", position: "absolute"}}
             >
               <Button
-                // disabled={role === "drawingPlayer"}
+                style={{backgroundColor:"rgba(25,25,112,0.2)"}}
                 disabled={isDisabled}
                 onClick={() => {
                   handleClick();
@@ -389,7 +376,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
             />
             <Button
               onClick={() => download("#showingBoard")}
-              style={{ border: "2px solid #000000", marginLeft: "20px" }}
+              style={{ border: "2px solid #000000", marginLeft: "20px", backgroundColor: "rgba(193, 210, 240, 0.6)" }}
               id="download"
             >
               download

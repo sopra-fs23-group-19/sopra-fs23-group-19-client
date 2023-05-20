@@ -17,7 +17,7 @@
   }
   &.title1 {
     font-weight: bold;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-size: 30px;
     left: 40%;
     position: absolute;
@@ -35,7 +35,7 @@
   }
   &.functionName {
     color: #000000;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-size: 30px;
   }
   &.stepContainer {
@@ -59,10 +59,10 @@
   &.functionNameWrapper {
     display: flex;
     justify-content: center;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
   }
   &.button-container {
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;

@@ -1,7 +1,5 @@
 import React from "react";
 import cats from "styles/images/cats2.png";
-// import { Spinner } from "components/ui/Spinner";
-// import { useEffect, useState } from "react";
 import BaseContainer from "components/ui/BaseContainer";
 import { SpinnerBouncing } from "components/ui/SpinnerBouncing";
 

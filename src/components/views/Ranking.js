@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import cats from "styles/images/cats2.png";
-import Header from "components/views/Header";
-import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
@@ -19,8 +17,7 @@ import BgmPlayer from "components/ui/BgmPlayer";
 
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
-  // console.log("gameId is");
-  // console.log(gameId);
+  
   //get the username and score
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
@@ -46,11 +43,9 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     try {
       const response0 = await api().get(`/games/ranks/${gameId}`);
       const response1 = response0.data;
-      console.log(response1);
       setPlayerNum(response1.length);
 
       if (playerNum == 4 && response1[0].username != null) {
-        // setUsername1(response1.players[0].username);
         setUsername1(response1[0].username);
 
         setUsername2(response1[1].username);
@@ -70,9 +65,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         setScore2(response1[1].currentGameScore);
       }
     } catch (error) {
-      // handleNotLogInError(history, error, "fetching ranking information");
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -81,7 +74,6 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       history.push("/lobby"); // redirect back to lobby
@@ -90,6 +82,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
   useEffect(() => {
     fetchRankInfo().then(() => {});
   }, [playerNum]);
+
   //ranking component
   //need to sort the score later
   const rankingWhenFourPlayers = (
@@ -101,14 +94,14 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line"></div>
+        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
@@ -116,7 +109,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username3}</div>
@@ -124,7 +117,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username4}</div>
@@ -132,7 +125,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
       </div>
     </div>
@@ -147,14 +140,14 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line"></div>
+        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username2}</div>
@@ -162,7 +155,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         <div
           className="guessing line"
-          style={{ border: "2px solid #ad9a66" }}
+          style={{ border: "2px solid rgba(25,25,112,0.4)" }}
         ></div>
       </div>
     </div>
@@ -175,7 +168,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     </div>
   );
   return (
-    <div>
+    <div className="guessing body">
       <HeaderInGame />
       <BgmPlayer />
       <ToastContainer
@@ -216,7 +209,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
               handleQuit();
             }}
             width="100%"
-            style={{ "margin-top": "5px", border: "2px solid #000000" }}
+            style={{ "margin-top": "5px", border: "2px solid #000000", backgroundColor:"rgba(193, 210, 240, 0.6)"}}
           >
             QUIT GAME
           </Button>
@@ -225,4 +218,5 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     </div>
   );
 };
+
 export default Ranking;

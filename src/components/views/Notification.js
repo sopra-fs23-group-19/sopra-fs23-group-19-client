@@ -28,21 +28,18 @@ const Friends = ({ message }) => {
       await api().post(`/friends/${messageId}`, requestBody);
       setIsDisabled(true);
     } catch (error) {
-      // handleNotLogInError(history, error, "accept friend", true);
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
         localStorage.removeItem("username");
-        localStorage.removeItem("gameId");
+        localStorage.removeItem("gameId");F
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
-    }
+    }F
   };
 
   // reject add friend
@@ -54,9 +51,7 @@ const Friends = ({ message }) => {
       await api().post(`/friends/${messageId}`, requestBody);
       setIsDisabled(true);
     } catch (error) {
-      // handleNotLogInError(history, error, "reject friend", true);
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -65,7 +60,6 @@ const Friends = ({ message }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -88,14 +82,14 @@ const Friends = ({ message }) => {
       </div>
       <div className="notification button-container">
         <Button onClick={() => acceptFriend(message.messageId)}
-        disabled={isDisabled}
-        style={{"wordWrap":"break-word"}}
+          disabled={isDisabled}
+          style={{ "wordWrap": "break-word" }}
         >Accept</Button>
       </div>
       <div className="notification button-container">
         <Button onClick={() => rejectFriend(message.messageId)}
-        disabled={isDisabled}
-        style={{"wordWrap":"break-word"}}
+          disabled={isDisabled}
+          style={{ "wordWrap": "break-word" }}
         >Reject</Button>
       </div>
     </div>
@@ -118,9 +112,8 @@ const Rooms = ({ message }) => {
     try {
       await api().put(`/rooms/join`, requestBody);
     } catch (error) {
-      // handleNotLogInError(history, error, "joining the room", true);
       const error_str = handleError(error);
-      console.log(error_str);
+      
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -129,7 +122,6 @@ const Rooms = ({ message }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -147,11 +139,9 @@ const Rooms = ({ message }) => {
         requestBody
       );
       setIsDisabled(true);
-      goToWaiting(response.data.roomId).then(() => {});
+      goToWaiting(response.data.roomId).then(() => { });
     } catch (error) {
-      // handleNotLogInError(history, error, "accepting game invite", true);
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -160,7 +150,6 @@ const Rooms = ({ message }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -175,9 +164,7 @@ const Rooms = ({ message }) => {
       await api().post(`/notification/game/${messageId}`, requestBody);
       setIsDisabled(true);
     } catch (error) {
-      // handleNotLogInError(history, error, "rejecting game invite", true);
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -186,7 +173,6 @@ const Rooms = ({ message }) => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -209,17 +195,17 @@ const Rooms = ({ message }) => {
         <Button
           onClick={() => acceptRoom(message.messageId)}
           disabled={isDisabled}
-          style={{"wordWrap":"break-word"}}
-          >Accept</Button>
-        </div>
-        <div className="notification button-container">
-          <Button onClick={() => rejectRoom(message.messageId)}
-          disabled={isDisabled}
-          style={{"wordWrap":"break-word"}}
-          >Reject</Button>
-        </div>
+          style={{ "wordWrap": "break-word" }}
+        >Accept</Button>
       </div>
-    );
+      <div className="notification button-container">
+        <Button onClick={() => rejectRoom(message.messageId)}
+          disabled={isDisabled}
+          style={{ "wordWrap": "break-word" }}
+        >Reject</Button>
+      </div>
+    </div>
+  );
 };
 
 const Notification = () => {
@@ -234,6 +220,7 @@ const Notification = () => {
   const notify = (message) => {
     toast.error(message);
   };
+  
   //get all pending friend notifications
   const fetchFriends = async () => {
     try {
@@ -243,7 +230,6 @@ const Notification = () => {
       setAllFriendsNotice(response.data);
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -252,7 +238,6 @@ const Notification = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       setIsUpdatingFriend(false);
@@ -260,16 +245,15 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchFriends().then(() => {});
+    fetchFriends().then(() => { });
   }, []);
 
   useInterval(
     async () => {
-      fetchFriends().then(() => {});
+      fetchFriends().then(() => { });
     },
     isUpdatingFriend ? 3000 : null
   );
-  //  3000);
 
   // get all game invites notifications
   const fetchGames = async () => {
@@ -278,7 +262,6 @@ const Notification = () => {
       setGamesNotice(response.data);
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -287,7 +270,6 @@ const Notification = () => {
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       setIsUpdating(false);
@@ -295,12 +277,12 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    fetchGames().then(() => {});
+    fetchGames().then(() => { });
   }, []);
 
   useInterval(
     async () => {
-      fetchGames().then(() => {});
+      fetchGames().then(() => { });
     },
     isUpdating ? 3000 : null
   );
@@ -446,8 +428,4 @@ const Notification = () => {
   );
 };
 
-/**
- * You can get access to the history object's properties via the withRouter.
- * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
- */
 export default Notification;

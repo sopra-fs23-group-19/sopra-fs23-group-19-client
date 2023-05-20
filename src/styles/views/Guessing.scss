@@ -1,6 +1,18 @@
 @import 'styles/theme';
 
 .guessing {
+  &.body {
+    margin: 0;
+    padding: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    font-family: $fontDefault;
+    background-image: linear-gradient(135deg, $accent3 10%, $accent3 100%);
+    background-size: cover;
+    min-width: 55em;
+    min-height:60em;
+    background-position: center;
+  }
   &.content-container {
     margin-top: 2em;
     margin-left: 5%;
@@ -32,8 +44,6 @@
     width: 130px;
     height: 130px;
     justify-content: center;
-    // margin-left: auto;
-    // margin-right: auto;
     text-align: center;
   }
   &.form {
@@ -41,14 +51,13 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    // max-width: 20em;
     height: 10em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;
     padding-right: 37px;
     border-radius: 0.75em;
-    background-color: rgba(181, 153, 120, 0.5);
+    background-color: $accent2;
     box-shadow: $dropShadow;
   }
   &.field {
@@ -70,7 +79,7 @@
   &.label {
     color: $textColor;
     margin-bottom: 16px;
-    font-family: 'Nunito';
+    font-family: 'Nunito', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -81,7 +90,6 @@
     justify-content: center;
     width: fit-content;
     @include center;
-    // margin-top: 2em;
   }
   &.container {
     flex-direction: column;
@@ -94,7 +102,6 @@
     width: 30%;
     top: 200px;
     left:68%;
-    // right: 0;
     position: absolute;
   }
   &.title {
@@ -104,7 +111,7 @@
     left: 250px;
     top: 600px;
 
-    font-family: 'Irish Grover';
+    font-family: 'Irish Grover', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 55px;
@@ -122,7 +129,8 @@
     min-width: 20em;
     max-width: 50em;
     top:0px;
-    background: rgba(181, 153, 120, 0.5);
+    background: $accent2;
+    border-radius: $borderRadius;
   }
   &.rank-list {
     list-style: none;
@@ -133,7 +141,8 @@
     min-width: 20em;
     max-width: 50em;
     top:120px;
-    background: rgba(181, 153, 120, 0.5);
+    background: $accent2;
+    border-radius: $borderRadius;
   }
   &.score-container{
     margin: 0.5em 0;
@@ -146,7 +155,6 @@
     left: 0px;
     top:0px;
     position: relative;
-    //background: black;
   }
   &.line{
     position: relative;
@@ -157,7 +165,7 @@
     border: 3px solid #ad9a66;
   }
   &.content{
-    font-family: 'Nunito';
+    font-family: 'Nunito', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 18px;
@@ -170,7 +178,7 @@
   }
   &.rank-title{
     width: 50%;
-    font-family: 'Nunito';
+    font-family: 'Nunito', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -180,7 +188,7 @@
   }
   &.title1{
     width: 100%;
-    font-family: 'Nunito';
+    font-family: 'Nunito', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;

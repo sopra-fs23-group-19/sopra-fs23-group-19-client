@@ -15,7 +15,6 @@ import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import BgmPlayer from "components/ui/BgmPlayer";
-// define the format of rooms in the table
 
 const Scores = ({ user }) => {
   const history = useHistory();
@@ -27,10 +26,6 @@ const Scores = ({ user }) => {
           fontFamily: '"Joti One", cursive',
           width: "50%",
         }}
-        // onClick={() => {
-        //   const requestUrl = "/profile/" + user.id;
-        //   history.push(requestUrl);
-        // }}
       >
         {user.username}
       </div>
@@ -55,7 +50,6 @@ const Leaderboard = () => {
     try {
       const response = await api().get("/leaderboard");
       setUsers(response.data);
-      //   const data = response.data.filter((item) => item.id == curUserId)
       const num = response.data.length;
       if (num == 1) {
         setTop1(response.data[0].username);
@@ -69,7 +63,7 @@ const Leaderboard = () => {
       }
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
+      
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
@@ -204,8 +198,4 @@ const Leaderboard = () => {
   );
 };
 
-/**
- * You can get access to the history object's properties via the withRouter.
- * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
- */
 export default Leaderboard;

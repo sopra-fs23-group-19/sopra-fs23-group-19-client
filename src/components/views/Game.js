@@ -72,7 +72,7 @@ const Game = () => {
       roomId: Number(gameId),
     });
     try {
-      await api().put(`/gameRounds/answers/${turnId}`, requestBody);
+      await api().post(`/gameRounds/answers/${turnId}`, requestBody);
     } catch (error) {
       handleGameError(error);
     }

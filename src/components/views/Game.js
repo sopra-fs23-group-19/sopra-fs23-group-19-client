@@ -24,7 +24,7 @@ const Game = () => {
 
   const curUserId = localStorage.getItem("id");
 
-  const [gameStatus, setGameStatus] = useState(true);
+  const [gameStatus, setGameStatus] = useState("PLAYING");
   const [turnId, setTurnId] = useState(InitialTurnId);
   const [turnStatus, setTurnStatus] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true);

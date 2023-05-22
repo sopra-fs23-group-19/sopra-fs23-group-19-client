@@ -44,18 +44,18 @@ The [Lobby.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client
 
 ### Game
 
-The main component in the game is the [Game.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Game.js) which get latest game status and siutation from the server via periodic polling. The [Game.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Game.js) would decide to render [DrawingStage.js] (https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/DrawingStage.js) component, [GuessingStage.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/GuessingStage.js) component or [TurnRanking.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/TurnRanking.js) component based on the game turn information provided by the server. These pages use the [Timer.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Timer.js)] component to track the duration of each turn, limiting players to a set amount of time to update painting and answer the question.
+The main component in the game is the [Game.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Game.js) which get latest game status and siutation from the server via periodic polling. The [Game.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Game.js) would decide to render [DrawingStage.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/DrawingStage.js) component, [GuessingStage.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/GuessingStage.js) component or [TurnRanking.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/TurnRanking.js) component based on the game turn information provided by the server. These pages use the [Timer.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Timer.js)] component to track the duration of each turn, limiting players to a set amount of time to update painting and answer the question.
 When the game is finished, the game would display the [Ranking.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Ranking.js).
 
 ### Friends
 
-On the [Friend.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Friend.js)] page, users can search for other users by their username and send friend requests. If a user receives a friend request, they will receive a notification on the [Notification.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Notification.js)] page and can choose to accept or reject the request. Once accepted, the friend will appear in the user's friend list on the [Friend.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Friend.js)] page, and the user can view their friend's personal profile, including their best score and total score earned in the game via [Profile.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Profile.js)] component.
+On the [Friend.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Friend.js) page, users can search for other users by their username and send friend requests. If a user receives a friend request, they will receive a notification on the [Notification.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Notification.js) page and can choose to accept or reject the request. Once accepted, the friend will appear in the user's friend list on the [Friend.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Friend.js) page, and the user can view their friend's personal profile, including their best score and total score earned in the game via [Profile.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Profile.js) component.
 The [Profile.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Profile) also enables users to view their personal profile,including username, best score and total score. Users can edit their own profile: changing username and password.
 
 ## :small_orange_diamond: Launch & Deployment
 
 **Installation**
-To clone and run this application, you'll need [Git](https://git-scm.com), [Node.js 16.x](https://nodejs.org)installed on your computer.
+To clone and run this application, you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org) installed on your computer.
 
 Get the [server](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server) and the [client](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/) repository from GitHub.
 
@@ -79,7 +79,7 @@ Now you can open [http://localhost:3000](http://localhost:3000) to view it in th
 
 ## :small_orange_diamond: Illustrations
 
-## Roadmap
+## :small_orange_diamond: Roadmap
 
 - :white_check_mark: Allow touch input.
 - :negative_squared_cross_mark: Allow guessing players guess multiple times.

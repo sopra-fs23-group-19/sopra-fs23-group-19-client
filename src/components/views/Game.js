@@ -143,11 +143,11 @@ const Game = () => {
   const handleQuitGame = async () => {
     try {
       await api().put(`/games/ending/${gameId}`);
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
     } catch (error) {
       handleGameError(error);
     }
-    localStorage.removeItem("gameId");
-    localStorage.removeItem("intialTurnId");
     history.push("/lobby");
   };
   const handleGameError = (error) => {

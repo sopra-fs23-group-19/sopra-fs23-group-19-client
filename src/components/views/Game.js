@@ -69,7 +69,7 @@ const Game = () => {
     const requestBody = JSON.stringify({
       id: Number(curUserId),
       guessingWord: word,
-      currentGameId: Number(gameId),
+      roomId: Number(gameId),
     });
     try {
       await api().put(`/gameRounds/answers/${turnId}`, requestBody);
@@ -152,7 +152,7 @@ const Game = () => {
   };
   const handleGameError = (error) => {
     const error_str = handleError(error);
-    
+
     if (error_str["message"].match(/Network Error/)) {
       localStorage.removeItem("token");
       localStorage.removeItem("id");
@@ -166,7 +166,7 @@ const Game = () => {
   };
 
   useEffect(() => {
-    fetchData().catch((error)=>{
+    fetchData().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -180,7 +180,7 @@ const Game = () => {
   }, []);
   useInterval(
     async () => {
-      fetchData().catch((error)=>{
+      fetchData().catch((error) => {
         const error_str = handleError(error);
         if (error_str["message"].match(/Network Error/)) {
           localStorage.removeItem("token");
@@ -206,8 +206,7 @@ const Game = () => {
             handleChooseWord={handleChooseWord}
           />
         );
-      }
-      else if (turnStatus === "PAINTING") {
+      } else if (turnStatus === "PAINTING") {
         content = (
           <DrawingStage
             gameId={gameId}
@@ -261,18 +260,18 @@ const Game = () => {
 
   return (
     <div className="game body">
-    <div className="game container">
-      <ToastContainer
-        toastClassName="toast-style"
-        position="top-center"
-        transition={Bounce}
-        autoClose={5000}
-        closeButton={false}
-        hideProgressBar={true}
-        draggable={false}
-      />
-      {switchPages()}
-    </div>
+      <div className="game container">
+        <ToastContainer
+          toastClassName="toast-style"
+          position="top-center"
+          transition={Bounce}
+          autoClose={5000}
+          closeButton={false}
+          hideProgressBar={true}
+          draggable={false}
+        />
+        {switchPages()}
+      </div>
     </div>
   );
 };

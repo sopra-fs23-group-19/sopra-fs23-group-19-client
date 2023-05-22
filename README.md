@@ -18,13 +18,13 @@ The motivation behind a drawing and guessing game is to provide a fun, interacti
 
 - [Technologies](#technologies)
 - [High-level components](#high-level-components)
-- [Launch & Deployment](#launch-deployment)
+- [Launch and Deployment](#launch-and-deployment)
 - [Illustrations](#illustrations)
 - [Roadmap](#roadmap)
 - [Contributions](#contributions)
 - [License](#license)
 
-## :small_orange_diamond: Technologies
+## Technologies
 
 - React: JS Library for Building UI.
 - JavaScript: The main programming language.
@@ -33,7 +33,7 @@ The motivation behind a drawing and guessing game is to provide a fun, interacti
 - HTML: Markup language for Web pages.
 - Google Cloud: Develop and launch the application.
 
-## :small_orange_diamond: High level components
+## High-level components
 
 The important components are saved under the folder [src/views](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/tree/main/src/components/views). The main entry point of the client is the [index.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/index.js) file.
 Here we illstruate three main components.
@@ -52,7 +52,7 @@ When the game is finished, the game would display the [Ranking.js](https://githu
 On the [Friend.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Friend.js) page, users can search for other users by their username and send friend requests. If a user receives a friend request, they will receive a notification on the [Notification.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Notification.js) page and can choose to accept or reject the request. Once accepted, the friend will appear in the user's friend list on the [Friend.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Friend.js) page, and the user can view their friend's personal profile, including their best score and total score earned in the game via [Profile.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Profile.js) component.
 The [Profile.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Profile) also enables users to view their personal profile,including username, best score and total score. Users can edit their own profile: changing username and password.
 
-## :small_orange_diamond: Launch & Deployment
+## Launch and Deployment
 
 **Installation**
 To clone and run this application, you'll need [Git](https://git-scm.com), [Node.js](https://nodejs.org) installed on your computer.
@@ -77,9 +77,9 @@ npm run dev
 
 Now you can open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## :small_orange_diamond: Illustrations
+## Illustrations
 
-## :small_orange_diamond: Roadmap
+## Roadmap
 
 - :white_check_mark: Allow touch input.
 - :negative_squared_cross_mark: Allow guessing players guess multiple times.
@@ -89,7 +89,7 @@ Now you can open [http://localhost:3000](http://localhost:3000) to view it in th
 - :negative_squared_cross_mark: Better user interface.
 - :negative_squared_cross_mark: Optional re-match after a game ends.
 
-## :small_orange_diamond: Contributions
+## Contributions
 
 ### Authors
 
@@ -109,4 +109,4 @@ Now you can open [http://localhost:3000](http://localhost:3000) to view it in th
 **Note**  
 _The cartoon cat images are from GIPHY and all credit goes to the original artists._
 
-## :small_orange_diamond: License
+## License

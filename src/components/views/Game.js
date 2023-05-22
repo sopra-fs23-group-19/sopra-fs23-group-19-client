@@ -147,6 +147,8 @@ const Game = () => {
       localStorage.removeItem("intialTurnId");
     } catch (error) {
       handleGameError(error);
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
     }
     history.push("/lobby");
   };

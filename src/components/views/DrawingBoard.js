@@ -21,13 +21,11 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
         const ctx = canvas.getContext("2d");
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // lineColor='#000000';
-        // lineWidth=5;
+    
         setLineColor("#000000");
         setLineWidth(5);
         document.querySelector("#board").style.cursor = "pointer";
         document.querySelector("#black").style.transform = "translateY(-5px)";
-        // setCursorStyle("url('https://icons.iconarchive.com/icons/iconsmind/outline/16/Pen-5-icon.png'),auto");
       }
     }
     return () => {
@@ -110,22 +108,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
       [lastX, lastY] =[e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top]
     })
 
-    // canvas.addEventListener('touchmove', (e) =>{
-    //   if(!isDrawing) return;
-    //   const touch = e.touches[0];
-    //   const offsetX = touch.pageX - canvas.offsetLeft;
-    //   const offsetY = touch.pageY - canvas.offsetTop;
-
-    //   context.beginPath();
-    //   context.moveTo(lastX, lastY);
-    //   context.lineTo(offsetX, offsetY);
-    //   context.stroke();
-
-    //   [lastX, lastY] = [offsetX, offsetY];
-
-    //   e.preventDefault();
-
-    // });
     canvas.addEventListener('touchmove', draw);
 
     canvas.addEventListener('touchend', ()=> isDrawing = false);
@@ -140,22 +122,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
       canvas.removeEventListener('touchend', ()=>{});
     }
   },[lineColor, lineWidth]);
-
-  // function onDraw(canvasObject, point, previousPoint) {
-  //   drawLine(previousPoint, point, canvasObject, lineColor, lineWidth);
-  //   // drawCircle(previousPoint, point, canvasObject, lineColor, lineWidth);
-  // }
-
-  // function drawLine(start, end, canvasObject, color, width) {
-  //   start = start ?? end;
-  //   canvasObject.beginPath();
-  //   canvasObject.lineWidth = width;
-  //   canvasObject.strokeStyle = color; // set the strokeStyle to the passed color
-  //   canvasObject.moveTo(start.x, start.y);
-  //   canvasObject.lineTo(end.x, end.y);
-  //   canvasObject.stroke();
-  // }
-
 
 
   function download(selector) {
@@ -258,7 +224,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
             style={{
               border: "2px solid #000000",
               backgroundColor: "#FFFFFF",
-              // cursor: "pointer"
             }}
             ref={canvasRef}
           ></canvas>
@@ -268,7 +233,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
             width="500px"
             height="600px"
             style={{ border: "2px solid #000000", backgroundColor: "#FFFFFF", "left":"80px", top:"300px",position:"absolute"}}
-            // ref={setConvasRef}
           ></canvas>
         )}
       </div>
@@ -342,7 +306,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
             </Button>
             <Button
               onClick={() => eraser()}
-              // onClick={() => lineColor="#FFFFFF" }
               style={{ border: "2px solid #000000", "margin-left": "15px", backgroundColor: "rgba(193, 210, 240, 0.6)" }}
             >
               eraser
@@ -355,26 +318,6 @@ const DrawingBoard = ({ role, time, handleDoSubmit, handleUpdate }) => {
             >
               submit
             </Button>
-            {/* <Button
-              onClick={() => lineBold()}
-              style={{
-                border: "2px solid #000000",
-                "margin-left": "15px",
-                width: "40px",
-              }}
-            >
-              +
-            </Button>
-            <Button
-              onClick={() => lineThinner()}
-              style={{
-                border: "2px solid #000000",
-                "margin-left": "15px",
-                width: "40px",
-              }}
-            >
-              -
-            </Button> */}
           </>
         ) : (
           <></>

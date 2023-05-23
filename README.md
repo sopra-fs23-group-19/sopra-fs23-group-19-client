@@ -101,8 +101,8 @@ Users can see the usernames of players who enter the game room and can invite th
 ![Drawing Stage of Guessing Player](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91421664/c3405b27-4cba-4960-9506-948949f19891)
 
 The drawing player has 60s to draw a picture to describe the word chosen from the three given ones and the guessing player can see the 
-
 live drawing board.
+
 ![Guessing Stage](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91421664/dde8c1b5-d375-48b0-97e0-a239046f1e1d)
 
 The Guessing player can guess the word and all players can download the picture result.

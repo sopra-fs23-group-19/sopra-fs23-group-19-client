@@ -41,7 +41,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [playerNum, setPlayerNum] = useState(2);
   const [imageData, setImageData] = useState("");
   const [time, setTime] = useState(10);
-  const [correctAnswer, setCorrectAnswer] = useState(10);
+  const [correctAnswer, setCorrectAnswer] = useState("");
   const fetchTurnScore = async () => {
     try {
       const response0 = await api().get(`/gameRounds/ranks/${turnId}`);
@@ -63,7 +63,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         setUserScore(curUser[0].currentScore);
       }
 
-      setCorrectAnswer(response.correctAnswers);
       if (playerNum == 4) {
         setUsername1(guessingPlayers[0].username);
         setUsername2(guessingPlayers[1].username);
@@ -76,6 +75,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         setUsername1(guessingPlayers[0].username);
         setScore1(guessingPlayers[0].currentScore);
       }
+      setCorrectAnswer(response.correctAnswers);
     } catch (error) {
       const error_str = handleError(error);
 
@@ -122,14 +122,18 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
 
   let rankingWhenFourPlayers = (
     <div id="rankFour">
-      <div className="guessing score-list" style={{backgroundColor:"rgba(193, 210, 240, 0.6)"}}>
+      <div
+        className="guessing score-list"
+        style={{ backgroundColor: "rgba(193, 210, 240, 0.6)" }}
+      >
         <div className="guessing score-container">
-          <div className="guessing rank-title">
-            Username
-          </div>
+          <div className="guessing rank-title">Username</div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
+        <div
+          className="guessing line"
+          style={{ border: "3px solid rgba(25,25,112,0.4)" }}
+        ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
@@ -148,14 +152,20 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
 
   let rankingWhenTwoPlayers = (
     <div id="rankTwo">
-      <div className="guessing score-list" style={{backgroundColor:"rgba(193, 210, 240, 0.6)"}}>
+      <div
+        className="guessing score-list"
+        style={{ backgroundColor: "rgba(193, 210, 240, 0.6)" }}
+      >
         <div className="guessing score-container">
           <div className="guessing rank-title" style={{}}>
             Username
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
+        <div
+          className="guessing line"
+          style={{ border: "3px solid rgba(25,25,112,0.4)" }}
+        ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
@@ -164,19 +174,23 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     </div>
   );
 
-  useEffect(() => {
-    fetchTurnScore().catch((error)=>{
-      const error_str = handleError(error);
-      if (error_str["message"].match(/Network Error/)) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-        localStorage.removeItem("username");
-        localStorage.removeItem("gameId");
-        localStorage.removeItem("intialTurnId");
-        history.push(`/information`);
-      }
-    });
-  }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
+  useEffect(
+    () => {
+      fetchTurnScore().catch((error) => {
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
+    },
+    // [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
+    [playerNum, correctAnswer]
+  );
   const handleClick = () => {
     playOn();
     handleConfirmRanking();
@@ -225,14 +239,18 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
           <div>
             <h3 className="rank functionName">Role: Drawing</h3>
           </div>
-          <div className="guessing score-list" style={{backgroundColor:"rgba(193, 210, 240, 0.6)"}}>
+          <div
+            className="guessing score-list"
+            style={{ backgroundColor: "rgba(193, 210, 240, 0.6)" }}
+          >
             <div className="guessing score-container">
-              <div className="guessing rank-title">
-                Username
-              </div>
+              <div className="guessing rank-title">Username</div>
               <div className="guessing rank-title">Score</div>
             </div>
-            <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
+            <div
+              className="guessing line"
+              style={{ border: "3px solid rgba(25,25,112,0.4)" }}
+            ></div>
             <div className="guessing score-container">
               <div className="guessing content">{drawingPlayerName}</div>
               <div className="guessing content">{drawingPlayerScore}</div>
@@ -269,7 +287,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       </div>
       <div
         style={{
-          "fontFamily": "Josefin Sans, sans-serif",
+          fontFamily: "Josefin Sans, sans-serif",
           "font-size": "20px",
           color: "black",
         }}
@@ -286,7 +304,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         textAlign: "center",
         top: "0px",
         position: "absolute",
-        "fontFamily": "Josefin Sans, sans-serif",
+        fontFamily: "Josefin Sans, sans-serif",
         "font-size": "20px",
         color: "black",
         width: "60%",
@@ -308,7 +326,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         textAlign: "center",
         top: "0px",
         position: "absolute",
-        "fontFamily": "Josefin Sans, sans-serif",
+        fontFamily: "Josefin Sans, sans-serif",
         "font-size": "20px",
         color: "black",
         width: "60%",
@@ -351,7 +369,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
           />
         </div>
         {title}
-        <div className="rank image-table-container" >
+        <div className="rank image-table-container">
           <div className="rank left-container">
             {role == "guessingPlayer" ? content : content_drawing}
             <div className="rank image-container">
@@ -385,7 +403,11 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
               handleClick();
             }}
             width="100%"
-            style={{ "margin-top": "5px", border: "2px solid #000000", backgroundColor:"rgba(193, 210, 240, 0.6)"}}
+            style={{
+              "margin-top": "5px",
+              border: "2px solid #000000",
+              backgroundColor: "rgba(193, 210, 240, 0.6)",
+            }}
           >
             Continue
           </Button>

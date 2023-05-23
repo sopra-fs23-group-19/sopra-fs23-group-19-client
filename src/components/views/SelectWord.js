@@ -8,11 +8,9 @@ import cat4 from "styles/images/player4.png";
 import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import { Spinner } from "components/ui/Spinner";
 import { api, handleError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import gameBackground from "styles/images/empty-room.jpg";
 import BgmPlayer from "components/ui/BgmPlayer";
 
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
@@ -163,7 +161,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             left: "30px",
             top: "200px",
             position: "absolute",
-            "font-family": "Nunito",
+            "fontFamily": "Josefin Sans, sans-serif",
             "font-size": "20px",
             color: "black",
             "margin-bottom": "5px",
@@ -183,7 +181,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             left: "30px",
             top: "250px",
             position: "absolute",
-            "font-family": "Nunito",
+            "fontFamily": "Josefin Sans, sans-serif",
             "font-size": "20px",
             color: "black",
             "margin-bottom": "5px",
@@ -218,14 +216,14 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   );
 
   const style1 = {
-    "font-family": "Nunito",
+    "fontFamily": "Josefin Sans, sans-serif",
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
     "wordWrap":"break-word"
   };
   const style2 = {
-    "font-family": "Nunito",
+    "fontFamily": "Josefin Sans, sans-serif",
     "font-size": "20px",
     color: "black",
     "wordWrap":"break-word"
@@ -344,7 +342,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
               left: "30%",
               top: "10px",
               position: "absolute",
-              "font-family": "Nunito",
+              "fontFamily": "Josefin Sans, sans-serif",
               color: "black",
             }}
           >
@@ -352,7 +350,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             <br></br>
             Choose one word first!
           </h2>
-          <div style={{left:"30%", top:"100px", position:"absolute", "fontFamily": "Nunito", "fontSize": "20px"}}>
+          <div style={{left:"30%", top:"100px", position:"absolute", "fontFamily": "Josefin Sans, sans-serif", "fontSize": "20px"}}>
           <Timer
             start={startGuessing}
             stage="select_word"
@@ -369,7 +367,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
               top: "10px",
               width:"400px",
               position: "absolute",
-              "font-family": "Nunito",
+              "fontFamily": "Josefin Sans, sans-serif",
               color: "black",
               "wordWrap":"break-word"
             }}

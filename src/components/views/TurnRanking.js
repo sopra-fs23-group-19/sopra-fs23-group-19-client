@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import cats from "styles/images/cats2.png";
 import "styles/views/Guessing.scss";
 import Timer from "components/views/Timer";
@@ -16,7 +16,6 @@ import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import BgmPlayer from "components/ui/BgmPlayer";
 import coinPic from "styles/images/token.png";
-import PropTypes from "prop-types";
 
 const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
   const [isDisabled, setIsDisabled] = useState(false); //button disabled after one click
@@ -121,27 +120,6 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
     }
   }, [time]);
 
-  useEffect(() => {
-    fetchTurnScore().catch((error)=>{
-      const error_str = handleError(error);
-      if (error_str["message"].match(/Network Error/)) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-        localStorage.removeItem("username");
-        localStorage.removeItem("gameId");
-        localStorage.removeItem("intialTurnId");
-        history.push(`/information`);
-      }
-    });
-  }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
-  const handleClick = () => {
-    playOn();
-    handleConfirmRanking();
-    setIsDisabled(true);
-  };
-
-  const [playOn] = useSound(btClick);
-
   let rankingWhenFourPlayers = (
     <div id="rankFour">
       <div className="guessing score-list" style={{backgroundColor:"rgba(193, 210, 240, 0.6)"}}>
@@ -185,6 +163,27 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       </div>
     </div>
   );
+
+  useEffect(() => {
+    fetchTurnScore().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
+  }, [playerNum, turnId, rankingWhenFourPlayers, rankingWhenTwoPlayers]);
+  const handleClick = () => {
+    playOn();
+    handleConfirmRanking();
+    setIsDisabled(true);
+  };
+
+  const [playOn] = useSound(btClick);
 
   const title =
     role == "guessingPlayer" ? (
@@ -270,7 +269,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
       </div>
       <div
         style={{
-          "font-family": "Nunito",
+          "fontFamily": "Josefin Sans, sans-serif",
           "font-size": "20px",
           color: "black",
         }}
@@ -287,7 +286,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         textAlign: "center",
         top: "0px",
         position: "absolute",
-        "font-family": "Nunito",
+        "fontFamily": "Josefin Sans, sans-serif",
         "font-size": "20px",
         color: "black",
         width: "60%",
@@ -309,7 +308,7 @@ const TurnRanking = ({ gameId, turnId, handleConfirmRanking }) => {
         textAlign: "center",
         top: "0px",
         position: "absolute",
-        "font-family": "Nunito",
+        "fontFamily": "Josefin Sans, sans-serif",
         "font-size": "20px",
         color: "black",
         width: "60%",

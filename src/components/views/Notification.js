@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
 import "styles/views/Notification.scss";
-import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
@@ -100,6 +99,10 @@ const Friends = ({ message }) => {
       </div>
     </div>
   );
+};
+
+Friends.propTypes = {
+  message: PropTypes.object,
 };
 
 const Rooms = ({ message }) => {
@@ -229,11 +232,14 @@ const Rooms = ({ message }) => {
   );
 };
 
+Rooms.propTypes = {
+  message: PropTypes.object,
+};
+
 const Notification = () => {
   const history = useHistory();
   const userId = localStorage.getItem("id");
   const [allFriendsNotice, setAllFriendsNotice] = useState(null);
-  let pendingFriendNotice = [];
   const [gamesNotice, setGamesNotice] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
   const [isUpdatingFriend, setIsUpdatingFriend] = useState(true);

@@ -97,6 +97,7 @@ User can set the name of the game room and choose the mode.
 
 Users can see the usernames of players who enter the game room and can invite their friends to play together.
 ![Drawing Stage of Drawing Player](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91421664/9bb5785d-9eed-4501-85fe-b53097ab5142)
+
 ![Drawing Stage of Guessing Player](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91421664/c3405b27-4cba-4960-9506-948949f19891)
 
 The drawing player has 60s to draw a picture to describe the word chosen from the three given ones and the guessing player can see the live drawing board.

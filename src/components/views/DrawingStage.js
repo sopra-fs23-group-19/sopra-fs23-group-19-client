@@ -348,7 +348,7 @@ const DrawingStage = ({
               "font-size": "20px",
               color: "black",
               border: "2px solid #000000",
-              "background-color": "rgba(181, 153, 120, 0.5)",
+              "background-color": "rgba(193, 210, 240, 0.6)",
             }}
           >
             chosen word: <br />

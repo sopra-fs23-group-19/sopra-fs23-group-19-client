@@ -1,11 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Timer from "components/views/Timer";
 import cats from "styles/images/cats2.png";
-import Header from "components/views/Header";
-import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
-import DrawingBoard from "./DrawingBoard";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Login.scss";
 import PropTypes from "prop-types";
@@ -293,7 +290,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
     >
       <div
         style={{
-          "font-family": "Nunito",
+          "fontFamily": "Josefin Sans, sans-serif",
           "font-size": "20px",
           color: "black",
         }}
@@ -374,7 +371,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
               left: "15%",
               top: "20px",
               position: "absolute",
-              "font-family": "Nunito",
+              "fontFamily": "Josefin Sans, sans-serif",
               "font-size": "30px",
               color: "black",
             }}
@@ -390,6 +387,7 @@ const GuessingStage = ({ gameId, turnId, handleSubmitAnswer }) => {
               style={{
                 border: "2px solid #000000",
                 marginLeft: "20px",
+                marginTop: "5px",
                 backgroundColor: "rgba(193, 210, 240, 0.6)",
               }}
               id="download"

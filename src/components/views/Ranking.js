@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import cats from "styles/images/cats2.png";
 import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";

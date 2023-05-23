@@ -12,7 +12,7 @@ const api = () => {
   return axios.create({
     baseURL: getDomain(),
     headers: token_header,
-    adapter: require("axios/lib/adapters/xhr"),
+    // adapter: require("axios/lib/adapters/xhr"),
   });
 };
 const handleNotLogInError = (

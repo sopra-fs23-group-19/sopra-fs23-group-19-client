@@ -7,7 +7,7 @@ import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
 import "styles/views/Guessing.scss";
 import DrawingBoard from "./DrawingBoard";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { api, handleError } from "../../helpers/api";
 import { useInterval } from "helpers/hooks";
 import HeaderInGame from "components/views/HeaderInGame";
@@ -245,8 +245,9 @@ const DrawingStage = ({
         style={{
           left: "350px",
           top: "120px",
+          width: "400px",
           position: "absolute",
-          "font-family": "Nunito",
+          "fontFamily": "Josefin Sans, sans-serif",
           "font-size": "30px",
           color: "black",
         }}
@@ -269,7 +270,7 @@ const DrawingStage = ({
             left: "200px",
             top: "180px",
             position: "absolute",
-            "font-family": "Nunito",
+            "fontFamily": "Josefin Sans, sans-serif",
             "font-size": "30px",
             color: "black",
             width: "400px",
@@ -344,10 +345,12 @@ const DrawingStage = ({
               left: "200px",
               top: "120px",
               position: "absolute",
-              "font-family": "Nunito",
+              "fontFamily": "Josefin Sans, sans-serif",
               "font-size": "20px",
               color: "black",
               border: "2px solid #000000",
+              padding:"10px",
+              "borderRadius": "0.75em",
               "background-color": "rgba(193, 210, 240, 0.6)",
             }}
           >

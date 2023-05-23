@@ -18,8 +18,7 @@ import "styles/index.scss";
 const Game = () => {
   const history = useHistory();
   const { gameId } = useParams();
-  const InitialTurnId = localStorage.getItem("intialTurnId");
-
+  const InitialTurnId = Number(localStorage.getItem("intialTurnId"));
   const curUserId = localStorage.getItem("id");
 
   const [gameStatus, setGameStatus] = useState("PLAYING");

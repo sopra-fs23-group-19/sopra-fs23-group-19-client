@@ -14,7 +14,7 @@ import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import BgmPlayer from "components/ui/BgmPlayer";
-
+import { Link } from "react-router-dom";
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
   const [isShowRank, setIsShowRank] = useState(true);

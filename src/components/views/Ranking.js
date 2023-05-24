@@ -17,7 +17,7 @@ import BgmPlayer from "components/ui/BgmPlayer";
 
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
-  
+
   //get the username and score
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
@@ -76,11 +76,13 @@ const Ranking = ({ gameId, handleQuitGame }) => {
       } else {
         notify(error_str["message"]);
       }
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
       history.push("/lobby"); // redirect back to lobby
     }
   };
   useEffect(() => {
-    fetchRankInfo().catch((error)=>{
+    fetchRankInfo().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -104,7 +106,10 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
+        <div
+          className="guessing line"
+          style={{ border: "3px solid rgba(25,25,112,0.4)" }}
+        ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
@@ -150,7 +155,10 @@ const Ranking = ({ gameId, handleQuitGame }) => {
           </div>
           <div className="guessing rank-title">Score</div>
         </div>
-        <div className="guessing line" style={{border: "3px solid rgba(25,25,112,0.4)"}}></div>
+        <div
+          className="guessing line"
+          style={{ border: "3px solid rgba(25,25,112,0.4)" }}
+        ></div>
         <div className="guessing score-container">
           <div className="guessing content">{username1}</div>
           <div className="guessing content">{score1}</div>
@@ -219,7 +227,11 @@ const Ranking = ({ gameId, handleQuitGame }) => {
               handleQuit();
             }}
             width="100%"
-            style={{ "margin-top": "5px", border: "2px solid #000000", backgroundColor:"rgba(193, 210, 240, 0.6)"}}
+            style={{
+              "margin-top": "5px",
+              border: "2px solid #000000",
+              backgroundColor: "rgba(193, 210, 240, 0.6)",
+            }}
           >
             QUIT GAME
           </Button>

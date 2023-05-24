@@ -14,7 +14,6 @@ import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import BgmPlayer from "components/ui/BgmPlayer";
-import { Link } from "react-router-dom";
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
   const [isShowRank, setIsShowRank] = useState(true);
@@ -78,9 +77,10 @@ const Ranking = ({ gameId, handleQuitGame }) => {
       // else {
       //   notify(error_str["message"]);
       // }
-      setIsShowRank(false);
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
+      setIsShowRank(false);
+
       // history.push("/lobby"); // redirect back to lobby
     }
   };
@@ -212,44 +212,46 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         </div>
         {/* {title} */}
         {isShowRank ? (
-          title
-        ) : (
-          <Link to="/lobby">
-            Game was ended by others. Back to the lobby...
-          </Link>
-        )}
-        {playerNum == 4 ? (
-          <div>{rankingWhenFourPlayers}</div>
-        ) : (
-          <div>{rankingWhenTwoPlayers}</div>
-        )}
-        {isShowRank ? (
-          <div
-            className="guessing button-container"
-            style={{
-              top: "60px",
-              left: "45%",
-              position: "absolute",
-              height: "50px",
-            }}
-          >
-            <Button
-              onClick={() => {
-                handleQuit();
-              }}
-              width="100%"
-              style={{
-                "margin-top": "5px",
-                border: "2px solid #000000",
-                backgroundColor: "rgba(193, 210, 240, 0.6)",
-              }}
-            >
-              QUIT GAME
-            </Button>
+          <div>
+            {title}
+            {playerNum == 4 ? (
+              <div>{rankingWhenFourPlayers}</div>
+            ) : (
+              <div>{rankingWhenTwoPlayers}</div>
+            )}
           </div>
         ) : (
-          <></>
+          // <Link to="/lobby">
+          //   Game was ended by others. Back to the lobby...
+          // </Link>
+          <div className="guessing title1">
+            <Emoji symbol="🙊" className="guessing li" />
+            Game was ended by others...Please Leave this game.
+          </div>
         )}
+        <div
+          className="guessing button-container"
+          style={{
+            top: "60px",
+            left: "45%",
+            position: "absolute",
+            height: "50px",
+          }}
+        >
+          <Button
+            onClick={() => {
+              handleQuit();
+            }}
+            width="100%"
+            style={{
+              "margin-top": "5px",
+              border: "2px solid #000000",
+              backgroundColor: "rgba(193, 210, 240, 0.6)",
+            }}
+          >
+            LEAVE GAME
+          </Button>
+        </div>
       </div>
     </div>
   );

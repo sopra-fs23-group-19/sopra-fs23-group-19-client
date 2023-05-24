@@ -1,7 +1,7 @@
 @import "styles/theme";
 .waitingArea {
   &.content-container {
-    top:2em;
+    top: 2em;
     width: 90%;
     left: 5%;
     position: relative;
@@ -22,15 +22,17 @@
     justify-content: center;
     display: flex;
     margin-top: 2em;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
   }
   &.container {
     margin-top: 1em;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
     min-height: 40px;
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
-    margin: 0 auto;
     width: 80%;
     position: relative;
   }
@@ -38,7 +40,7 @@
   &.label {
     color: black;
     margin-bottom: 12px;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -104,16 +106,14 @@
     align-items: center;
     padding: 8px 16px;
     gap: 8px;
-    // position: absolute;
     width: 250px;
     height: 50px;
     left: 500px;
-    // top: 460px;
     top: 475px;
     background: #ffffff;
     border: 1px solid #000000;
     border-radius: 999px;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 30px;
@@ -129,7 +129,7 @@
     position: relative;
   }
   &.text-container {
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 18px;
@@ -138,9 +138,10 @@
     justify-content: center;
     text-align: center;
     width: 25%;
+    word-wrap: break-word;
   }
   &.title-container {
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -189,10 +190,12 @@
     background-color: rgba(181, 153, 120, 0.5);
   }
   &.username {
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-weight: 500;
     color: black;
-    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+    word-wrap: break-word;
   }
   &.id {
     margin-left: auto;

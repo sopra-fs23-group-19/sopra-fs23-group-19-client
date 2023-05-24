@@ -5,19 +5,16 @@ import cat1 from "styles/images/player1.png";
 import cat2 from "styles/images/player2.png";
 import cat3 from "styles/images/player3.png";
 import cat4 from "styles/images/player4.png";
-import BaseContainer from "components/ui/BaseContainer";
 import "styles/views/Guessing.scss";
 import DrawingBoard from "./DrawingBoard";
-import { useHistory, useLocation } from "react-router-dom";
-import { Button } from "components/ui/Button";
-import { Spinner } from "components/ui/Spinner";
+import { useHistory } from "react-router-dom";
 import { api, handleError } from "../../helpers/api";
 import { useInterval } from "helpers/hooks";
 import HeaderInGame from "components/views/HeaderInGame";
 import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const DrawingStage = ({
   gameId,
@@ -27,9 +24,7 @@ const DrawingStage = ({
 }) => {
   const curUserId = localStorage.getItem("id");
   const startDrawing = +new Date();
-  //   const location = useLocation();
-  // const startDrawing = location.state.startDrawing;
-  //   const word = location.state.word;
+
   const history = useHistory();
 
   //get the room and user information
@@ -50,11 +45,9 @@ const DrawingStage = ({
   const [imageData, setImageData] = useState("");
   const sendTimeInfo = (timeValue) => {
     // the callback. Use a better name
-    // console.log(timeValue);
     setTime(timeValue);
   };
   function handleUpdate(painting) {
-    // console.log(painting);
     handleUpdatePainting(painting);
   }
   const [playOn] = useSound(btClick);
@@ -62,7 +55,6 @@ const DrawingStage = ({
     const myCanvas = document.getElementById("showingBoard");
     const myContext = myCanvas.getContext("2d");
     const img = new Image();
-    // console.log("why");
     if (imageData) {
       img.src = imageData;
 
@@ -83,6 +75,7 @@ const DrawingStage = ({
   const notify = (message) => {
     toast.error(message);
   };
+
   //fetch game Turn information
   const fetchTurnInfo = async () => {
     try {
@@ -97,7 +90,7 @@ const DrawingStage = ({
       setPlayerNum(response1.players.length);
       setWord(response1.targetWord);
       setImageData(response1.image);
-      //   console.log(word);
+
       var allPlayers = response1.players;
       const updatedPlayer = allPlayers.filter(
         (item) => item.id != response1.drawingPlayerId
@@ -106,7 +99,6 @@ const DrawingStage = ({
       setCurrentUsername(thisPlayer[0].username);
 
       if (playerNum == 4) {
-        // setUsername1(response1.players[0].username);
         setUsername1(response1.drawingPlayerName);
 
         setUsername2(updatedPlayer[0].username);
@@ -118,43 +110,53 @@ const DrawingStage = ({
         setUsername1(response1.drawingPlayerName);
         setUsername2(updatedPlayer[0].username);
       }
-
-      // console.log("fetch turn info");
-      //   setRole("drawingPlayer");
     } catch (error) {
-      //   alert(
-      //     `Something went wrong during get game Turn information: \n${handleError(
-      //       error
-      //     )}`
-      //   );
-      // handleNotLogInError(
-      //   history,
-      //   error,
-      //   "fetching turn information in drawing phase"
-      // );
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
+        setIsUpdating(false);
       }
-      setIsUpdating(false);
-      history.push("/lobby"); // redirect back to lobby
+      history.push("/lobby");
     }
   };
 
   useEffect(() => {
-    fetchTurnInfo().then(() => {});
+    fetchTurnInfo().catch((error) => {
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, [playerNum]);
 
   useInterval(
     async () => {
-      fetchTurnInfo().then(() => {});
+      fetchTurnInfo().catch((error) => {
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     },
     isUpdating && role == "guessingPlayer" ? 1000 : null
-    // status == "PLAYING" ? null : 1000
   );
 
   const style1 = {
@@ -162,11 +164,13 @@ const DrawingStage = ({
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
+    wordWrap: "break-word",
   };
   const style2 = {
     "font-family": "Josefin Sans",
     "font-size": "20px",
     color: "black",
+    wordWrap: "break-word",
   };
 
   //display cat and username
@@ -236,14 +240,14 @@ const DrawingStage = ({
     );
 
   const drawingPlayerContent = () => {
-    // console.log("drawing player content");
     const content = (
       <div
         style={{
           left: "350px",
           top: "120px",
+          width: "400px",
           position: "absolute",
-          "font-family": "Nunito",
+          "fontFamily": "Josefin Sans, sans-serif",
           "font-size": "30px",
           color: "black",
         }}
@@ -259,7 +263,6 @@ const DrawingStage = ({
     return content;
   };
   const guessingPlayerContent = () => {
-    // console.log("guessing player content");
     const content = (
       <div>
         <div
@@ -267,13 +270,14 @@ const DrawingStage = ({
             left: "200px",
             top: "180px",
             position: "absolute",
-            "font-family": "Nunito",
+            "fontFamily": "Josefin Sans, sans-serif",
             "font-size": "30px",
             color: "black",
-            width: "700px",
+            width: "400px",
+            wordWrap: "break-word",
           }}
         >
-          Drawing stage. 
+          Drawing stage.
           <br></br>
           {username1} is painting!
         </div>
@@ -291,9 +295,9 @@ const DrawingStage = ({
   };
 
   return (
-    <div>
+    <div className="guessing body">
       <HeaderInGame />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -305,25 +309,31 @@ const DrawingStage = ({
       />
       <div className="guessing content-container">
         <div className="guessing pic">
-          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="game background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {playerNum == 4 ? (
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}{player3}{player4}</div>
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">
+                {player2}
+                {player3}
+                {player4}
+              </div>
+            </div>
           </div>
-        </div>
-        ) : (<></>
+        ) : (
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">{player2}</div>
+            </div>
+          </div>
         )}
-        {
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}</div>
-          </div>
-        </div>
-        }
       </div>
       {role === "drawingPlayer"
         ? drawingPlayerContent()
@@ -331,9 +341,17 @@ const DrawingStage = ({
       {startDrawing && role === "drawingPlayer" ? (
         <div>
           <div
-            style={{ left: "200px", top: "120px", position: "absolute",
-              "font-family": "Nunito", "font-size": "20px", color: "black",
-              border: "2px solid #000000", "background-color": "rgba(181, 153, 120, 0.5)",
+            style={{
+              left: "200px",
+              top: "120px",
+              position: "absolute",
+              "fontFamily": "Josefin Sans, sans-serif",
+              "font-size": "20px",
+              color: "black",
+              border: "2px solid #000000",
+              padding:"10px",
+              "borderRadius": "0.75em",
+              "background-color": "rgba(193, 210, 240, 0.6)",
             }}
           >
             chosen word: <br />

@@ -21,7 +21,7 @@
   &.title-content {
     font-weight: bold;
     color: $background;
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-size: 30px;
     width: 50%;
   }
@@ -34,7 +34,7 @@
     width: flex;
   }
   &.instruction {
-    font-family: "Josefin Sans";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -44,5 +44,14 @@
     &:hover {
       transform: translateY(-5px);
     }
+  }
+  &.circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid red;
+    background-color: red;
+    right: 213px;
+    position: absolute;
   }
 }

@@ -13,7 +13,7 @@ import cat_left from "styles/images/cat_left.png";
 import cat_brown from "styles/images/cat_brown.png";
 import "styles/views/GameCreationView.scss";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const FormField = (props) => {
   return (
@@ -23,6 +23,7 @@ const FormField = (props) => {
         className="GameCreationView input"
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
+        maxLength="30"
       />
     </div>
   );
@@ -53,7 +54,6 @@ const GameCreationView = () => {
   };
   //create game:
   //call API to create a room
-  //
   const proceedToWait = async () => {
     const requestBody = JSON.stringify({
       roomName: roomName,
@@ -66,17 +66,27 @@ const GameCreationView = () => {
       const roomId = response.data.id;
       history.push(`/waiting/${roomId}`);
     } catch (error) {
-      // handleNotLogInError(history, error, "creating game room", true);
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        localStorage.removeItem("token");
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
-    // history.push(`/waiting/`);
   };
 
   const gameSettingForm = () => {
@@ -97,16 +107,13 @@ const GameCreationView = () => {
           <div className="GameCreationView button-container">
             <Button
               onClick={() => changeColor(2)}
-              // className="GameCreationView button_style2"
               className={selected === 2 ? "selected" : "notSelected"}
             >
               2 Players
             </Button>
 
             <Button
-              // onClick={() => setMode(4)}
               onClick={() => changeColor(4)}
-              // className="GameCreationView button_style2"
               className={selected === 4 ? "selected" : "notSelected"}
             >
               4 Players
@@ -140,7 +147,7 @@ const GameCreationView = () => {
   return (
     <div>
       <Header />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -158,8 +165,8 @@ const GameCreationView = () => {
             style={{ width: "447px", height: "559px", opacity: "20%" }}
           />
         </div>
+        <div>{gameSettingForm()}</div>
       </div>
-      <div>{gameSettingForm()}</div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useInterval } from "helpers/hooks";
 import PropTypes from "prop-types";
 import "styles/views/Header.scss";
@@ -7,20 +7,17 @@ import cats from "styles/images/cats3.png";
 import { api, handleError, handleNotLogInError } from "helpers/api";
 import { useHistory} from "react-router-dom";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-// import useSound from "use-sound";
-// import btClick from "styles/sounds/click_button.mp3";
+
 /**
- * This is an example of a Functional and stateless component (View) in React. Functional components are not classes and thus don't handle internal state changes.
- * Conceptually, components are like JavaScript functions. They accept arbitrary inputs (called “props”) and return React elements describing what should appear on the screen.
- * They are reusable pieces, and think about each piece in isolation.
- * Functional components have to return always something. However, they don't need a "render()" method.
- * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
 
 const Header = (props) => {
   const history = useHistory();
   const [newMessage, setNewMessage] = useState(false);
+  const [newFriend, setNewFriend] = useState(null);
+  const [newGame, setNewGame] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(true);
   const notify = (message) => {
     toast.error(message);
   };
@@ -70,64 +67,100 @@ const Header = (props) => {
     history.push(`/notification`);
   };
 
+  // on click the leaderboard button, redirect to the leaderboard page
+  const goToLeaderboard = () => {
+    history.push(`/leaderboard`);
+  };
+
   const new_notice = async () => {
     var aValue = localStorage.getItem("id");
     try {
-      const responseFriend = await api().get(`/notification/friend/pending/${aValue}`);
-      const responseGame = await api().get(`/notification/game/pending/${aValue}`);
-      const newFriend = responseFriend.data;
-      const newGame = responseGame.data;
-      if(newFriend.data!=[] || newGame.data!=[]){setNewMessage(true);}
+      const responseFriend = await api().get(
+        `/notification/friend/pending/${aValue}`
+      );
+      const responseGame = await api().get(
+        `/notification/game/pending/${aValue}`
+      );
+      setNewFriend(responseFriend.data);
+      setNewGame(responseGame.data);
+      if (responseFriend.data.length != 0 || responseGame.data.length != 0) {
+        setNewMessage(true);
+      } else {
+        setNewMessage(false);
+      }
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        notify(error_str["message"]);
+        setIsUpdating(false);
       }
     }
   };
 
   useEffect(() => {
-    new_notice().then(() => {});
+    new_notice().catch((error)=>{
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    })
   }, []);
 
   useInterval(
     async () => {
-      new_notice().then(() => {});
+      new_notice().catch((error)=>{
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      })
     },
-    3000
+    isUpdating ? 3000 : null
   );
+
 
   // on click the logout button, logout and clear local storage
   const logout = async () => {
     var aValue = localStorage.getItem("id");
     try {
       await api().post(`/users/logout/${aValue}`);
-    } catch (error) {
-      // handleNotLogInError(history, error, "logout");
-      const error_str = handleError(error);
-      console.log(error_str);
-      if (error_str["message"].match(/Network Error/)) {
-        history.push(`/information`);
-      } else {
-        // setNotification(error_str["message"]);
-        notify(error_str["message"]);
-      }
       localStorage.removeItem("token");
       localStorage.removeItem("id");
       localStorage.removeItem("username");
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
       history.push("/login");
+    } catch (error) {
+      const error_str = handleError(error);
+      
+      localStorage.removeItem("token");
+      localStorage.removeItem("id");
+      localStorage.removeItem("username");
+      localStorage.removeItem("gameId");
+      localStorage.removeItem("intialTurnId");
+      if (error_str["message"].match(/Network Error/)) {
+        history.push(`/information`);
+      } else {
+        notify(error_str["message"]);
+        history.push("/login");
+      }
     }
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("username");
-    localStorage.removeItem("gameId");
-    localStorage.removeItem("intialTurnId");
-    history.push("/login");
   };
 
   // display the header
@@ -160,7 +193,7 @@ const Header = (props) => {
         >
           Rules
         </div>
-        {newMessage?(<div className="header circle"></div>):(<></>)}
+        {newMessage ? <div className="header circle"></div> : <></>}
         <div
           className="header instruction"
           style={{ color: "#83692C" }}
@@ -177,7 +210,7 @@ const Header = (props) => {
         </div> */}
         <div
           className="header instruction"
-          style={{ color: "#B59978" }}
+          style={{ color: "#BE7D2D" }}
           onClick={() => goToFriend()}
         >
           Friends
@@ -191,11 +224,19 @@ const Header = (props) => {
         </div>
         <div
           className="header instruction"
+          style={{ color: "#dac107" }}
+          onClick={() => goToLeaderboard()}
+        >
+          Leaderboard
+        </div>
+        <div
+          className="header instruction"
           style={{ color: "#E0B406" }}
           onClick={() => goToLobby()}
         >
           Lobby
         </div>
+        <h3>{newMessage}</h3>
       </div>
 
       <ToastContainer
@@ -215,7 +256,4 @@ Header.propTypes = {
   height: PropTypes.string,
 };
 
-/**
- * Don't forget to export your component!
- */
 export default Header;

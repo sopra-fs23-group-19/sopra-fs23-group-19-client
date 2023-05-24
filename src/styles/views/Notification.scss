@@ -26,13 +26,11 @@
     flex-wrap: wrap;
   }
   &.left-container{
-    // flex: 1 1 45%;
     width: 50%;
     position: relative;
     min-width: 50px;
   }
     &.right-container{
-    // flex: 2 1 45%;
     min-width: 50px;
     position: relative;
     width: 50%;
@@ -41,7 +39,6 @@
   &.container {
     margin-top: 2em;
     flex-direction: column;
-    // position: absolute;
     width: 90%;
     min-width: 25em;
     border-radius: $borderRadius;
@@ -54,6 +51,9 @@
     top: 0px;
     width: 15%;
     text-align: center;
+    word-wrap: break-word;
+    font-family: "Josefin Sans", sans-serif;
+    margin-right: 1em;
   }
   &.friends-list {
     list-style: none;
@@ -68,8 +68,6 @@
     align-items: center;
     left: 0px;
     top: 0px;
-    // position: relative;
-    //background: rgba(181, 153, 120, 0.5);
   }
   &.line {
     position: relative;
@@ -80,7 +78,7 @@
     border: 3px solid #ad9a66;
   }
   &.content-container {
-    font-family: "Nunito";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 18px;
@@ -89,9 +87,10 @@
     justify-content: center;
     text-align: center;
     width: 33%;
+    word-wrap: break-word;
   }
   &.title-container {
-    font-family: "Nunito";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;

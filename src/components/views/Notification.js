@@ -4,17 +4,17 @@ import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
 import "styles/views/Header.scss";
 import "styles/views/Notification.scss";
-import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
 import { Spinner } from "components/ui/Spinner";
 import { useInterval } from "helpers/hooks";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import BgmPlayer from "components/ui/BgmPlayer"
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const Friends = ({ message }) => {
   const history = useHistory();
+  const [isDisabled, setIsDisabled] = useState(false);
   const notify = (message) => {
     toast.error(message);
   };
@@ -25,14 +25,17 @@ const Friends = ({ message }) => {
     });
     try {
       await api().post(`/friends/${messageId}`, requestBody);
+      setIsDisabled(true);
     } catch (error) {
-      // handleNotLogInError(history, error, "accept friend", true);
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -45,14 +48,17 @@ const Friends = ({ message }) => {
     });
     try {
       await api().post(`/friends/${messageId}`, requestBody);
+      setIsDisabled(true);
     } catch (error) {
-      // handleNotLogInError(history, error, "reject friend", true);
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -69,24 +75,39 @@ const Friends = ({ message }) => {
         hideProgressBar={true}
         draggable={false}
       />
-      <div className="notification content-container">
-        {message.useridFrom}
-      </div>
+      <div className="notification content-container">{message.useridFrom}</div>
       <div className="notification content-container">
         {message.usernameFrom}
       </div>
       <div className="notification button-container">
-        <Button onClick={() => acceptFriend(message.messageId)}>Accept</Button>
+        <Button
+          onClick={() => acceptFriend(message.messageId)}
+          disabled={isDisabled}
+          style={{ wordWrap: "break-word" }}
+        >
+          agree
+        </Button>
       </div>
       <div className="notification button-container">
-        <Button onClick={() => rejectFriend(message.messageId)}>Reject</Button>
+        <Button
+          onClick={() => rejectFriend(message.messageId)}
+          disabled={isDisabled}
+          style={{ wordWrap: "break-word" }}
+        >
+          reject
+        </Button>
       </div>
     </div>
   );
 };
 
+Friends.propTypes = {
+  message: PropTypes.object,
+};
+
 const Rooms = ({ message }) => {
   const history = useHistory();
+  const [isDisabled, setIsDisabled] = useState(false);
   const userId = localStorage.getItem("id");
   const notify = (message) => {
     toast.error(message);
@@ -100,13 +121,16 @@ const Rooms = ({ message }) => {
     try {
       await api().put(`/rooms/join`, requestBody);
     } catch (error) {
-      // handleNotLogInError(history, error, "joining the room", true);
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -123,15 +147,28 @@ const Rooms = ({ message }) => {
         `/notification/game/${messageId}`,
         requestBody
       );
-      goToWaiting(response.data.roomId).then(() => {});
+      setIsDisabled(true);
+      goToWaiting(response.data.roomId).catch((error) => {
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     } catch (error) {
-      // handleNotLogInError(history, error, "accepting game invite", true);
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -144,14 +181,17 @@ const Rooms = ({ message }) => {
     });
     try {
       await api().post(`/notification/game/${messageId}`, requestBody);
+      setIsDisabled(true);
     } catch (error) {
-      // handleNotLogInError(history, error, "rejecting game invite", true);
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -159,41 +199,55 @@ const Rooms = ({ message }) => {
 
   return (
     <div className="notification notice-container">
-        <ToastContainer
-          toastClassName="toast-style"
-          position="top-center"
-          transition={Bounce}
-          autoClose={5000}
-          closeButton={false}
-          hideProgressBar={true}
-          draggable={false}
-        />
-        <div className="notification content-container">
-          {message.roomId}
-        </div>
-        <div className="notification content-container">
-          {message.roomName}
-        </div>
-        <div className="notification button-container">
-          <Button onClick={() => acceptRoom(message.messageId)}>Accept</Button>
-        </div>
-        <div className="notification button-container">
-          <Button onClick={() => rejectRoom(message.messageId)}>Reject</Button>
-        </div>
+      <ToastContainer
+        toastClassName="toast-style"
+        position="top-center"
+        transition={Bounce}
+        autoClose={5000}
+        closeButton={false}
+        hideProgressBar={true}
+        draggable={false}
+      />
+      <div className="notification content-container">{message.roomId}</div>
+      <div className="notification content-container">{message.roomName}</div>
+      <div className="notification button-container">
+        <Button
+          onClick={() => acceptRoom(message.messageId)}
+          disabled={isDisabled}
+          style={{ wordWrap: "break-word" }}
+        >
+          Accept
+        </Button>
       </div>
-    );
+      <div className="notification button-container">
+        <Button
+          onClick={() => rejectRoom(message.messageId)}
+          disabled={isDisabled}
+          style={{ wordWrap: "break-word" }}
+        >
+          Reject
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+Rooms.propTypes = {
+  message: PropTypes.object,
 };
 
 const Notification = () => {
   const history = useHistory();
   const userId = localStorage.getItem("id");
   const [allFriendsNotice, setAllFriendsNotice] = useState(null);
-  let pendingFriendNotice = [];
   const [gamesNotice, setGamesNotice] = useState(null);
   const [isUpdating, setIsUpdating] = useState(true); //if continuing sending request to backend
+  const [isUpdatingFriend, setIsUpdatingFriend] = useState(true);
+
   const notify = (message) => {
     toast.error(message);
   };
+
   //get all pending friend notifications
   const fetchFriends = async () => {
     try {
@@ -203,23 +257,58 @@ const Notification = () => {
       setAllFriendsNotice(response.data);
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        localStorage.removeItem("token");
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
+      setIsUpdatingFriend(false);
     }
   };
 
   useEffect(() => {
-    fetchFriends().then(() => {});
+    fetchFriends().catch((error) => {
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
 
-  useInterval(async () => {
-    fetchFriends().then(() => {});
-  }, 3000);
+  useInterval(
+    async () => {
+      fetchFriends().catch((error) => {
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
+    },
+    isUpdatingFriend ? 3000 : null
+  );
 
   // get all game invites notifications
   const fetchGames = async () => {
@@ -228,40 +317,71 @@ const Notification = () => {
       setGamesNotice(response.data);
     } catch (error) {
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
+      setIsUpdating(false);
     }
   };
 
   useEffect(() => {
-    fetchGames().then(() => {});
+    fetchGames().catch((error) => {
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
 
-  useInterval(async () => {
-    fetchGames().then(() => {});
-  }, 3000);
+  useInterval(
+    async () => {
+      fetchGames().catch((error) => {
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
+    },
+    isUpdating ? 3000 : null
+  );
 
   let friendsContent = <Spinner />;
   if (allFriendsNotice) {
     friendsContent = (
       <div className="notification left-container">
-        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        width:"10em", position: "relative",textAlign:"center"}}>
+        <h2
+          style={{
+            "fontFamily": "Josefin Sans, sans-serif",
+            "font-size": "24px",
+            color: "#000000",
+            width: "10em",
+            position: "relative",
+            textAlign: "center",
+          }}
+        >
           Friends invite
         </h2>
-        <div className="notification container" >
+        <div className="notification container">
           <div className="notification notice-container">
-            <div className="notification title-container">
-              User Id
-            </div>
-            <div className="notification title-container">
-              Username
-            </div>
+            <div className="notification title-container">User Id</div>
+            <div className="notification title-container">Username</div>
             <div className="notification button-container"></div>
           </div>
           <div className="notification line"></div>
@@ -275,11 +395,19 @@ const Notification = () => {
     );
   } else {
     friendsContent = (
-        <div className="notification left-container">
-        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        width:"10em", position: "relative",textAlign:"center"}}>
-        Friends invite
-      </h2>
+      <div className="notification left-container">
+        <h2
+          style={{
+            "fontFamily": "Josefin Sans, sans-serif",
+            "font-size": "24px",
+            color: "#000000",
+            width: "10em",
+            position: "relative",
+            textAlign: "center",
+          }}
+        >
+          Friends invite
+        </h2>
         <div className="notification container">
           <div className="notification notice-container">
             <div className="notification title-container">User Id</div>
@@ -295,18 +423,22 @@ const Notification = () => {
   if (gamesNotice) {
     roomsContent = (
       <div className="notification right-container">
-        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-        width:"10em", position: "relative",textAlign:"center"}}>
-        Games invite
-      </h2>
-        <div className="notification container" >
+        <h2
+          style={{
+            "fontFamily": "Josefin Sans, sans-serif",
+            "font-size": "24px",
+            color: "#000000",
+            width: "10em",
+            position: "relative",
+            textAlign: "center",
+          }}
+        >
+          Games invite
+        </h2>
+        <div className="notification container">
           <div className="notification notice-container">
-            <div className="notification title-container">
-              Room Id
-            </div>
-            <div className="notification title-container">
-              RoomName
-            </div>
+            <div className="notification title-container">Room Id</div>
+            <div className="notification title-container">RoomName</div>
           </div>
           <div className="notification line"></div>
           <div className="notification friends-list">
@@ -320,18 +452,22 @@ const Notification = () => {
   } else {
     roomsContent = (
       <div className="notification right-container">
-        <h2 style={{"font-family": "Nunito", "font-size": "24px", color: "#000000",
-         width:"10em", position: "relative",textAlign:"center"}}>
+        <h2
+          style={{
+            "fontFamily": "Josefin Sans, sans-serif",
+            "font-size": "24px",
+            color: "#000000",
+            width: "10em",
+            position: "relative",
+            textAlign: "center",
+          }}
+        >
           Games invite
         </h2>
-        <div className="notification container" >
+        <div className="notification container">
           <div className="notification notice-container">
-            <div className="notification title-container">
-              Room Id
-            </div>
-            <div className="notification title-container">
-              Room Name
-            </div>
+            <div className="notification title-container">Room Id</div>
+            <div className="notification title-container">Room Name</div>
           </div>
           <div className="notification line"></div>
         </div>
@@ -342,7 +478,7 @@ const Notification = () => {
   return (
     <div>
       <Header />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -354,7 +490,11 @@ const Notification = () => {
       />
       <div className="notification c-container">
         <div className="notification pic">
-          <img src={cats} alt="notification background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="notification background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {friendsContent}
         {roomsContent}
@@ -363,8 +503,4 @@ const Notification = () => {
   );
 };
 
-/**
- * You can get access to the history object's properties via the withRouter.
- * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
- */
 export default Notification;

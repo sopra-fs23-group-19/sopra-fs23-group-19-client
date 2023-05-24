@@ -1,8 +1,20 @@
+@import "styles/theme";
+
 .rank {
+  &.body {
+    margin: 0;
+    padding: 0;
+    font-family: "Josefin Sans", sans-serif;
+    background-image: linear-gradient(135deg, $accent3 10%, $accent3 100%);
+    background-size: cover;
+    min-width: 55em;
+    min-height: 65em;
+    background-position: center;
+  }
   &.label {
     color: black;
     margin-bottom: 12px;
-    font-family: "Nunito";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -31,5 +43,93 @@
     position: absolute;
     left: 60%;
     top: 0px;
+  }
+  &.image-table-container {
+    margin-top: 7em;
+    width: 100%;
+    position: relative;
+    min-width: 50em;
+    display: flex;
+    flex-direction: row;
+  }
+  &.left-container {
+    left: 10%;
+    width: 40%;
+    position: relative;
+    min-width: 50px;
+    display: flex;
+    flex-direction: column;
+    @include center;
+  }
+  &.right-container {
+    min-width: 50px;
+    position: relative;
+    width: 40%;
+    left: 10%;
+    top: 2em;
+  }
+  &.image-container {
+    width: 100%;
+    height: 240px;
+    max-width: 30em;
+    position: relative;
+    top: 100px;
+    @include center;
+  }
+  &.timer-container {
+    left: 20%;
+    width: 60%;
+    position: relative;
+    top: 80px;
+    @include center;
+  }
+  &.coin-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &.coin-icon {
+    width: 10%;
+    margin-left: 5%;
+  }
+  &.coin-header {
+    color: #000000;
+    vertical-align: 0px;
+    line-height: 0px;
+    width: 10%;
+  }
+  &.displayWrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+  &.functionName {
+    color: #000000;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 20px;
+  }
+  &.stepContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 20px;
+    padding: 2px;
+    position: relative;
+    left:5%;
+    width: 90%;
+    min-width: 20em;
+    max-width: 50em;
+    height: flex;
+    transition: transform 0.2s;
+  }
+  &.functionNameWrapper {
+    display: flex;
+    justify-content: center;
+    font-family: "Josefin Sans", sans-serif;
   }
 }

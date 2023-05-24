@@ -1,12 +1,14 @@
 @import "styles/theme";
 
-.lobby {
+.leaderboard {
   &.content-container {
-    margin-top: 2em;
+    margin-top: 1em;
     margin-left: 5%;
     width: 90%;
     position: relative;
     min-width: 50em;
+    display: flex;
+    flex-direction: column;
   }
   &.pic {
     position: absolute;
@@ -14,36 +16,36 @@
     margin-top: 50px;
     min-width: 500px;
   }
-  &.text-and-button{
+  &.button-container {
     display: flex;
-    flex-direction: row;
-    margin-top: 1em;
-    margin-left: 5%;
-    margin-right: 30px;
-    width: flex;
+    justify-content: center;
+    width: fit-content;
+    margin: auto;
+    position: relative;
     @include center;
+    margin-top: 2em;
   }
   &.text {
     font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px;
+    font-size: 18px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    word-wrap:break-word;
   }
   &.container {
-    margin-top: 1em;
-    margin-bottom: 0;
-    margin-left: auto;
-    margin-right: auto;
     flex-direction: column;
     display: flex;
+    margin: auto;
     width: 50em;
     @include center;
+    margin-top: 2em;
     background: rgba(181, 153, 120, 0.5);
     border-radius: 0.75em;
   }
-  &.room-container {
+  &.score-container {
     margin: 0.5em 0;
     width: 100%;
     display: flex;
@@ -59,16 +61,15 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 25%;
+    width: 50%;
   }
   &.line {
     position: relative;
     width: 100%;
     border: 3px solid #ad9a66;
   }
-  &.room-list {
-    list-style: none;
-    padding-left: 0;
+  &.score-list {
+    width: 100%;
   }
   &.content {
     font-family: "Josefin Sans", sans-serif;
@@ -79,6 +80,22 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 25%;
+    width: 50%;
+    word-wrap: break-word;
+  }
+  &.cats-container{
+    width: 20em;
+    height: flex;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+  }
+  &.cat1{
+    width: 33%;
+    height:flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
   }
 }

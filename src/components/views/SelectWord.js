@@ -8,27 +8,22 @@ import cat4 from "styles/images/player4.png";
 import "styles/views/Guessing.scss";
 import { useHistory } from "react-router-dom";
 import { Button } from "components/ui/Button";
-import { Spinner } from "components/ui/Spinner";
 import { api, handleError } from "../../helpers/api";
 import HeaderInGame from "components/views/HeaderInGame";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import gameBackground from "styles/images/empty-room.jpg";
-import BgmPlayer from "components/ui/BgmPlayer"
-
+import BgmPlayer from "components/ui/BgmPlayer";
 
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
-  //const [startDrawing, setStartDrawing]=useState(null); //to test the timer, click "apple" button
-  //   let startDrawing;
   const history = useHistory();
   const startGuessing = +new Date();
   const curUserId = localStorage.getItem("id");
   const [currentUsername, setCurrentUsername] = useState("");
+
   //get the room and user information
-  //   const [word, setWord] = useState(""); //the chosen word
   const [word0, setWord0] = useState(""); //
   const [word1, setWord1] = useState(""); //
   const [word2, setWord2] = useState(""); //
-  //   const [playerNum, setPlayerNum] = useState(2);
+
   const [playernum, setPlayernum] = useState(null);
   const [role, setRole] = useState("");
   const [time, setTime] = useState(20);
@@ -36,8 +31,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [username2, setUsername2] = useState("");
   const [username3, setUsername3] = useState("");
   const [username4, setUsername4] = useState("");
-  //   const [drawingPlayerId, setDrawingPlayerId] = useState(null);
-  // console.log(turnId);
+
   const notify = (message) => {
     toast.error(message);
   };
@@ -45,8 +39,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     try {
       const response0 = await api().get(`/gameRounds/words/${turnId}`);
       const response = response0.data;
-      // const response = ["apple", "bike", "pencil"];
-      // console.log(response);
       if (response.length == 3) {
         //correct response
         setWord0(response[0]);
@@ -54,15 +46,16 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setWord2(response[2]);
       }
     } catch (error) {
-      //   alert(`Something went wrong during get words: \n${handleError(error)}`);
-      //   history.push("/lobby"); // redirect back to lobby
-      // handleNotLogInError(history, error, "fetching words for drawing Player");
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       history.push("/lobby"); // redirect back to lobby
@@ -70,8 +63,6 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   };
 
   const sendTimeInfo = (timeValue) => {
-    // the callback. Use a better name
-    // console.log(timeValue);
     setTime(timeValue);
   };
   useEffect(() => {
@@ -85,11 +76,8 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       const response0 = await api().get(`/gameRounds/information/${turnId}`);
 
       const response1 = response0.data;
-      // console.log(response1.players);
-      // console.log(typeof response1.players);
-      // console.log(response1.players.length);
+
       var temp = response1.players.length;
-      //   console.log(temp);
       setPlayernum(temp);
       var allPlayers = response1.players;
       const updatedPlayer = allPlayers.filter(
@@ -99,15 +87,11 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       setCurrentUsername(thisPlayer[0].username);
 
       if (playernum == 4) {
-        // setUsername1(response1.players[0].username);
         setUsername1(response1.drawingPlayerName);
 
         setUsername2(updatedPlayer[0].username);
         setUsername3(updatedPlayer[1].username);
         setUsername4(updatedPlayer[2].username);
-        // console.log(username2);
-        // console.log(username3);
-        // console.log(username4);
       }
 
       if (playernum == 2) {
@@ -121,17 +105,16 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
         setRole("guessingPlayer");
       }
     } catch (error) {
-      // handleNotLogInError(
-      //   history,
-      //   error,
-      //   "fetching Turn info in word selecting phase"
-      // );
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       history.push("/lobby"); // redirect back to lobby
@@ -139,11 +122,31 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   };
 
   useEffect(() => {
-    fetchTurnInfo().then(() => {});
+    fetchTurnInfo().catch((error) => {
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, [playernum]);
 
   useEffect(() => {
-    fetchWord().then(() => {});
+    fetchWord().catch((error) => {
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
 
   const displayWords = (
@@ -154,15 +157,15 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             handleChooseWord(word0);
           }}
           style={{
-            left: "50px",
-            top: "320px",
+            left: "30px",
+            top: "200px",
             position: "absolute",
-            "font-family": "Nunito",
+            fontFamily: "Josefin Sans, sans-serif",
             "font-size": "20px",
             color: "black",
             "margin-bottom": "5px",
             border: "2px solid #000000",
-            "background-color": "rgba(181, 153, 120, 0.5)",
+            "background-color": "rgba(193, 210, 240, 0.6)",
           }}
         >
           {word0}
@@ -174,15 +177,15 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             handleChooseWord(word1);
           }}
           style={{
-            left: "50px",
-            top: "370px",
+            left: "30px",
+            top: "250px",
             position: "absolute",
-            "font-family": "Nunito",
+            fontFamily: "Josefin Sans, sans-serif",
             "font-size": "20px",
             color: "black",
             "margin-bottom": "5px",
             border: "2px solid #000000",
-            "background-color": "rgba(181, 153, 120, 0.5)",
+            "background-color": "rgba(193, 210, 240, 0.6)",
           }}
         >
           {word1}
@@ -194,15 +197,15 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             handleChooseWord(word2);
           }}
           style={{
-            left: "50px",
-            top: "420px",
+            left: "30px",
+            top: "300px",
             position: "absolute",
-            "font-family": "Nunito",
+            fontFamily: "Josefin Sans, sans-serif",
             "font-size": "20px",
             color: "black",
             "margin-bottom": "5px",
             border: "2px solid #000000",
-            "background-color": "rgba(181, 153, 120, 0.5)",
+            "background-color": "rgba(193, 210, 240, 0.6)",
           }}
         >
           {word2}
@@ -212,15 +215,17 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   );
 
   const style1 = {
-    "font-family": "Nunito",
+    fontFamily: "Josefin Sans, sans-serif",
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
+    wordWrap: "break-word",
   };
   const style2 = {
-    "font-family": "Nunito",
+    fontFamily: "Josefin Sans, sans-serif",
     "font-size": "20px",
     color: "black",
+    wordWrap: "break-word",
   };
 
   //display cat and username
@@ -290,9 +295,9 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     );
 
   return (
-    <div>
+    <div className="guessing body">
       <HeaderInGame />
-      <BgmPlayer/>
+      <BgmPlayer />
       <ToastContainer
         toastClassName="toast-style"
         position="top-center"
@@ -304,65 +309,81 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
       />
       <div className="guessing content-container">
         <div className="guessing pic">
-          <img src={cats} alt="game background cats" style={{width: "447px", height: "559px", opacity: "20%"}}/>
+          <img
+            src={cats}
+            alt="game background cats"
+            style={{ width: "447px", height: "559px", opacity: "20%" }}
+          />
         </div>
         {playernum == 4 ? (
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}{player3}{player4}</div>
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">
+                {player2}
+                {player3}
+                {player4}
+              </div>
+            </div>
           </div>
-        </div>
-        ) : (<></>
+        ) : (
+          <div>
+            <div className="guessing players-container">
+              {player1}
+              <div className="guessing guessing-container">{player2}</div>
+            </div>
+          </div>
         )}
-        {
-        <div>
-          <div className="guessing players-container">
-            {player1}
-            <div className="guessing guessing-container">{player2}</div>
+        {role == "drawingPlayer" ? (
+          <div>
+            <h2
+              style={{
+                left: "30%",
+                top: "10px",
+                position: "absolute",
+                fontFamily: "Josefin Sans, sans-serif",
+                color: "black",
+              }}
+            >
+              It's your turn to paint.
+              <br></br>
+              Choose one word first!
+            </h2>
+            <div
+              style={{
+                left: "30%",
+                top: "100px",
+                position: "absolute",
+                fontFamily: "Josefin Sans, sans-serif",
+                fontSize: "20px",
+              }}
+            >
+              <Timer
+                start={startGuessing}
+                stage="select_word"
+                sendTimeInfo={sendTimeInfo}
+              />
+            </div>
+            {displayWords}
           </div>
-        </div>
-        }
+        ) : (
+          <div>
+            <h2
+              style={{
+                left: "30%",
+                top: "10px",
+                width: "400px",
+                position: "absolute",
+                fontFamily: "Josefin Sans, sans-serif",
+                color: "black",
+                wordWrap: "break-word",
+              }}
+            >
+              {username1} is choosing a word!
+            </h2>
+          </div>
+        )}
       </div>
-
-      
-      {role == "drawingPlayer" ? (
-        <div>
-          <h2
-            style={{
-              left: "30%",
-              top: "180px",
-              position: "absolute",
-              "font-family": "Nunito",
-              color: "black",
-            }}
-          >
-            It's your turn to paint. 
-            <br></br>
-            Choose one word first!
-          </h2>
-          <Timer
-            start={startGuessing}
-            stage="select_word"
-            sendTimeInfo={sendTimeInfo}
-          />
-          {displayWords}
-        </div>
-      ) : (
-        <div>
-          <h2
-            style={{
-              left: "30%",
-              top: "180px",
-              position: "absolute",
-              "font-family": "Nunito",
-              color: "black",
-            }}
-          >
-            {username1} is choosing a word!
-          </h2>
-        </div>
-      )}
     </div>
   );
 };

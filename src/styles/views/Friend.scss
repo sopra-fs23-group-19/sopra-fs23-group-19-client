@@ -10,19 +10,15 @@
     min-width: 50em;
     top: 10%;
     flex-wrap: wrap;
-    // background: rgb(255, 255, 255);
   }
   &.left-container{
     flex: 1 1 50%;
     min-width: 50px;
-    // background-color: red;
   }
   &.right-container{
     flex: 2 1 50%;
     min-width: 50px;
     margin-left: 0%;
-    // display: flex;
-    // background-color: yellow;
   }
   &.form-container {
     margin-top: 2em;
@@ -30,12 +26,13 @@
     flex-direction: column;
     width: 80%;
     max-width: 100em;
-    // position: absolute;
   }
   &.field {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    font-family: "Josefin Sans", sans-serif;
+    
   }
   &.form {
     display: flex;
@@ -56,7 +53,7 @@
   &.label {
     color: black;
     margin-bottom: 16px;
-    font-family: 'Nunito';
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
@@ -65,28 +62,13 @@
   &.container {
     margin-top: 2em;
     flex-direction: column;
-    // position: absolute;
     margin-left: 10%;
     min-width: 50px;
     min-height: 0px;
     height: 70%;
     background: rgba(181, 153, 120, 0.5);
-    // background-color: red;
+    border-radius: $borderRadius;
   }
-  // &.button-container {
-  //   justify-content: center;
-  //   position: absolute;
-  //   left: 900px;
-  //   top: 200px;
-  //   width: 40em;
-  // }
-  // &.button-container1 {
-  //   justify-content: center;
-  //   position: absolute;
-  //   left: 900px;
-  //   top: 260px;
-  //   width: 40em;
-  // }
   &.button-container {
     justify-content: center;
     display: flex;
@@ -111,16 +93,14 @@
     align-items: center;
     padding: 8px 16px;
     gap: 8px;
-    // position: absolute;
     width: 250px;
     height: 50px;
     left: 500px;
-    // top: 460px;
     top: 475px;
     background: #ffffff;
     border: 1px solid #000000;
     border-radius: 999px;
-    font-family: "Nunito";
+    font-family: "Nunito", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 30px;
@@ -136,8 +116,6 @@
   &.friend-list {
     list-style: none;
     padding-left: 0;
-    // margin-left:-50px;
-    // background-color: #ffffff;
   }
   &.friend-item {
     display: flex;
@@ -162,14 +140,13 @@
   }
   &.line {
     position: relative;
-    // width: 40em;
     height: 0px;
     left: 0px;
     top: 0px;
     border: 3px solid #ad9a66;
   }
   &.content {
-    font-family: "Nunito";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 18px;
@@ -178,9 +155,10 @@
     justify-content: center;
     text-align: center;
     width: 33%;
+    word-wrap: break-word;
   }
   &.title {
-    font-family: "Nunito";
+    font-family: "Josefin Sans", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;

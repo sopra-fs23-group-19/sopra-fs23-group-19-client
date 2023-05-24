@@ -13,6 +13,7 @@ import useSound from "use-sound";
 import btClick from "styles/sounds/click_button.mp3";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import BgmPlayer from "components/ui/BgmPlayer";
+
 // define the format of rooms in the table
 const Rooms = ({ room }) => {
   const history = useHistory();
@@ -29,13 +30,24 @@ const Rooms = ({ room }) => {
       await api().put(`/rooms/join`, requestBody);
       history.push(`/waiting/${id}`);
     } catch (error) {
-      // handleNotLogInError(history, error, "joining the room", true);
       const error_str = handleError(error);
-      console.log(error_str);
+
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        localStorage.removeItem("token");
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
     }
@@ -61,7 +73,17 @@ const Rooms = ({ room }) => {
       <div className="lobby content">
         <Button
           onClick={() => {
-            goToWaiting(room.id).then(() => {});
+            goToWaiting(room.id).catch((error) => {
+              const error_str = handleError(error);
+              if (error_str["message"].match(/Network Error/)) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("id");
+                localStorage.removeItem("username");
+                localStorage.removeItem("gameId");
+                localStorage.removeItem("intialTurnId");
+                history.push(`/information`);
+              }
+            });
           }}
           style={{
             "background-color": "#FFFFFF",
@@ -87,19 +109,30 @@ const Lobby = () => {
   const notify = (message) => {
     toast.error(message);
   };
+
   // fetch the rooms info from back end
   const fetchRooms = async () => {
     try {
       const response = await api().get("/rooms");
       setRooms(response.data);
     } catch (error) {
-      // handleNotLogInError(history, error, "getting lobby");
       const error_str = handleError(error);
-      console.log(error_str);
       if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
         history.push(`/information`);
+      } else if (
+        error_str["status"] == 401 &&
+        error_str["message"].includes("log in with correct credentials")
+      ) {
+        notify(
+          "Please register a new account or log in with correct credentials."
+        );
+        localStorage.removeItem("token");
       } else {
-        // setNotification(error_str["message"]);
         notify(error_str["message"]);
       }
       setIsUpdating(false);
@@ -107,13 +140,33 @@ const Lobby = () => {
   };
 
   useEffect(() => {
-    fetchRooms().then(() => {});
+    fetchRooms().catch((error) => {
+      const error_str = handleError(error);
+      if (error_str["message"].match(/Network Error/)) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("gameId");
+        localStorage.removeItem("intialTurnId");
+        history.push(`/information`);
+      }
+    });
   }, []);
 
   // fetch rooms every 3 seconds
   useInterval(
     async () => {
-      fetchRooms().then(() => {});
+      fetchRooms().catch((error) => {
+        const error_str = handleError(error);
+        if (error_str["message"].match(/Network Error/)) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("gameId");
+          localStorage.removeItem("intialTurnId");
+          history.push(`/information`);
+        }
+      });
     },
     isUpdating ? 3000 : null
   );
@@ -154,7 +207,7 @@ const Lobby = () => {
   // function to get to game creation page
   const goTocreateGameView = () => {
     playOn();
-    history.push("/gameCreation");
+    history.push("/create");
   };
   const [playOn] = useSound(btClick);
 
@@ -163,14 +216,18 @@ const Lobby = () => {
     playOn();
     const currentGameId = localStorage.getItem("gameId");
     const currentTurnId = localStorage.getItem("intialTurnId");
-    history.push({
-      pathname: `/game/${currentGameId}`,
-      state: { turnId: currentTurnId },
-    });
+    if (!currentTurnId) {
+      history.push(`/waiting/${currentGameId}`);
+    } else {
+      history.push({
+        pathname: `/game/${currentGameId}`,
+        state: { turnId: currentTurnId },
+      });
+    }
   };
 
   return (
-    <div>
+    <div className="lobby body">
       <Header />
       <ToastContainer
         toastClassName="toast-style"
@@ -207,7 +264,10 @@ const Lobby = () => {
           </div>
         </div>
         {localStorage.getItem("gameId") != null ? (
-          <div className="lobby text" style={{ textAlign: "center" }}>
+          <div
+            className="lobby text"
+            style={{ textAlign: "center", position: "relative" }}
+          >
             <Button
               style={{
                 "background-color": "#FFFFFF",
@@ -227,8 +287,4 @@ const Lobby = () => {
   );
 };
 
-/**
- * You can get access to the history object's properties via the withRouter.
- * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
- */
 export default Lobby;

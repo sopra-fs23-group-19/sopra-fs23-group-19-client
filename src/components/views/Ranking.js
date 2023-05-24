@@ -17,7 +17,7 @@ import BgmPlayer from "components/ui/BgmPlayer";
 
 const Ranking = ({ gameId, handleQuitGame }) => {
   const history = useHistory();
-
+  const [isShowRank, setIsShowRank] = useState(true);
   //get the username and score
   const [username1, setUsername1] = useState("");
   const [username2, setUsername2] = useState("");
@@ -43,6 +43,7 @@ const Ranking = ({ gameId, handleQuitGame }) => {
     try {
       const response0 = await api().get(`/games/ranks/${gameId}`);
       const response1 = response0.data;
+      setIsShowRank(true);
       setPlayerNum(response1.length);
 
       if (playerNum == 4 && response1[0].username != null) {
@@ -73,12 +74,14 @@ const Ranking = ({ gameId, handleQuitGame }) => {
         localStorage.removeItem("gameId");
         localStorage.removeItem("intialTurnId");
         history.push(`/information`);
-      } else {
-        notify(error_str["message"]);
       }
+      // else {
+      //   notify(error_str["message"]);
+      // }
+      setIsShowRank(false);
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
-      history.push("/lobby"); // redirect back to lobby
+      // history.push("/lobby"); // redirect back to lobby
     }
   };
   useEffect(() => {
@@ -207,35 +210,46 @@ const Ranking = ({ gameId, handleQuitGame }) => {
             style={{ width: "447px", height: "559px", opacity: "20%" }}
           />
         </div>
-        {title}
+        {/* {title} */}
+        {isShowRank ? (
+          title
+        ) : (
+          <Link to="/lobby">
+            Game was ended by others. Back to the lobby...
+          </Link>
+        )}
         {playerNum == 4 ? (
           <div>{rankingWhenFourPlayers}</div>
         ) : (
           <div>{rankingWhenTwoPlayers}</div>
         )}
-        <div
-          className="guessing button-container"
-          style={{
-            top: "60px",
-            left: "45%",
-            position: "absolute",
-            height: "50px",
-          }}
-        >
-          <Button
-            onClick={() => {
-              handleQuit();
-            }}
-            width="100%"
+        {isShowRank ? (
+          <div
+            className="guessing button-container"
             style={{
-              "margin-top": "5px",
-              border: "2px solid #000000",
-              backgroundColor: "rgba(193, 210, 240, 0.6)",
+              top: "60px",
+              left: "45%",
+              position: "absolute",
+              height: "50px",
             }}
           >
-            QUIT GAME
-          </Button>
-        </div>
+            <Button
+              onClick={() => {
+                handleQuit();
+              }}
+              width="100%"
+              style={{
+                "margin-top": "5px",
+                border: "2px solid #000000",
+                backgroundColor: "rgba(193, 210, 240, 0.6)",
+              }}
+            >
+              QUIT GAME
+            </Button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

@@ -127,7 +127,7 @@ Users will see a red node in header when they receive friends or games invite. T
 Lobby page will show all the games that haven't started yet. Users can click "join" to join the game.
 
 ### Game
-![Game Creation](![image](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91188113/637d03a7-572d-4fbf-9a4c-640f67413a4f))
+![Game Creation](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91188113/637d03a7-572d-4fbf-9a4c-640f67413a4f)
 
 User can set the name of the game room and choose the mode.
 

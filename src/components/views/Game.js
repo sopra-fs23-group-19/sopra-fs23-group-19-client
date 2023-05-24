@@ -117,7 +117,7 @@ const Game = () => {
   const fetchData = async () => {
     try {
       const response0 = await api().get(`/rooms/${gameId}`);
-      localStorage.setItem("gameId", gameId);
+
       const response = response0.data;
       setGameStatus(response.status);
 
@@ -129,6 +129,7 @@ const Game = () => {
       }
 
       setTurnStatus(response.currentTurnStatus);
+      localStorage.setItem("gameId", gameId);
     } catch (error) {
       handleGameError(error);
 
@@ -140,12 +141,16 @@ const Game = () => {
   const handleQuitGame = async () => {
     try {
       await api().put(`/games/ending/${gameId}`);
+      setIsUpdating(false);
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
+      history.push("/lobby");
     } catch (error) {
       handleGameError(error);
+      setIsUpdating(false);
       localStorage.removeItem("gameId");
       localStorage.removeItem("intialTurnId");
+      history.push("/lobby");
     }
     history.push("/lobby");
   };

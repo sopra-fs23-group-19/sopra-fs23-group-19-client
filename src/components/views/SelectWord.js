@@ -14,7 +14,6 @@ import { Bounce, ToastContainer, toast } from "react-toastify";
 import BgmPlayer from "components/ui/BgmPlayer";
 
 const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
-
   const history = useHistory();
   const startGuessing = +new Date();
   const curUserId = localStorage.getItem("id");
@@ -24,7 +23,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   const [word0, setWord0] = useState(""); //
   const [word1, setWord1] = useState(""); //
   const [word2, setWord2] = useState(""); //
- 
+
   const [playernum, setPlayernum] = useState(null);
   const [role, setRole] = useState("");
   const [time, setTime] = useState(20);
@@ -123,7 +122,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   };
 
   useEffect(() => {
-    fetchTurnInfo().catch((error)=>{
+    fetchTurnInfo().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -137,7 +136,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   }, [playernum]);
 
   useEffect(() => {
-    fetchWord().catch((error)=>{
+    fetchWord().catch((error) => {
       const error_str = handleError(error);
       if (error_str["message"].match(/Network Error/)) {
         localStorage.removeItem("token");
@@ -161,7 +160,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             left: "30px",
             top: "200px",
             position: "absolute",
-            "fontFamily": "Josefin Sans, sans-serif",
+            fontFamily: "Josefin Sans, sans-serif",
             "font-size": "20px",
             color: "black",
             "margin-bottom": "5px",
@@ -181,7 +180,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             left: "30px",
             top: "250px",
             position: "absolute",
-            "fontFamily": "Josefin Sans, sans-serif",
+            fontFamily: "Josefin Sans, sans-serif",
             "font-size": "20px",
             color: "black",
             "margin-bottom": "5px",
@@ -201,7 +200,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
             left: "30px",
             top: "300px",
             position: "absolute",
-            "font-family": "Nunito",
+            fontFamily: "Josefin Sans, sans-serif",
             "font-size": "20px",
             color: "black",
             "margin-bottom": "5px",
@@ -216,17 +215,17 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
   );
 
   const style1 = {
-    "fontFamily": "Josefin Sans, sans-serif",
+    fontFamily: "Josefin Sans, sans-serif",
     "font-size": "20px",
     color: "black",
     border: "2px solid #000000",
-    "wordWrap":"break-word"
+    wordWrap: "break-word",
   };
   const style2 = {
-    "fontFamily": "Josefin Sans, sans-serif",
+    fontFamily: "Josefin Sans, sans-serif",
     "font-size": "20px",
     color: "black",
-    "wordWrap":"break-word"
+    wordWrap: "break-word",
   };
 
   //display cat and username
@@ -336,46 +335,54 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           </div>
         )}
         {role == "drawingPlayer" ? (
-        <div>
-          <h2
-            style={{
-              left: "30%",
-              top: "10px",
-              position: "absolute",
-              "fontFamily": "Josefin Sans, sans-serif",
-              color: "black",
-            }}
-          >
-            It's your turn to paint. 
-            <br></br>
-            Choose one word first!
-          </h2>
-          <div style={{left:"30%", top:"100px", position:"absolute", "fontFamily": "Josefin Sans, sans-serif", "fontSize": "20px"}}>
-          <Timer
-            start={startGuessing}
-            stage="select_word"
-            sendTimeInfo={sendTimeInfo}
-          />
+          <div>
+            <h2
+              style={{
+                left: "30%",
+                top: "10px",
+                position: "absolute",
+                fontFamily: "Josefin Sans, sans-serif",
+                color: "black",
+              }}
+            >
+              It's your turn to paint.
+              <br></br>
+              Choose one word first!
+            </h2>
+            <div
+              style={{
+                left: "30%",
+                top: "100px",
+                position: "absolute",
+                fontFamily: "Josefin Sans, sans-serif",
+                fontSize: "20px",
+              }}
+            >
+              <Timer
+                start={startGuessing}
+                stage="select_word"
+                sendTimeInfo={sendTimeInfo}
+              />
+            </div>
+            {displayWords}
           </div>
-          {displayWords}
-        </div>
-      ) : (
-        <div>
-          <h2
-            style={{
-              left: "30%",
-              top: "10px",
-              width:"400px",
-              position: "absolute",
-              "fontFamily": "Josefin Sans, sans-serif",
-              color: "black",
-              "wordWrap":"break-word"
-            }}
-          >
-            {username1} is choosing a word!
-          </h2>
-        </div>
-      )}
+        ) : (
+          <div>
+            <h2
+              style={{
+                left: "30%",
+                top: "10px",
+                width: "400px",
+                position: "absolute",
+                fontFamily: "Josefin Sans, sans-serif",
+                color: "black",
+                wordWrap: "break-word",
+              }}
+            >
+              {username1} is choosing a word!
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );

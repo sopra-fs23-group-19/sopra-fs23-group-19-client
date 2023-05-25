@@ -196,4 +196,4 @@ _The cartoon cat images are from GIPHY and all credit goes to the original artis
 
 ## License
 
-We use ![MIT License](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/LICENSE). 
+We use [MIT License](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/LICENSE). 

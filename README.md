@@ -195,3 +195,5 @@ Users can see the rank of total score of the top 10 players.
 _The cartoon cat images are from GIPHY and all credit goes to the original artists._
 
 ## License
+
+We use ![MIT License](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/LICENSE). 

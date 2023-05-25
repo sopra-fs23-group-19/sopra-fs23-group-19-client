@@ -6,9 +6,10 @@ import "styles/views/Login.scss";
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import cats from "styles/images/cats1.png";
-import hidePwdIcon from "styles/images/svg/hide-password.svg";
-import showPwdIcon from "styles/images/svg/show-password.svg";
-
+// import hidePwdIcon from "styles/images/svg/hide-password.svg";
+// import showPwdIcon from "styles/images/svg/show-password.svg";
+import hidePwdIcon from "styles/images/hide-password.png";
+import showPwdIcon from "styles/images/show-password.png";
 const FormField = (props) => {
   return (
     <div className="login field">
@@ -66,7 +67,6 @@ const Login = (props) => {
     }
   };
 
-
   const goToRegister = async () => {
     try {
       history.push(`/register`);
@@ -96,13 +96,12 @@ const Login = (props) => {
         <img
           className="password icon"
           alt=""
-          src={isShowPwd ?  hidePwdIcon : showPwdIcon}
+          src={isShowPwd ? hidePwdIcon : showPwdIcon}
           onClick={() => setIsShowPwd((prevState) => !prevState)}
         />
       </div>
     );
   };
-
 
   return (
     <div className="login main-container">

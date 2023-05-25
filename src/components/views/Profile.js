@@ -7,8 +7,10 @@ import { useParams } from "react-router-dom";
 import BaseContainer from "components/ui/BaseContainer";
 import { Spinner } from "components/ui/Spinner";
 import cat_left from "styles/images/cat_left.png";
-import showPwdIcon from "styles/images/svg/show-password.svg";
-import hidePwdIcon from "styles/images/svg/hide-password.svg";
+// import showPwdIcon from "styles/images/svg/show-password.svg";
+// import hidePwdIcon from "styles/images/svg/hide-password.svg";
+import hidePwdIcon from "styles/images/hide-password.png";
+import showPwdIcon from "styles/images/show-password.png";
 import PropTypes from "prop-types";
 import cats from "styles/images/cats2.png";
 import Header from "components/views/Header";
@@ -185,7 +187,7 @@ const Profile = () => {
         <img
           className="password icon"
           alt=""
-          src={isShowPwd ?  hidePwdIcon : showPwdIcon}
+          src={isShowPwd ? hidePwdIcon : showPwdIcon}
           onClick={() => setIsShowPwd((prevState) => !prevState)}
         />
       </div>

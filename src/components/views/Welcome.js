@@ -74,8 +74,8 @@ const Welcome = (props) => {
           />
           <FunctionDisplay
             // path="/friend"
-            classname="welcome functionName"
             name="Guessing Stage"
+            classname="welcome functionName"
             detail="Guessing players have 60s to submit
             answers guessing the word for once."
           />

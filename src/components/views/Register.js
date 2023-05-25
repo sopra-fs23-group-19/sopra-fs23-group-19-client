@@ -103,7 +103,7 @@ const Register = (props) => {
         <img
           className="password icon"
           alt=""
-          src={isShowPwd ? showPwdIcon : hidePwdIcon}
+          src={isShowPwd ?  hidePwdIcon : showPwdIcon}
           onClick={() => setIsShowPwd((prevState) => !prevState)}
         />
       </div>

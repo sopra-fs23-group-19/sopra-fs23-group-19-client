@@ -153,6 +153,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
     <div>
       <div>
         <Button
+          disabled={word0=="" ? true:false}
           onClick={() => {
             handleChooseWord(word0);
           }}
@@ -176,6 +177,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           onClick={() => {
             handleChooseWord(word1);
           }}
+          disabled={word1=="" ? true:false}
           style={{
             left: "30px",
             top: "250px",
@@ -196,6 +198,7 @@ const SelectWord = ({ gameId, turnId, handleChooseWord }) => {
           onClick={() => {
             handleChooseWord(word2);
           }}
+          disabled={word2=="" ? true:false}
           style={{
             left: "30px",
             top: "300px",

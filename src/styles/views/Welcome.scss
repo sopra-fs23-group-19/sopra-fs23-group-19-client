@@ -51,6 +51,7 @@
     padding: 20px;
     width: 15%;
     height: flex;
+    min-width: 150px;
     transition: transform 0.2s;
   }
   &.stepContainer:hover {
@@ -60,6 +61,7 @@
     display: flex;
     justify-content: center;
     font-family: "Josefin Sans", sans-serif;
+    width: 100%;
   }
   &.button-container {
     font-family: "Josefin Sans", sans-serif;

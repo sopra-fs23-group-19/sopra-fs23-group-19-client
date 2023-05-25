@@ -35,7 +35,7 @@ The motivation behind a drawing and guessing game is to provide a fun, interacti
 
 ## High-level components
 
-The important components are saved under the folder [src/views](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/tree/main/src/components/views). The main entry point of the client is the [index.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/index.js) file.
+The important components are saved under the folder [src/components/views](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/tree/main/src/components/views). The main entry point of the client is the [index.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/index.js) file.
 Here we illstruate three main components.
 
 ### Lobby
@@ -44,13 +44,13 @@ The [Lobby.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client
 
 ### Game
 
-The main component in the game is the [Game.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Game.js) which get latest game status and siutation from the server via periodic polling. The [Game.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Game.js) would decide to render [DrawingStage.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/DrawingStage.js) component, [GuessingStage.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/GuessingStage.js) component or [TurnRanking.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/TurnRanking.js) component based on the game turn information provided by the server. These pages use the [Timer.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Timer.js)] component to track the duration of each turn, limiting players to a set amount of time to update painting and answer the question.
+The main component in the game is the [Game.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Game.js) which get latest game status and siutation from the server via periodic polling. The [Game.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Game.js) would decide to render [DrawingStage.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/DrawingStage.js) component, [GuessingStage.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/GuessingStage.js) component or [TurnRanking.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/TurnRanking.js) component based on the game turn information provided by the server. These pages use the [Timer.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Timer.js)] component to track the duration of each turn, limiting players to a set amount of time to update painting and guess the word.
 When the game is finished, the game would display the [Ranking.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Ranking.js).
 
 ### Friends
 
 On the [Friend.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Friend.js) page, users can search for other users by their username and send friend requests. If a user receives a friend request, they will receive a notification on the [Notification.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Notification.js) page and can choose to accept or reject the request. Once accepted, the friend will appear in the user's friend list on the [Friend.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Friend.js) page, and the user can view their friend's personal profile, including their best score and total score earned in the game via [Profile.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Profile.js) component.
-The [Profile.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Profile) also enables users to view their personal profile,including username, best score and total score. Users can edit their own profile: changing username and password.
+The [Profile.js](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/blob/main/src/components/views/Profile) also enables users to view their personal profile,including username, best score and total score. Users can edit their own profile.
 
 ## Launch and Deployment
 
@@ -91,18 +91,18 @@ Users can try to login with existed accounts or create a new one in register pag
 ### Welcome Page
 ![Welcome Page](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91188113/fd1893e8-48da-402b-bca9-353f70c07dbf)
 
-There would be a guide of the game in the welcome page.
+There would be a tutorial of the game in the welcome page.
 
 ### Header
 ![Header](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91421664/90c6ed5b-71d5-4a6c-954d-a7dda3fa6c08)
 Users can get an intuitive page guide in the header.
-- :Lobby Page: Get all non-full rooms or create a new game room.
-- :Leaderboard Page: List the best 10 players.
-- :Profile Page: Edit the personal information.
-- :Friends Page: Get the list of friends and search a friend with his/her username.
-- :Notification Page: Handle the friend or game invite requests.
-- :Rules Page: Descripstions of game and rules.
-- :Logout button: Logout the account and get to the login page.
+- Lobby Page: Find available rooms or create a new game room.
+- Leaderboard Page: List the top 10 players by ranking total scores.
+- Profile Page: Edit the personal information.
+- Friends Page: Get the list of friends and search a friend with his/her username.
+- Notification Page: Display the friend or game invitation requests and allow users to handle these requests.
+- Rules Page: Descripstions of game and rules.
+- Logout button: Logout the account and redirect to the login page.
 
 Also, just below the header there is an icon for controlling the on/off status of the background music, this would remain in every other pages.
 
@@ -166,7 +166,6 @@ Users can see the rank of total score of the top 10 players.
 
 ## Roadmap
 
-- :white_check_mark: Allow touch input.
 - :negative_squared_cross_mark: Allow guessing players guess multiple times.
 - :negative_squared_cross_mark: Enable live chat during the game.
 - :negative_squared_cross_mark: Configurable setting of game rounds and word difficulty.

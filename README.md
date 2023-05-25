@@ -84,7 +84,7 @@ Now you can open [http://localhost:3000](http://localhost:3000) to view it in th
 ## Illustrations
 
 ### Register and Login
-![Login Page](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91421664/e700e56b-7b2b-4cba-bb6d-ffea17b92d51)
+![Login Page](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/assets/91188113/702ed03a-f76c-4a70-a8ed-28ec58484b0a)
 
 Users can try to login with existed accounts or create a new one in register page.
 
